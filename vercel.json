@@ -1,16 +1,12 @@
 {
-  "routes": [
+  "rewrites": [
     {
-      "src": "/google4f834482028ee23b.html",
-      "dest": "/google4f834482028ee23b.html"
+      "source": "/api/(.*)",
+      "destination": "/api"
     },
     {
-      "src": "/google6gDOMKktPz_N-gC9sIkQD9PccmQv289_SU28rti-C5A.html",
-      "dest": "/google6gDOMKktPz_N-gC9sIkQD9PccmQv289_SU28rti-C5A.html"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/index.html"
+      "source": "/((?!api/|.*\\..*).*)",
+      "destination": "/index.html"
     }
   ]
 }

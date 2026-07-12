@@ -770,6 +770,10 @@ async function bootstrapServer() {
   });
 }
 
-bootstrapServer().catch((err) => {
-  console.error('Failed to bootstrap Rihla DZ server:', err);
-});
+if (!process.env.VERCEL) {
+  bootstrapServer().catch((err) => {
+    console.error('Failed to bootstrap Rihla DZ server:', err);
+  });
+}
+
+export default app;
