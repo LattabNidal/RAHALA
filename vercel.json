@@ -1,8 +1,22 @@
 {
+  "version": 2,
+  "outputDirectory": "dist",
   "rewrites": [
     {
       "source": "/api/(.*)",
       "destination": "/api"
+    },
+    {
+      "source": "/sitemap.xml",
+      "destination": "/sitemap.xml"
+    },
+    {
+      "source": "/google6gDOMKktPz_N-gC9sIkQD9PccmQv289_SU28rti-C5A.html",
+      "destination": "/google6gDOMKktPz_N-gC9sIkQD9PccmQv289_SU28rti-C5A.html"
+    },
+    {
+      "source": "/google4f834482028ee23b.html",
+      "destination": "/google4f834482028ee23b.html"
     },
     {
       "source": "/((?!api/|.*\\..*).*)",

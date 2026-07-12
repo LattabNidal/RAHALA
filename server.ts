@@ -732,7 +732,11 @@ async function downloadDefaultVideo() {
   const videoUrl = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4";
   console.log('Downloading default video on same-origin server from:', videoUrl);
   try {
-    const res = await fetch(videoUrl);
+    const res = await fetch(videoUrl, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+      }
+    });
     if (!res.ok) throw new Error(`HTTP error ${res.status}`);
     const buffer = Buffer.from(await res.arrayBuffer());
     fs.writeFileSync(targetPath, buffer);
@@ -741,8 +745,8 @@ async function downloadDefaultVideo() {
     const rootPath = path.join(process.cwd(), 'rahala_trailer.mp4');
     fs.writeFileSync(rootPath, buffer);
     console.log('Default video downloaded and saved successfully.');
-  } catch (err) {
-    console.error('Failed to download default video on startup:', err);
+  } catch (err: any) {
+    console.warn('Could not pre-download local video cache, falling back to remote streaming redirect:', err?.message || err);
   }
 }
 
