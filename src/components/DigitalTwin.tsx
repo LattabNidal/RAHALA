@@ -1071,20 +1071,20 @@ export const DigitalTwin: React.FC = () => {
 
           {/* Render real-time exact 3D controls bar if 3D mode is active */}
           {viewMode === 'exact3d' && (
-            <div className="bg-[#eae7e1] dark:bg-[#161616] border border-[#1a1a1a]/15 dark:border-white/10 p-4 flex flex-wrap gap-4 items-center justify-between">
+            <div className="bg-white dark:bg-[#161a23] border border-gray-200 dark:border-gray-800 p-4 rounded-xl flex flex-wrap gap-4 items-center justify-between mt-4 shadow-xs">
               
               {/* Dynamic light preset controller triggers */}
               <div className="flex items-center space-x-2 space-x-reverse">
-                <span className="text-[10px] font-mono uppercase tracking-widest text-[#1a1a1a]/70 dark:text-gray-400 font-bold">
+                <span className="text-[10px] font-mono uppercase tracking-widest text-gray-500 dark:text-gray-400 font-bold">
                   ☀️ Solar Gaze Ambient:
                 </span>
-                <div className="flex border border-[#1a1a1a]/15 dark:border-white/10">
+                <div className="flex border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
                   <button
                     onClick={() => setLightPreset('day')}
                     className={`px-3 py-1 text-[9px] font-mono uppercase tracking-widest cursor-pointer ${
                       lightPreset === 'day' 
-                        ? 'bg-[#1a1a1a] text-white dark:bg-white dark:text-black font-bold' 
-                        : 'bg-transparent text-gray-500 hover:text-black'
+                        ? 'bg-emerald-600 text-white font-bold' 
+                        : 'bg-transparent text-gray-500 hover:text-emerald-600'
                     }`}
                   >
                     Day Oasis
@@ -1093,8 +1093,8 @@ export const DigitalTwin: React.FC = () => {
                     onClick={() => setLightPreset('sunset')}
                     className={`px-3 py-1 text-[9px] font-mono uppercase tracking-widest cursor-pointer ${
                       lightPreset === 'sunset' 
-                        ? 'bg-[#1a1a1a] text-white dark:bg-white dark:text-black font-bold' 
-                        : 'bg-transparent text-gray-500 hover:text-black'
+                        ? 'bg-emerald-600 text-white font-bold' 
+                        : 'bg-transparent text-gray-500 hover:text-emerald-600'
                     }`}
                   >
                     Sunset Warm
@@ -1103,8 +1103,8 @@ export const DigitalTwin: React.FC = () => {
                     onClick={() => setLightPreset('midnight')}
                     className={`px-3 py-1 text-[9px] font-mono uppercase tracking-widest cursor-pointer ${
                       lightPreset === 'midnight' 
-                        ? 'bg-[#1a1a1a] text-white dark:bg-white dark:text-black font-bold' 
-                        : 'bg-transparent text-gray-500 hover:text-black'
+                        ? 'bg-emerald-600 text-white font-bold' 
+                        : 'bg-transparent text-gray-500 hover:text-emerald-600'
                     }`}
                   >
                     Desert Void
@@ -1114,15 +1114,15 @@ export const DigitalTwin: React.FC = () => {
 
               {/* Wireframe solid polygons toggle */}
               <div className="flex items-center space-x-2 space-x-reverse">
-                <span className="text-[10px] font-mono uppercase tracking-widest text-[#1a1a1a]/70 dark:text-gray-400 font-bold">
+                <span className="text-[10px] font-mono uppercase tracking-widest text-gray-500 dark:text-gray-400 font-bold">
                   📐 Digital Twin Blueprint:
                 </span>
                 <button
                   onClick={() => setShowWireframe(!showWireframe)}
-                  className={`px-3 py-1 border font-mono text-[9px] uppercase tracking-widest transition-all cursor-pointer ${
+                  className={`px-3 py-1 border font-mono text-[9px] uppercase tracking-widest transition-all cursor-pointer rounded-lg ${
                     showWireframe 
-                      ? 'bg-[#d4af37] text-black border-[#d4af37] font-bold' 
-                      : 'border-[#1a1a1a]/20 text-[#1a1a1a]/80 dark:border-white/20 dark:text-white'
+                      ? 'bg-emerald-600 text-white border-emerald-600 font-bold' 
+                      : 'border-gray-200 text-gray-700 dark:border-gray-750 dark:text-gray-300'
                   }`}
                 >
                   {showWireframe ? 'View Solid Architectural Model' : 'View Polygon Wireframes'}
@@ -1134,10 +1134,10 @@ export const DigitalTwin: React.FC = () => {
 
           {/* Audio voice simulation bar */}
           {audioFeedbackOn && viewMode === 'panorama' && (
-            <div className="p-4 bg-[#eae7e1]/80 dark:bg-[#1c1c1c]/80 border border-[#d4af37]/30 text-xs text-black dark:text-[#f5f2ed] animate-fade-in">
+            <div className="p-4 bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800 text-xs text-gray-800 dark:text-gray-200 animate-fade-in rounded-xl mt-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-2.5 space-x-reverse">
-                  <Volume2 className="text-[#d4af37] animate-bounce" size={16} />
+                  <Volume2 className="text-emerald-600 animate-bounce" size={16} />
                   <span className="font-semibold">Playing: Simulated Historic Echo acoustics for {activeSpot.name} ...</span>
                 </div>
                 <span className="font-mono text-[10px] text-gray-400">Sample: 44.1kHz</span>
@@ -1148,18 +1148,18 @@ export const DigitalTwin: React.FC = () => {
         </div>
  
         {/* Informative Chronicle Sidebar - 4 Columns */}
-        <div className="lg:col-span-4 bg-[#eae7e1]/30 dark:bg-[#161616]/30 border border-[#1a1a1a]/15 dark:border-white/10 rounded-none p-6 shadow-xl flex flex-col justify-between">
+        <div className="lg:col-span-4 bg-white dark:bg-[#161a23] border border-gray-200 dark:border-gray-800 rounded-2xl p-6 shadow-xs flex flex-col justify-between">
           
           <div>
-            <div className="flex items-center space-x-2 space-x-reverse border-b border-[#1a1a1a]/15 dark:border-white/10 pb-4 mb-5">
-              <BookOpen className="text-[#d4af37]" size={16} />
-              <h3 className="text-xs font-mono uppercase tracking-widest text-[#1a1a1a] dark:text-white font-bold">
+            <div className="flex items-center space-x-2 space-x-reverse border-b border-gray-100 dark:border-gray-800 pb-4 mb-5">
+              <BookOpen className="text-emerald-600" size={16} />
+              <h3 className="text-xs font-bold uppercase tracking-wider text-gray-900 dark:text-white">
                 {t('quickFacts')}
               </h3>
             </div>
 
             {/* Target Spot Description */}
-            <p className="text-xs text-gray-700 dark:text-slate-350 leading-relaxed font-sans mb-6">
+            <p className="text-xs text-gray-650 dark:text-gray-400 leading-relaxed font-sans mb-6">
               {activeSpot.description[language] || activeSpot.description['en']}
             </p>
 
@@ -1167,10 +1167,10 @@ export const DigitalTwin: React.FC = () => {
             <div className="space-y-4 mb-6">
               {(activeSpot.facts[language] || activeSpot.facts['en']).map((fact, id) => (
                 <div key={id} className="flex items-start space-x-3 space-x-reverse">
-                  <div className="w-5 h-5 bg-[#1a1a1a] dark:bg-white text-[#d4af37] dark:text-black border border-[#d4af37] flex items-center justify-center text-[9px] font-mono font-bold shrink-0 mt-0.5">
+                  <div className="w-5 h-5 bg-emerald-600 text-white flex items-center justify-center text-[9px] font-mono font-bold shrink-0 mt-0.5 rounded-full">
                     {id + 1}
                   </div>
-                  <p className="text-xs text-gray-7  00 dark:text-slate-300 leading-relaxed font-serif italic">
+                  <p className="text-xs text-gray-700 dark:text-gray-300 leading-relaxed font-sans">
                     {fact}
                   </p>
                 </div>
@@ -1179,8 +1179,8 @@ export const DigitalTwin: React.FC = () => {
 
             {/* 3D Model specific hotspot facts catalog trigger */}
             {viewMode === 'exact3d' && (
-              <div className="border-t border-[#1a1a1a]/10 dark:border-white/10 pt-5 mt-5">
-                <h4 className="text-[10px] font-mono uppercase tracking-widest text-[#d4af37] font-bold mb-3 flex items-center space-x-1">
+              <div className="border-t border-gray-100 dark:border-gray-800 pt-5 mt-5">
+                <h4 className="text-[10px] font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 mb-3 flex items-center space-x-1">
                   <Sparkles size={11} />
                   <span>3D Key Structural Hotspots (Exact)</span>
                 </h4>
@@ -1193,15 +1193,15 @@ export const DigitalTwin: React.FC = () => {
                       onClick={() => {
                         setSelectedHotspot({ name: spot.name, info: spot.info });
                       }}
-                      className={`text-right w-full text-start px-3 py-2 text-xs transition-all border ${
+                      className={`text-right w-full text-start px-3 py-2 text-xs transition-all border rounded-xl cursor-pointer ${
                         selectedHotspot?.name === spot.name
-                          ? 'bg-[#d4af37]/25 text-black dark:text-[#f5f2ed] border-[#d4af37] font-bold'
-                          : 'bg-[#1a1a1a]/5 dark:bg-white/5 text-[#1a1a1a]/85 dark:text-white/85 border-transparent hover:border-[#1a1a1a]/20 hover:bg-black/5'
+                          ? 'bg-emerald-50 dark:bg-emerald-950/20 text-emerald-700 dark:text-emerald-400 border-emerald-600 font-bold'
+                          : 'bg-gray-50 hover:bg-gray-100 dark:bg-gray-900 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300 border-transparent'
                       }`}
                     >
                       <span className="flex items-center justify-between">
                         <span className="font-semibold text-[11px] truncate">{spot.name}</span>
-                        <span className="text-[9px] text-[#d4af37] font-mono">Zoom &rarr;</span>
+                        <span className="text-[9px] text-emerald-600 dark:text-emerald-400 font-bold">Zoom &rarr;</span>
                       </span>
                     </button>
                   ))}
@@ -1209,11 +1209,11 @@ export const DigitalTwin: React.FC = () => {
 
                 {/* Hotspot details bubble inline if selected */}
                 {selectedHotspot && (
-                  <div className="mt-4 p-3.5 border border-[#d4af37] bg-[#d4af37]/5 text-xs animate-fade-in font-sans leading-relaxed">
-                    <strong className="block text-[#1a1a1a] dark:text-white mb-1 text-[11px] font-mono uppercase border-b border-[#d4af37]/25 pb-1">
+                  <div className="mt-4 p-3.5 border border-emerald-100 dark:border-emerald-900/50 bg-emerald-50/30 dark:bg-emerald-950/10 rounded-xl text-xs animate-fade-in font-sans leading-relaxed">
+                    <strong className="block text-emerald-700 dark:text-emerald-400 mb-1 text-[11px] font-bold uppercase border-b border-emerald-100 dark:border-emerald-900/30 pb-1">
                       🔍 {selectedHotspot.name}
                     </strong>
-                    <p className="text-[#1a1a1a] dark:text-[#f5f2ed]/90 text-[11px]">
+                    <p className="text-gray-750 dark:text-gray-350 text-[11px]">
                       {selectedHotspot.info}
                     </p>
                   </div>
@@ -1223,22 +1223,22 @@ export const DigitalTwin: React.FC = () => {
           </div>
 
           {/* Premium access overlay if applicable */}
-          <div className="mt-8 pt-6 border-t border-[#1a1a1a]/10 dark:border-white/10">
-            <div className="bg-[#eae7e1]/80 dark:bg-black/40 p-4 border border-[#d4af37]/35">
-              <h4 className="text-xs font-mono uppercase tracking-widest text-[#d4af37] mb-2.5 flex items-center space-x-1.5 space-x-reverse">
-                <Sparkles size={13} className="text-[#d4af37]" />
+          <div className="mt-8 pt-6 border-t border-gray-100 dark:border-gray-800">
+            <div className="bg-gray-50 dark:bg-gray-900/40 p-4 border border-gray-100 dark:border-gray-800 rounded-xl">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 mb-2.5 flex items-center space-x-1.5 space-x-reverse">
+                <Sparkles size={13} className="text-emerald-600" />
                 <span>Rihla Gold VIP 3D rendering Privilege</span>
               </h4>
-              <p className="text-[10px] text-gray-500 dark:text-white/60 leading-relaxed mb-3">
+              <p className="text-[10px] text-gray-500 dark:text-gray-400 leading-relaxed mb-3">
                 Access higher precision textures, automated vector alignment, and immersive acoustic parameters.
               </p>
               {currentUser?.isPremium ? (
-                <span className="inline-flex items-center space-x-1 border border-[#d4af37] py-1 px-2.5 bg-[#d4af37]/10 text-[#d4af37] text-[9px] font-mono font-bold uppercase tracking-widest">
+                <span className="inline-flex items-center space-x-1 border border-emerald-200 dark:border-emerald-800 py-1 px-2.5 bg-emerald-50 dark:bg-emerald-950/20 text-emerald-600 dark:text-emerald-400 text-[9px] font-bold uppercase tracking-wider rounded-lg">
                   <span>✓ Authorized VIP Level Access</span>
                 </span>
               ) : (
                 <button 
-                  className="text-[9px] font-mono uppercase tracking-widest text-[#d4af37] font-bold underline hover:text-amber-500 cursor-pointer"
+                  className="text-[9px] font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-450 underline hover:text-emerald-700 cursor-pointer"
                   onClick={() => {
                     const el = document.getElementById('dashboard-premium-pricing');
                     if(el) el.scrollIntoView({ behavior: 'smooth' });

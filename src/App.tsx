@@ -247,7 +247,7 @@ function RihlaApp() {
   }
 
   return (
-    <div className={`${darkMode ? 'dark bg-[#111111]/75 text-[#f5f2ed]' : 'bg-[#f5f2ed]/65 text-[#1a1a1a]'} min-h-screen flex flex-col justify-between transition-colors duration-300 font-sans relative`}>
+    <div className={`${darkMode ? 'dark bg-[#0f1115] text-[#f3f4f6]' : 'bg-[#f4f4f6] text-[#1a1a1a]'} min-h-screen flex flex-col justify-between transition-colors duration-300 font-sans relative`}>
       
       {/* React 19 SEO Metadata Injection */}
       <SEOHead 
@@ -256,18 +256,6 @@ function RihlaApp() {
         canonicalUrl="https://www.rahala-dz.com/" 
         noindex={currentUser ? true : false} 
       />
-      
-      {/* Full-screen Immersive fixed RAHALA promotional background image */}
-      <div className="fixed inset-0 -z-50 pointer-events-none select-none overflow-hidden">
-        <img 
-          src="/src/assets/images/rahala_logo_1781612694384.jpg" 
-          alt="RAHALA Background Image"
-          className="w-full h-full object-cover filter blur-[4px] brightness-[0.52] dark:brightness-[0.38] transition-all duration-1000 animate-zoom-slow"
-          referrerPolicy="no-referrer"
-        />
-        {/* Dark vertical gradient overlay to ensure ultimate accessibility & pristine text contrast */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#111111]/45 via-transparent to-[#111111]/85"></div>
-      </div>
 
       {/* Dynamic multi-language navigation layout */}
       <Navigation 
@@ -283,72 +271,51 @@ function RihlaApp() {
         {/* VIEW 1: EXPLORE LANDING HERO */}
         {activeView === 'explore' && (
           <div className="animate-fade-in">
-            {/* Immersive Algerian Sahara Sunset Hero Section */}
-            <div className="relative h-[500px] sm:h-[560px] flex items-center justify-center overflow-hidden border-b border-[#1a1a1a]/15 dark:border-white/10">
-              <div className="absolute inset-0 z-0 select-none">
-                <img 
-                  src="https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=1800&q=80" 
-                  alt="Algerian golden Sahara desert dunes"
-                  className="w-full h-full object-cover transition duration-1000 scale-100"
-                  style={{ filter: 'brightness(0.35) contrast(1.1)' }}
-                />
-                {/* Vintage vignette overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-[#111111] via-[#111111]/45 to-transparent"></div>
-              </div>
-
-              <div className="relative z-10 max-w-4xl mx-auto px-6 text-center text-white flex flex-col items-center">
+            {/* Clean Trivago-Style Hero Section */}
+            <div className="relative py-12 sm:py-16 bg-white dark:bg-[#161a22] border-b border-gray-200 dark:border-gray-800 transition-colors">
+              <div className="max-w-4xl mx-auto px-6 text-center flex flex-col items-center">
                 
-                {/* ADVANCED BRAND HERO IDENT - LOGO BIEN EN AVANT */}
-                <div className="relative mb-8 group">
-                  {/* Outer vibrant animated glowing rings (representing Emerald Green & Crescent Red of Algeria) */}
-                  <div className="absolute -inset-2 bg-gradient-to-r from-emerald-600 via-white to-red-650 rounded-full blur-xl opacity-80 group-hover:opacity-100 transition duration-1000 animate-pulse"></div>
-                  <div className="absolute -inset-1.5 bg-gradient-to-r from-emerald-500 via-[#d4af37] to-red-600 rounded-full opacity-90 group-hover:scale-105 transition duration-500"></div>
-                  
-                  {/* Central branding mask */}
-                  <div className="relative w-36 h-36 sm:w-44 sm:h-44 rounded-full overflow-hidden border-[3px] border-white shadow-2xl bg-slate-900">
+                {/* Clean Simplified Brand Identifier */}
+                <div className="relative mb-6">
+                  <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden border border-gray-200 dark:border-gray-700 shadow-sm bg-white p-1">
                     <img 
                       src="/src/assets/images/rahala_logo_1781612694384.jpg" 
                       alt="RAHALA Logo Centered" 
-                      className="w-full h-full object-cover transform scale-102 hover:scale-110 transition duration-700 ease-out"
+                      className="w-full h-full rounded-full object-cover"
                       referrerPolicy="no-referrer"
                     />
                   </div>
                   
-                  {/* Interactive status pill badges in beautiful vibrant tones */}
-                  <div className="absolute -bottom-2 -left-2 bg-emerald-600 text-white text-[9px] font-mono font-bold px-3 py-1 rounded-full uppercase tracking-wider border border-emerald-450 shadow-lg select-none">
-                    ★ Algérie
-                  </div>
-                  <div className="absolute -top-1 -right-2 bg-red-600 text-white text-[9px] font-mono font-bold px-3 py-1 rounded-full uppercase tracking-wider border border-red-500 shadow-lg select-none">
-                    Immersif 3D
+                  {/* Standard small flat badges */}
+                  <div className="absolute -bottom-1 -left-1 bg-emerald-600 text-white text-[9px] font-mono font-bold px-2 py-0.5 rounded-full uppercase tracking-wider select-none">
+                    Algérie 🇩🇿
                   </div>
                 </div>
 
                 {/* Slogan title styled with highly readable gorgeous fonts */}
-                <h1 className="text-4xl sm:text-6xl font-display font-extrabold tracking-tight leading-none mb-4 drop-shadow-lg">
-                  <span className="bg-gradient-to-r from-emerald-400 via-amber-300 to-red-400 bg-clip-text text-transparent">
-                    RAHALA
-                  </span>
+                <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight leading-none text-gray-950 dark:text-white mb-3">
+                  {t('appName')} <span className="text-emerald-600">Ecosystem</span>
                 </h1>
                 
-                {/* Beautiful luxury slogan display */}
-                <h2 className="text-2xl sm:text-4xl font-serif font-black italic tracking-wide text-white leading-tight mb-4 drop-shadow-md">
+                {/* Beautiful clean slogan display */}
+                <h2 className="text-lg sm:text-2xl font-serif font-semibold italic text-gray-600 dark:text-gray-300 mb-4">
                   Découvrez l’Algérie autrement
                 </h2>
                 
-                <p className="text-xs sm:text-sm text-gray-200/95 max-w-2xl mx-auto leading-relaxed mb-8 font-serif">
+                <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 max-w-2xl mx-auto leading-relaxed mb-6 font-sans">
                   {t('welcomeSubtitle')}
                 </p>
 
-                <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto">
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-3 w-full sm:w-auto">
                   <button
                     onClick={() => setActiveView('digital-twin')}
-                    className="w-full sm:w-auto px-8 py-3.5 bg-gradient-to-r from-emerald-600 to-emerald-750 text-white hover:from-emerald-700 hover:to-emerald-850 font-mono font-extrabold text-xs uppercase tracking-widest border border-emerald-500 transition-all rounded-xs shadow-lg shadow-emerald-600/30 active:scale-97 cursor-pointer"
+                    className="w-full sm:w-auto px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs uppercase tracking-wider transition-all rounded-lg shadow-sm cursor-pointer"
                   >
                     🚀 Lancer l'expérience 3D
                   </button>
                   <button
                     onClick={() => setActiveView('map')}
-                    className="w-full sm:w-auto px-8 py-3.5 bg-gradient-to-r from-red-600 to-red-700 text-white hover:from-red-700 hover:to-red-800 font-mono font-extrabold text-xs uppercase tracking-widest border border-red-500 transition-all rounded-xs shadow-lg shadow-red-650/30 active:scale-97 cursor-pointer"
+                    className="w-full sm:w-auto px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-bold text-xs uppercase tracking-wider transition-all rounded-lg shadow-sm cursor-pointer"
                   >
                     🗺️ Ouvrir la carte interactive
                   </button>

@@ -139,7 +139,7 @@ export const Navigation: React.FC<NavigationProps> = ({ activeView, setActiveVie
 
   return (
     <>
-      <nav id="navbar-header" className="sticky top-0 z-50 bg-[#f5f2ed]/95 dark:bg-[#121212]/95 border-b border-[#1a1a1a]/15 dark:border-white/10 backdrop-blur-md transition-colors duration-300">
+      <nav id="navbar-header" className="sticky top-0 z-50 bg-white/95 dark:bg-[#111317]/95 border-b border-gray-200 dark:border-gray-800 backdrop-blur-md transition-colors duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             
@@ -239,7 +239,7 @@ export const Navigation: React.FC<NavigationProps> = ({ activeView, setActiveVie
                 </button>
                 
                 {langDropdownOpen && (
-                  <div className={`absolute ${isRtl ? 'left-0' : 'right-0'} mt-2 w-44 rounded-2xl bg-[#f5f2ed] dark:bg-[#161616] border border-[#1a1a1a]/15 dark:border-white/10 shadow-xl py-1.5 z-50 animate-fade-in`}>
+                  <div className={`absolute ${isRtl ? 'left-0' : 'right-0'} mt-2 w-44 rounded-xl bg-white dark:bg-[#161a22] border border-gray-200 dark:border-gray-800 shadow-xl py-1.5 z-50 animate-fade-in`}>
                     {languagesList.map((lang) => {
                       const isActive = lang.code === language;
                       return (
@@ -248,8 +248,8 @@ export const Navigation: React.FC<NavigationProps> = ({ activeView, setActiveVie
                           onClick={() => handleLangSelect(lang.code)}
                           className={`flex items-center justify-between w-full text-start px-4 py-2 text-xs font-bold uppercase tracking-wider transition-all cursor-pointer ${
                             isActive 
-                              ? 'text-[#d4af37] bg-[#1a1a1a]/5 dark:bg-white/5 border-l-4 border-[#d4af37] font-black'
-                              : 'text-[#1a1a1a]/85 hover:text-[#d4af37] hover:bg-[#1a1a1a]/5 dark:text-[#f5f2ed]/85 dark:hover:bg-white/5'
+                              ? 'text-emerald-600 bg-emerald-50/50 dark:text-emerald-400 dark:bg-emerald-950/20 border-l-4 border-emerald-600 font-black'
+                              : 'text-gray-700 hover:text-emerald-600 hover:bg-gray-50 dark:text-gray-350 dark:hover:text-emerald-400 dark:hover:bg-gray-800/40'
                           }`}
                         >
                           <span className="flex items-center space-x-1.5 space-x-reverse">
@@ -281,13 +281,13 @@ export const Navigation: React.FC<NavigationProps> = ({ activeView, setActiveVie
                   )}
                 </button>
                 {notifDropdownOpen && (
-                  <div className={`absolute ${isRtl ? 'left-0' : 'right-0'} mt-2 w-72 rounded-2xl bg-[#f5f2ed] dark:bg-[#161616] border border-[#1a1a1a]/20 dark:border-white/10 shadow-2xl z-50 animate-fade-in Overflow-hidden`}>
-                    <div className="px-4 py-3 border-b border-[#1a1a1a]/10 dark:border-white/10 flex justify-between items-center bg-[#eae7e1] dark:bg-black/35 rounded-t-2xl">
-                      <span className="text-xs font-black uppercase tracking-wider text-[#1a1a1a] dark:text-[#f5f2ed]">Notifications</span>
+                  <div className={`absolute ${isRtl ? 'left-0' : 'right-0'} mt-2 w-72 rounded-xl bg-white dark:bg-[#161a22] border border-gray-200 dark:border-gray-800 shadow-xl z-50 animate-fade-in overflow-hidden`}>
+                    <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-800 flex justify-between items-center bg-gray-50 dark:bg-gray-900 rounded-t-xl">
+                      <span className="text-xs font-black uppercase tracking-wider text-gray-800 dark:text-gray-200">Notifications</span>
                       {unreadCount > 0 && (
                         <button
                           onClick={clearNotifications}
-                          className="text-[10px] font-bold uppercase tracking-wider text-[#d4af37] hover:underline cursor-pointer"
+                          className="text-[10px] font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-450 hover:underline cursor-pointer"
                         >
                           Clear All
                         </button>
@@ -331,16 +331,16 @@ export const Navigation: React.FC<NavigationProps> = ({ activeView, setActiveVie
                       />
                     </button>
                     {profileDropdownOpen && (
-                      <div className={`absolute ${isRtl ? 'left-0' : 'right-0'} mt-2 w-56 rounded-2xl bg-[#f5f2ed] dark:bg-[#161616] border border-[#1a1a1a]/20 dark:border-white/10 shadow-2xl py-1.5 z-50 animate-fade-in`}>
-                        <div className="px-4 py-3 border-b border-[#1a1a1a]/10 dark:border-white/10 bg-[#eae7e1] dark:bg-black/35 rounded-t-xl text-left">
-                          <p className="text-xs font-black text-[#1a1a1a] dark:text-[#f5f2ed] truncate mb-1 font-serif italic">{currentUser.name}</p>
+                      <div className={`absolute ${isRtl ? 'left-0' : 'right-0'} mt-2 w-56 rounded-xl bg-white dark:bg-[#161a22] border border-gray-200 dark:border-gray-800 shadow-xl py-1.5 z-50 animate-fade-in`}>
+                        <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900 rounded-t-lg text-left">
+                          <p className="text-xs font-black text-gray-900 dark:text-gray-100 truncate mb-1 font-serif italic">{currentUser.name}</p>
                           <p className="text-[10px] text-gray-500 font-mono truncate">{currentUser.email}</p>
                           <div className="mt-2.5 flex space-x-1.5 space-x-reverse">
                             <span className="px-2 py-0.5 text-[8px] font-mono font-black uppercase border border-emerald-500/30 text-emerald-600 dark:text-emerald-450 rounded bg-emerald-500/5">
                               {currentUser.role}
                             </span>
                             {currentUser.isPremium && (
-                              <span className="px-2 py-0.5 text-[8px] font-mono font-black uppercase bg-[#d4af37]/15 text-[#d4af37] border border-[#d4af37]/30 rounded">
+                              <span className="px-2 py-0.5 text-[8px] font-mono font-black uppercase bg-emerald-100 dark:bg-emerald-950/35 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800 rounded">
                                 VIP
                               </span>
                             )}
@@ -352,7 +352,7 @@ export const Navigation: React.FC<NavigationProps> = ({ activeView, setActiveVie
                             setProfileDropdownOpen(false);
                             setMenuOpen(false);
                           }}
-                          className="flex w-full px-4 py-2.5 text-xs text-[#1a1a1a] dark:text-[#f5f2ed] hover:bg-[#1a1a1a]/5 dark:hover:bg-white/5 items-center space-x-2 space-x-reverse transition uppercase tracking-wider font-extrabold cursor-pointer"
+                          className="flex w-full px-4 py-2.5 text-xs text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-850 items-center space-x-2 space-x-reverse transition uppercase tracking-wider font-extrabold cursor-pointer"
                         >
                           <UserIcon size={12} />
                           <span>{t('navDashboard')}</span>
@@ -419,11 +419,11 @@ export const Navigation: React.FC<NavigationProps> = ({ activeView, setActiveVie
                   setMenuOpen(false);
                 }
               }}
-              className={`fixed top-0 bottom-0 ${isRtl ? 'right-0' : 'left-0'} z-[70] w-80 max-w-[85vw] h-screen bg-[#f5f2ed]/95 dark:bg-[#121212]/95 border-r border-[#1a1a1a]/10 dark:border-white/10 backdrop-blur-md shadow-2xl flex flex-col justify-between overflow-hidden select-none text-left`}
+              className={`fixed top-0 bottom-0 ${isRtl ? 'right-0' : 'left-0'} z-[70] w-80 max-w-[85vw] h-screen bg-white/95 dark:bg-[#121212]/95 border-r border-gray-200 dark:border-gray-800 backdrop-blur-md shadow-2xl flex flex-col justify-between overflow-hidden select-none text-left`}
             >
               
               {/* Header section (La photo/logo en haut du menu) */}
-              <div className="relative p-6 border-b border-[#1a1a1a]/10 dark:border-white/10 shrink-0 overflow-hidden bg-slate-100/50 dark:bg-black/30">
+              <div className="relative p-6 border-b border-gray-200 dark:border-gray-800 shrink-0 overflow-hidden bg-slate-50/50 dark:bg-black/30">
                 {/* Immersive Algeria scenic textured backdrop */}
                 <div className="absolute inset-0 z-0 pointer-events-none opacity-20">
                   <img 
@@ -431,7 +431,7 @@ export const Navigation: React.FC<NavigationProps> = ({ activeView, setActiveVie
                     alt="Immersive scenic desert background helper"
                     className="w-full h-full object-cover filter blur-[2px]"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#f5f2ed] dark:to-[#121212]"></div>
+                  <div className="absolute inset-0 bg-gradient-to-b from-transparent to-white dark:to-[#121212]"></div>
                 </div>
 
                 {/* Close Button "X" inside top-corner */}

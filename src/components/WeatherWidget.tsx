@@ -378,20 +378,16 @@ export const WeatherWidget: React.FC = () => {
   };
 
   return (
-    <div className="w-full bg-[#eae7e1]/40 dark:bg-[#121212]/40 border border-[#1a1a1a]/15 dark:border-white/10 rounded-xl p-6 mb-16 shadow-xs relative overflow-hidden">
+    <div className="w-full bg-white dark:bg-[#161a23] border border-gray-200 dark:border-gray-800 rounded-xl p-6 mb-16 shadow-xs relative overflow-hidden">
       
-      {/* Decorative Golden Corner Accents */}
-      <div className="absolute top-0 right-0 w-16 h-16 border-t-2 border-r-2 border-[#d4af37]/20 pointer-events-none rounded-tr-md"></div>
-      <div className="absolute bottom-0 left-0 w-16 h-16 border-b-2 border-l-2 border-[#d4af37]/20 pointer-events-none rounded-bl-md"></div>
-
       {/* Header section of the weather widget */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 border-b border-[#1a1a1a]/10 dark:border-white/10 pb-4">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 border-b border-gray-100 dark:border-gray-800 pb-4">
         <div className="flex items-start space-x-3 space-x-reverse text-left">
-          <div className="bg-emerald-600 dark:bg-emerald-500 text-white p-2.5 rounded-lg shadow-sm border border-emerald-400/20">
-            <Compass className="animate-spin-slow text-yellow-350" size={24} />
+          <div className="bg-emerald-600 dark:bg-emerald-500 text-white p-2.5 rounded-lg shadow-sm">
+            <Compass className="animate-spin-slow text-white" size={24} />
           </div>
           <div>
-            <h3 className="text-lg font-serif font-extrabold text-[#1a1a1a] dark:text-[#f5f2ed] tracking-tight">
+            <h3 className="text-lg font-bold text-gray-950 dark:text-white tracking-tight">
               {uiLabels.title[language as keyof typeof uiLabels.title] || uiLabels.title.en}
             </h3>
             <p className="text-[10.5px] text-gray-550 dark:text-gray-400 leading-snug mt-1">

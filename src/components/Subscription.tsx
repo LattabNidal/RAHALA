@@ -76,21 +76,21 @@ export const Subscription: React.FC = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto items-stretch">
         
         {/* FREE PLAN CARD */}
-        <div className="bg-[#eae7e1]/20 dark:bg-[#161616]/20 border border-[#1a1a1a]/15 dark:border-white/10 rounded-none p-6 sm:p-8 flex flex-col justify-between">
+        <div className="bg-white dark:bg-[#161a23] border border-gray-200 dark:border-gray-800 rounded-2xl p-6 sm:p-8 flex flex-col justify-between shadow-xs">
           <div>
-            <div className="border-b border-[#1a1a1a]/10 dark:border-white/10 pb-4 mb-6">
-              <span className="text-[9px] font-mono text-gray-500 uppercase tracking-widest font-bold">Standard Explorer Pass</span>
-              <h3 className="text-xl font-serif font-bold italic text-gray-800 dark:text-white mt-1">Free Travel Tier</h3>
-              <div className="mt-4 flex items-baseline text-slate-900 dark:text-white">
-                <span className="text-3xl font-bold font-mono text-[#1a1a1a] dark:text-[#f5f2ed]">0</span>
+            <div className="border-b border-gray-100 dark:border-gray-800 pb-4 mb-6">
+              <span className="text-[9px] font-mono text-gray-400 uppercase tracking-widest font-bold">Standard Explorer Pass</span>
+              <h3 className="text-xl font-bold text-gray-800 dark:text-white mt-1">Free Travel Tier</h3>
+              <div className="mt-4 flex items-baseline text-gray-900 dark:text-white">
+                <span className="text-3xl font-extrabold font-mono text-gray-900 dark:text-white">0</span>
                 <span className="text-xs text-gray-400 font-normal ml-1.5 font-sans lowercase">DZD / month</span>
               </div>
             </div>
 
             <ul className="space-y-4 mb-8">
               {perksFree.map((perk, id) => (
-                <li key={id} className="flex items-start space-x-2.5 space-x-reverse text-xs text-slate-600 dark:text-slate-400 font-sans">
-                  <Check className="text-gray-400 shrink-0 mt-0.5" size={12} />
+                <li key={id} className="flex items-start space-x-2.5 space-x-reverse text-xs text-gray-650 dark:text-gray-400 font-sans">
+                  <Check className="text-emerald-600 shrink-0 mt-0.5" size={12} />
                   <span>{perk}</span>
                 </li>
               ))}
@@ -99,39 +99,39 @@ export const Subscription: React.FC = () => {
 
           <button
             disabled
-            className="w-full py-2.5 bg-gray-200/50 dark:bg-[#1c1c1c]/50 text-gray-500 dark:text-[#f5f2ed]/40 text-xs font-mono uppercase tracking-widest border border-dashed border-[#1a1a1a]/10 dark:border-white/10 cursor-not-allowed text-center"
+            className="w-full py-2.5 bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-550 text-xs font-bold uppercase tracking-wider rounded-xl cursor-not-allowed text-center"
           >
             Currently Active
           </button>
         </div>
 
         {/* PREMIUM GOLD PLAN CARD */}
-        <div className="bg-[#fdfcfb] dark:bg-[#1f1f1f] border-2 border-[#d4af37] rounded-none p-6 sm:p-8 flex flex-col justify-between relative shadow-lg shadow-[#d4af37]/5 overflow-hidden">
+        <div className="bg-white dark:bg-[#161a23] border-2 border-emerald-600 dark:border-emerald-500 rounded-2xl p-6 sm:p-8 flex flex-col justify-between relative shadow-md overflow-hidden">
           
-          <div className="absolute top-4 right-4 bg-[#d4af37] text-black font-mono px-2.5 py-1 text-[8px] font-bold uppercase tracking-widest flex items-center space-x-1">
-            <Star size={8} className="fill-black" />
+          <div className="absolute top-4 right-4 bg-emerald-600 text-white font-mono px-2.5 py-1 text-[8px] font-bold uppercase tracking-widest flex items-center space-x-1 rounded-md">
+            <Star size={8} className="fill-white" />
             <span>VIP ELITE</span>
           </div>
 
           <div>
-            <div className="border-b border-[#1a1a1a]/10 dark:border-white/10 pb-4 mb-6">
-              <span className="text-[9px] font-mono text-[#d4af37] uppercase tracking-widest font-bold">Rahala Elite Series</span>
-              <h3 className="text-xl font-serif font-bold italic text-gray-800 dark:text-white mt-1">
+            <div className="border-b border-gray-100 dark:border-gray-800 pb-4 mb-6">
+              <span className="text-[9px] font-mono text-emerald-600 dark:text-emerald-400 uppercase tracking-widest font-bold">Rahala Elite Series</span>
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white mt-1">
                 Rihla Gold VIP
               </h3>
-              <div className="mt-4 flex items-baseline text-[#1a1a1a] dark:text-[#f5f2ed]">
-                <span className="text-3xl font-mono font-bold text-[#d4af37]">
+              <div className="mt-4 flex items-baseline text-gray-900 dark:text-white">
+                <span className="text-3xl font-extrabold font-mono text-emerald-600 dark:text-emerald-400">
                   {billingPeriod === 'monthly' ? '1,200' : '9,900'}
                 </span>
-                <span className="text-xs font-mono text-[#d4af37] font-extrabold ml-1 leading-none">DZD</span>
-                <span className="text-xs text-gray-550 font-normal ml-1.5 font-sans lowercase">/ {billingPeriod === 'monthly' ? 'month' : 'year'}</span>
+                <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400 ml-1 leading-none">DZD</span>
+                <span className="text-xs text-gray-500 font-normal ml-1.5 font-sans lowercase">/ {billingPeriod === 'monthly' ? 'month' : 'year'}</span>
               </div>
             </div>
 
             <ul className="space-y-4 mb-8">
               {perksPremium.map((perk, id) => (
-                <li key={id} className="flex items-start space-x-2.5 space-x-reverse text-xs text-[#1a1a1a] dark:text-[#f5f2ed] font-sans">
-                  <Sparkles className="text-[#d4af37] shrink-0 mt-0.5" size={11} />
+                <li key={id} className="flex items-start space-x-2.5 space-x-reverse text-xs text-gray-750 dark:text-gray-300 font-sans">
+                  <Sparkles className="text-emerald-600 shrink-0 mt-0.5" size={11} />
                   <span className="font-semibold">{perk}</span>
                 </li>
               ))}
@@ -141,53 +141,51 @@ export const Subscription: React.FC = () => {
           {!currentUser?.isPremium ? (
             <button
               onClick={handleUpgradeTrigger}
-              className="w-full py-3 bg-[#1a1a1a] dark:bg-[#f5f2ed] text-[#f5f2ed] dark:text-[#1a1a1a] font-mono font-bold text-xs uppercase tracking-widest border border-[#d4af37] hover:bg-[#d4af37] hover:text-black transition-all rounded-none"
+              className="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs uppercase tracking-wider rounded-xl transition-all cursor-pointer"
             >
               Grab Premium Gold Pass
             </button>
           ) : (
-            <div className="p-3 border border-[#d4af37] bg-[#d4af37]/10 text-center text-xs font-mono font-bold uppercase tracking-widest text-[#d4af37]">
+            <div className="p-3 border border-emerald-600 dark:border-emerald-500 bg-emerald-50 dark:bg-emerald-950/20 rounded-xl text-center text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
               ✓ Lifetime VIP Access Holder
             </div>
-          )}
-
-        </div>
+          )}        </div>
 
       </div>
 
       {/* Stripe sheet mock wrapper */}
       {stripeSelectOpen && (
-        <div className="fixed inset-0 bg-black/75 backdrop-blur-xs flex items-center justify-center p-4 z-100 animate-fade-in">
-          <div className="bg-[#f5f2ed] dark:bg-[#161616] w-full max-w-sm rounded-none p-6 shadow-2xl border border-[#d4af37] animate-scale-up">
-            <div className="flex justify-between items-center border-b border-[#1a1a1a]/15 dark:border-white/10 pb-3 mb-5">
-              <span className="text-[10px] font-mono font-extrabold uppercase tracking-widest text-gray-800 dark:text-white">VIP PASS SECURE CHECKOUT</span>
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 z-100 animate-fade-in">
+          <div className="bg-white dark:bg-[#161a23] w-full max-w-sm rounded-2xl p-6 shadow-2xl border border-gray-200 dark:border-gray-800 animate-scale-up">
+            <div className="flex justify-between items-center border-b border-gray-100 dark:border-gray-800 pb-3 mb-5">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-gray-800 dark:text-gray-200">VIP PASS SECURE CHECKOUT</span>
               <button 
                 onClick={() => setStripeSelectOpen(false)}
-                className="text-xs font-mono uppercase tracking-wider text-[#1a1a1a]/60 dark:text-white/60 hover:text-red-650"
+                className="text-xs font-bold uppercase tracking-wider text-gray-400 hover:text-red-500 cursor-pointer"
               >
                 Cancel
               </button>
             </div>
 
             <div className="space-y-5 text-xs">
-              <div className="bg-[#eae7e1] text-[#1a1a1a] dark:bg-[#202020] dark:text-[#f5f2ed] p-4 rounded-none border-l-2 border-[#d4af37]">
+              <div className="bg-gray-50 text-gray-800 dark:bg-gray-900/50 dark:text-gray-200 p-4 rounded-xl border-l-4 border-emerald-600">
                 <strong className="font-serif italic text-sm block">Rihla Gold VIP Active Pass</strong>
                 <p className="mt-1 font-mono text-[10px]">Scheduled Payment: {selectedPlanCost.toLocaleString()} DZD ({billingPeriod === 'monthly' ? 'Monthly Access' : 'Yearly Access'})</p>
               </div>
 
               <div>
-                <label className="block text-[8px] font-mono text-gray-500 mb-1 tracking-widest uppercase">SSL CREDIT DECK DETAILS</label>
+                <label className="block text-[8px] font-mono text-gray-500 mb-1 tracking-widest uppercase">SSL CREDIT CARD DETAILS</label>
                 <input 
                   type="text" 
                   value="4242 •••• •••• 4242"
                   disabled
-                  className="w-full border border-[#1a1a1a]/15 dark:border-white/10 dark:bg-black/40 px-3 py-2 text-slate-500 rounded-none font-mono focus:outline-none cursor-not-allowed"
+                  className="w-full border border-gray-200 dark:border-gray-800 dark:bg-gray-900 px-3 py-2 text-gray-500 rounded-xl font-mono focus:outline-none cursor-not-allowed"
                 />
               </div>
 
               <button
                 onClick={handleStripeSuccess}
-                className="w-full py-3 bg-[#1a1a1a] dark:bg-[#f5f2ed] text-[#f5f2ed] dark:text-[#1a1a1a] font-mono font-bold text-xs uppercase tracking-widest border border-[#d4af37] hover:bg-[#d4af37] hover:text-black transition-all"
+                className="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs uppercase tracking-wider rounded-xl transition-all cursor-pointer"
               >
                 Confirm Upgrade & Unlock VIP
               </button>
