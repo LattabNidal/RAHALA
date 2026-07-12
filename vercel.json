@@ -1,22 +1,24 @@
 {
-  "version": 2,
-  "outputDirectory": "dist",
   "rewrites": [
     {
-      "source": "/api/(.*)",
-      "destination": "/api"
-    },
-    {
       "source": "/sitemap.xml",
-      "destination": "/sitemap.xml"
+      "destination": "/api/sitemap.xml"
     },
     {
       "source": "/google6gDOMKktPz_N-gC9sIkQD9PccmQv289_SU28rti-C5A.html",
-      "destination": "/google6gDOMKktPz_N-gC9sIkQD9PccmQv289_SU28rti-C5A.html"
+      "destination": "/api/google6gDOMKktPz_N-gC9sIkQD9PccmQv289_SU28rti-C5A.html"
+    },
+    {
+      "source": "/googleg7z-8UKrTUfLchk_6eovt32W0oAZ4bJ7Wq_E7Q-lfg4.html",
+      "destination": "/api/googleg7z-8UKrTUfLchk_6eovt32W0oAZ4bJ7Wq_E7Q-lfg4.html"
     },
     {
       "source": "/google4f834482028ee23b.html",
-      "destination": "/google4f834482028ee23b.html"
+      "destination": "/api/google4f834482028ee23b.html"
+    },
+    {
+      "source": "/api/(.*)",
+      "destination": "/api"
     },
     {
       "source": "/((?!api/|.*\\..*).*)",

@@ -663,6 +663,111 @@ function generateServerFallbackItinerary(numDays: number, budget: string, intere
   };
 }
 
+// Endpoint to serve the XML sitemap with correct content type header
+app.get(['/sitemap.xml', '/api/sitemap.xml'], (req, res) => {
+  const possiblePaths = [
+    path.join(process.cwd(), 'public', 'sitemap.xml'),
+    path.join(process.cwd(), 'dist', 'sitemap.xml'),
+    path.join(process.cwd(), 'sitemap.xml')
+  ];
+
+  let fileContent = '';
+  for (const p of possiblePaths) {
+    if (fs.existsSync(p)) {
+      try {
+        fileContent = fs.readFileSync(p, 'utf8');
+        break;
+      } catch (e) {}
+    }
+  }
+
+  res.header('Content-Type', 'application/xml');
+  if (fileContent) {
+    res.send(fileContent);
+  } else {
+    // Highly resilient hardcoded fallback in case of server execution context drift
+    res.send(`<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://rahala-chi.vercel.app/</loc>
+    <lastmod>2026-07-12</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://rahala-chi.vercel.app/#/landing</loc>
+    <lastmod>2026-07-12</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://rahala-chi.vercel.app/#/home</loc>
+    <lastmod>2026-07-12</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://rahala-chi.vercel.app/#/digital-twin</loc>
+    <lastmod>2026-07-12</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://rahala-chi.vercel.app/#/map</loc>
+    <lastmod>2026-07-12</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://rahala-chi.vercel.app/#/hotels</loc>
+    <lastmod>2026-07-12</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://rahala-chi.vercel.app/#/taxis</loc>
+    <lastmod>2026-07-12</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://rahala-chi.vercel.app/#/ai-guide</loc>
+    <lastmod>2026-07-12</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://rahala-chi.vercel.app/#/safe-travel</loc>
+    <lastmod>2026-07-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://rahala-chi.vercel.app/#/social</loc>
+    <lastmod>2026-07-12</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+</urlset>`);
+  }
+});
+
+// Google Domain Ownership verification files handlers
+app.get(['/google6gDOMKktPz_N-gC9sIkQD9PccmQv289_SU28rti-C5A.html', '/api/google6gDOMKktPz_N-gC9sIkQD9PccmQv289_SU28rti-C5A.html'], (req, res) => {
+  res.header('Content-Type', 'text/html');
+  res.send('google-site-verification: google6gDOMKktPz_N-gC9sIkQD9PccmQv289_SU28rti-C5A.html');
+});
+
+app.get(['/googleg7z-8UKrTUfLchk_6eovt32W0oAZ4bJ7Wq_E7Q-lfg4.html', '/api/googleg7z-8UKrTUfLchk_6eovt32W0oAZ4bJ7Wq_E7Q-lfg4.html'], (req, res) => {
+  res.header('Content-Type', 'text/html');
+  res.send('google-site-verification: googleg7z-8UKrTUfLchk_6eovt32W0oAZ4bJ7Wq_E7Q-lfg4.html');
+});
+
+app.get(['/google4f834482028ee23b.html', '/api/google4f834482028ee23b.html'], (req, res) => {
+  res.header('Content-Type', 'text/html');
+  res.send('google-site-verification: google4f834482028ee23b.html');
+});
+
 // Expose public configuration parameters like GOOGLE_MAPS_PLATFORM_KEY
 app.get('/api/config', (req, res) => {
   res.json({
