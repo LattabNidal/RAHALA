@@ -1,5 +1,22 @@
 {
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "rahala-chi.vercel.app"
+        }
+      ],
+      "destination": "https://www.rahala-dz.com/:path*",
+      "permanent": true
+    }
+  ],
   "rewrites": [
+    {
+      "source": "/robots.txt",
+      "destination": "/api/robots.txt"
+    },
     {
       "source": "/sitemap.xml",
       "destination": "/api/sitemap.xml"

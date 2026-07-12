@@ -689,66 +689,43 @@ app.get(['/sitemap.xml', '/api/sitemap.xml'], (req, res) => {
     res.send(`<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://rahala-chi.vercel.app/</loc>
+    <loc>https://www.rahala-dz.com/</loc>
     <lastmod>2026-07-12</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
-  <url>
-    <loc>https://rahala-chi.vercel.app/#/landing</loc>
-    <lastmod>2026-07-12</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://rahala-chi.vercel.app/#/home</loc>
-    <lastmod>2026-07-12</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://rahala-chi.vercel.app/#/digital-twin</loc>
-    <lastmod>2026-07-12</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://rahala-chi.vercel.app/#/map</loc>
-    <lastmod>2026-07-12</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://rahala-chi.vercel.app/#/hotels</loc>
-    <lastmod>2026-07-12</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://rahala-chi.vercel.app/#/taxis</loc>
-    <lastmod>2026-07-12</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://rahala-chi.vercel.app/#/ai-guide</loc>
-    <lastmod>2026-07-12</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://rahala-chi.vercel.app/#/safe-travel</loc>
-    <lastmod>2026-07-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://rahala-chi.vercel.app/#/social</loc>
-    <lastmod>2026-07-12</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.7</priority>
-  </url>
 </urlset>`);
+  }
+});
+
+// Endpoint to serve robots.txt dynamically with correct content type
+app.get(['/robots.txt', '/api/robots.txt'], (req, res) => {
+  const possiblePaths = [
+    path.join(process.cwd(), 'public', 'robots.txt'),
+    path.join(process.cwd(), 'dist', 'robots.txt'),
+    path.join(process.cwd(), 'robots.txt')
+  ];
+
+  let fileContent = '';
+  for (const p of possiblePaths) {
+    if (fs.existsSync(p)) {
+      try {
+        fileContent = fs.readFileSync(p, 'utf8');
+        break;
+      } catch (e) {}
+    }
+  }
+
+  res.header('Content-Type', 'text/plain');
+  if (fileContent) {
+    res.send(fileContent);
+  } else {
+    // Highly resilient hardcoded fallback
+    res.send(`User-agent: *
+Allow: /
+Disallow: /api/
+
+Sitemap: https://www.rahala-dz.com/sitemap.xml`);
   }
 });
 

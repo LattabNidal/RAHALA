@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Sparkles, Compass, Map, Globe, ArrowRight, ArrowLeft } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { Language } from '../types';
+import { SEOHead } from '../SEOHead';
 
 interface LandingPageProps {
   onEnterAuth: (phase: 'login' | 'register') => void;
@@ -20,6 +21,12 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterAuth }) => {
 
   return (
     <div className="min-h-screen w-full relative flex items-center justify-center p-4 sm:p-6 overflow-hidden font-sans select-none" id="rahla-immersive-landing-view" dir={isRtl ? 'rtl' : 'ltr'}>
+      <SEOHead 
+        title="RAHALA - Tourisme Algérie | Visit Algeria & Oran Travel" 
+        description="Découvrez l'Algérie autrement avec Rahala, la plateforme intelligente dédiée au tourisme en Algérie. Planifiez votre séjour, réservez des hôtels et explorez Oran et d'autres destinations." 
+        canonicalUrl="https://www.rahala-dz.com/" 
+        noindex={false}
+      />
       
       {/* 0. FLOATING HIGH-CONTRAST LANGUAGE CHANGER SELECTOR */}
       <div className={`absolute top-4 ${isRtl ? 'left-4' : 'right-4'} z-50 flex items-center gap-2`}>
@@ -117,6 +124,19 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterAuth }) => {
             <span className="bg-emerald-500/10 px-2 py-0.5 rounded-md border border-emerald-500/20">Visit Algeria</span>
             <span className="bg-emerald-500/10 px-2 py-0.5 rounded-md border border-emerald-500/20">Oran travel</span>
           </div>
+        </div>
+
+        {/* SEO Optimised True Text Section (Visible & High Contrast) */}
+        <div className="bg-[#1a1a1a]/40 dark:bg-black/40 border border-emerald-500/10 rounded-xl p-3.5 text-left space-y-2">
+          <h3 className="text-[11px] font-mono font-bold uppercase tracking-wider text-emerald-400">
+            {language === 'ar' ? 'اكتشف الجزائر مع رحلة' : 'Explorez le Tourisme en Algérie avec Rahala'}
+          </h3>
+          <p className="text-[11.5px] text-slate-300 leading-relaxed font-sans">
+            {language === 'ar' 
+              ? 'رحلة هي منصتك السياحية الذكية المخصصة لتنشيط قطاع السياحة في الجزائر (Tourisme Algérie). نسهل عليك التخطيط لرحلتك المقبلة واكتشاف معالم وهران الساحرة (Oran travel) والتمتع بأفضل تجربة سفر (Visit Algeria) مع مرشد ذكي قائم على الذكاء الاصطناعي لحجز الفنادق والسيارات والرحلات.'
+              : 'Bienvenue sur Rahala, la plateforme de référence pour le Tourisme Algérie. Notre mission est de vous faire vivre une expérience unique lors de votre voyage en Algérie (Visit Algeria). Que vous planifiez un voyage à Oran (Oran travel), cherchiez des hébergements de charme ou souhaitiez explorer la richesse culturelle algérienne, notre guide intelligent propulsé par l\'IA vous accompagne à chaque étape.'
+            }
+          </p>
         </div>
 
         {/* DECORATIVE FEATURES LIST */}
