@@ -1,0 +1,8 @@
+{
+  "name": "Remix: Rihla DZ",
+  "description": "An intelligent tourism platform for Algeria featuring virtual digital twin tours, AI companion guides, interactive map booking, multi-language support (AR/FR/EN/ES), and mock payment systems.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

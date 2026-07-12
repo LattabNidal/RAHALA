@@ -1,0 +1,16 @@
+{
+  "routes": [
+    {
+      "src": "/google4f834482028ee23b.html",
+      "dest": "/google4f834482028ee23b.html"
+    },
+    {
+      "src": "/google6gDOMKktPz_N-gC9sIkQD9PccmQv289_SU28rti-C5A.html",
+      "dest": "/google6gDOMKktPz_N-gC9sIkQD9PccmQv289_SU28rti-C5A.html"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
+  ]
+}
