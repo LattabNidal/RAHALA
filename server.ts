@@ -768,6 +768,36 @@ app.get(['/google4f834482028ee23b.html', '/api/google4f834482028ee23b.html'], (r
   res.send('google-site-verification: google4f834482028ee23b.html');
 });
 
+// Bing Webmaster Tools XML verification handler
+app.get(['/BingSiteAuth.xml', '/api/BingSiteAuth.xml'], (req, res) => {
+  const possiblePaths = [
+    path.join(process.cwd(), 'public', 'BingSiteAuth.xml'),
+    path.join(process.cwd(), 'dist', 'BingSiteAuth.xml'),
+    path.join(process.cwd(), 'BingSiteAuth.xml')
+  ];
+
+  let fileContent = '';
+  for (const p of possiblePaths) {
+    if (fs.existsSync(p)) {
+      try {
+        fileContent = fs.readFileSync(p, 'utf8');
+        break;
+      } catch (e) {}
+    }
+  }
+
+  res.header('Content-Type', 'application/xml');
+  if (fileContent) {
+    res.send(fileContent);
+  } else {
+    // Resilient hardcoded fallback
+    res.send(`<?xml version="1.0"?>
+<users>
+	<user>AA5A478BE19FC5916FD8899911FFEC52</user>
+</users>`);
+  }
+});
+
 // Expose public configuration parameters like GOOGLE_MAPS_PLATFORM_KEY
 app.get('/api/config', (req, res) => {
   res.json({

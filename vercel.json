@@ -5,6 +5,10 @@
       "destination": "/api/sitemap.xml"
     },
     {
+      "source": "/BingSiteAuth.xml",
+      "destination": "/api/BingSiteAuth.xml"
+    },
+    {
       "source": "/google6gDOMKktPz_N-gC9sIkQD9PccmQv289_SU28rti-C5A.html",
       "destination": "/api/google6gDOMKktPz_N-gC9sIkQD9PccmQv289_SU28rti-C5A.html"
     },
