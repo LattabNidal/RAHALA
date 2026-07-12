@@ -188,26 +188,28 @@ export const Navigation: React.FC<NavigationProps> = ({ activeView, setActiveVie
             {/* Right Action Hub (Languages, Notifications, Dark Mode, Profile) */}
             <div className="flex items-center space-x-1.5 space-x-reverse">
               {/* Preserved Testing widgets for preview reviewers to toggle standard/admin roles seamlessly */}
-              <div className="hidden md:flex items-center space-x-1 space-x-reverse leading-none bg-[#1a1a1a]/5 dark:bg-white/5 p-1 rounded-xl border border-slate-300/15">
-                <button 
-                  onClick={toggleUserRole}
-                  className="px-2 py-1 text-[9px] font-mono border border-dashed border-[#1a1a1a]/30 text-[#1a1a1a]/80 dark:border-white/30 dark:text-[#f5f2ed]/80 hover:bg-emerald-500/10 hover:text-emerald-600 dark:hover:text-emerald-400 transition-all rounded-md cursor-pointer"
-                  title="Toggle active user role for simulation purposes"
-                >
-                  ROLE: {currentUser?.role.toUpperCase()}
-                </button>
-                <button 
-                  onClick={togglePremium}
-                  className={`px-2 py-1 text-[9px] font-mono border transition-all rounded-md cursor-pointer ${
-                    currentUser?.isPremium 
-                      ? 'bg-[#d4af37] text-black border-[#d4af37] shadow-xs font-black' 
-                      : 'border-dashed border-[#1a1a1a]/30 text-[#1a1a1a]/70 hover:bg-[#d4af37]/10 dark:border-white/30 dark:text-white/75'
-                  }`}
-                  title="Toggle Premium subscription simulated flow"
-                >
-                  {currentUser?.isPremium ? '★ GOLD VIP' : '☆ STANDARD'}
-                </button>
-              </div>
+              {currentUser && (
+                <div className="hidden md:flex items-center space-x-1 space-x-reverse leading-none bg-[#1a1a1a]/5 dark:bg-white/5 p-1 rounded-xl border border-slate-300/15">
+                  <button 
+                    onClick={toggleUserRole}
+                    className="px-2 py-1 text-[9px] font-mono border border-dashed border-[#1a1a1a]/30 text-[#1a1a1a]/80 dark:border-white/30 dark:text-[#f5f2ed]/80 hover:bg-emerald-500/10 hover:text-emerald-600 dark:hover:text-emerald-400 transition-all rounded-md cursor-pointer"
+                    title="Toggle active user role for simulation purposes"
+                  >
+                    ROLE: {currentUser.role.toUpperCase()}
+                  </button>
+                  <button 
+                    onClick={togglePremium}
+                    className={`px-2 py-1 text-[9px] font-mono border transition-all rounded-md cursor-pointer ${
+                      currentUser.isPremium 
+                        ? 'bg-[#d4af37] text-black border-[#d4af37] shadow-xs font-black' 
+                        : 'border-dashed border-[#1a1a1a]/30 text-[#1a1a1a]/70 hover:bg-[#d4af37]/10 dark:border-white/30 dark:text-white/75'
+                    }`}
+                    title="Toggle Premium subscription simulated flow"
+                  >
+                    {currentUser.isPremium ? '★ GOLD VIP' : '☆ STANDARD'}
+                  </button>
+                </div>
+              )}
 
               {/* Dark Mode Theme Switcher */}
               <button
@@ -311,60 +313,74 @@ export const Navigation: React.FC<NavigationProps> = ({ activeView, setActiveVie
 
               {/* Profile dropdown trigger */}
               <div className="relative">
-                <button
-                  id="profile-dropdown-trigger"
-                  onClick={() => {
-                    setProfileDropdownOpen(!profileDropdownOpen);
-                    setLangDropdownOpen(false);
-                    setNotifDropdownOpen(false);
-                  }}
-                  className="flex items-center space-x-1.5 space-x-reverse p-1 hover:bg-[#1a1a1a]/5 dark:hover:bg-white/5 rounded-xl transition focus:outline-none cursor-pointer"
-                >
-                  <img
-                    src={currentUser?.avatar || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80'}
-                    alt="avatar profile user"
-                    className="w-7 h-7 object-cover rounded-full border border-gray-400/35"
-                  />
-                </button>
-                {profileDropdownOpen && (
-                  <div className={`absolute ${isRtl ? 'left-0' : 'right-0'} mt-2 w-56 rounded-2xl bg-[#f5f2ed] dark:bg-[#161616] border border-[#1a1a1a]/20 dark:border-white/10 shadow-2xl py-1.5 z-50 animate-fade-in`}>
-                    <div className="px-4 py-3 border-b border-[#1a1a1a]/10 dark:border-white/10 bg-[#eae7e1] dark:bg-black/35 rounded-t-xl text-left">
-                      <p className="text-xs font-black text-[#1a1a1a] dark:text-[#f5f2ed] truncate mb-1 font-serif italic">{currentUser?.name}</p>
-                      <p className="text-[10px] text-gray-500 font-mono truncate">{currentUser?.email}</p>
-                      <div className="mt-2.5 flex space-x-1.5 space-x-reverse">
-                        <span className="px-2 py-0.5 text-[8px] font-mono font-black uppercase border border-emerald-500/30 text-emerald-600 dark:text-emerald-450 rounded bg-emerald-500/5">
-                          {currentUser?.role}
-                        </span>
-                        {currentUser?.isPremium && (
-                          <span className="px-2 py-0.5 text-[8px] font-mono font-black uppercase bg-[#d4af37]/15 text-[#d4af37] border border-[#d4af37]/30 rounded">
-                            VIP
-                          </span>
-                        )}
+                {currentUser ? (
+                  <>
+                    <button
+                      id="profile-dropdown-trigger"
+                      onClick={() => {
+                        setProfileDropdownOpen(!profileDropdownOpen);
+                        setLangDropdownOpen(false);
+                        setNotifDropdownOpen(false);
+                      }}
+                      className="flex items-center space-x-1.5 space-x-reverse p-1 hover:bg-[#1a1a1a]/5 dark:hover:bg-white/5 rounded-xl transition focus:outline-none cursor-pointer"
+                    >
+                      <img
+                        src={currentUser.avatar || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80'}
+                        alt="avatar profile user"
+                        className="w-7 h-7 object-cover rounded-full border border-gray-400/35"
+                      />
+                    </button>
+                    {profileDropdownOpen && (
+                      <div className={`absolute ${isRtl ? 'left-0' : 'right-0'} mt-2 w-56 rounded-2xl bg-[#f5f2ed] dark:bg-[#161616] border border-[#1a1a1a]/20 dark:border-white/10 shadow-2xl py-1.5 z-50 animate-fade-in`}>
+                        <div className="px-4 py-3 border-b border-[#1a1a1a]/10 dark:border-white/10 bg-[#eae7e1] dark:bg-black/35 rounded-t-xl text-left">
+                          <p className="text-xs font-black text-[#1a1a1a] dark:text-[#f5f2ed] truncate mb-1 font-serif italic">{currentUser.name}</p>
+                          <p className="text-[10px] text-gray-500 font-mono truncate">{currentUser.email}</p>
+                          <div className="mt-2.5 flex space-x-1.5 space-x-reverse">
+                            <span className="px-2 py-0.5 text-[8px] font-mono font-black uppercase border border-emerald-500/30 text-emerald-600 dark:text-emerald-450 rounded bg-emerald-500/5">
+                              {currentUser.role}
+                            </span>
+                            {currentUser.isPremium && (
+                              <span className="px-2 py-0.5 text-[8px] font-mono font-black uppercase bg-[#d4af37]/15 text-[#d4af37] border border-[#d4af37]/30 rounded">
+                                VIP
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                        <button
+                          onClick={() => {
+                            setActiveView('dashboard');
+                            setProfileDropdownOpen(false);
+                            setMenuOpen(false);
+                          }}
+                          className="flex w-full px-4 py-2.5 text-xs text-[#1a1a1a] dark:text-[#f5f2ed] hover:bg-[#1a1a1a]/5 dark:hover:bg-white/5 items-center space-x-2 space-x-reverse transition uppercase tracking-wider font-extrabold cursor-pointer"
+                        >
+                          <UserIcon size={12} />
+                          <span>{t('navDashboard')}</span>
+                        </button>
+                        <button
+                          onClick={() => {
+                            setCurrentUser(null);
+                            window.location.hash = '#/landing';
+                            setProfileDropdownOpen(false);
+                          }}
+                          className="flex w-full px-4 py-2.5 text-xs text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/25 items-center space-x-2 space-x-reverse border-t border-[#1a1a1a]/10 dark:border-white/10 transition uppercase tracking-wider font-extrabold cursor-pointer"
+                        >
+                          <LogOut size={12} />
+                          <span>{t('seConnecter') ? 'Log Out' : 'Déconnexion'}</span>
+                        </button>
                       </div>
-                    </div>
-                    <button
-                      onClick={() => {
-                        setActiveView('dashboard');
-                        setProfileDropdownOpen(false);
-                        setMenuOpen(false);
-                      }}
-                      className="flex w-full px-4 py-2.5 text-xs text-[#1a1a1a] dark:text-[#f5f2ed] hover:bg-[#1a1a1a]/5 dark:hover:bg-white/5 items-center space-x-2 space-x-reverse transition uppercase tracking-wider font-extrabold cursor-pointer"
-                    >
-                      <UserIcon size={12} />
-                      <span>{t('navDashboard')}</span>
-                    </button>
-                    <button
-                      onClick={() => {
-                        setCurrentUser(null);
-                        window.location.hash = '#/landing';
-                        setProfileDropdownOpen(false);
-                      }}
-                      className="flex w-full px-4 py-2.5 text-xs text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/25 items-center space-x-2 space-x-reverse border-t border-[#1a1a1a]/10 dark:border-white/10 transition uppercase tracking-wider font-extrabold cursor-pointer"
-                    >
-                      <LogOut size={12} />
-                      <span>{t('seConnecter') ? 'Log Out' : 'Déconnexion'}</span>
-                    </button>
-                  </div>
+                    )}
+                  </>
+                ) : (
+                  <button
+                    onClick={() => {
+                      window.location.hash = '#/login';
+                      setActiveView('auth');
+                    }}
+                    className="px-3.5 py-1.5 bg-gradient-to-r from-emerald-600 to-emerald-750 hover:from-emerald-700 hover:to-emerald-850 text-white text-[11px] font-mono font-extrabold uppercase tracking-widest rounded-xl transition-all cursor-pointer shadow-md shadow-emerald-600/10 active:scale-95"
+                  >
+                    {language === 'ar' ? 'تسجيل الدخول' : language === 'fr' ? 'Connexion' : language === 'es' ? 'Iniciar sesión' : 'Login'}
+                  </button>
                 )}
               </div>
 
@@ -500,15 +516,15 @@ export const Navigation: React.FC<NavigationProps> = ({ activeView, setActiveVie
                   />
                   <div className="min-w-0 flex-1">
                     <p className="text-xs font-black truncate text-[#1a1a1a] dark:text-[#f5f2ed] leading-tight font-serif italic">
-                      {currentUser?.name || 'Nom Voyageur'}
+                      {currentUser?.name || (language === 'fr' ? 'Visiteur' : language === 'ar' ? 'زائر' : 'Guest Traveler')}
                     </p>
                     <p className="text-[10px] font-mono truncate text-gray-500 mt-0.5 leading-none">
-                      {currentUser?.email || 'voyageur@rahala.dz'}
+                      {currentUser?.email || 'guest@rahala-dz.com'}
                     </p>
                     
                     <div className="mt-2 flex flex-wrap gap-1 leading-none">
                       <span className="inline-block px-2.5 py-0.5 text-[8px] font-mono font-black uppercase bg-emerald-100 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-450 rounded-full border border-emerald-500/20">
-                        Rôle: {currentUser?.role?.toUpperCase() || 'USER'}
+                        Rôle: {currentUser?.role?.toUpperCase() || 'GUEST'}
                       </span>
                       {currentUser?.isPremium && (
                         <span className="inline-block px-2 py-0.5 text-[8px] font-mono font-bold uppercase bg-[#d4af37]/15 text-[#d4af37] border border-[#d4af37]/30 rounded-full animate-pulse">
@@ -520,40 +536,56 @@ export const Navigation: React.FC<NavigationProps> = ({ activeView, setActiveVie
                 </div>
 
                 {/* Instant preview triggers for layout inspectors */}
-                <div className="mt-3 grid grid-cols-2 gap-1.5 leading-none">
-                  <button
-                    onClick={toggleUserRole}
-                    className="px-2 py-1.5 text-[8px] font-mono font-extrabold text-slate-800 dark:text-zinc-300 bg-white/40 dark:bg-zinc-900 border border-slate-300/35 dark:border-zinc-800 rounded-lg text-center cursor-pointer hover:border-emerald-500/25 select-none"
-                    title="Basculer le rôle pour l'inspection"
-                  >
-                    🔄 Test Rôle
-                  </button>
-                  <button
-                    onClick={togglePremium}
-                    className={`px-2 py-1.5 text-[8px] font-mono font-extrabold border rounded-lg text-center cursor-pointer transition select-none ${
-                      currentUser?.isPremium
-                        ? 'bg-[#d4af37]/15 text-[#d4af37] border-[#d4af37]/35 shadow-xs'
-                        : 'bg-white/40 dark:bg-zinc-900 text-slate-600 dark:text-zinc-400 border-slate-300/25 dark:border-zinc-800'
-                    }`}
-                    title="Basculer l'accès VIP Gold pour l'inspection"
-                  >
-                    ★ Test VIP Play
-                  </button>
-                </div>
+                {currentUser && (
+                  <div className="mt-3 grid grid-cols-2 gap-1.5 leading-none">
+                    <button
+                      onClick={toggleUserRole}
+                      className="px-2 py-1.5 text-[8px] font-mono font-extrabold text-slate-800 dark:text-zinc-300 bg-white/40 dark:bg-zinc-900 border border-slate-300/35 dark:border-zinc-800 rounded-lg text-center cursor-pointer hover:border-emerald-500/25 select-none"
+                      title="Basculer le rôle pour l'inspection"
+                    >
+                      🔄 Test Rôle
+                    </button>
+                    <button
+                      onClick={togglePremium}
+                      className={`px-2 py-1.5 text-[8px] font-mono font-extrabold border rounded-lg text-center cursor-pointer transition select-none ${
+                        currentUser.isPremium
+                          ? 'bg-[#d4af37]/15 text-[#d4af37] border-[#d4af37]/35 shadow-xs'
+                          : 'bg-white/40 dark:bg-zinc-900 text-slate-600 dark:text-zinc-400 border-slate-300/25 dark:border-zinc-800'
+                      }`}
+                      title="Basculer l'accès VIP Gold pour l'inspection"
+                    >
+                      ★ Test VIP Play
+                    </button>
+                  </div>
+                )}
 
-                {/* Se Déconnecter Button */}
-                <button
-                  onClick={() => {
-                    setCurrentUser(null);
-                    window.location.hash = '#/landing';
-                    setMenuOpen(false);
-                  }}
-                  className="w-full mt-3.5 py-2.5 bg-rose-600 hover:bg-rose-700 dark:bg-rose-950/20 dark:hover:bg-rose-950/40 text-white dark:text-rose-400 rounded-xl transition font-mono font-bold text-[10px] uppercase tracking-widest flex items-center justify-center gap-2 cursor-pointer shadow-sm shadow-red-500/10 hover:-translate-y-0.5 active:translate-y-0 duration-300"
-                  title="Déconnecter RAHLA"
-                >
-                  <LogOut size={11} />
-                  Se déconnecter
-                </button>
+                {/* Se Déconnecter / Se Connecter Button */}
+                {currentUser ? (
+                  <button
+                    onClick={() => {
+                      setCurrentUser(null);
+                      window.location.hash = '#/landing';
+                      setMenuOpen(false);
+                    }}
+                    className="w-full mt-3.5 py-2.5 bg-rose-600 hover:bg-rose-700 dark:bg-rose-950/20 dark:hover:bg-rose-950/40 text-white dark:text-rose-400 rounded-xl transition font-mono font-bold text-[10px] uppercase tracking-widest flex items-center justify-center gap-2 cursor-pointer shadow-sm shadow-red-500/10 hover:-translate-y-0.5 active:translate-y-0 duration-300"
+                    title="Déconnecter RAHLA"
+                  >
+                    <LogOut size={11} />
+                    Se déconnecter
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => {
+                      window.location.hash = '#/login';
+                      setMenuOpen(false);
+                    }}
+                    className="w-full mt-3.5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl transition font-mono font-bold text-[10px] uppercase tracking-widest flex items-center justify-center gap-2 cursor-pointer shadow-sm shadow-emerald-500/10 hover:-translate-y-0.5 active:translate-y-0 duration-300"
+                    title="Se connecter à RAHLA"
+                  >
+                    <UserIcon size={11} />
+                    Se connecter
+                  </button>
+                )}
 
               </div>
 

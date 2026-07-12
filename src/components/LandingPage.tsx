@@ -110,6 +110,13 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterAuth }) => {
           <p className="text-xs sm:text-sm text-slate-350 leading-relaxed max-w-md mx-auto">
             {t('welcomeSubtitle')}
           </p>
+          
+          {/* SEO Targeted Keywords Block */}
+          <div className="text-[10.5px] text-amber-400/80 font-mono uppercase tracking-widest flex flex-wrap gap-2 justify-center pt-2">
+            <span className="bg-emerald-500/10 px-2 py-0.5 rounded-md border border-emerald-500/20">Tourisme Algérie</span>
+            <span className="bg-emerald-500/10 px-2 py-0.5 rounded-md border border-emerald-500/20">Visit Algeria</span>
+            <span className="bg-emerald-500/10 px-2 py-0.5 rounded-md border border-emerald-500/20">Oran travel</span>
+          </div>
         </div>
 
         {/* DECORATIVE FEATURES LIST */}

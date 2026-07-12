@@ -14,6 +14,7 @@ import { AdminDashboard } from './components/AdminDashboard';
 import { AuthModule } from './components/AuthModule';
 import { LandingPage } from './components/LandingPage';
 import { SafeTravel } from './components/SafeTravel';
+import { SEOHead } from './SEOHead';
 import { WeatherWidget } from './components/WeatherWidget';
 import { SmartTravelGuide } from './components/SmartTravelGuide';
 import { PromoVideo } from './components/PromoVideo';
@@ -45,13 +46,9 @@ function RihlaApp() {
     const handleHashSync = () => {
       const hash = window.location.hash;
 
-      // 1. IF NO USER IS LOGGED IN (AuthGuard: lock everything except landing & auth phases)
+      // 1. IF NO USER IS LOGGED IN (AuthGuard: lock restricted views, permit public views)
       if (!currentUser) {
         if (!hash || hash === '#/' || hash === '#' || hash === '#/landing' || hash === '#landing') {
-          // Default start route or explicit landing path redirects to /landing
-          if (window.location.hash !== '#/landing') {
-            window.location.hash = '#/landing';
-          }
           setActiveView('landing');
         } else if (
           hash === '#/auth' || hash === '#auth' ||
@@ -61,9 +58,29 @@ function RihlaApp() {
         ) {
           setActiveView('auth');
         } else {
-          // Any other route direct access (e.g. /#/home, /#/admin-dashboard) redirects to /login as required
-          window.location.hash = '#/login';
-          setActiveView('auth');
+          const cleanHash = hash.replace('#/', '').replace('#', '');
+          const publicTabsMap: Record<string, string> = {
+            'home': 'explore',
+            'explore': 'explore',
+            'digital-twin': 'digital-twin',
+            'map': 'map',
+            'hotels': 'hotels',
+            'taxis': 'taxis',
+            'ai-guide': 'ai-guide',
+            'safe-travel': 'safe-travel',
+            'social': 'social'
+          };
+          
+          if (cleanHash in publicTabsMap) {
+            setActiveView(publicTabsMap[cleanHash]);
+          } else if (['dashboard', 'billing', 'admin', 'admin-dashboard'].includes(cleanHash)) {
+            // Restricted views direct access redirects to /login
+            window.location.hash = '#/login';
+            setActiveView('auth');
+          } else {
+            // Default fallback
+            setActiveView('landing');
+          }
         }
         return;
       }
@@ -130,6 +147,24 @@ function RihlaApp() {
         ) {
           window.location.hash = '#/auth';
         }
+      } else {
+        // Sync public guest views to URL hashes
+        const publicHashesMap: Record<string, string> = {
+          'explore': '#/home',
+          'digital-twin': '#/digital-twin',
+          'map': '#/map',
+          'hotels': '#/hotels',
+          'taxis': '#/taxis',
+          'ai-guide': '#/ai-guide',
+          'safe-travel': '#/safe-travel',
+          'social': '#/social'
+        };
+        if (activeView in publicHashesMap) {
+          const targetHash = publicHashesMap[activeView];
+          if (window.location.hash !== targetHash) {
+            window.location.hash = targetHash;
+          }
+        }
       }
       return;
     }
@@ -177,7 +212,7 @@ function RihlaApp() {
     );
   }
 
-  // Authentication gate simulator (Locked completely! No main layout can load)
+  // Authentication gate simulator (Permit landing and login states early; others fallback to layout)
   if (!currentUser) {
     if (activeView === 'landing') {
       return (
@@ -194,23 +229,33 @@ function RihlaApp() {
       );
     }
 
-    return (
-      <div className={`${darkMode ? 'dark bg-[#111111]' : 'bg-[#f5f2ed]'} min-h-screen flex items-center justify-center transition-colors duration-300`} id="global-auth-guard-unauthenticated">
-        <AuthModule onSuccess={(targetRole) => {
-          if (targetRole === 'admin') {
-            window.location.hash = '#/admin-dashboard';
-            setActiveView('admin');
-          } else {
-            window.location.hash = '#/home';
-            setActiveView('explore');
-          }
-        }} />
-      </div>
-    );
+    if (activeView === 'auth') {
+      return (
+        <div className={`${darkMode ? 'dark bg-[#111111]' : 'bg-[#f5f2ed]'} min-h-screen flex items-center justify-center transition-colors duration-300`} id="global-auth-guard-unauthenticated">
+          <AuthModule onSuccess={(targetRole) => {
+            if (targetRole === 'admin') {
+              window.location.hash = '#/admin-dashboard';
+              setActiveView('admin');
+            } else {
+              window.location.hash = '#/home';
+              setActiveView('explore');
+            }
+          }} />
+        </div>
+      );
+    }
   }
 
   return (
     <div className={`${darkMode ? 'dark bg-[#111111]/75 text-[#f5f2ed]' : 'bg-[#f5f2ed]/65 text-[#1a1a1a]'} min-h-screen flex flex-col justify-between transition-colors duration-300 font-sans relative`}>
+      
+      {/* React 19 SEO Metadata Injection */}
+      <SEOHead 
+        title="Rahala - Découvrez l’Algérie, tourisme & plateforme IA" 
+        description="Rahala : Guide intelligent et plateforme basée sur l'IA pour explorer l'Algérie, réserver des hôtels, hébergements et taxis locaux." 
+        canonicalUrl="https://www.rahala-dz.com/" 
+        noindex={currentUser ? true : false} 
+      />
       
       {/* Full-screen Immersive fixed RAHALA promotional background image */}
       <div className="fixed inset-0 -z-50 pointer-events-none select-none overflow-hidden">
