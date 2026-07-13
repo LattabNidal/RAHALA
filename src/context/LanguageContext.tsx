@@ -83,6 +83,12 @@ export const translations: Translations = {
     ar: 'النادي الإجتماعي 📸',
     es: 'Social Club 📸'
   },
+  navRealPhotos: {
+    en: 'Real Photos 📸',
+    fr: 'Photos Réelles 📸',
+    ar: 'الصور الحقيقية 📸',
+    es: 'Fotos Reales 📸'
+  },
   navAdmin: {
     en: 'Admin Control',
     fr: 'Gestion Admin',

@@ -609,7 +609,7 @@ export const SafeTravel: React.FC = () => {
             <div>
               <div className="inline-flex items-center gap-2 bg-emerald-500/15 border border-emerald-500/40 text-emerald-450 text-[10px] uppercase font-mono font-black tracking-widest px-3 py-1 rounded-full mb-3">
                 <Sparkles size={12} className="animate-spin-slow" />
-                PREMIUM ECOSYSTEM
+                PREMIUM EXPERIENCE
               </div>
               <h1 className="text-3xl sm:text-4xl font-black font-display tracking-tight text-white leading-none">
                 {currentT('title')}

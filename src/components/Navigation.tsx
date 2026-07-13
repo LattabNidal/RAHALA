@@ -4,10 +4,11 @@ import { useApp } from '../context/AppContext';
 import { 
   Menu, X, Bell, Globe, Sparkles, User as UserIcon, 
   ShieldAlert, LogOut, Sun, Moon, CreditCard, Shield,
-  Compass, Box, Map, Hotel, Car, Camera, ChevronRight
+  Compass, Box, Map, Hotel, Car, Camera, ChevronRight, Coins
 } from 'lucide-react';
 import { Language } from '../types';
 import { motion, AnimatePresence } from 'motion/react';
+import { CurrencyConverter } from './CurrencyConverter';
 
 interface NavigationProps {
   activeView: string;
@@ -23,6 +24,8 @@ export const Navigation: React.FC<NavigationProps> = ({ activeView, setActiveVie
   const [langDropdownOpen, setLangDropdownOpen] = useState(false);
   const [notifDropdownOpen, setNotifDropdownOpen] = useState(false);
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
+  const [converterOpen, setConverterOpen] = useState(false);
+  const [converterModalOpen, setConverterModalOpen] = useState(false);
 
   // Close sidebar drawer on window resize above mobile screen if unwanted
   // but since we replace horizontal links completely as requested, 
@@ -65,6 +68,7 @@ export const Navigation: React.FC<NavigationProps> = ({ activeView, setActiveVie
     { id: 'hotels', label: t('navHotels'), icon: Hotel },
     { id: 'taxis', label: t('navTaxis'), icon: Car },
     { id: 'ai-guide', label: t('navAIGuide'), icon: Sparkles },
+    { id: 'real-photos', label: t('navRealPhotos'), icon: Camera },
     { id: 'safe-travel', label: t('navSafeTravel'), icon: Shield },
     { id: 'social', label: t('navSocial'), icon: Camera },
     { id: 'billing', label: t('navBilling'), icon: CreditCard },
@@ -85,6 +89,7 @@ export const Navigation: React.FC<NavigationProps> = ({ activeView, setActiveVie
         case 'hotels': return 'فنادق وإقامات فاخرة بكل الولايات';
         case 'taxis': return 'اطلب سائقك المعتمد بكل سهولة';
         case 'ai-guide': return 'مساعد السفر الذكي المدعوم بـ Gemini';
+        case 'real-photos': return 'التحقق البصري المباشر من صور غوغل';
         case 'safe-travel': return 'تأمين وضمانات سلامة رحلتك';
         case 'social': return 'نادي المسافرين لمشاركة اللحظات';
         case 'billing': return 'بوابة الدفع وباقات المسافر كارد';
@@ -99,6 +104,7 @@ export const Navigation: React.FC<NavigationProps> = ({ activeView, setActiveVie
         case 'hotels': return 'Hôtels exclusifs & séjours de prestige';
         case 'taxis': return 'Chauffeurs privés sécurisés et à la demande';
         case 'ai-guide': return 'Intelligence compagnon certifiée Gemini';
+        case 'real-photos': return 'Photos réelles certifiées de Google Maps';
         case 'safe-travel': return 'Garanties d’assurance voyage de RAHLA';
         case 'social': return 'Galerie partagée des routards algériens';
         case 'billing': return 'Abonnements Premium & Factures DZD';
@@ -113,6 +119,7 @@ export const Navigation: React.FC<NavigationProps> = ({ activeView, setActiveVie
         case 'hotels': return 'Premium retreats & luxury hotel stays';
         case 'taxis': return 'Fast dispatch certified private drivers';
         case 'ai-guide': return 'Gemini local wisdom guide companion';
+        case 'real-photos': return 'Real verified photos from Google Places';
         case 'safe-travel': return 'Secure coverage and safety policies';
         case 'social': return 'Algeria travelers community hub';
         case 'billing': return 'Abonnements, checkouts & billing';
@@ -130,6 +137,7 @@ export const Navigation: React.FC<NavigationProps> = ({ activeView, setActiveVie
     'hotels': Hotel,
     'taxis': Car,
     'ai-guide': Sparkles,
+    'real-photos': Camera,
     'safe-travel': Shield,
     'social': Camera,
     'billing': CreditCard,
@@ -221,6 +229,38 @@ export const Navigation: React.FC<NavigationProps> = ({ activeView, setActiveVie
                 {darkMode ? <Sun size={15} /> : <Moon size={15} />}
               </button>
 
+              {/* 🪙 Currency Converter Navbar Trigger */}
+              <div className="relative">
+                <button
+                  id="currency-converter-button"
+                  onClick={() => {
+                    setConverterOpen(!converterOpen);
+                    setLangDropdownOpen(false);
+                    setNotifDropdownOpen(false);
+                    setProfileDropdownOpen(false);
+                  }}
+                  className={`flex items-center space-x-1.5 space-x-reverse p-2 text-xs font-bold uppercase rounded-xl transition duration-200 cursor-pointer relative ${
+                    converterOpen 
+                      ? 'text-emerald-600 bg-emerald-50/50 dark:text-emerald-400 dark:bg-emerald-950/20' 
+                      : 'text-[#1a1a1a]/70 hover:text-emerald-600 hover:bg-[#1a1a1a]/5 dark:text-[#f5f2ed]/70 dark:hover:bg-white/5'
+                  }`}
+                  title={language === 'ar' ? 'محول العملات' : language === 'fr' ? 'Convertisseur' : 'Currency Converter'}
+                >
+                  <Coins size={15} className="text-emerald-600 dark:text-emerald-400" />
+                  <span className="hidden md:inline">
+                    {language === 'ar' ? 'تحويل' : language === 'fr' ? 'Convertir' : language === 'es' ? 'Convertir' : 'Convert'}
+                  </span>
+                  {/* Small "Tourist" subtle pulse indicator badge */}
+                  <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-emerald-500 animate-pulse border border-white dark:border-zinc-900" title="Useful for tourists" />
+                </button>
+                
+                {converterOpen && (
+                  <div className={`absolute ${isRtl ? 'left-0' : 'right-0'} mt-2 w-80 sm:w-96 rounded-2xl bg-white dark:bg-[#161a22] border border-gray-200 dark:border-gray-800 shadow-2xl z-50 animate-fade-in`}>
+                    <CurrencyConverter onClose={() => setConverterOpen(false)} />
+                  </div>
+                )}
+              </div>
+
               {/* Languages Selection Panel */}
               <div className="relative">
                 <button
@@ -229,6 +269,7 @@ export const Navigation: React.FC<NavigationProps> = ({ activeView, setActiveVie
                     setLangDropdownOpen(!langDropdownOpen);
                     setNotifDropdownOpen(false);
                     setProfileDropdownOpen(false);
+                    setConverterOpen(false);
                   }}
                   className="flex items-center space-x-1 space-x-reverse p-2 text-[#1a1a1a]/70 hover:text-[#d4af37] hover:bg-[#1a1a1a]/5 dark:text-[#f5f2ed]/70 dark:hover:bg-white/5 rounded-xl transition cursor-pointer"
                 >
@@ -272,6 +313,7 @@ export const Navigation: React.FC<NavigationProps> = ({ activeView, setActiveVie
                     setNotifDropdownOpen(!notifDropdownOpen);
                     setLangDropdownOpen(false);
                     setProfileDropdownOpen(false);
+                    setConverterOpen(false);
                   }}
                   className="p-2 sm:p-2.5 text-[#1a1a1a]/70 hover:text-[#d4af37] hover:bg-[#1a1a1a]/5 dark:text-[#f5f2ed]/70 dark:hover:bg-white/5 rounded-xl transition relative cursor-pointer"
                 >
@@ -300,10 +342,10 @@ export const Navigation: React.FC<NavigationProps> = ({ activeView, setActiveVie
                         </div>
                       ) : (
                         notifications.map((notif) => (
-                          <div key={notif.id} className="px-4 py-3 border-b border-[#1a1a1a]/5 dark:border-white/5 last:border-none hover:bg-[#1a1a1a]/5 dark:hover:bg-white/5 transition text-left">
-                            <p className="text-xs text-[#1a1a1a] dark:text-[#f5f2ed] leading-relaxed font-sans">{notif.message}</p>
-                            <span className="text-[9px] text-gray-500 font-mono mt-1 block">{notif.date}</span>
-                          </div>
+                           <div key={notif.id} className="px-4 py-3 border-b border-[#1a1a1a]/5 dark:border-white/5 last:border-none hover:bg-[#1a1a1a]/5 dark:hover:bg-white/5 transition text-left">
+                             <p className="text-xs text-[#1a1a1a] dark:text-[#f5f2ed] leading-relaxed font-sans">{notif.message}</p>
+                             <span className="text-[9px] text-gray-500 font-mono mt-1 block">{notif.date}</span>
+                           </div>
                         ))
                       )}
                     </div>
@@ -321,6 +363,7 @@ export const Navigation: React.FC<NavigationProps> = ({ activeView, setActiveVie
                         setProfileDropdownOpen(!profileDropdownOpen);
                         setLangDropdownOpen(false);
                         setNotifDropdownOpen(false);
+                        setConverterOpen(false);
                       }}
                       className="flex items-center space-x-1.5 space-x-reverse p-1 hover:bg-[#1a1a1a]/5 dark:hover:bg-white/5 rounded-xl transition focus:outline-none cursor-pointer"
                     >
@@ -466,6 +509,33 @@ export const Navigation: React.FC<NavigationProps> = ({ activeView, setActiveVie
 
               {/* Scrollable vertical navigation list (Contenu du menu) */}
               <div className="flex-1 overflow-y-auto py-4 px-3 space-y-1.5 scrollbar-thin dark:scrollbar-thumb-zinc-800">
+                
+                {/* Prominent Tourist Currency Converter option in mobile/drawer list */}
+                <button
+                  onClick={() => {
+                    setConverterModalOpen(true);
+                    setMenuOpen(false);
+                  }}
+                  className="w-full flex items-center gap-3.5 px-3.5 py-3 rounded-2xl text-left transition-all duration-200 group relative overflow-hidden cursor-pointer bg-emerald-500/5 hover:bg-emerald-600/10 border border-emerald-500/15 text-emerald-700 dark:text-emerald-400"
+                >
+                  <div className="p-2 rounded-xl bg-emerald-600 text-white dark:bg-emerald-500/20 dark:text-emerald-400 shrink-0">
+                    <Coins size={16} />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center justify-between">
+                      <span className="block text-xs font-black uppercase tracking-wider">
+                        {language === 'ar' ? 'محول العملات' : language === 'fr' ? 'Convertisseur' : language === 'es' ? 'Conversor de divisas' : 'Currency Converter'}
+                      </span>
+                      <span className="px-1.5 py-0.5 text-[8px] font-mono font-black uppercase bg-emerald-600 text-white rounded-md animate-pulse">
+                        TOURIST
+                      </span>
+                    </div>
+                    <span className="block text-[9px] text-emerald-600/75 dark:text-emerald-450 truncate mt-0.5 leading-none">
+                      {language === 'ar' ? 'تحويل العملات للدينار الجزائري' : language === 'fr' ? 'Dinar Algérien (DZD) en temps réel' : 'Real-time Algerian Dinar (DZD) exchange'}
+                    </span>
+                  </div>
+                </button>
+
                 {navItems.map((item) => {
                   const Icon = iconMap[item.id] || Sparkles;
                   const isActive = activeView === item.id;
@@ -591,6 +661,44 @@ export const Navigation: React.FC<NavigationProps> = ({ activeView, setActiveVie
 
             </motion.div>
           </>
+        )}
+      </AnimatePresence>
+
+      {/* 🪙 MOBILE CURRENCY CONVERTER MODAL OVERLAY */}
+      <AnimatePresence>
+        {converterModalOpen && (
+          <div className="fixed inset-0 z-100 flex items-center justify-center p-4">
+            {/* Backdrop Blur overlay */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setConverterModalOpen(false)}
+              className="fixed inset-0 bg-slate-950/65 dark:bg-black/80 backdrop-blur-xs cursor-pointer"
+            />
+            
+            {/* Modal Body */}
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0, y: 15 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.95, opacity: 0, y: 15 }}
+              transition={{ type: 'spring', duration: 0.3 }}
+              className="relative bg-white dark:bg-[#121418] border border-gray-200 dark:border-gray-800 rounded-3xl shadow-2xl w-full max-w-sm overflow-hidden z-10"
+            >
+              {/* Close Button "X" inside top-corner */}
+              <button
+                onClick={() => setConverterModalOpen(false)}
+                className="absolute top-4 right-4 p-1.5 rounded-xl bg-slate-100 dark:bg-zinc-800 hover:bg-slate-200 dark:hover:bg-zinc-700 text-slate-500 hover:text-black dark:text-zinc-400 dark:hover:text-white transition duration-200 cursor-pointer z-20"
+                title="Fermer"
+              >
+                <X size={16} />
+              </button>
+
+              <div className="pt-2">
+                <CurrencyConverter onClose={() => setConverterModalOpen(false)} />
+              </div>
+            </motion.div>
+          </div>
         )}
       </AnimatePresence>
     </>

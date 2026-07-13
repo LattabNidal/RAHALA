@@ -782,6 +782,140 @@ app.get('/api/config', (req, res) => {
   });
 });
 
+// Google Places Proxy endpoints to securely fetch real photos without client-side CORS issues
+app.get('/api/places/photos', async (req, res) => {
+  try {
+    const query = req.query.query as string;
+    const customKey = req.query.custom_key as string;
+    
+    if (!query) {
+      res.status(400).json({ error: 'Query parameter is required' });
+      return;
+    }
+
+    const apiKey = customKey || process.env.GOOGLE_MAPS_PLATFORM_KEY || '';
+    if (!apiKey) {
+      res.status(400).json({ 
+        error: 'API_KEY_MISSING', 
+        message: 'Google Maps API key is missing. Please configure it in your Secrets (GOOGLE_MAPS_PLATFORM_KEY) or enter your custom key.' 
+      });
+      return;
+    }
+
+    // Step 1: Find the place (Text Search)
+    // We add "Algeria" to search constraints to focus on Algerian destinations
+    const searchUrl = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encodeURIComponent(query + ' Algeria')}&key=${apiKey}`;
+    const searchRes = await fetch(searchUrl);
+    const searchData: any = await searchRes.json();
+
+    if (searchData.status !== 'OK' || !searchData.results || searchData.results.length === 0) {
+      res.json({ 
+        name: query, 
+        address: '', 
+        photos: [], 
+        message: 'No real images available for this place' 
+      });
+      return;
+    }
+
+    // Extract the FIRST (most relevant) result
+    const firstResult = searchData.results[0];
+    const placeId = firstResult.place_id;
+
+    // Step 2: Get place details
+    const detailsUrl = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&fields=name,photos,formatted_address&key=${apiKey}`;
+    const detailsRes = await fetch(detailsUrl);
+    const detailsData: any = await detailsRes.json();
+
+    if (detailsData.status !== 'OK' || !detailsData.result) {
+      res.json({ 
+        name: firstResult.name || query, 
+        address: firstResult.formatted_address || '', 
+        photos: [], 
+        message: 'No real images available for this place' 
+      });
+      return;
+    }
+
+    const result = detailsData.result;
+    const placeName = result.name || firstResult.name || query;
+    const placeAddress = result.formatted_address || firstResult.formatted_address || '';
+    
+    if (!result.photos || result.photos.length === 0) {
+      res.json({ 
+        name: placeName, 
+        address: placeAddress, 
+        photos: [], 
+        message: 'No real images available for this place' 
+      });
+      return;
+    }
+
+    // Map photo details and include secure proxy url
+    const photos = result.photos.map((photo: any) => {
+      let proxyUrl = `/api/places/photo-proxy?photo_reference=${encodeURIComponent(photo.photo_reference)}`;
+      if (customKey) {
+        proxyUrl += `&custom_key=${encodeURIComponent(customKey)}`;
+      }
+      return {
+        photo_reference: photo.photo_reference,
+        height: photo.height,
+        width: photo.width,
+        html_attributions: photo.html_attributions || [],
+        url: proxyUrl
+      };
+    });
+
+    res.json({
+      name: placeName,
+      address: placeAddress,
+      place_id: placeId,
+      photos
+    });
+
+  } catch (error: any) {
+    console.error('Error fetching real photos:', error);
+    res.status(500).json({ error: 'Internal Server Error', details: error.message });
+  }
+});
+
+app.get('/api/places/photo-proxy', async (req, res) => {
+  try {
+    const photoReference = req.query.photo_reference as string;
+    const customKey = req.query.custom_key as string;
+
+    if (!photoReference) {
+      res.status(400).send('photo_reference is required');
+      return;
+    }
+
+    const apiKey = customKey || process.env.GOOGLE_MAPS_PLATFORM_KEY || '';
+    if (!apiKey) {
+      res.status(400).send('Google Maps API key is missing.');
+      return;
+    }
+
+    const photoUrl = `https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photo_reference=${encodeURIComponent(photoReference)}&key=${apiKey}`;
+    
+    const photoRes = await fetch(photoUrl);
+    
+    if (!photoRes.ok) {
+      res.status(photoRes.status).send('Failed to fetch photo from Google APIs');
+      return;
+    }
+
+    const contentType = photoRes.headers.get('content-type') || 'image/jpeg';
+    const buffer = await photoRes.arrayBuffer();
+    
+    res.setHeader('Content-Type', contentType);
+    res.setHeader('Cache-Control', 'public, max-age=86400'); // Cache on client for 24 hours
+    res.send(Buffer.from(buffer));
+  } catch (error: any) {
+    console.error('Error in photo-proxy:', error);
+    res.status(500).send('Error loading image');
+  }
+});
+
 // Serve the local video trailer
 app.get('/rahala_trailer.mp4', (req, res) => {
   const possiblePaths = [

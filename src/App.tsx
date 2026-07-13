@@ -14,6 +14,7 @@ import { AdminDashboard } from './components/AdminDashboard';
 import { AuthModule } from './components/AuthModule';
 import { LandingPage } from './components/LandingPage';
 import { SafeTravel } from './components/SafeTravel';
+import { RealPhotoExplorer } from './components/RealPhotoExplorer';
 import { SEOHead } from './SEOHead';
 import { WeatherWidget } from './components/WeatherWidget';
 import { SmartTravelGuide } from './components/SmartTravelGuide';
@@ -67,6 +68,7 @@ function RihlaApp() {
             'hotels': 'hotels',
             'taxis': 'taxis',
             'ai-guide': 'ai-guide',
+            'real-photos': 'real-photos',
             'safe-travel': 'safe-travel',
             'social': 'social'
           };
@@ -97,7 +99,7 @@ function RihlaApp() {
           setActiveView('admin');
         } else {
           // Permit accessing regular tabs with normal hash
-          const matchedTab = ['explore', 'digital-twin', 'map', 'hotels', 'taxis', 'ai-guide', 'safe-travel', 'social', 'billing', 'dashboard', 'admin'].find(tab => hash === `#/${tab}`);
+          const matchedTab = ['explore', 'digital-twin', 'map', 'hotels', 'taxis', 'ai-guide', 'real-photos', 'safe-travel', 'social', 'billing', 'dashboard', 'admin'].find(tab => hash === `#/${tab}`);
           if (matchedTab) {
             setActiveView(matchedTab);
           }
@@ -119,7 +121,7 @@ function RihlaApp() {
           setActiveView('explore');
         } else {
           // Permit standard tab switches
-          const matchedTab = ['explore', 'digital-twin', 'map', 'hotels', 'taxis', 'ai-guide', 'safe-travel', 'social', 'billing', 'dashboard'].find(tab => hash === `#/${tab}`);
+          const matchedTab = ['explore', 'digital-twin', 'map', 'hotels', 'taxis', 'ai-guide', 'real-photos', 'safe-travel', 'social', 'billing', 'dashboard'].find(tab => hash === `#/${tab}`);
           if (matchedTab) {
             setActiveView(matchedTab);
           }
@@ -156,6 +158,7 @@ function RihlaApp() {
           'hotels': '#/hotels',
           'taxis': '#/taxis',
           'ai-guide': '#/ai-guide',
+          'real-photos': '#/real-photos',
           'safe-travel': '#/safe-travel',
           'social': '#/social'
         };
@@ -178,7 +181,7 @@ function RihlaApp() {
         window.location.hash = '#/home';
       }
     } else {
-      const knownTabs = ['digital-twin', 'map', 'hotels', 'taxis', 'ai-guide', 'safe-travel', 'social', 'billing', 'dashboard'];
+      const knownTabs = ['digital-twin', 'map', 'hotels', 'taxis', 'ai-guide', 'real-photos', 'safe-travel', 'social', 'billing', 'dashboard'];
       if (knownTabs.includes(activeView)) {
         if (window.location.hash !== `#/${activeView}`) {
           window.location.hash = `#/${activeView}`;
@@ -293,8 +296,8 @@ function RihlaApp() {
                 </div>
 
                 {/* Slogan title styled with highly readable gorgeous fonts */}
-                <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight leading-none text-gray-950 dark:text-white mb-3">
-                  {t('appName')} <span className="text-emerald-600">Ecosystem</span>
+                <h1 className="text-4xl sm:text-6xl font-black tracking-tight leading-none text-gray-950 dark:text-white mb-4">
+                  {t('appName')}
                 </h1>
                 
                 {/* Beautiful clean slogan display */}
@@ -441,7 +444,7 @@ function RihlaApp() {
                     {/* Background photo */}
                     <div className="absolute inset-0 z-0">
                       <img 
-                        src="https://images.unsplash.com/photo-1564507004663-b6dfb3c824d5?auto=format&fit=crop&w=800&q=80" 
+                        src="https://images.unsplash.com/photo-1543872084-c7bd3822856f?auto=format&fit=crop&w=800&q=80" 
                         alt="Algiers Skyline at Sunset"
                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-108"
                         referrerPolicy="no-referrer"
@@ -492,7 +495,7 @@ function RihlaApp() {
                     {/* Background photo */}
                     <div className="absolute inset-0 z-0">
                       <img 
-                        src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80" 
+                        src="https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?auto=format&fit=crop&w=800&q=80" 
                         alt="Oran Coastline Mediterranean"
                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-108"
                         referrerPolicy="no-referrer"
@@ -737,6 +740,9 @@ function RihlaApp() {
 
         {/* VIEW 6: INTELLIGENT COMPANION */}
         {activeView === 'ai-guide' && <AIGuide />}
+
+        {/* VIEW 6A: REAL PHOTO EXPLORER */}
+        {activeView === 'real-photos' && <RealPhotoExplorer />}
 
         {/* VIEW 6B: RAHALA SAFE TRAVEL INSURANCE */}
         {activeView === 'safe-travel' && <SafeTravel />}
