@@ -34,7 +34,7 @@ import { APIProvider, Map, AdvancedMarker, Pin } from '@vis.gl/react-google-maps
 export interface PlaceItem {
   id: string;
   name: string;
-  category: 'hotel' | 'restaurant' | 'monument';
+  category: 'hotel' | 'restaurant' | 'monument' | 'plage' | 'favorite' | 'hidden-gem';
   lat: number;
   lng: number;
   rating: number;
@@ -44,12 +44,14 @@ export interface PlaceItem {
     en: string;
     fr: string;
     ar: string;
+    es?: string;
   };
   address: string;
   specialty?: {
     en: string;
     fr: string;
     ar: string;
+    es?: string;
   };
 }
 
@@ -358,6 +360,50 @@ const placesDb: PlaceItem[] = [
       fr: 'Bivouac Étoilé Magique',
       ar: 'ضيافة أزواديّة تحت الشهب'
     }
+  },
+  {
+    id: 'plage-madagh',
+    name: 'Plage de Madagh (Oran)',
+    category: 'plage',
+    lat: 35.6358,
+    lng: -0.9634,
+    rating: 4.9,
+    image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80',
+    description: {
+      en: 'A gorgeous pristine beach flanked by lush green pine forests near Oran.',
+      fr: 'Une plage sauvage paradisiaque nichée entre d’imposantes collines boisées à Oran.',
+      ar: 'شاطئ مداغ العذري الخلاب المحاط بالغابات الكثيفة غرب وهران الباهية.',
+      es: 'Una playa virgen paradisíaca rodeada de colinas boscosas en Orán.'
+    },
+    address: 'Plage Madagh I, Oran',
+    specialty: {
+      en: 'Pristine Wilderness Cove',
+      fr: 'Crique sauvage naturelle',
+      ar: 'خليج طبيعي بكر',
+      es: 'Caleta natural salvaje'
+    }
+  },
+  {
+    id: 'plage-sidi-fredj',
+    name: 'Plage Ouest de Sidi Fredj',
+    category: 'plage',
+    lat: 36.7628,
+    lng: 2.8485,
+    rating: 4.8,
+    image: 'https://images.unsplash.com/photo-1548013146-72479768bada?auto=format&fit=crop&w=800&q=80',
+    description: {
+      en: 'Beautiful golden sandy beach and historical port area with water sports.',
+      fr: 'Magnifique plage de sable doré bordant le port historique de Sidi Fredj.',
+      ar: 'شاطئ سيدي فرج الذهبي الجميل بجوار الميناء التاريخي والرياضات المائية.',
+      es: 'Hermosa playa de arena dorada junto al puerto histórico de Sidi Fredj.'
+    },
+    address: 'Presqu\'île de Sidi Fredj, Alger',
+    specialty: {
+      en: 'Water Sports & Resort',
+      fr: 'Sports nautiques & Marina',
+      ar: 'رياضات مائية ومنتجع سياحي',
+      es: 'Deportes acuáticos y puerto deportivo'
+    }
   }
 ];
 
@@ -374,6 +420,7 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({ setActiveView, s
   const [filterHotels, setFilterHotels] = useState(true);
   const [filterRestaurants, setFilterRestaurants] = useState(true);
   const [filterMonuments, setFilterMonuments] = useState(true);
+  const [filterPlages, setFilterPlages] = useState(true);
   const [filterFavorites, setFilterFavorites] = useState(true);
   const [filterHiddenGems, setFilterHiddenGems] = useState(true);
 
@@ -674,12 +721,14 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({ setActiveView, s
                           (place.description && (
                             place.description.en.toLowerCase().includes(searchQuery.toLowerCase()) ||
                             place.description.fr.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                            place.description.ar.toLowerCase().includes(searchQuery.toLowerCase())
+                            place.description.ar.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                            (place.description.es && place.description.es.toLowerCase().includes(searchQuery.toLowerCase()))
                           ));
     
     if (place.category === 'hotel') return matchesSearch && filterHotels;
     if (place.category === 'restaurant') return matchesSearch && filterRestaurants;
     if (place.category === 'monument') return matchesSearch && filterMonuments;
+    if (place.category === 'plage') return matchesSearch && filterPlages;
     if (place.category === 'favorite') return matchesSearch && filterFavorites;
     if (place.category === 'hidden-gem') return matchesSearch && filterHiddenGems;
     return false;
@@ -946,70 +995,88 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({ setActiveView, s
             <div className="bg-white dark:bg-[#111c2a]/90 border border-slate-100 dark:border-slate-800 p-5 rounded-2xl shadow-xl">
               <h3 className="text-sm font-bold text-slate-900 dark:text-white mb-4 flex items-center space-x-2 space-x-reverse">
                 <Layers size={15} className="text-emerald-600" />
-                <span>Filtres de catégories</span>
+                <span>{language === 'ar' ? 'تصنيفات الاستكشاف' : language === 'fr' ? 'Filtres de catégories' : language === 'es' ? 'Filtros de Categoría' : 'Category Filters'}</span>
               </h3>
               
-              <div className="grid grid-cols-3 gap-2 mb-2.5">
+              {/* Dynamic horizontal grid of category toggles */}
+              <div className="grid grid-cols-2 gap-2 mb-3">
                 <button
-                  onClick={() => setFilterHotels(!filterHotels)}
-                  className={`py-1.5 px-1 rounded-xl border flex flex-col items-center justify-center transition-all cursor-pointer ${
-                    filterHotels 
-                      ? 'bg-emerald-50/70 border-emerald-500 dark:bg-emerald-950/20 text-emerald-800 dark:text-emerald-400 font-extrabold shadow-sm' 
+                  onClick={() => setFilterMonuments(!filterMonuments)}
+                  className={`py-2 px-2 rounded-xl border flex items-center gap-2 transition-all cursor-pointer ${
+                    filterMonuments 
+                      ? 'bg-rose-50/70 border-rose-500 dark:bg-rose-950/20 text-rose-800 dark:text-rose-400 font-extrabold shadow-xs' 
                       : 'border-slate-200 dark:border-slate-800 dark:text-slate-400 opacity-60 text-slate-500 hover:border-slate-300'
                   }`}
                 >
-                  <span className="text-sm">🏨</span>
-                  <span className="text-[9px] font-bold mt-1">Hôtels</span>
+                  <span className="text-base">🏛️</span>
+                  <span className="text-[10px] font-bold truncate">{t('filterMonuments')}</span>
+                </button>
+
+                <button
+                  onClick={() => setFilterPlages(!filterPlages)}
+                  className={`py-2 px-2 rounded-xl border flex items-center gap-2 transition-all cursor-pointer ${
+                    filterPlages 
+                      ? 'bg-sky-50/70 border-sky-500 dark:bg-sky-950/20 text-sky-800 dark:text-sky-450 font-extrabold shadow-xs' 
+                      : 'border-slate-200 dark:border-slate-800 dark:text-slate-400 opacity-60 text-slate-500 hover:border-slate-300'
+                  }`}
+                >
+                  <span className="text-base">🏖️</span>
+                  <span className="text-[10px] font-bold truncate">{t('filterBeaches')}</span>
+                </button>
+
+                <button
+                  onClick={() => setFilterHotels(!filterHotels)}
+                  className={`py-2 px-2 rounded-xl border flex items-center gap-2 transition-all cursor-pointer ${
+                    filterHotels 
+                      ? 'bg-emerald-50/70 border-emerald-500 dark:bg-emerald-950/20 text-emerald-800 dark:text-emerald-450 font-extrabold shadow-xs' 
+                      : 'border-slate-200 dark:border-slate-800 dark:text-slate-400 opacity-60 text-slate-500 hover:border-slate-300'
+                  }`}
+                >
+                  <span className="text-base">🏨</span>
+                  <span className="text-[10px] font-bold truncate">{t('filterHotels')}</span>
                 </button>
 
                 <button
                   onClick={() => setFilterRestaurants(!filterRestaurants)}
-                  className={`py-1.5 px-1 rounded-xl border flex flex-col items-center justify-center transition-all cursor-pointer ${
+                  className={`py-2 px-2 rounded-xl border flex items-center gap-2 transition-all cursor-pointer ${
                     filterRestaurants 
-                      ? 'bg-amber-50/70 border-amber-500 dark:bg-amber-950/20 text-amber-800 dark:text-[#d4af37] font-extrabold shadow-sm' 
+                      ? 'bg-amber-50/70 border-amber-500 dark:bg-amber-950/20 text-amber-800 dark:text-[#d4af37] font-extrabold shadow-xs' 
                       : 'border-slate-200 dark:border-slate-800 dark:text-slate-400 opacity-60 text-slate-500 hover:border-slate-300'
                   }`}
                 >
-                  <span className="text-sm">🍽️</span>
-                  <span className="text-[9px] font-bold mt-1">Restos</span>
-                </button>
-
-                <button
-                  onClick={() => setFilterMonuments(!filterMonuments)}
-                  className={`py-1.5 px-1 rounded-xl border flex flex-col items-center justify-center transition-all cursor-pointer ${
-                    filterMonuments 
-                      ? 'bg-rose-50/70 border-rose-500 dark:bg-rose-950/20 text-rose-800 dark:text-rose-450 font-extrabold shadow-sm' 
-                      : 'border-slate-200 dark:border-slate-800 dark:text-slate-400 opacity-60 text-slate-500 hover:border-slate-300'
-                  }`}
-                >
-                  <span className="text-sm">🏛️</span>
-                  <span className="text-[9px] font-bold mt-1">Monuments</span>
+                  <span className="text-base">🍽️</span>
+                  <span className="text-[10px] font-bold truncate">{t('filterRestaurants')}</span>
                 </button>
               </div>
 
+              {/* Extras block */}
               <div className="grid grid-cols-2 gap-2 mb-4">
                 <button
                   onClick={() => setFilterFavorites(!filterFavorites)}
-                  className={`py-1.5 px-1 rounded-xl border flex flex-col items-center justify-center transition-all cursor-pointer ${
+                  className={`py-1.5 px-2 rounded-xl border flex items-center gap-1.5 transition-all cursor-pointer ${
                     filterFavorites 
-                      ? 'bg-pink-50/70 border-pink-500 dark:bg-pink-950/20 text-pink-800 dark:text-pink-400 font-extrabold shadow-sm' 
+                      ? 'bg-pink-50/70 border-pink-500 dark:bg-pink-950/20 text-pink-800 dark:text-pink-400 font-extrabold shadow-xs' 
                       : 'border-slate-200 dark:border-slate-800 dark:text-slate-400 opacity-60 text-slate-500 hover:border-slate-300'
                   }`}
                 >
-                  <span className="text-sm">🌟</span>
-                  <span className="text-[9px] font-bold mt-1">Mes Favoris</span>
+                  <span className="text-xs">🌟</span>
+                  <span className="text-[9px] font-bold truncate">
+                    {language === 'ar' ? 'مفضلاتي' : language === 'fr' ? 'Mes Favoris' : language === 'es' ? 'Mis Favoritos' : 'My Favorites'}
+                  </span>
                 </button>
 
                 <button
                   onClick={() => setFilterHiddenGems(!filterHiddenGems)}
-                  className={`py-1.5 px-1 rounded-xl border flex flex-col items-center justify-center transition-all cursor-pointer ${
+                  className={`py-1.5 px-2 rounded-xl border flex items-center gap-1.5 transition-all cursor-pointer ${
                     filterHiddenGems 
-                      ? 'bg-indigo-50/70 border-indigo-500 dark:bg-indigo-950/20 text-indigo-800 dark:text-indigo-400 font-extrabold shadow-sm' 
+                      ? 'bg-indigo-50/70 border-indigo-500 dark:bg-indigo-950/20 text-indigo-800 dark:text-indigo-400 font-extrabold shadow-xs' 
                       : 'border-slate-200 dark:border-slate-800 dark:text-slate-400 opacity-60 text-slate-500 hover:border-slate-300'
                   }`}
                 >
-                  <span className="text-sm">💎</span>
-                  <span className="text-[9px] font-bold mt-1">Trésor Inédit</span>
+                  <span className="text-xs">💎</span>
+                  <span className="text-[9px] font-bold truncate">
+                    {language === 'ar' ? 'كنوز خفية' : language === 'fr' ? 'Inédits' : language === 'es' ? 'Inéditos' : 'Hidden Gems'}
+                  </span>
                 </button>
               </div>
 
@@ -1017,7 +1084,15 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({ setActiveView, s
                 <Search className="absolute left-3 top-2.5 text-slate-400" size={15} />
                 <input
                   type="text"
-                  placeholder="Rechercher une avenue, ville ou lieu..."
+                  placeholder={
+                    language === 'ar' 
+                      ? 'ابحث عن معلم، فندق أو مدينة...' 
+                      : language === 'fr' 
+                        ? 'Rechercher un monument, hôtel, ville...' 
+                        : language === 'es'
+                          ? 'Buscar monumento, hotel, ciudad...'
+                          : 'Search landmark, hotel, city...'
+                  }
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="w-full text-xs bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 pl-9 pr-3.5 py-2 rounded-xl text-slate-800 dark:text-slate-100 focus:outline-emerald-500 focus:ring-1 focus:ring-emerald-500"
@@ -1205,9 +1280,11 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({ setActiveView, s
                             ? 'bg-amber-50 text-amber-800 border-amber-200 dark:bg-amber-950/20 dark:text-[#d4af37]'
                             : place.category === 'monument'
                               ? 'bg-rose-50 text-rose-800 border-rose-200 dark:bg-rose-950/20 dark:text-rose-450'
-                              : place.category === 'favorite'
-                                ? 'bg-pink-50 text-pink-800 border-pink-200 dark:bg-pink-950/20 dark:text-pink-400'
-                                : 'bg-indigo-50 text-indigo-800 border-indigo-200 dark:bg-indigo-950/20 dark:text-indigo-400';
+                              : place.category === 'plage'
+                                ? 'bg-sky-50 text-sky-800 border-sky-200 dark:bg-sky-950/20 dark:text-sky-400'
+                                : place.category === 'favorite'
+                                  ? 'bg-pink-50 text-pink-800 border-pink-200 dark:bg-pink-950/20 dark:text-pink-400'
+                                  : 'bg-indigo-50 text-indigo-800 border-indigo-200 dark:bg-indigo-950/20 dark:text-indigo-400';
                       
                       return (
                         <div
@@ -1231,14 +1308,16 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({ setActiveView, s
                             <div className="flex items-center justify-between gap-1 leading-none mb-1">
                               <span className={`text-[8px] font-extrabold uppercase px-1.5 py-0.5 rounded-md border ${catColorClass}`}>
                                 {place.category === 'hotel' 
-                                  ? '🏨 Hôte' 
+                                  ? (language === 'ar' ? '🏨 فندق' : language === 'fr' ? '🏨 Hôtel' : language === 'es' ? '🏨 Hotel' : '🏨 Hotel') 
                                   : place.category === 'restaurant' 
-                                    ? '🍽️ Resto' 
+                                    ? (language === 'ar' ? '🍽️ مطعم' : language === 'fr' ? '🍽️ Resto' : language === 'es' ? '🍽️ Resto' : '🍽️ Bistro') 
                                     : place.category === 'monument' 
-                                      ? '🏛️ Monument'
-                                      : place.category === 'favorite'
-                                        ? '🌟 Favori'
-                                        : '💎 Inédit'}
+                                      ? (language === 'ar' ? '🏛️ معلم' : language === 'fr' ? '🏛️ Monument' : language === 'es' ? '🏛️ Monumento' : '🏛️ Monument')
+                                      : place.category === 'plage'
+                                        ? (language === 'ar' ? '🏖️ شاطئ' : language === 'fr' ? '🏖️ Plage' : language === 'es' ? '🏖️ Playa' : '🏖️ Beach')
+                                        : place.category === 'favorite'
+                                          ? (language === 'ar' ? '🌟 مفضلة' : language === 'fr' ? '🌟 Favori' : language === 'es' ? '🌟 Favorito' : '🌟 Favorite')
+                                          : (language === 'ar' ? '💎 جوهرة' : language === 'fr' ? '💎 Inédit' : language === 'es' ? '💎 Inédito' : '💎 Unique')}
                               </span>
                               <span className="flex items-center text-[9px] text-amber-500 font-extrabold">
                                 <Star size={9} className="fill-amber-500 mr-0.5" />
@@ -1347,6 +1426,7 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({ setActiveView, s
                               pl.category === 'hotel' ? '#059669' : 
                               pl.category === 'restaurant' ? '#d97706' : 
                               pl.category === 'monument' ? '#b91c1c' : 
+                              pl.category === 'plage' ? '#0284c7' : 
                               pl.category === 'favorite' ? '#ec4899' : '#6366f1';
                             return (
                               <AdvancedMarker
@@ -1533,6 +1613,7 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({ setActiveView, s
                           pl.category === 'hotel' ? '🏨' : 
                           pl.category === 'restaurant' ? '🍽️' : 
                           pl.category === 'monument' ? '🏛️' : 
+                          pl.category === 'plage' ? '🏖️' : 
                           pl.category === 'favorite' ? '🌟' : '💎';
                         const circleColor = 
                           pl.category === 'hotel' 
@@ -1541,9 +1622,11 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({ setActiveView, s
                               ? 'fill-amber-500' 
                               : pl.category === 'monument'
                                 ? 'fill-red-600'
-                                : pl.category === 'favorite'
-                                  ? 'fill-pink-500'
-                                  : 'fill-indigo-500';
+                                : pl.category === 'plage'
+                                  ? 'fill-sky-500'
+                                  : pl.category === 'favorite'
+                                    ? 'fill-pink-500'
+                                    : 'fill-indigo-500';
 
                         return (
                           <g

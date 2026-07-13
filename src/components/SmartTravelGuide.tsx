@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { useApp } from '../context/AppContext';
+import { SocialShare } from './SocialShare';
 import { 
   Sparkles, Wallet, Compass, Grid, Calendar, Users, 
-  ArrowRight, ArrowLeft, RefreshCw, Bookmark, Share2, 
+  ArrowRight, ArrowLeft, RefreshCw, Bookmark, Share2, Download, QrCode,
   MapPin, Coffee, Info, ChevronDown, ChevronUp, CheckCircle2,
   Facebook, Twitter, Linkedin, Mail, Copy, X
 } from 'lucide-react';
@@ -29,7 +30,7 @@ interface TravelPlan {
 
 export const SmartTravelGuide: React.FC = () => {
   const { language, isRtl } = useLanguage();
-  const { addNotification } = useApp();
+  const { addNotification, currentUser } = useApp();
 
   // Mode Selection: 'classic' or 'premium' (default to premium as per request)
   const [guideType, setGuideType] = useState<'classic' | 'premium'>('premium');
@@ -239,7 +240,7 @@ export const SmartTravelGuide: React.FC = () => {
 
   const handleSmartShareTrip = () => {
     if (!smartGuide) return;
-    const title = smartGuide.destination;
+    const title = smartGuide.destination?.name || smartGuide.destination;
     const text = language === 'ar'
       ? `شاهد الدليل السياحي الذكي لـ ${title} مع صور خرائط غوغل الموثوقة من RAHLA! 🇩🇿`
       : `Check out my smart travel guide for ${title} with authentic Google Maps pictures on RAHLA! 🇩🇿✈️`;
@@ -247,6 +248,449 @@ export const SmartTravelGuide: React.FC = () => {
 
     setShareData({ title, text, url });
     setShowShareModal(true);
+  };
+
+  const handleDownloadPDF = () => {
+    let title = '';
+    let htmlContent = '';
+    const shareUrl = window.location.origin + '/#/ai-guide';
+    const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(shareUrl)}`;
+
+    // User session authentication tokens
+    const userSessionId = currentUser?.id || 'usr-928';
+    const userSessionEmail = currentUser?.email || 'lattab.nidal@gmail.com';
+    const userSessionName = currentUser?.name || 'Nidal Lattab';
+    const loginTokenUrl = `${window.location.origin}/#/?auth_token=RIHLA-TOKEN-${userSessionId}-${Date.now().toString().substring(0, 8)}&verify=${encodeURIComponent(userSessionEmail)}`;
+    const loginTokenQrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(loginTokenUrl)}`;
+
+    const authCardHtml = `
+      <div class="auth-card">
+        <div class="auth-text">
+          <div class="auth-badge">${language === 'ar' ? 'تحقق رقمي معتمد' : 'GUIDE NUMÉRIQUE CERTIFIÉ'}</div>
+          <div class="auth-title">${language === 'ar' ? 'وثيقة رحلة رسمية وموثقة من RAHLA' : 'Authentification Officielle de l\'Itinéraire RAHLA'}</div>
+          <p class="auth-desc">
+            ${language === 'ar' 
+              ? 'تم التحقق من صحة هذا المسار رقمياً ومزامنته مع نظام الذكاء الاصطناعي RAHLA. امسح الرمز ضوئياً للفتح المباشر على الهاتف والحصول على اتجاهات الملاحة الحية والتحقق من صحة المعالم.' 
+              : 'Cet itinéraire a été certifié numériquement par l\'intelligence artificielle de RAHLA. Scannez ce QR code pour l\'ouvrir instantanément sur votre smartphone, voir le site complet, et activer la navigation GPS en temps réel.'}
+          </p>
+        </div>
+        <div class="auth-qr">
+          <img src="${qrCodeUrl}" alt="QR Code" style="width: 100px; height: 100px; display: block;" referrerPolicy="no-referrer" />
+        </div>
+      </div>
+    `;
+
+    const sessionAuthCardHtml = `
+      <div class="auth-card" style="border-color: #10b981; background: #fafdfc; margin-top: -20px; margin-bottom: 35px;">
+        <div class="auth-text">
+          <div class="auth-badge" style="background: #e6f4ea; border-color: #10b981; color: #137333;">
+            ${language === 'ar' ? 'جلسة مستخدم معتمدة وموثقة' : 'SESSION UTILISATEUR CERTIFIÉE'}
+          </div>
+          <div class="auth-title">${language === 'ar' ? 'التحقق الأمني من الجلسة والهوية' : 'Authentification de la Session Voyageur'}</div>
+          <p class="auth-desc" style="margin-bottom: 12px; font-weight: 500;">
+            ${language === 'ar' 
+              ? 'تم ربط وثيقة السفر هذه بجلسة مستخدم نشطة ومصدقة.' 
+              : 'Ce document de voyage est rattaché à une session utilisateur active et vérifiée.'}
+          </p>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 11px; font-family: 'Inter', sans-serif; background: #ffffff; padding: 12px; border-radius: 8px; border: 1px solid #e0f2f1;">
+            <div>
+              <span style="color: #666; display: block; font-size: 10px; text-transform: uppercase;">${language === 'ar' ? 'الاسم الكامل' : 'Voyageur'}</span>
+              <strong style="color: #111;">${userSessionName}</strong>
+            </div>
+            <div>
+              <span style="color: #666; display: block; font-size: 10px; text-transform: uppercase;">${language === 'ar' ? 'البريد الإلكتروني' : 'Adresse Email'}</span>
+              <strong style="color: #111;">${userSessionEmail}</strong>
+            </div>
+            <div style="grid-column: span 2; border-top: 1px solid #f0f0f0; padding-top: 8px; margin-top: 4px;">
+              <span style="color: #666; display: block; font-size: 10px; text-transform: uppercase;">${language === 'ar' ? 'رمز تسجيل الدخول الرقمي الآمن (QR)' : 'Jeton de Connexion Session (QR-Token)'}</span>
+              <strong style="font-family: monospace; color: #10b981; font-size: 10px;">RIHLA-TOKEN-${userSessionId}-${Date.now().toString().substring(0, 8)}</strong>
+            </div>
+          </div>
+        </div>
+        <div class="auth-qr" style="border-color: #10b981;">
+          <img src="${loginTokenQrUrl}" alt="Login Token QR" style="width: 100px; height: 100px; display: block;" referrerPolicy="no-referrer" />
+          <div style="font-size: 8px; font-family: monospace; text-align: center; color: #10b981; margin-top: 4px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px;">${language === 'ar' ? 'امسح للتحقق' : 'SCAN TO VERIFY'}</div>
+        </div>
+      </div>
+    `;
+
+    if (guideType === 'premium' && smartGuide) {
+      title = smartGuide.destination?.name || smartGuide.destination || 'RAHLA Travel Guide';
+      const hotelName = smartGuide.hotel?.name || '';
+      const hotelDesc = smartGuide.hotel?.description || '';
+      const budgetText = smartGuide.budget || budget;
+
+      const placesHtml = smartGuide.places?.map((place: any, idx: number) => `
+        <div class="day-card">
+          <div class="day-header">
+            <span>📍 ${place.name || `Place ${idx + 1}`}</span>
+            <span class="badge">${place.category || 'Sightseeing'}</span>
+          </div>
+          <p class="activity-text">${place.description || ''}</p>
+        </div>
+      `).join('') || '';
+
+      const itineraryHtml = smartGuide.itinerary?.map((item: string, idx: number) => `
+        <div style="margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px dashed #eee;">
+          <strong>${language === 'ar' ? 'اليوم' : 'Day'} ${idx + 1}:</strong> ${item}
+        </div>
+      `).join('') || '';
+
+      htmlContent = `
+        <div class="header">
+          <div class="brand">RAHLA AI • ✈️</div>
+          <h1 class="title">${title}</h1>
+          <p class="overview">${smartGuide.destination?.description || (language === 'ar' ? 'دليل الأماكن الحقيقي الذكي مع صور خرائط جوجل' : 'Smart Places Guide with real Google Photos')}</p>
+        </div>
+
+        <div class="meta-box">
+          <div class="meta-item">
+            <div class="meta-label">${language === 'ar' ? 'الميزانية' : 'Budget'}</div>
+            <div style="font-weight: bold; font-size: 16px; margin-top: 4px;">${budgetText}</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">${language === 'ar' ? 'الإقامة الموصى بها' : 'Recommended Hotel'}</div>
+            <div style="font-weight: bold; font-size: 16px; margin-top: 4px;">${hotelName}</div>
+          </div>
+        </div>
+
+        ${authCardHtml}
+        ${sessionAuthCardHtml}
+
+        ${hotelDesc ? `
+          <div class="day-card" style="border-left: 4px solid #d4af37; border-right: ${language === 'ar' ? '4px solid #d4af37' : 'none'};">
+            <h3 style="margin-top: 0; color: #111;">🏨 ${language === 'ar' ? 'تفاصيل الفندق المقترح' : 'Recommended Stay Details'}</h3>
+            <p class="activity-text">${hotelDesc}</p>
+          </div>
+        ` : ''}
+
+        <h2 style="font-family: serif; border-bottom: 2px solid #eaeaea; padding-bottom: 8px; margin-top: 40px;">
+          📌 ${language === 'ar' ? 'الأماكن السياحية الموصى بزيارتها' : 'Top Curated Places & Landmarks'}
+        </h2>
+        ${placesHtml}
+
+        ${itineraryHtml ? `
+          <h2 style="font-family: serif; border-bottom: 2px solid #eaeaea; padding-bottom: 8px; margin-top: 40px;">
+            📅 ${language === 'ar' ? 'ملخص خطة الرحلة' : 'Itinerary Summary'}
+          </h2>
+          <div class="day-card">
+            ${itineraryHtml}
+          </div>
+        ` : ''}
+      `;
+    } else if (plan) {
+      title = plan.title;
+      const daysHtml = plan.days.map((day: any) => `
+        <div class="day-card">
+          <div class="day-header">
+            <span>🌅 ${language === 'ar' ? `اليوم ${day.dayNumber}` : `Day ${day.dayNumber}`}: ${day.title}</span>
+            <span class="badge">📍 ${day.locationName}</span>
+          </div>
+          
+          <div class="activity">
+            <div class="activity-title">☀️ ${language === 'ar' ? 'الصباح' : 'Morning'}</div>
+            <div class="activity-text">${day.morning}</div>
+          </div>
+
+          <div class="activity">
+            <div class="activity-title">🌤️ ${language === 'ar' ? 'بعد الظهر' : 'Afternoon'}</div>
+            <div class="activity-text">${day.afternoon}</div>
+          </div>
+
+          <div class="activity">
+            <div class="activity-title">🌙 ${language === 'ar' ? 'المساء' : 'Evening'}</div>
+            <div class="activity-text">${day.evening}</div>
+          </div>
+
+          ${day.cuisineRecommendation ? `
+            <div style="margin-top: 15px; padding: 12px; background: #fdfbf7; border-radius: 8px; border-inline-start: 3px solid #d4af37;">
+              <strong style="font-size: 12px; text-transform: uppercase; color: #d4af37; display: block; margin-bottom: 4px;">
+                🍽️ ${language === 'ar' ? 'توصيات المأكولات التقليدية' : 'Local Culinary recommendation'}
+              </strong>
+              <span class="activity-text" style="font-style: italic;">${day.cuisineRecommendation}</span>
+            </div>
+          ` : ''}
+
+          ${day.budgetTip ? `
+            <div style="margin-top: 10px; padding: 12px; background: #f6fbf9; border-radius: 8px; border-inline-start: 3px solid #10b981;">
+              <strong style="font-size: 12px; text-transform: uppercase; color: #10b981; display: block; margin-bottom: 4px;">
+                💡 ${language === 'ar' ? 'نصيحة الميزانية والتوفير' : 'Local Saving advice'}
+              </strong>
+              <span class="activity-text">${day.budgetTip}</span>
+            </div>
+          ` : ''}
+        </div>
+      `).join('');
+
+      htmlContent = `
+        <div class="header">
+          <div class="brand">RAHLA AI • ✈️</div>
+          <h1 class="title">${title}</h1>
+          <p class="overview">${plan.overview}</p>
+        </div>
+
+        <div class="meta-box">
+          <div class="meta-item">
+            <div class="meta-label">${language === 'ar' ? 'الميزانية التقريبية للرحلة' : 'Estimated Total Budget'}</div>
+            <div style="font-weight: bold; font-size: 16px; margin-top: 4px; color: #10b981;">
+              ${plan.totalEstimatedCostDzd.toLocaleString()} DZD
+            </div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">${language === 'ar' ? 'مدة الإقامة' : 'Total Days'}</div>
+            <div style="font-weight: bold; font-size: 16px; margin-top: 4px;">${plan.days.length} ${language === 'ar' ? 'أيام' : 'Days'}</div>
+          </div>
+        </div>
+
+        ${authCardHtml}
+        ${sessionAuthCardHtml}
+
+        <h2 style="font-family: serif; border-bottom: 2px solid #eaeaea; padding-bottom: 8px; margin-top: 40px; margin-bottom: 20px;">
+          📅 ${language === 'ar' ? 'الجدول اليومي المفصل' : 'Day-by-Day Comprehensive Itinerary'}
+        </h2>
+        ${daysHtml}
+      `;
+    } else {
+      addNotification(language === 'ar' ? 'يرجى توليد مسار الرحلة أولاً قبل التحميل!' : 'Please generate an itinerary first before downloading!');
+      return;
+    }
+
+    const printWindow = window.open('', '_blank');
+    if (!printWindow) {
+      addNotification(language === 'ar' ? '⚠️ يرجى السماح بالنوافذ المنبثقة لتحميل ملف الـ PDF' : '⚠️ Please allow popups to download your travel PDF');
+      return;
+    }
+
+    printWindow.document.write(`
+      <!DOCTYPE html>
+      <html lang="${language}" dir="${language === 'ar' ? 'rtl' : 'ltr'}">
+      <head>
+        <meta charset="UTF-8">
+        <title>${title}</title>
+        <style>
+          @import url('https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;600;700;800&display=swap');
+          
+          body {
+            font-family: ${language === 'ar' ? "'Amiri', serif" : "'Inter', sans-serif"};
+            color: #1a1a1a;
+            background: #ffffff;
+            line-height: 1.6;
+            margin: 0;
+            padding: 40px;
+            direction: ${language === 'ar' ? 'rtl' : 'ltr'};
+          }
+          .header {
+            border-bottom: 2px solid #d4af37;
+            padding-bottom: 24px;
+            margin-bottom: 30px;
+            text-align: center;
+          }
+          .brand {
+            font-size: 26px;
+            font-weight: 800;
+            color: #1a1a1a;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-family: 'Inter', sans-serif;
+          }
+          .title {
+            font-size: 30px;
+            font-weight: 700;
+            margin: 15px 0 10px 0;
+            color: #111;
+            line-height: 1.3;
+          }
+          .overview {
+            font-size: 15px;
+            color: #555;
+            margin-bottom: 25px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.8;
+          }
+          .meta-box {
+            display: flex;
+            justify-content: space-around;
+            background: #fdfbf7;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            padding: 20px;
+            border-radius: 16px;
+            margin-bottom: 35px;
+            font-size: 14px;
+            font-family: 'Inter', sans-serif;
+          }
+          .auth-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #fafaf9;
+            border: 1.5px solid #d4af37;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 35px;
+            gap: 20px;
+            page-break-inside: avoid;
+          }
+          .auth-text {
+            flex: 1;
+            text-align: ${language === 'ar' ? 'right' : 'left'};
+          }
+          .auth-badge {
+            display: inline-block;
+            font-size: 10px;
+            font-weight: 800;
+            color: #1a1a1a;
+            background: #f5f2ed;
+            border: 1px solid #d4af37;
+            padding: 4px 10px;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            font-family: 'Inter', sans-serif;
+            letter-spacing: 0.5px;
+          }
+          .auth-title {
+            font-size: 15px;
+            font-weight: bold;
+            color: #111;
+            margin-bottom: 6px;
+          }
+          .auth-desc {
+            font-size: 12px;
+            color: #555;
+            margin: 0;
+            line-height: 1.5;
+          }
+          .auth-qr {
+            padding: 8px;
+            background: #ffffff;
+            border: 1px solid #e5e5e5;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            flex-shrink: 0;
+          }
+          .meta-item {
+            text-align: center;
+          }
+          .meta-label {
+            font-weight: bold;
+            color: #888;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+          }
+          .day-card {
+            background: #ffffff;
+            border: 1px solid #eaeaea;
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 25px;
+            page-break-inside: avoid;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+          }
+          .day-header {
+            font-size: 21px;
+            font-weight: 700;
+            border-bottom: 1px solid #f0f0f0;
+            padding-bottom: 12px;
+            margin-bottom: 18px;
+            color: #d4af37;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+          }
+          .activity {
+            margin-bottom: 18px;
+          }
+          .activity-title {
+            font-weight: 700;
+            color: #1a1a1a;
+            font-size: 14px;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+          }
+          .activity-text {
+            font-size: 14.5px;
+            color: #374151;
+            line-height: 1.7;
+          }
+          .badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: bold;
+            background: #f5f2ed;
+            color: #1a1a1a;
+            font-family: 'Inter', sans-serif;
+          }
+          .footer {
+            margin-top: 60px;
+            text-align: center;
+            font-size: 12px;
+            color: #9ca3af;
+            border-top: 1px solid #eaeaea;
+            padding-top: 24px;
+            font-family: 'Inter', sans-serif;
+          }
+          .btn-print {
+            display: block;
+            width: fit-content;
+            margin: 20px auto 40px auto;
+            padding: 12px 28px;
+            background: #d4af37;
+            color: #000000;
+            border: none;
+            border-radius: 12px;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            box-shadow: 0 4px 14px rgba(212, 175, 55, 0.4);
+            transition: all 0.2s ease;
+          }
+          .btn-print:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.6);
+          }
+          @media print {
+            .no-print {
+              display: none !important;
+            }
+            body {
+              padding: 0;
+            }
+          }
+        </style>
+      </head>
+      <body>
+        <button class="btn-print no-print" onclick="window.print()">${language === 'ar' ? 'تحميل كـ PDF / طباعة' : 'Télécharger en PDF / Imprimer'}</button>
+        
+        ${htmlContent}
+
+        <div class="footer">
+          <p>${language === 'ar' ? 'تم التوليد بواسطة دليل السفر الذكي RAHLA' : 'Généré par RAHLA AI Travel Guide'} &copy; 2026. ${language === 'ar' ? 'رحلة سعيدة!' : 'Bon voyage !'}</p>
+        </div>
+
+        <script>
+          // Auto trigger print/save dialog on load
+          window.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+              window.print();
+            }, 500);
+          });
+        </script>
+      </body>
+      </html>
+    `);
+    printWindow.document.close();
   };
 
   // Safe translations helpers
@@ -405,7 +849,7 @@ export const SmartTravelGuide: React.FC = () => {
         </div>
       )}
 
-      {smartGuide && !smartLoading && !smartError && (
+      {guideType === 'premium' && smartGuide && !smartLoading && !smartError && (
         <div className="w-full bg-white dark:bg-[#111111] border border-zinc-200/40 dark:border-zinc-850 rounded-3xl overflow-hidden shadow-2xl animate-fade-in pb-10">
           
           {/* Main Hero Panel */}
@@ -566,6 +1010,17 @@ export const SmartTravelGuide: React.FC = () => {
               </div>
             </div>
 
+            <SocialShare 
+              title={smartGuide?.destination?.name || smartGuide?.destination || 'RAHLA Smart Guide'}
+              text={language === 'ar'
+                ? `شاهد الدليل السياحي الذكي لـ ${smartGuide?.destination?.name || smartGuide?.destination || 'RAHLA Smart Guide'} مع صور خرائط غوغل الموثوقة من RAHLA! 🇩🇿`
+                : `Check out my smart travel guide for ${smartGuide?.destination?.name || smartGuide?.destination || 'RAHLA Smart Guide'} with authentic Google Maps pictures on RAHLA! 🇩🇿✈️`}
+              url={window.location.origin + '/#/ai-guide'}
+              language={language}
+              handleDownloadPDF={handleDownloadPDF}
+              addNotification={addNotification}
+            />
+
             {/* Save & Reset Panel */}
             <div className="flex flex-col sm:flex-row gap-4 justify-between items-center pt-8 border-t border-zinc-200/40 dark:border-zinc-800/40 w-full">
               <div className="flex gap-2 w-full sm:w-auto">
@@ -583,14 +1038,6 @@ export const SmartTravelGuide: React.FC = () => {
                 >
                   <Bookmark size={14} className={smartSaved ? 'fill-red-500' : ''} />
                   <span>{smartSaved ? (language === 'ar' ? 'تم الحفظ ❤️ ' : 'Saved') : (language === 'ar' ? 'حفظ الخطة' : 'Save Plan')}</span>
-                </button>
-
-                <button
-                  onClick={handleSmartShareTrip}
-                  className="flex-1 sm:flex-initial flex items-center justify-center gap-2 px-6 py-3 rounded-xl border border-zinc-200/30 dark:border-zinc-800 hover:bg-slate-100 dark:hover:bg-zinc-900 font-mono text-xs font-black uppercase tracking-wider text-gray-700 dark:text-white transition cursor-pointer"
-                >
-                  <Share2 size={14} />
-                  <span>{language === 'ar' ? 'مشاركة' : 'Share Plan'}</span>
                 </button>
               </div>
 
@@ -623,7 +1070,7 @@ export const SmartTravelGuide: React.FC = () => {
       )}
 
       {/* RESULT VISUALIZATION CARD */}
-      {plan && !loading && !error && (
+      {guideType === 'classic' && plan && !loading && !error && (
         <div className="w-full bg-white dark:bg-[#161616] border border-[#1a1a1a]/15 dark:border-white/10 rounded-3xl overflow-hidden shadow-2xl animate-fade-in">
           
           {/* Hero Banner with overlay gradient */}
@@ -830,6 +1277,17 @@ export const SmartTravelGuide: React.FC = () => {
               </div>
             )}
 
+            <SocialShare 
+              title={plan?.title || 'RAHLA Travel Guide'}
+              text={language === 'ar'
+                ? `شاهد مساري السياحي المخصص في الجزائر: ${plan?.title || 'RAHLA Travel Guide'} المولد بالذكاء الاصطناعي مع RAHLA! 🇩🇿`
+                : `Check out my custom Algeria travel plan: ${plan?.title || 'RAHLA Travel Guide'} generated by RAHLA AI! 🇩🇿✈️`}
+              url={window.location.origin + '/#/ai-guide'}
+              language={language}
+              handleDownloadPDF={handleDownloadPDF}
+              addNotification={addNotification}
+            />
+
             {/* Action Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 justify-between items-center mt-10 pt-8 border-t border-[#1a1a1a]/10 dark:border-white/10">
               <div className="flex gap-2 w-full sm:w-auto">
@@ -843,14 +1301,6 @@ export const SmartTravelGuide: React.FC = () => {
                 >
                   <Bookmark size={14} className={saved ? 'fill-red-500' : ''} />
                   <span>{saved ? (language === 'ar' ? 'تم الحفظ ❤️ ' : 'Saved') : (language === 'ar' ? 'حفظ الخطة' : 'Save Plan')}</span>
-                </button>
-
-                <button
-                  onClick={handleShareTrip}
-                  className="flex-1 sm:flex-initial flex items-center justify-center gap-2 px-6 py-3 rounded-xl border border-[#1a1a1a]/15 dark:border-white/10 hover:bg-slate-50 dark:hover:bg-slate-900 font-mono text-xs font-black uppercase tracking-wider text-gray-700 dark:text-white transition"
-                >
-                  <Share2 size={14} />
-                  <span>{language === 'ar' ? 'مشاركة' : 'Share Plan'}</span>
                 </button>
               </div>
 
@@ -1415,6 +1865,22 @@ export const SmartTravelGuide: React.FC = () => {
                 <Mail size={18} className="text-red-500 shrink-0" />
                 <span>Email</span>
               </a>
+            </div>
+
+            {/* Premium PDF Download option inside Share Modal */}
+            <div className="pt-2 border-t border-zinc-100 dark:border-zinc-800">
+              <button
+                onClick={() => {
+                  setShowShareModal(false);
+                  handleDownloadPDF();
+                }}
+                className="w-full flex items-center justify-center gap-3 p-3.5 rounded-2xl bg-gradient-to-r from-amber-500/10 to-yellow-600/10 hover:from-amber-500/20 hover:to-yellow-600/20 border border-[#d4af37]/35 text-amber-700 dark:text-amber-300 font-mono text-xs font-black uppercase tracking-wider transition cursor-pointer shadow-sm"
+              >
+                <Download size={16} className="text-[#d4af37]" />
+                <span>
+                  {language === 'ar' ? 'تحميل كتيب الرحلة كـ PDF متميز' : 'Télécharger l\'itinéraire en PDF Premium'}
+                </span>
+              </button>
             </div>
 
             {/* Link Copy Field */}

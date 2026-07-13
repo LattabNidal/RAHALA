@@ -227,6 +227,36 @@ export const translations: Translations = {
     ar: 'تحميل الفاتورة المالية المعتمدة كـ PDF',
     es: 'Descargar Factura Oficial'
   },
+  filterMonuments: {
+    en: 'Monuments',
+    fr: 'Monuments',
+    ar: 'المعالم الأثرية',
+    es: 'Monumentos'
+  },
+  filterBeaches: {
+    en: 'Beaches',
+    fr: 'Plages',
+    ar: 'الشواطئ',
+    es: 'Playas'
+  },
+  filterHotels: {
+    en: 'Hotels',
+    fr: 'Hôtels',
+    ar: 'الفنادق',
+    es: 'Hoteles'
+  },
+  filterRestaurants: {
+    en: 'Restaurants',
+    fr: 'Restaurants',
+    ar: 'المطاعم',
+    es: 'Restaurantes'
+  },
+  filterAll: {
+    en: 'All Categories',
+    fr: 'Toutes Catégories',
+    ar: 'جميع التصنيفات',
+    es: 'Todas las Categorías'
+  },
   taxiTitle: {
     en: 'Elite Algerian Taxi Dispatch',
     fr: 'Centrale de Transport Inter-villes',
