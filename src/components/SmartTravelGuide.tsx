@@ -893,14 +893,54 @@ export const SmartTravelGuide: React.FC = () => {
 
   // Safe translations helpers
   const labels = {
-    budgetTitle: { en: 'Select Travel Budget', ar: 'اختر ميزانية السفر' },
-    styleTitle: { en: 'Select Travel Style', ar: 'اختر أسلوب السفر' },
-    preferenceTitle: { en: 'Select Landscape Preference', ar: 'اختر البيئة المفضلة ملائمة لك' },
-    durationTitle: { en: 'Select Total Duration', ar: 'اختر مدة الإقامة المقررة' },
-    companionTitle: { en: 'Select Travel Companions', ar: 'اختر الرفقة أو الصحبة كالتالي' },
-    buttonNext: { en: 'Next', ar: 'التالي' },
-    buttonPrev: { en: 'Back', ar: 'السابق' },
-    buttonGenerate: { en: 'Generate My Plan', ar: 'توليد مساري المخصص بالذكاء الاصطناعي' },
+    budgetTitle: { 
+      en: 'Select Travel Budget', 
+      fr: 'Sélectionnez votre budget de voyage', 
+      ar: 'اختر ميزانية السفر', 
+      es: 'Seleccione el presupuesto de viaje' 
+    },
+    styleTitle: { 
+      en: 'Select Travel Style', 
+      fr: 'Sélectionnez votre style de voyage', 
+      ar: 'اختر أسلوب السفر', 
+      es: 'Seleccione el estilo de viaje' 
+    },
+    preferenceTitle: { 
+      en: 'Select Landscape Preference', 
+      fr: 'Sélectionnez votre paysage préféré', 
+      ar: 'اختر البيئة المفضلة ملائمة لك', 
+      es: 'Seleccione su paisaje de preferencia' 
+    },
+    durationTitle: { 
+      en: 'Select Total Duration', 
+      fr: 'Sélectionnez la durée totale', 
+      ar: 'اختر مدة الإقامة المقررة', 
+      es: 'Seleccione la duración total' 
+    },
+    companionTitle: { 
+      en: 'Select Travel Companions', 
+      fr: 'Sélectionnez vos compagnons de voyage', 
+      ar: 'اختر الرفقة أو الصحبة كالتالي', 
+      es: 'Seleccione sus acompañantes de viaje' 
+    },
+    buttonNext: { 
+      en: 'Next', 
+      fr: 'Suivant', 
+      ar: 'التالي', 
+      es: 'Siguiente' 
+    },
+    buttonPrev: { 
+      en: 'Back', 
+      fr: 'Retour', 
+      ar: 'السابق', 
+      es: 'Atrás' 
+    },
+    buttonGenerate: { 
+      en: 'Generate My Plan', 
+      fr: 'Générer mon plan de voyage', 
+      ar: 'توليد مساري المخصص بالذكاء الاصطناعي', 
+      es: 'Generar mi plan de viaje' 
+    },
   };
 
   const getHeroImg = () => {
@@ -1558,7 +1598,7 @@ export const SmartTravelGuide: React.FC = () => {
               <div className="flex items-center gap-2 mb-4">
                 <Wallet className="text-emerald-500" size={18} />
                 <h4 className="text-lg font-serif font-black text-gray-900 dark:text-white">
-                  {labels.budgetTitle[language === 'ar' ? 'ar' : 'en']}
+                  {labels.budgetTitle[language] || labels.budgetTitle['en']}
                 </h4>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
@@ -1636,7 +1676,7 @@ export const SmartTravelGuide: React.FC = () => {
               <div className="flex items-center gap-2 mb-4">
                 <Compass className="text-emerald-500" size={18} />
                 <h4 className="text-lg font-serif font-black text-gray-900 dark:text-white">
-                  {labels.styleTitle[language === 'ar' ? 'ar' : 'en']}
+                  {labels.styleTitle[language] || labels.styleTitle['en']}
                 </h4>
               </div>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
@@ -1715,7 +1755,7 @@ export const SmartTravelGuide: React.FC = () => {
               <div className="flex items-center gap-2 mb-4">
                 <Grid className="text-emerald-500" size={18} />
                 <h4 className="text-lg font-serif font-black text-gray-900 dark:text-white">
-                  {labels.preferenceTitle[language === 'ar' ? 'ar' : 'en']}
+                  {labels.preferenceTitle[language] || labels.preferenceTitle['en']}
                 </h4>
               </div>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
@@ -1794,7 +1834,7 @@ export const SmartTravelGuide: React.FC = () => {
               <div className="flex items-center gap-2 mb-4">
                 <Calendar className="text-emerald-500" size={18} />
                 <h4 className="text-lg font-serif font-black text-gray-900 dark:text-white">
-                  {labels.durationTitle[language === 'ar' ? 'ar' : 'en']}
+                  {labels.durationTitle[language] || labels.durationTitle['en']}
                 </h4>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
@@ -1857,7 +1897,7 @@ export const SmartTravelGuide: React.FC = () => {
               <div className="flex items-center gap-2 mb-4">
                 <Users className="text-emerald-500" size={18} />
                 <h4 className="text-lg font-serif font-black text-gray-900 dark:text-white">
-                  {labels.companionTitle[language === 'ar' ? 'ar' : 'en']}
+                  {labels.companionTitle[language] || labels.companionTitle['en']}
                 </h4>
               </div>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
@@ -1935,7 +1975,7 @@ export const SmartTravelGuide: React.FC = () => {
                 className="flex items-center gap-1.5 px-5 py-2.5 rounded-xl border border-[#1a1a1a]/10 dark:border-white/10 text-gray-600 dark:text-gray-400 font-mono text-xs font-bold uppercase hover:bg-slate-50 dark:hover:bg-slate-900 transition cursor-pointer"
               >
                 <ArrowLeft size={14} />
-                <span>{labels.buttonPrev[language === 'ar' ? 'ar' : 'en']}</span>
+                <span>{labels.buttonPrev[language] || labels.buttonPrev['en']}</span>
               </button>
             ) : (
               <div></div>
@@ -1947,7 +1987,7 @@ export const SmartTravelGuide: React.FC = () => {
                 onClick={() => setStep(step + 1)}
                 className="flex items-center gap-1.5 px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-mono text-xs font-black uppercase tracking-wider rounded-xl transition shadow-md cursor-pointer"
               >
-                <span>{labels.buttonNext[language === 'ar' ? 'ar' : 'en']}</span>
+                <span>{labels.buttonNext[language] || labels.buttonNext['en']}</span>
                 <ArrowRight size={14} />
               </button>
             ) : (
@@ -1957,7 +1997,7 @@ export const SmartTravelGuide: React.FC = () => {
                 className="flex items-center gap-1.5 px-8 py-3.5 bg-gradient-to-r from-emerald-600 to-emerald-750 hover:bg-emerald-750 text-white font-mono text-xs font-black uppercase tracking-wider rounded-xl transition shadow-lg hover:from-emerald-750 hover:to-emerald-850 active:scale-95 cursor-pointer border border-emerald-500"
               >
                 <Sparkles size={14} className="animate-pulse" />
-                <span>{labels.buttonGenerate[language === 'ar' ? 'ar' : 'en']}</span>
+                <span>{labels.buttonGenerate[language] || labels.buttonGenerate['en']}</span>
               </button>
             )}
           </div>

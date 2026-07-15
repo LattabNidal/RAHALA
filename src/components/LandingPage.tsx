@@ -3,6 +3,9 @@ import { Sparkles, Compass, Map, Globe, ArrowRight, Hotel, Car, ArrowLeft, Shiel
 import { useLanguage } from '../context/LanguageContext';
 import { Language } from '../types';
 import { SEOHead } from '../SEOHead';
+import androidChrome from '../assets/images/android-chrome-512x512.png';
+import rahalaHeroBanner from '../assets/images/rahala_hero_banner_1784119916854.jpg';
+import rahalaLogo from '../assets/images/rahala_logo_1781612694384.jpg';
 
 interface LandingPageProps {
   onEnterAuth: (phase: 'login' | 'register') => void;
@@ -37,7 +40,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterAuth }) => {
         ar: 'اكتشف الآن ➔',
         es: 'EXPLORAR AHORA ➔'
       },
-      image: '/rahala_hero_banner_1784119916854.jpg'
+      image: rahalaHeroBanner
     },
     {
       id: 2,
@@ -60,7 +63,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterAuth }) => {
         ar: 'ابدأ الاستكشاف الآن ✈️',
         es: 'Comenzar a Explorar ✈️'
       },
-      image: '/android-chrome-512x512.png'
+      image: androidChrome
     },
     {
       id: 3,
@@ -162,9 +165,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterAuth }) => {
       <header className="bg-white/80 backdrop-blur-md border-b border-gray-100 px-4 sm:px-8 py-3.5 flex items-center justify-between sticky top-0 z-50 shadow-xs">
         <div className="flex items-center gap-3">
           <img 
-            src="/android-chrome-512x512.png" 
+            src={rahalaLogo} 
             alt="RAHALA Logo" 
             className="w-10 h-10 rounded-full object-cover border border-gray-100 shadow-xs"
+            referrerPolicy="no-referrer"
           />
           <div>
             <span className="block text-xl font-black tracking-tight text-emerald-600 font-display leading-none">

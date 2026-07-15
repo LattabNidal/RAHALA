@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { useApp } from '../context/AppContext';
+import rahalaLogo from '../assets/images/rahala_logo_1781612694384.jpg';
 import { 
   LogIn, 
   Key, 
@@ -170,7 +171,7 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
     setErrorMessage('');
     
     if (!email || !password) {
-      setErrorMessage('Veuillez remplir tous les champs requis ⚠️');
+      setErrorMessage(t('errAllFieldsRequired'));
       return;
     }
 
@@ -182,7 +183,7 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
       // Direct requested check: email = admin@rahala.com and password = 1234 -> ADMIN
       if (email.toLowerCase() === 'admin@rahala.com' && password === '1234') {
         matchedUser = {
-          name: 'Admin RAHLA 👨💼',
+          name: 'Admin RAHLA 👨‍💼',
           email: 'admin@rahala.com',
           role: 'admin',
           isPremium: true,
@@ -208,7 +209,7 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
         };
 
         setCurrentUser(activeUser);
-        addNotification(`Heureux de vous revoir, ${activeUser.name}!`);
+        addNotification(`${t('welcomeBackUser')}${activeUser.name}!`);
         
         // Phase 4: Smart Redirection
         if (activeUser.role === 'admin') {
@@ -217,7 +218,7 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
           onSuccess('hotels'); // Going towards Plan my trip ("Planifier mon voyage 💰" which is hotels & lodges module)
         }
       } else {
-        setErrorMessage('Email ou mot de passe incorrect ❌');
+        setErrorMessage(t('errInvalidCredentials'));
       }
     }, 850);
   };
@@ -228,12 +229,12 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
     setSuccessMessage('');
 
     if (!name || !email || !password || !confirmPassword) {
-      setErrorMessage('Veuillez remplir tous les détails requis ⚠️');
+      setErrorMessage(t('errAllFieldsRequired'));
       return;
     }
 
     if (password !== confirmPassword) {
-      setErrorMessage('Les mots de passe ne correspondent pas ⚠️');
+      setErrorMessage(t('errPasswordsDoNotMatch'));
       return;
     }
 
@@ -241,14 +242,14 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
     const users = getRegisteredUsers();
     const isDuplicated = users.some((u: any) => u.email.toLowerCase() === email.toLowerCase());
     if (isDuplicated) {
-      setErrorMessage("Cet email est déjà enregistré.");
+      setErrorMessage(t('errEmailRegistered'));
       return;
     }
 
     // SÉCURITÉ ADMIN: Pour créer un Admin
     if (role === 'admin') {
       if (adminCode !== 'RAHLA2025') {
-        setErrorMessage("❌ Code administrateur incorrect. Accès admin refusé, retour au type Utilisateur.");
+        setErrorMessage(t('errIncorrectAdminCode'));
         setRole('user');
         setAdminCode('');
         return;
@@ -275,7 +276,7 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
       localStorage.setItem('rihla_registered_users', JSON.stringify(updatedUsersList));
 
       setIsLoadingAuth(false);
-      setSuccessMessage(`🎉 Compte créé avec succès ! Veuillez vous connecter.`);
+      setSuccessMessage(t('successAccountCreated'));
       
       // Auto redirect back to login tab after brief interval (as requested: "Après inscription : Rediriger vers LOGIN")
       setTimeout(() => {
@@ -298,7 +299,7 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
       };
       setIsLoadingAuth(false);
       setCurrentUser(activeUser);
-      addNotification(`Bienvenue sur RAHLA en mode Invité (Accès limité) !`);
+      addNotification(t('welcomeGuest'));
       onSuccess('explore'); // Mode invité redirection to 'explore' view which allows destinations browsing
     }, 600);
   };
@@ -364,7 +365,7 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
             <div className="absolute -inset-1-5 bg-gradient-to-r from-emerald-500 via-[#d4af37] to-emerald-700 rounded-full blur-md opacity-80 animate-pulse"></div>
             <div className="relative w-24 h-24 rounded-full overflow-hidden border-2 border-[#d4af37]/40 shadow-xl bg-slate-900">
               <img 
-                src="/android-chrome-512x512.png" 
+                src={rahalaLogo} 
                 alt="RAHALA Logo" 
                 className="w-full h-full object-cover transform duration-500 group-hover:scale-110"
                 referrerPolicy="no-referrer"
@@ -373,7 +374,7 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
           </div>
           <h2 className="text-3xl font-serif font-black tracking-widest bg-gradient-to-r from-emerald-700 via-emerald-600 to-emerald-800 dark:from-emerald-400 dark:via-[#d4af37] dark:to-emerald-200 bg-clip-text text-transparent leading-none font-bold">RAHALA</h2>
           <p className="text-[10px] font-mono tracking-wider font-extrabold text-[#d4af37] dark:text-[#d4af37] uppercase mt-1">
-            Assistant Intelligent de Voyage 🇩🇿
+            {t('assistantSub')}
           </p>
         </div>
 
@@ -381,7 +382,7 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
         {isLoadingAuth && (
           <div className="absolute inset-0 bg-black/60 dark:bg-black/80 backdrop-blur-sm z-50 flex flex-col items-center justify-center space-y-4 animate-fade-in">
             <div className="w-12 h-12 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
-            <p className="text-xs font-mono font-bold tracking-widest text-[#d4af37] uppercase">Vérification en cours...</p>
+            <p className="text-xs font-mono font-bold tracking-widest text-[#d4af37] uppercase">{t('verifying')}</p>
           </div>
         )}
 
@@ -396,7 +397,7 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
                 : 'text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-white'
             }`}
           >
-            <LogIn size={13} /> Connexion 🔑
+            <LogIn size={13} /> {t('loginTab')}
           </button>
           <button
             type="button"
@@ -407,7 +408,7 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
                 : 'text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-white'
             }`}
           >
-            <UserPlus size={13} /> Inscription 📝
+            <UserPlus size={13} /> {t('registerTab')}
           </button>
         </div>
 
@@ -421,14 +422,14 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
                 className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400 hover:text-emerald-705 font-sans font-bold transition-all focus:outline-none"
               >
                 <ArrowLeft size={13} />
-                Menu Principal
+                {t('mainMenu')}
               </button>
-              <span className="text-[10px] font-mono font-black text-slate-700 dark:text-[#d4af37] uppercase tracking-wider">Accès Sécurisé</span>
+              <span className="text-[10px] font-mono font-black text-slate-700 dark:text-[#d4af37] uppercase tracking-wider">{t('secureAccess')}</span>
             </div>
 
             {/* QUICK CONNEXION OPTION: USER VS ADMIN */}
             <div className="bg-slate-50 dark:bg-zinc-900/60 p-2.5 border border-slate-200 dark:border-zinc-800/80 rounded-2xl flex items-center justify-between gap-2.5">
-              <span className="text-[10px] font-mono font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest pl-1">Sélection Rapide :</span>
+              <span className="text-[10px] font-mono font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest pl-1">{t('quickSelection')}</span>
               <div className="flex gap-2">
                 <button
                   type="button"
@@ -438,7 +439,7 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
                   }}
                   className="px-2.5 py-1 text-[10px] font-mono font-bold uppercase rounded-lg bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-500/20 hover:bg-emerald-500/20 transition-all cursor-pointer"
                 >
-                  Voyageur 👤
+                  {t('travelerRole')}
                 </button>
                 <button
                   type="button"
@@ -448,7 +449,7 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
                   }}
                   className="px-2.5 py-1 text-[10px] font-mono font-black uppercase rounded-lg bg-amber-500/10 text-[#c2410c] dark:text-[#d4af37] border border-[#d4af37]/30 hover:bg-amber-500/20 transition-all cursor-pointer"
                 >
-                  Admin 👨💼
+                  {t('adminRole')}
                 </button>
               </div>
             </div>
@@ -468,13 +469,13 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
             )}
 
             <div>
-              <label className="block text-[9px] font-mono uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-1.5">Adresse Email</label>
+              <label className="block text-[9px] font-mono uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-1.5">{t('adresseMail')}</label>
               <div className="relative">
                 <Mail className="absolute left-3.5 top-3.5 text-slate-400" size={14} />
                 <input 
                   type="email" 
                   value={email}
-                  placeholder="admin@rahala.com ou votre email"
+                  placeholder={t('emailPlaceholder')}
                   onChange={(e) => setEmail(e.target.value)}
                   className="w-full text-xs font-semibold pl-10 pr-3.5 py-3 bg-slate-50 dark:bg-zinc-950 border border-slate-200 dark:border-zinc-805/80 rounded-xl text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-emerald-600"
                   required
@@ -483,13 +484,13 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
             </div>
 
             <div>
-              <label className="block text-[9px] font-mono uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-1.5">Mot de Passe</label>
+              <label className="block text-[9px] font-mono uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-1.5">{t('motDePasse')}</label>
               <div className="relative">
                 <Lock className="absolute left-3.5 top-3.5 text-slate-400" size={14} />
                 <input 
                   type={showPassword ? 'text' : 'password'} 
                   value={password}
-                  placeholder="Saisissez votre mot de passe"
+                  placeholder={t('passwordPlaceholder')}
                   onChange={(e) => setPassword(e.target.value)}
                   className="w-full text-xs font-semibold pl-10 pr-10 py-3 bg-slate-50 dark:bg-zinc-950 border border-slate-200 dark:border-zinc-805/80 rounded-xl text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-emerald-600"
                   required
@@ -509,12 +510,12 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
               className="w-full mt-2 py-3.5 bg-gradient-to-r from-emerald-600 via-emerald-650 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white font-mono font-bold text-xs uppercase tracking-widest rounded-xl hover:shadow-lg hover:shadow-emerald-500/20 active:scale-97 cursor-pointer transition-all flex items-center justify-center gap-2"
             >
               <LogIn size={14} />
-              Se connecter 🔑
+              {t('loginBtn')}
             </button>
 
             {/* Link toggle for Sign up from login */}
             <div className="text-center pt-2">
-              <span className="text-xs text-slate-500 dark:text-slate-400 font-sans">Pas de compte ? </span>
+              <span className="text-xs text-slate-500 dark:text-slate-400 font-sans">{t('noAccount')}</span>
               <button
                 type="button"
                 onClick={() => {
@@ -524,19 +525,19 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
                 }}
                 className="text-xs font-bold text-emerald-600 dark:text-emerald-450 hover:underline hover:text-emerald-750"
               >
-                S'inscrire 📝
+                {t('signupBtn')}
               </button>
             </div>
 
             {/* Alternatif mode invité rapide */}
             <div className="text-center pt-3 border-t border-slate-100 dark:border-white/5 space-y-2">
-              <p className="text-[10px] text-slate-400">Rattaché aux comptes de test ci-dessous pour simplifier l'évaluation.</p>
+              <p className="text-[10px] text-slate-400">{t('demoAccountsHint')}</p>
               <button
                 type="button"
                 onClick={handleGuestLogin}
                 className="text-xs font-bold text-[#d4af37] hover:underline"
               >
-                Continuer sans compte (mode invité) 👀
+                {t('guestModeBtn')}
               </button>
             </div>
           </form>
@@ -552,9 +553,9 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
                 className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400 hover:text-emerald-705 font-sans font-bold transition-all focus:outline-none"
               >
                 <ArrowLeft size={13} />
-                Menu Principal
+                {t('mainMenu')}
               </button>
-              <span className="text-[10px] font-mono font-black text-slate-700 dark:text-[#d4af37] uppercase tracking-wider">Créer un Compte</span>
+              <span className="text-[10px] font-mono font-black text-slate-700 dark:text-[#d4af37] uppercase tracking-wider">{t('creerCompte')}</span>
             </div>
 
             {errorMessage && (
@@ -572,11 +573,11 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
             )}
 
             <div>
-              <label className="block text-[9px] font-mono uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-1.5">Nom complet 👤</label>
+              <label className="block text-[9px] font-mono uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-1.5">{t('fullNameLabel')}</label>
               <input 
                 type="text" 
                 value={name}
-                placeholder="Ex. Nidal Lattab"
+                placeholder={t('fullNamePlaceholder')}
                 onChange={(e) => setName(e.target.value)}
                 className="w-full text-xs font-semibold px-3.5 py-3 bg-slate-50 dark:bg-zinc-950 border border-slate-200 dark:border-zinc-805/80 rounded-xl text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-emerald-600"
                 required
@@ -584,11 +585,11 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
             </div>
 
             <div>
-              <label className="block text-[9px] font-mono uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-1.5">Email 📧</label>
+              <label className="block text-[9px] font-mono uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-1.5">{t('emailLabel')}</label>
               <input 
                 type="email" 
                 value={email}
-                placeholder="Ex. nidal@rahla.dz"
+                placeholder={t('emailRegPlaceholder')}
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full text-xs font-semibold px-3.5 py-3 bg-slate-50 dark:bg-zinc-950 border border-slate-200 dark:border-zinc-805/80 rounded-xl text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-emerald-600"
                 required
@@ -596,11 +597,11 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
             </div>
 
             <div>
-              <label className="block text-[9px] font-mono uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-1.5">Mot de passe 🔒</label>
+              <label className="block text-[9px] font-mono uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-1.5">{t('passwordLabel')}</label>
               <input 
                 type="password" 
                 value={password}
-                placeholder="Mot de passe sécurisé"
+                placeholder={t('passwordRegPlaceholder')}
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full text-xs font-semibold px-3.5 py-3 bg-slate-50 dark:bg-zinc-950 border border-slate-200 dark:border-zinc-805/80 rounded-xl text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-emerald-600"
                 required
@@ -608,11 +609,11 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
             </div>
 
             <div>
-              <label className="block text-[9px] font-mono uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-1.5">Confirmation mot de passe 🔒</label>
+              <label className="block text-[9px] font-mono uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-1.5">{t('confirmPasswordLabel')}</label>
               <input 
                 type="password" 
                 value={confirmPassword}
-                placeholder="Confirmez votre mot de passe"
+                placeholder={t('confirmPasswordPlaceholder')}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 className="w-full text-xs font-semibold px-3.5 py-3 bg-slate-50 dark:bg-zinc-950 border border-slate-200 dark:border-zinc-805/80 rounded-xl text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-emerald-600"
                 required
@@ -621,7 +622,7 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
 
             <div className="grid grid-cols-2 gap-3">
               <div className="col-span-2">
-                <label className="block text-[9px] font-mono uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-1.5">Type de compte</label>
+                <label className="block text-[9px] font-mono uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-1.5">{t('accountTypeLabel')}</label>
                 <div className="flex gap-2">
                   <button
                     type="button"
@@ -633,7 +634,7 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
                     }`}
                   >
                     <UserIcon size={12} />
-                    Utilisateur 👤
+                    {t('userTypeBtn')}
                   </button>
                   <button
                     type="button"
@@ -645,7 +646,7 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
                     }`}
                   >
                     <ShieldCheck size={12} />
-                    Admin 👨💼
+                    {t('adminTypeBtn')}
                   </button>
                 </div>
               </div>
@@ -655,12 +656,12 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
             {role === 'admin' && (
               <div className="p-3 bg-amber-500/5 border border-[#d4af37]/20 rounded-2xl animate-fade-in">
                 <label className="block text-[10px] font-mono font-extrabold uppercase tracking-widest text-[#d4af37] mb-1.5 flex items-center gap-1">
-                  <Key size={11} /> Code administrateur requis
+                  <Key size={11} /> {t('adminCodeLabel')}
                 </label>
                 <input 
                   type="password" 
                   value={adminCode}
-                  placeholder="Ex: RAHLA2025"
+                  placeholder={t('adminCodePlaceholder')}
                   onChange={(e) => setAdminCode(e.target.value)}
                   className="w-full text-xs font-mono px-3 py-2 bg-slate-100 dark:bg-slate-950 border border-[#d4af37]/30 rounded-lg text-slate-900 dark:text-amber-100 placeholder-amber-700/50 focus:outline-none"
                   required={role === 'admin'}
@@ -673,12 +674,12 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
               className="w-full mt-2 py-3.5 bg-gradient-to-r from-slate-900 to-slate-850 dark:from-[#d4af37] dark:to-amber-600 text-white dark:text-black font-mono font-black text-xs uppercase tracking-widest rounded-xl hover:shadow-lg hover:shadow-amber-500/20 active:scale-97 cursor-pointer transition-all flex items-center justify-center gap-2"
             >
               <UserCheck size={14} />
-              Créer mon compte 🌍
+              {t('createAccountBtn')}
             </button>
 
             {/* Link toggle for Login from Sign up */}
             <div className="text-center pt-2">
-              <span className="text-xs text-slate-500 dark:text-slate-400 font-sans">Déjà un compte ? </span>
+              <span className="text-xs text-slate-500 dark:text-slate-400 font-sans">{t('alreadyHaveAccount')}</span>
               <button
                 type="button"
                 onClick={() => {
@@ -688,7 +689,7 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
                 }}
                 className="text-xs font-bold text-emerald-600 dark:text-emerald-450 hover:underline hover:text-emerald-750"
               >
-                Se connecter 🔑
+                {t('loginBtn')}
               </button>
             </div>
           </form>
@@ -700,16 +701,16 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
             onClick={() => setShowTestAccounts(!showTestAccounts)}
             className="text-[10px] font-mono font-bold tracking-widest uppercase text-slate-500 hover:text-emerald-600 transition-colors"
           >
-            {showTestAccounts ? '[- FERMER L’EXPLORATEUR]' : '[+ COMPTES DE TEST DISPONIBLES]'}
+            {showTestAccounts ? t('hideTestAccountsBtn') : t('showTestAccountsBtn')}
           </button>
           
           {showTestAccounts && (
             <div className="mt-3 w-full bg-slate-50 dark:bg-slate-950/80 rounded-2xl p-4 border border-slate-200 dark:border-emerald-500/10 text-[10px] space-y-2 text-slate-600 dark:text-slate-300 select-text animate-slide-down">
-              <p className="font-mono text-[9px] font-bold text-emerald-700 dark:text-[#d4af37] uppercase">Identifiants de démonstration pour validation :</p>
+              <p className="font-mono text-[9px] font-bold text-emerald-700 dark:text-[#d4af37] uppercase">{t('demoCredentialsTitle')}</p>
               
               <div className="border-t border-slate-200/50 dark:border-white/5 pt-2 flex justify-between items-center">
                 <div>
-                  <p className="font-extrabold text-[#d4af37]">👨💼 Administrateur de test :</p>
+                  <p className="font-extrabold text-[#d4af37]">{t('demoAdminTitle')}</p>
                   <p className="font-mono text-slate-500 dark:text-slate-400">Email: <span className="text-emerald-700 dark:text-emerald-450 font-bold">admin@rahala.com</span></p>
                   <p className="font-mono text-slate-500 dark:text-slate-400">Mot de passe: <span className="font-bold text-slate-800 dark:text-white">1234</span></p>
                 </div>
@@ -718,13 +719,13 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
                   onClick={() => handleApplyTestCredentials('admin@rahala.com', '1234')}
                   className="px-2 py-1 bg-emerald-600 text-white font-mono rounded cursor-pointer text-[8px]"
                 >
-                  Remplir
+                  {t('fillBtn')}
                 </button>
               </div>
 
               <div className="border-t border-slate-200/50 dark:border-white/5 pt-2 flex justify-between items-center">
                 <div>
-                  <p className="font-extrabold text-slate-700 dark:text-slate-200">👤 Voyageur Standard RAHLA :</p>
+                  <p className="font-extrabold text-slate-700 dark:text-slate-200">{t('demoUserTitle')}</p>
                   <p className="font-mono text-slate-500 dark:text-slate-400">Email: <span className="text-emerald-700 dark:text-emerald-450 font-bold">user@rahla.dz</span></p>
                   <p className="font-mono text-slate-500 dark:text-slate-400">Mot de passe: <span className="font-bold text-slate-800 dark:text-white">password</span></p>
                 </div>
@@ -733,13 +734,13 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
                   onClick={() => handleApplyTestCredentials('user@rahla.dz', 'password')}
                   className="px-2 py-1 bg-emerald-600 text-white font-mono rounded cursor-pointer text-[8px]"
                 >
-                  Remplir
+                  {t('fillBtn')}
                 </button>
               </div>
 
               <div className="border-t border-[#1a1a1a]/5 dark:border-white/5 pt-2 flex justify-between items-center">
                 <div>
-                  <p className="font-extrabold text-slate-700 dark:text-slate-200">👤 Voyageur Premium (Nidal) :</p>
+                  <p className="font-extrabold text-slate-700 dark:text-slate-200">{t('demoPremiumUserTitle')}</p>
                   <p className="font-mono text-slate-500 dark:text-slate-400">Email: <span className="text-emerald-700 dark:text-emerald-450 font-bold">lattab.nidal@gmail.com</span></p>
                   <p className="font-mono text-slate-500 dark:text-slate-400">Mot de passe: <span className="font-bold text-slate-800 dark:text-white">lattab.nidal@gmail.com</span></p>
                 </div>
@@ -748,12 +749,12 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
                   onClick={() => handleApplyTestCredentials('lattab.nidal@gmail.com', 'lattab.nidal@gmail.com')}
                   className="px-2 py-1 bg-emerald-600 text-white font-mono rounded cursor-pointer text-[8px]"
                 >
-                  Remplir
+                  {t('fillBtn')}
                 </button>
               </div>
 
               <p className="border-t border-[#1a1a1a]/5 dark:border-white/5 pt-2 text-[8px] font-sans text-emerald-700 dark:text-emerald-400 flex items-center gap-1 italic">
-                ℹ️ Pour créer un Administrateur depuis l’onglet Inscription, utilisez le code : <span className="font-bold font-mono text-slate-950 dark:text-white bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-zinc-800 px-1 rounded">RAHLA2025</span>.
+                {t('adminCreationHint')} <span className="font-bold font-mono text-slate-950 dark:text-white bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-zinc-800 px-1 rounded">RAHLA2025</span>.
               </p>
             </div>
           )}

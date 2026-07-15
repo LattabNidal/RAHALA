@@ -612,6 +612,8 @@ export const AIGuide: React.FC = () => {
           ? 'مرحباً بك! أنا مرشدك السياحي الذكي المخصص لرحلتك في الجزائر. اسألني عن أي شيء، مثل تاريخ القصبة العريق، أو تحف الطبخ الوهراني، أو تخطيط برنامج لزيارة جسور قسنطينة المعلقة ولماذا تبكي البقرة في طاسلي؟'
           : language === 'fr'
           ? "Bienvenue ! Je suis votre guide touristique intelligent pour l'Algérie. Posez-moi vos questions sur l'histoire de la Casbah, la cuisine de l'Oranie, ou comment organiser un voyage à Constantine."
+          : language === 'es'
+          ? "¡Bienvenido! Soy su guía turístico inteligente para Argelia. Pregúnteme sobre la historia de la Casbah, la comida tradicional o cómo organizar un viaje."
           : 'Cruising through Algeria? Ask me anything! I am your AI local guide for food recommendations in Algiers, historic context of Constantine, or logistics of a Sahara expedition.',
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       }
@@ -815,6 +817,35 @@ export const AIGuide: React.FC = () => {
   ];
 
   if (currentUser?.role === 'guest') {
+    const guestLockTrans = {
+      title: {
+        en: '🔒 Limited Access',
+        fr: '🔒 Accès Limité',
+        ar: '🔒 دخول محدود',
+        es: '🔒 Acceso Limitado'
+      },
+      desc: {
+        en: 'Please create an account or sign in on RAHLA to unlock our intelligent AI Guide and plan customized itineraries!',
+        fr: 'Veuillez créer un compte ou vous connecter sur RAHLA pour débloquer le guide IA intelligent et pouvoir planifier vos itinéraires sur mesure !',
+        ar: 'يرجى إنشاء حساب أو تسجيل الدخول في رحلة لتفعيل دليل الذكاء الاصطناعي الذكي لتخطيط مسارات مخصصة لرحلتك!',
+        es: '¡Cree una cuenta o inicie sesión en RAHLA para desbloquear la guía de IA inteligente y planificar itinerarios a su medida!'
+      },
+      info: {
+        en: "ℹ️ Guest mode (limited access) allows you to explore Algeria's destinations on our 3D digital twin or the interactive map, but interactive AI features powered by Gemini 3.5 are reserved for authenticated members.",
+        fr: "ℹ️ Le mode invité (accès limité) vous permet d'explorer les destinations d'Algérie sur l'échelle 3D ou via la carte interactive d'excellence, mais les fonctionnalités interactives assistées par l'IA de Gemini 3.5 sont réservées aux membres authentifiés.",
+        ar: "ℹ️ يسمح لك وضع الزائر (الدخول المحدود) باستكشاف الوجهات في الجزائر عبر التوأم الرقمي ثلاثي الأبعاد أو الخريطة التفاعلية، ولكن الميزات التفاعلية الذكية القائمة على جيميناي 3.5 مخصصة فقط للأعضاء المسجلين.",
+        es: "ℹ️ El modo de invitado (acceso limitado) le permite explorar los destinos de Argelia en 3D o en el mapa interactivo, pero las funciones interactivas de IA con Gemini 3.5 están reservadas para miembros registrados."
+      },
+      footer: {
+        en: 'Creating an account takes less than a minute on the home screen.',
+        fr: "Créer un compte vous prendra moins d'une minute sur l'écran d'accueil.",
+        ar: 'إنشاء حساب يستغرق أقل من دقيقة واحدة على الشاشة الرئيسية.',
+        es: 'Crear una cuenta toma menos de un minuto en la pantalla de inicio.'
+      }
+    };
+
+    const curLang = (language === 'ar' || language === 'es' || language === 'fr' || language === 'en') ? language : 'en';
+
     return (
       <div className="py-12 max-w-xl mx-auto px-4 text-center animate-fade-in animate-duration-300" id="ai-companion-assistant">
         <div className="bg-white/95 dark:bg-[#151515]/95 border-2 border-amber-500/20 rounded-3xl p-8 shadow-2xl space-y-6">
@@ -823,17 +854,17 @@ export const AIGuide: React.FC = () => {
           </div>
           <div>
             <h2 className="text-2xl font-serif font-black text-slate-800 dark:text-slate-100 leading-snug">
-              🔒 Accès Limité
+              {guestLockTrans.title[curLang]}
             </h2>
             <p className="text-xs text-slate-500 dark:text-slate-400 mt-2 font-serif leading-relaxed">
-              Veuillez créer un compte ou vous connecter sur RAHLA pour débloquer le guide IA intelligent et pouvoir planifier vos itinéraires sur mesure !
+              {guestLockTrans.desc[curLang]}
             </p>
           </div>
           <div className="p-4 bg-amber-500/5 rounded-2xl border border-[#d4af37]/15 text-xs text-left leading-relaxed text-slate-650 dark:text-slate-350 font-serif">
-            ℹ️ Le mode invité (accès limité) vous permet d'explorer les destinations d'Algérie sur l'échelle 3D ou via la carte interactive d'excellence, mais les fonctionnalités interactives assistées par l'IA de Gemini 3.5 sont réservées aux membres authentifiés.
+            {guestLockTrans.info[curLang]}
           </div>
           <p className="text-[10px] text-slate-400 italic">
-            Créer un compte vous prendra moins d'une minute sur l'écran d'accueil.
+            {guestLockTrans.footer[curLang]}
           </p>
         </div>
       </div>

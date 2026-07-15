@@ -1,7 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Play, Pause, Volume2, VolumeX, Maximize2, Upload, AlertCircle, FileVideo, Sparkles, Film, ChevronRight, HelpCircle } from 'lucide-react';
+import { Play, Pause, Volume2, VolumeX, Maximize2, Upload, AlertCircle, FileVideo, Sparkles, Film } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 export const PromoVideo: React.FC = () => {
+  const { t, isRtl } = useLanguage();
   const [videoFile, setVideoFile] = useState<File | null>(null);
   const [videoUrl, setVideoUrl] = useState<string | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -108,7 +110,10 @@ export const PromoVideo: React.FC = () => {
 
   const handleVideoFile = (file: File) => {
     if (!file.type.startsWith('video/')) {
-      alert("Veuillez sélectionner un format de fichier vidéo valide (.mp4, .mov, .webm) ⚠️");
+      const errMsg = isRtl 
+        ? "يرجى تحديد تنسيق ملف فيديو صالح (.mp4، .mov، .webm) ⚠️"
+        : "Please select a valid video file format (.mp4, .mov, .webm) ⚠️";
+      alert(errMsg);
       return;
     }
 
@@ -285,16 +290,16 @@ export const PromoVideo: React.FC = () => {
           <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#d4af37]/15 rounded-full border border-[#d4af37]/40">
             <span className="w-2 h-2 rounded-full bg-[#d4af37] animate-pulse"></span>
             <span className="text-[10px] uppercase font-mono font-black text-[#d4af37] tracking-widest flex items-center gap-1">
-              <Film size={11} /> Rahala TV / Promo
+              <Film size={11} /> {t('promoTvLabel')}
             </span>
           </div>
 
           <div className="space-y-3">
             <h1 className="text-3xl font-serif font-black tracking-tight text-white leading-tight">
-              L'Algérie comme vous ne l'avez <span className="bg-gradient-to-r from-emerald-400 via-[#d4af37] to-red-400 bg-clip-text text-transparent">jamais vue</span>.
+              {t('promoTitle')}
             </h1>
             <p className="text-xs text-slate-300 font-serif leading-relaxed">
-              Explorez les dunes ondoyantes du grand Tassili, suivez les pas de notre voyageur Touareg connecté à son guide RAHALA AI, et plongez au cœur de l'histoire numide et romaine. Une production immersive originale.
+              {t('promoSubtitle')}
             </p>
           </div>
 
@@ -303,8 +308,8 @@ export const PromoVideo: React.FC = () => {
             <div className="flex items-start gap-2.5">
               <Sparkles size={16} className="text-[#d4af37] mt-0.5 flex-shrink-0" />
               <div>
-                <p className="font-extrabold text-[#f5f2ed] mb-0.5">Le saviez-vous ?</p>
-                <p className="text-gray-400 text-[11px]">Le voyageur en bleu représenté dans la vidéo utilise l'assistant instantané RAHALA pour naviguer la Casbah d'Alger et les recoins mystiques du Sahara méridional.</p>
+                <p className="font-extrabold text-[#f5f2ed] mb-0.5">{t('didYouKnow')}</p>
+                <p className="text-gray-400 text-[11px]">{t('didYouKnowText')}</p>
               </div>
             </div>
           </div>
@@ -337,13 +342,13 @@ export const PromoVideo: React.FC = () => {
 
               <div>
                 <p className="text-xs font-bold text-white group-hover:text-emerald-400 transition-colors">
-                  {videoFile ? `Vidéo active : ${videoFile.name}` : "Glissez votre vidéo de présentation ou le Trailer ici"}
+                  {videoFile ? `${t('videoActiveLabel')}${videoFile.name}` : t('dragVideoPlaceholder')}
                 </p>
                 <p className="text-[10.5px] text-[#d4af37] font-bold mt-1">
-                  {videoFile ? "Cliquez pour changer de vidéo" : "📥 Glissez-déposez le fichier vidéo (.mp4) que vous venez de m'envoyer !"}
+                  {videoFile ? t('clickToChangeVideo') : t('dragVideoSub')}
                 </p>
                 <p className="text-[9px] text-slate-400 mt-1">
-                  Le lecteur l'enregistrera localement de manière sécurisée (IndexedDB) pour qu'elle fonctionne instantanément sans connexion.
+                  {t('indexedDbWarning')}
                 </p>
               </div>
             </div>
@@ -355,7 +360,7 @@ export const PromoVideo: React.FC = () => {
                 className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white text-[11px] font-mono rounded-xl transition cursor-pointer"
                 id="url-config-trigger"
               >
-                {showUrlInput ? "Masquer formulaire URL" : "🔗 Saisir une URL vidéo"}
+                {showUrlInput ? t('hideUrlFormBtn') : t('enterVideoUrlBtn')}
               </button>
 
               {videoUrl !== defaultVideoUrl && (
@@ -364,7 +369,7 @@ export const PromoVideo: React.FC = () => {
                   className="px-4 py-2 bg-red-650/20 hover:bg-red-650/30 text-rose-350 hover:text-rose-200 text-[11px] font-mono border border-red-900/30 rounded-xl transition cursor-pointer"
                   id="reset-video-btn"
                 >
-                  🔄 Réinitialiser la vidéo par défaut
+                  {t('resetVideoDefaultBtn')}
                 </button>
               )}
             </div>
@@ -372,7 +377,7 @@ export const PromoVideo: React.FC = () => {
             {/* URL input field */}
             {showUrlInput && (
               <form onSubmit={handleUrlSubmit} className="space-y-2.5 animate-fade-in bg-slate-950/60 p-4 border border-slate-800 rounded-2xl">
-                <label className="block text-[10px] font-mono uppercase tracking-widest text-[#d4af37]">Insérez une URL de streaming direct (.mp4, .webm) :</label>
+                <label className="block text-[10px] font-mono uppercase tracking-widest text-[#d4af37]">{t('streamingUrlLabel')}</label>
                 <div className="flex gap-2">
                   <input
                     type="url"
@@ -386,7 +391,7 @@ export const PromoVideo: React.FC = () => {
                     type="submit"
                     className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-mono text-xs font-bold rounded-xl whitespace-nowrap transition cursor-pointer"
                   >
-                    Activer
+                    {t('activateBtn')}
                   </button>
                 </div>
               </form>
@@ -417,20 +422,20 @@ export const PromoVideo: React.FC = () => {
             ) : (
               <div className="absolute inset-0 flex flex-col items-center justify-center bg-slate-950 text-center p-6" id="video-fallback-screen">
                 <AlertCircle size={36} className="text-[#d4af37] mb-3 animate-pulse" />
-                <p className="text-xs font-extrabold text-white uppercase tracking-wider">Guide de lecture du Trailer Rahala 🎬</p>
+                <p className="text-xs font-extrabold text-white uppercase tracking-wider">{t('playbackGuideTitle')}</p>
                 <div className="max-w-sm mt-2 text-[10.5px] text-zinc-300 space-y-2 leading-relaxed">
                   <p>
-                    Les restrictions de sécurité de votre navigateur ou de vos extensions AdBlockers bloquent parfois l'accès aux serveurs de streaming cloud externes.
+                    {t('browserRestrictionsText')}
                   </p>
                   <p className="text-emerald-400 font-bold">
-                    Pour regarder la magnifique vidéo que vous venez de m'envoyer, téléchargez-la sur votre appareil puis chargez-la simplement ci-dessous !
+                    {t('localLoadSuggestion')}
                   </p>
                 </div>
                 <button 
                   onClick={() => fileInputRef.current?.click()}
                   className="mt-4 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-mono text-[9.5px] uppercase rounded-xl tracking-wider font-bold transition-all transform hover:scale-105 active:scale-95 shadow-md shadow-emerald-950/50 cursor-pointer"
                 >
-                  📁 Sélectionner le fichier vidéo (.mp4)
+                  {t('selectVideoFileBtn')}
                 </button>
               </div>
             )}
@@ -480,7 +485,7 @@ export const PromoVideo: React.FC = () => {
                     <button
                       onClick={togglePlay}
                       className="text-white hover:text-[#d4af37] transition cursor-pointer"
-                      title={isPlaying ? "Mettre en pause" : "Lancer la lecture"}
+                      title={isPlaying ? t('pauseBtnTitle') : t('playBtnTitle')}
                     >
                       {isPlaying ? <Pause size={18} /> : <Play size={18} />}
                     </button>
@@ -489,14 +494,14 @@ export const PromoVideo: React.FC = () => {
                     <button
                       onClick={toggleMute}
                       className="text-white hover:text-emerald-400 transition cursor-pointer"
-                      title={isMuted ? "Activer le son" : "Couper le son"}
+                      title={isMuted ? t('unmuteBtnTitle') : t('muteBtnTitle')}
                     >
                       {isMuted ? <VolumeX size={18} /> : <Volume2 size={18} />}
                     </button>
                     
                     {isMuted && (
                       <span className="text-[9px] font-mono uppercase bg-emerald-500/15 border border-emerald-500/20 px-2 py-0.5 rounded text-emerald-400 animate-pulse">
-                        Sourdine active
+                        {t('muteActiveLabel')}
                       </span>
                     )}
                   </div>
@@ -506,7 +511,7 @@ export const PromoVideo: React.FC = () => {
                     <button
                       onClick={handleFullscreen}
                       className="text-white hover:text-[#d4af37] transition cursor-pointer"
-                      title="Plein écran théatral"
+                      title={t('theaterFullscreenTitle')}
                     >
                       <Maximize2 size={16} />
                     </button>
@@ -521,7 +526,7 @@ export const PromoVideo: React.FC = () => {
       {/* Decorative prompt reference badge */}
       <div className="mt-6 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-slate-800 pt-5 text-[10px] font-mono text-slate-400 uppercase tracking-widest">
         <p className="flex items-center gap-1.5 font-bold">
-          <Sparkles size={11} className="text-[#d4af37]" /> Expérience optimisée d'après vos vidéos exclusives de la Casbah et du Hoggar
+          <Sparkles size={11} className="text-[#d4af37]" /> {t('optimizedExperienceLabel')}
         </p>
         <div className="flex gap-2">
           <span className="px-2 py-0.5 bg-emerald-950/20 border border-emerald-500/35 rounded text-emerald-400">Cinematic 4K</span>

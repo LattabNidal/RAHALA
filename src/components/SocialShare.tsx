@@ -4,12 +4,13 @@ import {
   Facebook, Twitter, ShieldCheck, Send
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
+import { useLanguage } from '../context/LanguageContext';
 
 interface SocialShareProps {
   title: string;
   text: string;
   url: string;
-  language: 'en' | 'ar';
+  language: string;
   handleDownloadPDF: () => void;
   addNotification: (msg: string) => void;
 }
@@ -18,26 +19,20 @@ export const SocialShare: React.FC<SocialShareProps> = ({
   title,
   text,
   url,
-  language,
   handleDownloadPDF,
   addNotification
 }) => {
   const { currentUser } = useApp();
+  const { t, isRtl } = useLanguage();
   const [copied, setCopied] = useState(false);
   const fullTextAndUrl = `${text}\n${url}`;
 
   const handleCopy = () => {
     navigator.clipboard.writeText(url);
     setCopied(true);
-    addNotification(
-      language === 'ar' 
-        ? 'تم نسخ الرابط المباشر للمسار! 📋' 
-        : 'Lien direct de l\'itinéraire copié ! 📋'
-    );
+    addNotification(t('itineraryLinkCopied'));
     setTimeout(() => setCopied(false), 2500);
   };
-
-  const isRtl = language === 'ar';
 
   return (
     <div className="w-full mt-8 p-6 md:p-8 rounded-3xl bg-amber-500/[0.01] dark:bg-zinc-950/25 border border-[#d4af37]/25 dark:border-[#d4af37]/15 shadow-sm text-left relative overflow-hidden">
@@ -50,30 +45,28 @@ export const SocialShare: React.FC<SocialShareProps> = ({
           <div className={`flex items-center gap-2 mb-1.5 ${isRtl ? 'flex-row-reverse' : ''}`}>
             <Share2 size={16} className="text-[#d4af37]" />
             <h4 className="text-sm font-mono font-black uppercase tracking-wider text-gray-800 dark:text-gray-100">
-              {isRtl ? 'بوابة المشاركة والتحقق الرقمي' : 'Portail d\'Authentification & Partage'}
+              {t('authSharePortal')}
             </h4>
           </div>
           <p className="text-xs text-gray-500 dark:text-gray-400">
-            {isRtl 
-              ? `خيارات المصادقة والمزامنة السريعة لمخطط رحلتك إلى ${title}`
-              : `Options d'authentification et de synchronisation pour votre itinéraire à ${title}`}
+            {t('sharePortalSubtitle')}{title}
           </p>
         </div>
-
+ 
         {/* Dynamic Traveler Session Badge */}
         <div className={`flex items-center gap-2.5 p-2 px-3.5 rounded-2xl bg-emerald-500/5 border border-emerald-500/20 ${isRtl ? 'flex-row-reverse' : ''}`}>
           <ShieldCheck className="text-emerald-500 shrink-0 animate-pulse" size={15} />
           <div className={`text-xs ${isRtl ? 'text-right' : 'text-left'}`}>
             <span className="text-[9px] font-mono uppercase tracking-wider text-emerald-600 dark:text-emerald-400 font-extrabold block">
-              {isRtl ? 'جلسة سفر معتمدة' : 'SESSION DE VOYAGE CERTIFIÉE'}
+              {t('certifiedSession')}
             </span>
             <span className="text-[11px] text-gray-700 dark:text-gray-300 font-semibold font-mono">
-              {currentUser?.name || 'Nidal Lattab'} ({isRtl ? 'مفعل' : 'Actif'})
+              {currentUser?.name || 'Nidal Lattab'} ({t('activeLabel')})
             </span>
           </div>
         </div>
       </div>
-
+ 
       {/* Modern 3-Column Horizontal Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         
@@ -83,16 +76,14 @@ export const SocialShare: React.FC<SocialShareProps> = ({
             <div className={`flex items-center gap-2 mb-2 ${isRtl ? 'flex-row-reverse' : ''}`}>
               <Copy size={15} className="text-[#d4af37]" />
               <h5 className="text-xs font-mono font-black uppercase tracking-wider text-gray-700 dark:text-gray-200">
-                {isRtl ? 'رابط الوصول المباشر' : 'Lien de Partage'}
+                {t('shareLinkLabel')}
               </h5>
             </div>
             <p className={`text-[11px] text-gray-400 dark:text-gray-500 leading-relaxed mb-4 ${isRtl ? 'text-right' : 'text-left'}`}>
-              {isRtl 
-                ? 'انسخ رابط المسار التفاعلي لمشاركته مباشرة أو فتحه على أي متصفح.'
-                : 'Copiez le lien de l\'itinéraire interactif pour le partager ou l\'ouvrir instantanément.'}
+              {t('shareLinkDescription')}
             </p>
           </div>
-
+ 
           <div className="space-y-3">
             <div className={`flex gap-1.5 ${isRtl ? 'flex-row-reverse' : ''}`}>
               <input
@@ -104,15 +95,15 @@ export const SocialShare: React.FC<SocialShareProps> = ({
               <button
                 onClick={handleCopy}
                 className="flex items-center justify-center p-2 rounded-xl bg-[#1a1a1a] dark:bg-[#f5f2ed] text-white dark:text-[#1a1a1a] hover:bg-[#d4af37] dark:hover:bg-[#d4af37] hover:text-black dark:hover:text-black transition cursor-pointer shrink-0"
-                title={isRtl ? 'نسخ الرابط' : 'Copier le lien'}
+                title={t('shareLinkLabel')}
               >
                 {copied ? <CheckCircle2 size={14} className="text-emerald-500" /> : <Copy size={14} />}
               </button>
             </div>
-
+ 
             {/* Micro Social Share Shortcuts */}
             <div className={`flex items-center gap-2 ${isRtl ? 'flex-row-reverse' : ''}`}>
-              <span className="text-[9px] font-mono uppercase text-gray-400">{isRtl ? 'مشاركة سريعة:' : 'Partage:'}</span>
+              <span className="text-[9px] font-mono uppercase text-gray-400">{t('shareLabel')}</span>
               <div className="flex gap-1.5">
                 <a
                   href={`https://api.whatsapp.com/send?text=${encodeURIComponent(fullTextAndUrl)}`}
@@ -145,23 +136,21 @@ export const SocialShare: React.FC<SocialShareProps> = ({
             </div>
           </div>
         </div>
-
+ 
         {/* Column 2: Elegant Frameable QR Code */}
         <div className="flex flex-col justify-between p-5 rounded-2xl bg-white dark:bg-zinc-900/40 border border-zinc-200/40 dark:border-zinc-800/40">
           <div>
             <div className={`flex items-center gap-2 mb-2 ${isRtl ? 'flex-row-reverse' : ''}`}>
               <QrCode size={15} className="text-[#d4af37]" />
               <h5 className="text-xs font-mono font-black uppercase tracking-wider text-gray-700 dark:text-gray-200">
-                {isRtl ? 'رمز الاستجابة السريع' : 'Code QR de Synchronisation'}
+                {t('syncQrCode')}
               </h5>
             </div>
             <p className={`text-[11px] text-gray-400 dark:text-gray-500 leading-relaxed mb-4 ${isRtl ? 'text-right' : 'text-left'}`}>
-              {isRtl
-                ? 'امسح الرمز بكاميرا الهاتف للمزامنة والتوجيه الحي أثناء رحلتك.'
-                : 'Scannez avec votre mobile pour synchroniser et activer le GPS en direct.'}
+              {t('syncQrDescription')}
             </p>
           </div>
-
+ 
           <div className="flex items-center gap-4 bg-zinc-50 dark:bg-zinc-950 p-2.5 rounded-xl border border-zinc-200/30 dark:border-zinc-800/30">
             <div className="p-1.5 bg-white rounded-lg border border-[#d4af37]/30 shrink-0">
               <img 
@@ -173,63 +162,59 @@ export const SocialShare: React.FC<SocialShareProps> = ({
             </div>
             <div className={`text-left ${isRtl ? 'text-right' : ''}`}>
               <span className="text-[9px] font-mono font-bold text-amber-600 dark:text-amber-400 block uppercase">
-                {isRtl ? 'مسح سريع' : 'SCAN SMARTPHONE'}
+                {t('scanSmartphone')}
               </span>
               <p className="text-[10px] text-gray-500 leading-snug mt-0.5">
-                {isRtl ? 'يفتح الموقع المتنقل فوراً.' : 'Accès instantané optimisé mobile.'}
+                {t('mobileAccessOptimized')}
               </p>
             </div>
           </div>
         </div>
-
+ 
         {/* Column 3: Printable Offline PDF Guide */}
         <div className="flex flex-col justify-between p-5 rounded-2xl bg-white dark:bg-zinc-900/40 border border-zinc-200/40 dark:border-zinc-800/40">
           <div>
             <div className={`flex items-center gap-2 mb-2 ${isRtl ? 'flex-row-reverse' : ''}`}>
               <Download size={15} className="text-[#d4af37]" />
               <h5 className="text-xs font-mono font-black uppercase tracking-wider text-gray-700 dark:text-gray-200">
-                {isRtl ? 'دليل PDF للطباعة' : 'Guide de Voyage PDF'}
+                {t('pdfTravelGuide')}
               </h5>
             </div>
             <p className={`text-[11px] text-gray-400 dark:text-gray-500 leading-relaxed mb-4 ${isRtl ? 'text-right' : 'text-left'}`}>
-              {isRtl
-                ? 'قم بتحميل ملف PDF رسمي وموثق يتضمن تفاصيل الحجوزات ورمز التحقق.'
-                : 'Téléchargez un dossier PDF certifié incluant vos réservations et votre jeton de sécurité.'}
+              {t('pdfTravelDescription')}
             </p>
           </div>
-
+ 
           <div>
             <button
               onClick={handleDownloadPDF}
               className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-[#d4af37]/10 hover:bg-[#d4af37]/20 border border-[#d4af37]/30 hover:border-[#d4af37]/50 text-[#d4af37] font-mono text-xs font-black uppercase tracking-wider transition cursor-pointer"
             >
               <Download size={13} className="shrink-0" />
-              <span>{isRtl ? 'تحميل الملف' : 'Télécharger le PDF'}</span>
+              <span>{t('downloadPdfBtn')}</span>
             </button>
             <div className="flex items-center justify-center gap-1 mt-2">
               <span className="text-[9px] font-mono text-emerald-500 font-extrabold uppercase animate-pulse">●</span>
               <span className="text-[9px] font-mono text-gray-400 dark:text-gray-500 uppercase">
-                {isRtl ? 'مع رمز أمان مدمج' : 'AVEC JETON INTÉGRÉ'}
+                {t('withIntegratedToken')}
               </span>
             </div>
           </div>
         </div>
-
+ 
       </div>
-
+ 
       {/* Security Disclaimer / Authentic Token Footer */}
       <div className="mt-6 pt-4 border-t border-zinc-200/40 dark:border-zinc-800/40 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
         <span className="text-[10px] text-gray-400 dark:text-gray-500 font-mono">
-          {isRtl 
-            ? `الرمز المرجعي الآمن للمطابقة: RIHLA-TOKEN-${(currentUser?.id || 'usr-928').toUpperCase()}`
-            : `RÉFÉRENCE DE CERTIFICATION UNIQUE : RIHLA-TOKEN-${(currentUser?.id || 'usr-928').toUpperCase()}`}
+          {t('uniqueCertificationRef')}RIHLA-TOKEN-{(currentUser?.id || 'usr-928').toUpperCase()}
         </span>
         <div className={`flex items-center gap-1.5 text-[9px] font-mono font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400 ${isRtl ? 'flex-row-reverse' : ''}`}>
           <ShieldCheck size={12} className="shrink-0 text-amber-500" />
-          <span>{isRtl ? 'نظام التحقق الرقمي الموحد RAHLA' : 'SYSTÈME D\'AUTHENTICATION UNIFIÉ RAHLA'}</span>
+          <span>{t('unifiedAuthenticationSystem')}</span>
         </div>
       </div>
-
+ 
     </div>
   );
 };

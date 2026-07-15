@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { LanguageProvider, useLanguage } from './context/LanguageContext';
 import { AppProvider, useApp } from './context/AppContext';
+import androidChrome from './assets/images/android-chrome-512x512.png';
+import rahalaHeroBanner from './assets/images/rahala_hero_banner_1784119916854.jpg';
+import rahalaLogo from './assets/images/rahala_logo_1781612694384.jpg';
 import { Navigation } from './components/Navigation';
 import { DigitalTwin } from './components/DigitalTwin';
 import { InteractiveMap } from './components/InteractiveMap';
@@ -280,7 +283,7 @@ function RihlaApp() {
               {/* Hero background image integration */}
               <div className="absolute inset-0 z-0">
                 <img 
-                  src="/rahala_hero_banner_1784119916854.jpg" 
+                  src={rahalaHeroBanner} 
                   alt="RAHALA Premium Hero Banner" 
                   className="w-full h-full object-cover object-center opacity-95 transform scale-100 duration-1000"
                   referrerPolicy="no-referrer"
@@ -298,7 +301,7 @@ function RihlaApp() {
                   <div className="relative mb-6">
                     <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full overflow-hidden border border-zinc-700/50 shadow-xl bg-slate-900 p-1">
                       <img 
-                        src="/android-chrome-512x512.png" 
+                        src={rahalaLogo} 
                         alt="RAHALA Logo Centered" 
                         className="w-full h-full rounded-full object-cover"
                         referrerPolicy="no-referrer"
