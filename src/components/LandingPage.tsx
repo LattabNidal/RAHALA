@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Sparkles, Compass, Map, Globe, ArrowRight, Hotel, Car, ArrowLeft, Shield, CheckCircle } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Sparkles, Compass, Map, Globe, ArrowRight, Hotel, Car, ArrowLeft, Shield, CheckCircle, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { Language } from '../types';
 import { SEOHead } from '../SEOHead';
@@ -13,6 +13,109 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterAuth }) => {
   const [langOpen, setLangOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [activeTab, setActiveTab] = useState<'stays' | 'taxis' | 'guide'>('stays');
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  const bannerSlides = [
+    {
+      id: 1,
+      type: 'premium-hero',
+      title: {
+        en: 'RAHALA AI',
+        fr: 'RAHALA AI',
+        ar: 'رحالة الذكي',
+        es: 'RAHALA AI'
+      },
+      subtitle: {
+        en: "Découvrez l'Algérie autrement",
+        fr: "Découvrez l'Algérie autrement",
+        ar: "اكتشف الجزائر بشكل مختلف",
+        es: "Descubre Argelia de otra manera"
+      },
+      cta: {
+        en: 'EXPLORE NOW ➔',
+        fr: 'EXPLOREZ MAINTENANT ➔',
+        ar: 'اكتشف الآن ➔',
+        es: 'EXPLORAR AHORA ➔'
+      },
+      image: '/rahala_hero_banner_1784119916854.jpg'
+    },
+    {
+      id: 2,
+      type: 'brand',
+      title: {
+        en: 'RAHALA AI • Smart Digital Guide',
+        fr: 'RAHALA AI • Guide Numérique Intelligent',
+        ar: 'رحالة الذكي • دليل السفر الرقمي',
+        es: 'RAHALA AI • Guía Digital Inteligente'
+      },
+      subtitle: {
+        en: 'Discover Algeria like never before with 3D models, smart route planning, and safe bookings.',
+        fr: 'Découvrez l\'Algérie autrement avec des jumeaux 3D, des itinéraires intelligents et des réservations sécurisées.',
+        ar: 'اكتشف الجزائر بطريقة جديدة كلياً مع نماذج ثلاثية الأبعاد، تخطيط ذكي للمسارات وحجوزات آمنة وموثوقة.',
+        es: 'Descubre Argelia como nunca antes con modelos 3D, rutas inteligentes y reservas seguras.'
+      },
+      cta: {
+        en: 'Start Exploring ✈️',
+        fr: 'Commencer l\'Aventure ✈️',
+        ar: 'ابدأ الاستكشاف الآن ✈️',
+        es: 'Comenzar a Explorar ✈️'
+      },
+      image: '/android-chrome-512x512.png'
+    },
+    {
+      id: 3,
+      type: 'image',
+      title: {
+        en: 'Immersive 3D Landmarks',
+        fr: 'Monuments 3D Immersifs',
+        ar: 'معالم سياحية ثلاثية الأبعاد غامرة',
+        es: 'Monumentos 3D Inmersivos'
+      },
+      subtitle: {
+        en: 'Take high-fidelity 3D virtual tours of historical landmarks before your physical travel.',
+        fr: 'Faites des visites virtuelles 3D immersives de monuments historiques avant de vous déplacer.',
+        ar: 'قم بجولات افتراضية تفاعلية ثلاثية الأبعاد للمعالم التاريخية قبل السفر الفعلي.',
+        es: 'Realiza visitas virtuales 3D de monumentos históricos antes de tu viaje.'
+      },
+      cta: {
+        en: 'Try 3D Twin 🏛️',
+        fr: 'Essayer le Jumeau 3D 🏛️',
+        ar: 'جرب التوأم الرقمي 🏛️',
+        es: 'Probar Gemelo 3D 🏛️'
+      },
+      image: 'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?auto=format&fit=crop&w=1200&q=80'
+    },
+    {
+      id: 4,
+      type: 'image',
+      title: {
+        en: 'Personalized AI Itineraries',
+        fr: 'Itinéraires IA Personnalisés',
+        ar: 'خطط رحلات مخصصة بالذكاء الاصطناعي',
+        es: 'Itinerarios Personalizados con IA'
+      },
+      subtitle: {
+        en: 'Let our Gemini-powered assistant construct the perfect day-by-day Algerian travel plan tailored to your budget.',
+        fr: 'Laissez notre assistant Gemini concevoir le plan de voyage idéal adapté à votre budget.',
+        ar: 'دع مساعدنا الذكي المدعوم بـ Gemini يصمم لك خطة سفر يومية مثالية تناسب ميزانيتك.',
+        es: 'Deja que nuestro asistente de IA cree el itinerario ideal para tu presupuesto.'
+      },
+      cta: {
+        en: 'Generate Plan 📝',
+        fr: 'Créer un Itinéraire 📝',
+        ar: 'توليد الخطة الذكية 📝',
+        es: 'Crear Itinerario 📝'
+      },
+      image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80'
+    }
+  ];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % bannerSlides.length);
+    }, 6000);
+    return () => clearInterval(interval);
+  }, [bannerSlides.length]);
 
   const languagesList: { code: Language; label: string; flag: string }[] = [
     { code: 'en', label: 'English', flag: '🇬🇧' },
@@ -59,7 +162,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterAuth }) => {
       <header className="bg-white/80 backdrop-blur-md border-b border-gray-100 px-4 sm:px-8 py-3.5 flex items-center justify-between sticky top-0 z-50 shadow-xs">
         <div className="flex items-center gap-3">
           <img 
-            src="/src/assets/images/rahala_logo_1781612694384.jpg" 
+            src="/android-chrome-512x512.png" 
             alt="RAHALA Logo" 
             className="w-10 h-10 rounded-full object-cover border border-gray-100 shadow-xs"
           />
@@ -148,6 +251,195 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterAuth }) => {
             <span className="bg-white px-2.5 py-1 rounded-lg border border-gray-200/60 shadow-xs">🇩🇿 Tourisme Algérie</span>
             <span className="bg-white px-2.5 py-1 rounded-lg border border-gray-200/60 shadow-xs">✨ Visit Algeria</span>
             <span className="bg-white px-2.5 py-1 rounded-lg border border-gray-200/60 shadow-xs">📍 Oran Travel Guide</span>
+          </div>
+        </div>
+
+        {/* 2.1 INTERACTIVE PREMIUM CAROUSEL BANNER */}
+        <div className="w-full max-w-6xl mx-auto px-4 relative overflow-hidden rounded-3xl shadow-2xl border border-gray-100 group h-[480px] sm:h-[360px] md:h-[400px] bg-slate-950">
+          {/* Slides Track */}
+          <div 
+            className="w-full h-full flex transition-transform duration-700 ease-out"
+            style={{ transform: `translateX(${isRtl ? currentSlide * 100 : -currentSlide * 100}%)` }}
+          >
+            {bannerSlides.map((slide) => {
+              const slideTitle = slide.title[language] || slide.title['en'];
+              const slideSubtitle = slide.subtitle[language] || slide.subtitle['en'];
+              const slideCta = slide.cta[language] || slide.cta['en'];
+
+              if (slide.type === 'premium-hero') {
+                return (
+                  <div 
+                    key={slide.id}
+                    className="w-full h-full shrink-0 relative flex items-center p-6 sm:p-12 overflow-hidden bg-slate-950"
+                  >
+                    {/* Background Image with a premium Left-To-Right red-orange-gold gradient overlay */}
+                    <div className="absolute inset-0 z-0">
+                      <img 
+                        src={slide.image} 
+                        alt="RAHALA Premium Hero Banner" 
+                        className="w-full h-full object-cover object-center transform duration-1000 hover:scale-105"
+                        referrerPolicy="no-referrer"
+                      />
+                      {/* Premium gradient overlay reminiscent of Djezzy telecom style: deep crimson red transitioning to orange/transparent */}
+                      <div className="absolute inset-0 bg-gradient-to-r from-red-800/90 via-red-600/70 to-transparent"></div>
+                      {/* Ambient blur accents */}
+                      <div className="absolute -left-10 top-0 w-96 h-96 bg-orange-500/20 rounded-full blur-3xl pointer-events-none"></div>
+                    </div>
+
+                    {/* Left content block: large typographic layout */}
+                    <div className="relative z-10 max-w-xl text-start space-y-4">
+                      {/* Premium Badge */}
+                      <span className="inline-flex items-center gap-1.5 bg-white/10 backdrop-blur-md text-orange-300 text-[10px] font-extrabold uppercase tracking-widest px-3 py-1 rounded-full border border-white/10 shadow-lg">
+                        <span className="w-2 h-2 rounded-full bg-orange-500 animate-ping"></span>
+                        {language === 'ar' ? 'سياحة ذكية مستقبلية' : 'SaaS Travel Platform • AI'}
+                      </span>
+
+                      {/* Majestic Title text */}
+                      <h1 className="text-4xl sm:text-5xl md:text-6xl font-black text-white tracking-tighter leading-none drop-shadow-md select-none">
+                        {slideTitle}
+                      </h1>
+
+                      {/* Subtitle with premium line height and sizing */}
+                      <p className="text-base sm:text-lg md:text-xl font-medium text-white/95 leading-snug drop-shadow-xs max-w-md">
+                        {slideSubtitle}
+                      </p>
+
+                      {/* Glowing borders button like corporate telecom ads */}
+                      <div className="pt-2">
+                        <button 
+                          onClick={() => onEnterAuth('register')}
+                          className="group relative inline-flex items-center gap-2.5 px-7 py-3.5 rounded-full bg-white text-red-600 hover:bg-red-500 hover:text-white font-extrabold text-xs sm:text-sm transition-all duration-300 uppercase tracking-widest shadow-xl border border-white/30 cursor-pointer overflow-hidden"
+                        >
+                          {slideCta}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                );
+              }
+
+              if (slide.type === 'brand') {
+                return (
+                  <div 
+                    key={slide.id}
+                    className="w-full h-full shrink-0 flex flex-col sm:flex-row bg-gradient-to-br from-emerald-900 via-slate-900 to-emerald-950 relative overflow-hidden p-6 sm:p-10 justify-between items-center gap-6 sm:gap-4"
+                  >
+                    {/* Decorative lights */}
+                    <div className="absolute -left-20 -top-20 w-80 h-80 rounded-full bg-emerald-500/10 blur-3xl pointer-events-none"></div>
+                    <div className="absolute -right-20 -bottom-20 w-80 h-80 rounded-full bg-emerald-600/10 blur-3xl pointer-events-none"></div>
+
+                    {/* Text Section */}
+                    <div className="flex-1 space-y-3 text-center sm:text-start z-10">
+                      <span className="inline-block bg-emerald-500/20 text-emerald-300 text-[9px] font-bold uppercase tracking-widest px-2.5 py-0.5 rounded-full border border-emerald-500/30">
+                        {language === 'ar' ? 'حصري • رائد' : 'EXCLUSIF • PREMIUM'}
+                      </span>
+                      <h2 className="text-xl sm:text-2xl md:text-3xl font-black text-white leading-tight">
+                        {slideTitle}
+                      </h2>
+                      <p className="text-[11px] sm:text-xs text-gray-300 leading-relaxed max-w-md">
+                        {slideSubtitle}
+                      </p>
+                      
+                      {/* Premium Glow Button matching requested image style */}
+                      <div className="pt-1.5">
+                        <button 
+                          onClick={() => onEnterAuth('register')}
+                          className="px-5 py-2 rounded-full border-2 border-white text-white hover:bg-white hover:text-emerald-950 font-bold text-xs transition-all duration-300 uppercase tracking-wider shadow-[0_0_15px_rgba(255,255,255,0.15)] hover:shadow-[0_0_25px_rgba(255,255,255,0.35)] cursor-pointer"
+                        >
+                          {slideCta}
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Image Section (Enlarged custom brand photo) */}
+                    <div className="flex-shrink-0 z-10">
+                      <div className="relative group/emblem">
+                        {/* Glowing ring */}
+                        <div className="absolute -inset-2 bg-gradient-to-tr from-emerald-500 to-[#d4af37] rounded-2xl blur-lg opacity-60 animate-pulse"></div>
+                        <div className="relative w-28 h-28 sm:w-36 sm:h-36 md:w-44 md:h-44 rounded-2xl overflow-hidden border-2 border-white/40 shadow-2xl bg-slate-900 p-1.5 flex items-center justify-center">
+                          <img 
+                            src={slide.image} 
+                            alt="RAHALA Centerpiece" 
+                            className="w-full h-full rounded-xl object-contain transform duration-500 group-hover/emblem:scale-105"
+                            referrerPolicy="no-referrer"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              } else {
+                return (
+                  <div 
+                    key={slide.id}
+                    className="w-full h-full shrink-0 relative flex items-center p-6 sm:p-10"
+                  >
+                    {/* Background image with overlay */}
+                    <div className="absolute inset-0 z-0">
+                      <img 
+                        src={slide.image} 
+                        alt={slideTitle}
+                        className="w-full h-full object-cover"
+                        referrerPolicy="no-referrer"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/55 to-transparent"></div>
+                    </div>
+
+                    {/* Text Section */}
+                    <div className="max-w-md space-y-3 text-white z-10 text-center sm:text-start mx-auto sm:mx-0">
+                      <span className="inline-block bg-white/10 backdrop-blur-md text-emerald-300 text-[9px] font-bold uppercase tracking-widest px-2.5 py-0.5 rounded-full border border-white/10">
+                        {language === 'ar' ? 'سفر غامر' : 'SÉJOUR IMMERSIF'}
+                      </span>
+                      <h2 className="text-xl sm:text-2xl md:text-3xl font-black leading-tight">
+                        {slideTitle}
+                      </h2>
+                      <p className="text-[11px] sm:text-xs text-gray-200 leading-relaxed">
+                        {slideSubtitle}
+                      </p>
+                      
+                      <div className="pt-1.5">
+                        <button 
+                          onClick={() => onEnterAuth('register')}
+                          className="px-5 py-2 rounded-full border-2 border-white text-white hover:bg-white hover:text-gray-950 font-bold text-xs transition-all duration-300 uppercase tracking-wider shadow-lg cursor-pointer"
+                        >
+                          {slideCta}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                );
+              }
+            })}
+          </div>
+
+          {/* Navigation Controls */}
+          <button 
+            onClick={() => setCurrentSlide((prev) => (prev === 0 ? bannerSlides.length - 1 : prev - 1))}
+            className="absolute left-3 top-1/2 -translate-y-1/2 z-20 p-1.5 sm:p-2 rounded-full bg-white/25 backdrop-blur-md hover:bg-white/45 text-white hover:scale-110 transition-all duration-200 cursor-pointer shadow-md"
+            aria-label="Previous slide"
+          >
+            <ChevronLeft size={18} />
+          </button>
+          <button 
+            onClick={() => setCurrentSlide((prev) => (prev + 1) % bannerSlides.length)}
+            className="absolute right-3 top-1/2 -translate-y-1/2 z-20 p-1.5 sm:p-2 rounded-full bg-white/25 backdrop-blur-md hover:bg-white/45 text-white hover:scale-110 transition-all duration-200 cursor-pointer shadow-md"
+            aria-label="Next slide"
+          >
+            <ChevronRight size={18} />
+          </button>
+
+          {/* Dots indicators */}
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex gap-1.5">
+            {bannerSlides.map((_, idx) => (
+              <button
+                key={idx}
+                onClick={() => setCurrentSlide(idx)}
+                className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
+                  currentSlide === idx ? 'w-5 bg-white' : 'w-1.5 bg-white/40 hover:bg-white/65'
+                }`}
+                aria-label={`Go to slide ${idx + 1}`}
+              />
+            ))}
           </div>
         </div>
 

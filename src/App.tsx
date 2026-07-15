@@ -13,6 +13,7 @@ import { UserDashboard } from './components/UserDashboard';
 import { AdminDashboard } from './components/AdminDashboard';
 import { AuthModule } from './components/AuthModule';
 import { LandingPage } from './components/LandingPage';
+import { DirectionController } from './components/DirectionController';
 import { SafeTravel } from './components/SafeTravel';
 import { RealPhotoExplorer } from './components/RealPhotoExplorer';
 import { SEOHead } from './SEOHead';
@@ -274,54 +275,70 @@ function RihlaApp() {
         {/* VIEW 1: EXPLORE LANDING HERO */}
         {activeView === 'explore' && (
           <div className="animate-fade-in">
-            {/* Clean Trivago-Style Hero Section */}
-            <div className="relative py-12 sm:py-16 bg-white dark:bg-[#161a22] border-b border-gray-200 dark:border-gray-800 transition-colors">
-              <div className="max-w-4xl mx-auto px-6 text-center flex flex-col items-center">
+            {/* Clean Trivago-Style Hero Section with background image */}
+            <div className="relative py-16 sm:py-24 bg-slate-950 border-b border-zinc-800 transition-colors overflow-hidden">
+              {/* Hero background image integration */}
+              <div className="absolute inset-0 z-0">
+                <img 
+                  src="/rahala_hero_banner_1784119916854.jpg" 
+                  alt="RAHALA Premium Hero Banner" 
+                  className="w-full h-full object-cover object-center opacity-95 transform scale-100 duration-1000"
+                  referrerPolicy="no-referrer"
+                />
+                {/* Modern subtle vignette overlay to enhance readability while preserving full image clarity */}
+                <div className="absolute inset-0 bg-gradient-to-b from-slate-950/20 via-transparent to-slate-950/60"></div>
+                <div className="absolute inset-0 bg-slate-950/10"></div>
+              </div>
+
+              <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 flex flex-col items-center">
                 
-                {/* Clean Simplified Brand Identifier */}
-                <div className="relative mb-6">
-                  <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden border border-gray-200 dark:border-gray-700 shadow-sm bg-white p-1">
-                    <img 
-                      src="/src/assets/images/rahala_logo_1781612694384.jpg" 
-                      alt="RAHALA Logo Centered" 
-                      className="w-full h-full rounded-full object-cover"
-                      referrerPolicy="no-referrer"
-                    />
+                {/* Floating Glassmorphic Content Card - Showcases the image fully around it while keeping UI interactive and readable */}
+                <div className="bg-slate-950/70 backdrop-blur-md border border-white/10 p-6 sm:p-10 rounded-3xl shadow-2xl max-w-3xl w-full flex flex-col items-center text-center">
+                  {/* Clean Simplified Brand Identifier */}
+                  <div className="relative mb-6">
+                    <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full overflow-hidden border border-zinc-700/50 shadow-xl bg-slate-900 p-1">
+                      <img 
+                        src="/android-chrome-512x512.png" 
+                        alt="RAHALA Logo Centered" 
+                        className="w-full h-full rounded-full object-cover"
+                        referrerPolicy="no-referrer"
+                      />
+                    </div>
+                    
+                    {/* Standard small flat badges */}
+                    <div className="absolute -bottom-1 -left-1 bg-emerald-600 text-white text-[9px] font-mono font-bold px-2 py-0.5 rounded-full uppercase tracking-wider select-none shadow-md">
+                      Algérie 🇩🇿
+                    </div>
                   </div>
+
+                  {/* Slogan title styled with highly readable gorgeous fonts */}
+                  <h1 className="text-4xl sm:text-5xl font-black tracking-tight leading-none text-white mb-3 drop-shadow-lg uppercase">
+                    {t('appName')}
+                  </h1>
                   
-                  {/* Standard small flat badges */}
-                  <div className="absolute -bottom-1 -left-1 bg-emerald-600 text-white text-[9px] font-mono font-bold px-2 py-0.5 rounded-full uppercase tracking-wider select-none">
-                    Algérie 🇩🇿
+                  {/* Beautiful clean slogan display */}
+                  <h2 className="text-lg sm:text-xl font-serif font-semibold italic text-emerald-400 mb-4 drop-shadow-md">
+                    Découvrez l’Algérie autrement
+                  </h2>
+                  
+                  <p className="text-xs sm:text-sm text-zinc-200 max-w-2xl mx-auto leading-relaxed mb-6 font-sans drop-shadow-sm">
+                    {t('welcomeSubtitle')}
+                  </p>
+
+                  <div className="flex flex-col sm:flex-row items-center justify-center gap-3 w-full sm:w-auto">
+                    <button
+                      onClick={() => setActiveView('digital-twin')}
+                      className="w-full sm:w-auto px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs uppercase tracking-wider transition-all rounded-xl shadow-lg cursor-pointer hover:scale-105 active:scale-95 duration-200"
+                    >
+                      🚀 Lancer l'expérience 3D
+                    </button>
+                    <button
+                      onClick={() => setActiveView('map')}
+                      className="w-full sm:w-auto px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-bold text-xs uppercase tracking-wider transition-all rounded-xl shadow-lg cursor-pointer hover:scale-105 active:scale-95 duration-200"
+                    >
+                      🗺️ Ouvrir la carte interactive
+                    </button>
                   </div>
-                </div>
-
-                {/* Slogan title styled with highly readable gorgeous fonts */}
-                <h1 className="text-4xl sm:text-6xl font-black tracking-tight leading-none text-gray-950 dark:text-white mb-4">
-                  {t('appName')}
-                </h1>
-                
-                {/* Beautiful clean slogan display */}
-                <h2 className="text-lg sm:text-2xl font-serif font-semibold italic text-gray-600 dark:text-gray-300 mb-4">
-                  Découvrez l’Algérie autrement
-                </h2>
-                
-                <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 max-w-2xl mx-auto leading-relaxed mb-6 font-sans">
-                  {t('welcomeSubtitle')}
-                </p>
-
-                <div className="flex flex-col sm:flex-row items-center justify-center gap-3 w-full sm:w-auto">
-                  <button
-                    onClick={() => setActiveView('digital-twin')}
-                    className="w-full sm:w-auto px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs uppercase tracking-wider transition-all rounded-lg shadow-sm cursor-pointer"
-                  >
-                    🚀 Lancer l'expérience 3D
-                  </button>
-                  <button
-                    onClick={() => setActiveView('map')}
-                    className="w-full sm:w-auto px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-bold text-xs uppercase tracking-wider transition-all rounded-lg shadow-sm cursor-pointer"
-                  >
-                    🗺️ Ouvrir la carte interactive
-                  </button>
                 </div>
               </div>
             </div>
@@ -777,6 +794,7 @@ export default function App() {
   return (
     <LanguageProvider>
       <AppProvider>
+        <DirectionController />
         <RihlaApp />
       </AppProvider>
     </LanguageProvider>

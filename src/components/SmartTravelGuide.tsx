@@ -263,15 +263,207 @@ export const SmartTravelGuide: React.FC = () => {
     const loginTokenUrl = `${window.location.origin}/#/?auth_token=RIHLA-TOKEN-${userSessionId}-${Date.now().toString().substring(0, 8)}&verify=${encodeURIComponent(userSessionEmail)}`;
     const loginTokenQrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(loginTokenUrl)}`;
 
+    // Translation dictionary for 4 languages (AR/FR/EN/ES)
+    const dict = {
+      authBadge: {
+        en: 'CERTIFIED DIGITAL GUIDE',
+        fr: 'GUIDE NUMÉRIQUE CERTIFIÉ',
+        ar: 'تحقق رقمي معتمد',
+        es: 'GUÍA DIGITAL CERTIFICADA'
+      },
+      authTitle: {
+        en: 'Official RAHLA Itinerary Authentication',
+        fr: "Authentification Officielle de l'Itinéraire RAHLA",
+        ar: 'وثيقة رحلة رسمية وموثقة من RAHLA',
+        es: 'Autenticación Oficial del Itinerario RAHLA'
+      },
+      authDesc: {
+        en: "This itinerary has been digitally certified by RAHLA's artificial intelligence. Scan this QR code to open it instantly on your smartphone, view the full site, and activate real-time GPS navigation.",
+        fr: "Cet itinéraire a été certifié numériquement par l'intelligence artificielle de RAHLA. Scannez ce QR code pour l'ouvrir instantanément sur votre smartphone, voir le site complet, et activer la navigation GPS en temps réel.",
+        ar: 'تم التحقق من صحة هذا المسار رقمياً ومزامنته مع نظام الذكاء الاصطناعي RAHLA. امسح الرمز ضوئياً للفتح المباشر على الهاتف والحصول على اتجاهات الملاحة الحية والتحقق من صحة المعالم.',
+        es: "Este itinerario ha sido certificado digitalmente por la inteligencia artificial de RAHLA. Escanee este código QR para abrirlo instantáneamente en su teléfono móvil, ver el sitio completo y activar la navegación GPS en tiempo real."
+      },
+      sessionBadge: {
+        en: 'CERTIFIED USER SESSION',
+        fr: 'SESSION UTILISATEUR CERTIFIÉE',
+        ar: 'جلسة مستخدم معتمدة وموثقة',
+        es: 'SESIÓN DE USUARIO CERTIFICADA'
+      },
+      sessionTitle: {
+        en: 'Traveler Session Authentication',
+        fr: 'Authentification de la Session Voyageur',
+        ar: 'التحقق الأمني من الجلسة والهوية',
+        es: 'Autenticación de la Sesión del Viajero'
+      },
+      sessionDesc: {
+        en: 'This travel document is linked to an active and verified user session.',
+        fr: 'Ce document de voyage est rattaché à une session utilisateur active et vérifiée.',
+        ar: 'تم ربط وثيقة السفر هذه بجلسة مستخدم نشطة ومصدقة.',
+        es: 'Este documento de viaje está vinculado a una sesión de usuario activa y verificada.'
+      },
+      voyageur: {
+        en: 'Traveler',
+        fr: 'Voyageur',
+        ar: 'الاسم الكامل',
+        es: 'Viajero'
+      },
+      email: {
+        en: 'Email Address',
+        fr: 'Adresse Email',
+        ar: 'البريد الإلكتروني',
+        es: 'Correo Electrónico'
+      },
+      tokenLabel: {
+        en: 'Secure Session Connection Token (QR-Token)',
+        fr: 'Jeton de Connexion Session (QR-Token)',
+        ar: 'رمز تسجيل الدخول الرقمي الآمن (QR)',
+        es: 'Token de Conexión de Sesión (QR-Token)'
+      },
+      scanToVerify: {
+        en: 'SCAN TO VERIFY',
+        fr: 'SCANNER POUR VÉRIFIER',
+        ar: 'امسح للتحقق',
+        es: 'ESCANEAR PARA VERIFICAR'
+      },
+      day: {
+        en: 'Day',
+        fr: 'Jour',
+        ar: 'اليوم',
+        es: 'Día'
+      },
+      budget: {
+        en: 'Budget',
+        fr: 'Budget',
+        ar: 'الميزانية',
+        es: 'Presupuesto'
+      },
+      recommendedHotel: {
+        en: 'Recommended Hotel',
+        fr: 'Hôtel Recommandé',
+        ar: 'الإقامة الموصى بها',
+        es: 'Hotel Recomendado'
+      },
+      placesOverviewDefault: {
+        en: 'Smart Places Guide with real Google Photos',
+        fr: 'Guide intelligent des lieux avec de vraies photos Google',
+        ar: 'دليل الأماكن الحقيقي الذكي مع صور خرائط جوجل',
+        es: 'Guía inteligente de lugares con fotos reales de Google'
+      },
+      hotelDetails: {
+        en: 'Recommended Stay Details',
+        fr: "Détails de l'hébergement recommandé",
+        ar: 'تفاصيل الفندق المقترح',
+        es: 'Detalles del alojamiento recomendado'
+      },
+      landmarksTitle: {
+        en: 'Top Curated Places & Landmarks',
+        fr: 'Lieux & Monuments Sélectionnés',
+        ar: 'الأماكن السياحية الموصى بزيارتها',
+        es: 'Lugares y Monumentos Destacados'
+      },
+      itinerarySummary: {
+        en: 'Itinerary Summary',
+        fr: "Résumé de l'itinéraire",
+        ar: 'ملخص خطة الرحلة',
+        es: 'Resumen del itinerario'
+      },
+      morning: {
+        en: 'Morning',
+        fr: 'Matin',
+        ar: 'الصباح',
+        es: 'Mañana'
+      },
+      afternoon: {
+        en: 'Afternoon',
+        fr: 'Après-midi',
+        ar: 'بعد الظهر',
+        es: 'Tarde'
+      },
+      evening: {
+        en: 'Evening',
+        fr: 'Soir',
+        ar: 'المساء',
+        es: 'Noche'
+      },
+      cuisine: {
+        en: 'Local Culinary recommendation',
+        fr: 'Recommandation culinaire locale',
+        ar: 'توصيات المأكولات التقليدية',
+        es: 'Recomendación culinaria local'
+      },
+      savingTip: {
+        en: 'Local Saving advice',
+        fr: "Conseil d'économie local",
+        ar: 'نصيحة الميزانية والتوفير',
+        es: 'Consejo de ahorro local'
+      },
+      estimatedBudget: {
+        en: 'Estimated Total Budget',
+        fr: 'Budget total estimé',
+        ar: 'الميزانية التقريبية للرحلة',
+        es: 'Presupuesto total estimado'
+      },
+      totalDays: {
+        en: 'Total Days',
+        fr: 'Durée totale',
+        ar: 'مدة الإقامة',
+        es: 'Duración total'
+      },
+      daysCount: {
+        en: 'Days',
+        fr: 'Jours',
+        ar: 'أيام',
+        es: 'Días'
+      },
+      comprehensiveItinerary: {
+        en: 'Day-by-Day Comprehensive Itinerary',
+        fr: 'Itinéraire journalier complet',
+        ar: 'الجدول اليومي المفصل',
+        es: 'Itinerario diario completo'
+      },
+      errorGenerateFirst: {
+        en: 'Please generate an itinerary first before downloading!',
+        fr: 'Veuillez générer un itinéraire avant de le télécharger !',
+        ar: 'يرجى توليد مسار الرحلة أولاً قبل التحميل!',
+        es: '¡Por favor, genere un itinerario antes de descargarlo!'
+      },
+      errorAllowPopups: {
+        en: '⚠️ Please allow popups to download your travel PDF',
+        fr: '⚠️ Veuillez autoriser les popups pour télécharger votre PDF de voyage',
+        ar: '⚠️ يرجى السماح بالنوافذ المنبثقة لتحميل ملف الـ PDF',
+        es: '⚠️ Por favor, permita las ventanas emergentes para descargar su PDF de viaje'
+      },
+      downloadPrintButton: {
+        en: 'Download as PDF / Print',
+        fr: 'Télécharger en PDF / Imprimer',
+        ar: 'تحميل كـ PDF / طباعة',
+        es: 'Descargar en PDF / Imprimer'
+      },
+      footerMsg: {
+        en: 'Generated by RAHLA AI Travel Guide',
+        fr: 'Généré par RAHLA AI Travel Guide',
+        ar: 'تم التوليد بواسطة دليل السفر الذكي RAHLA',
+        es: 'Generado por RAHLA AI Travel Guide'
+      },
+      bonVoyage: {
+        en: 'Have a great trip!',
+        fr: 'Bon voyage !',
+        ar: 'رحلة سعيدة!',
+        es: '¡Buen viaje!'
+      }
+    };
+
+    const getTrans = (translationsObj: Record<string, string>) => {
+      return translationsObj[language] || translationsObj['en'];
+    };
+
     const authCardHtml = `
       <div class="auth-card">
         <div class="auth-text">
-          <div class="auth-badge">${language === 'ar' ? 'تحقق رقمي معتمد' : 'GUIDE NUMÉRIQUE CERTIFIÉ'}</div>
-          <div class="auth-title">${language === 'ar' ? 'وثيقة رحلة رسمية وموثقة من RAHLA' : 'Authentification Officielle de l\'Itinéraire RAHLA'}</div>
+          <div class="auth-badge">${getTrans(dict.authBadge)}</div>
+          <div class="auth-title">${getTrans(dict.authTitle)}</div>
           <p class="auth-desc">
-            ${language === 'ar' 
-              ? 'تم التحقق من صحة هذا المسار رقمياً ومزامنته مع نظام الذكاء الاصطناعي RAHLA. امسح الرمز ضوئياً للفتح المباشر على الهاتف والحصول على اتجاهات الملاحة الحية والتحقق من صحة المعالم.' 
-              : 'Cet itinéraire a été certifié numériquement par l\'intelligence artificielle de RAHLA. Scannez ce QR code pour l\'ouvrir instantanément sur votre smartphone, voir le site complet, et activer la navigation GPS en temps réel.'}
+            ${getTrans(dict.authDesc)}
           </p>
         </div>
         <div class="auth-qr">
@@ -284,32 +476,30 @@ export const SmartTravelGuide: React.FC = () => {
       <div class="auth-card" style="border-color: #10b981; background: #fafdfc; margin-top: -20px; margin-bottom: 35px;">
         <div class="auth-text">
           <div class="auth-badge" style="background: #e6f4ea; border-color: #10b981; color: #137333;">
-            ${language === 'ar' ? 'جلسة مستخدم معتمدة وموثقة' : 'SESSION UTILISATEUR CERTIFIÉE'}
+            ${getTrans(dict.sessionBadge)}
           </div>
-          <div class="auth-title">${language === 'ar' ? 'التحقق الأمني من الجلسة والهوية' : 'Authentification de la Session Voyageur'}</div>
+          <div class="auth-title">${getTrans(dict.sessionTitle)}</div>
           <p class="auth-desc" style="margin-bottom: 12px; font-weight: 500;">
-            ${language === 'ar' 
-              ? 'تم ربط وثيقة السفر هذه بجلسة مستخدم نشطة ومصدقة.' 
-              : 'Ce document de voyage est rattaché à une session utilisateur active et vérifiée.'}
+            ${getTrans(dict.sessionDesc)}
           </p>
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 11px; font-family: 'Inter', sans-serif; background: #ffffff; padding: 12px; border-radius: 8px; border: 1px solid #e0f2f1;">
             <div>
-              <span style="color: #666; display: block; font-size: 10px; text-transform: uppercase;">${language === 'ar' ? 'الاسم الكامل' : 'Voyageur'}</span>
+              <span style="color: #666; display: block; font-size: 10px; text-transform: uppercase;">${getTrans(dict.voyageur)}</span>
               <strong style="color: #111;">${userSessionName}</strong>
             </div>
             <div>
-              <span style="color: #666; display: block; font-size: 10px; text-transform: uppercase;">${language === 'ar' ? 'البريد الإلكتروني' : 'Adresse Email'}</span>
+              <span style="color: #666; display: block; font-size: 10px; text-transform: uppercase;">${getTrans(dict.email)}</span>
               <strong style="color: #111;">${userSessionEmail}</strong>
             </div>
             <div style="grid-column: span 2; border-top: 1px solid #f0f0f0; padding-top: 8px; margin-top: 4px;">
-              <span style="color: #666; display: block; font-size: 10px; text-transform: uppercase;">${language === 'ar' ? 'رمز تسجيل الدخول الرقمي الآمن (QR)' : 'Jeton de Connexion Session (QR-Token)'}</span>
+              <span style="color: #666; display: block; font-size: 10px; text-transform: uppercase;">${getTrans(dict.tokenLabel)}</span>
               <strong style="font-family: monospace; color: #10b981; font-size: 10px;">RIHLA-TOKEN-${userSessionId}-${Date.now().toString().substring(0, 8)}</strong>
             </div>
           </div>
         </div>
         <div class="auth-qr" style="border-color: #10b981;">
           <img src="${loginTokenQrUrl}" alt="Login Token QR" style="width: 100px; height: 100px; display: block;" referrerPolicy="no-referrer" />
-          <div style="font-size: 8px; font-family: monospace; text-align: center; color: #10b981; margin-top: 4px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px;">${language === 'ar' ? 'امسح للتحقق' : 'SCAN TO VERIFY'}</div>
+          <div style="font-size: 8px; font-family: monospace; text-align: center; color: #10b981; margin-top: 4px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px;">${getTrans(dict.scanToVerify)}</div>
         </div>
       </div>
     `;
@@ -332,7 +522,7 @@ export const SmartTravelGuide: React.FC = () => {
 
       const itineraryHtml = smartGuide.itinerary?.map((item: string, idx: number) => `
         <div style="margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px dashed #eee;">
-          <strong>${language === 'ar' ? 'اليوم' : 'Day'} ${idx + 1}:</strong> ${item}
+          <strong>${getTrans(dict.day)} ${idx + 1}:</strong> ${item}
         </div>
       `).join('') || '';
 
@@ -340,16 +530,16 @@ export const SmartTravelGuide: React.FC = () => {
         <div class="header">
           <div class="brand">RAHLA AI • ✈️</div>
           <h1 class="title">${title}</h1>
-          <p class="overview">${smartGuide.destination?.description || (language === 'ar' ? 'دليل الأماكن الحقيقي الذكي مع صور خرائط جوجل' : 'Smart Places Guide with real Google Photos')}</p>
+          <p class="overview">${smartGuide.destination?.description || getTrans(dict.placesOverviewDefault)}</p>
         </div>
 
         <div class="meta-box">
           <div class="meta-item">
-            <div class="meta-label">${language === 'ar' ? 'الميزانية' : 'Budget'}</div>
+            <div class="meta-label">${getTrans(dict.budget)}</div>
             <div style="font-weight: bold; font-size: 16px; margin-top: 4px;">${budgetText}</div>
           </div>
           <div class="meta-item">
-            <div class="meta-label">${language === 'ar' ? 'الإقامة الموصى بها' : 'Recommended Hotel'}</div>
+            <div class="meta-label">${getTrans(dict.recommendedHotel)}</div>
             <div style="font-weight: bold; font-size: 16px; margin-top: 4px;">${hotelName}</div>
           </div>
         </div>
@@ -358,20 +548,20 @@ export const SmartTravelGuide: React.FC = () => {
         ${sessionAuthCardHtml}
 
         ${hotelDesc ? `
-          <div class="day-card" style="border-left: 4px solid #d4af37; border-right: ${language === 'ar' ? '4px solid #d4af37' : 'none'};">
-            <h3 style="margin-top: 0; color: #111;">🏨 ${language === 'ar' ? 'تفاصيل الفندق المقترح' : 'Recommended Stay Details'}</h3>
+          <div class="day-card" style="border-inline-start: 4px solid #d4af37;">
+            <h3 style="margin-top: 0; color: #111;">🏨 ${getTrans(dict.hotelDetails)}</h3>
             <p class="activity-text">${hotelDesc}</p>
           </div>
         ` : ''}
 
         <h2 style="font-family: serif; border-bottom: 2px solid #eaeaea; padding-bottom: 8px; margin-top: 40px;">
-          📌 ${language === 'ar' ? 'الأماكن السياحية الموصى بزيارتها' : 'Top Curated Places & Landmarks'}
+          📌 ${getTrans(dict.landmarksTitle)}
         </h2>
         ${placesHtml}
 
         ${itineraryHtml ? `
           <h2 style="font-family: serif; border-bottom: 2px solid #eaeaea; padding-bottom: 8px; margin-top: 40px;">
-            📅 ${language === 'ar' ? 'ملخص خطة الرحلة' : 'Itinerary Summary'}
+            📅 ${getTrans(dict.itinerarySummary)}
           </h2>
           <div class="day-card">
             ${itineraryHtml}
@@ -383,29 +573,29 @@ export const SmartTravelGuide: React.FC = () => {
       const daysHtml = plan.days.map((day: any) => `
         <div class="day-card">
           <div class="day-header">
-            <span>🌅 ${language === 'ar' ? `اليوم ${day.dayNumber}` : `Day ${day.dayNumber}`}: ${day.title}</span>
+            <span>🌅 ${getTrans(dict.day)} ${day.dayNumber}: ${day.title}</span>
             <span class="badge">📍 ${day.locationName}</span>
           </div>
           
           <div class="activity">
-            <div class="activity-title">☀️ ${language === 'ar' ? 'الصباح' : 'Morning'}</div>
+            <div class="activity-title">☀️ ${getTrans(dict.morning)}</div>
             <div class="activity-text">${day.morning}</div>
           </div>
 
           <div class="activity">
-            <div class="activity-title">🌤️ ${language === 'ar' ? 'بعد الظهر' : 'Afternoon'}</div>
+            <div class="activity-title">🌤️ ${getTrans(dict.afternoon)}</div>
             <div class="activity-text">${day.afternoon}</div>
           </div>
 
           <div class="activity">
-            <div class="activity-title">🌙 ${language === 'ar' ? 'المساء' : 'Evening'}</div>
+            <div class="activity-title">🌙 ${getTrans(dict.evening)}</div>
             <div class="activity-text">${day.evening}</div>
           </div>
 
           ${day.cuisineRecommendation ? `
             <div style="margin-top: 15px; padding: 12px; background: #fdfbf7; border-radius: 8px; border-inline-start: 3px solid #d4af37;">
               <strong style="font-size: 12px; text-transform: uppercase; color: #d4af37; display: block; margin-bottom: 4px;">
-                🍽️ ${language === 'ar' ? 'توصيات المأكولات التقليدية' : 'Local Culinary recommendation'}
+                🍽️ ${getTrans(dict.cuisine)}
               </strong>
               <span class="activity-text" style="font-style: italic;">${day.cuisineRecommendation}</span>
             </div>
@@ -414,7 +604,7 @@ export const SmartTravelGuide: React.FC = () => {
           ${day.budgetTip ? `
             <div style="margin-top: 10px; padding: 12px; background: #f6fbf9; border-radius: 8px; border-inline-start: 3px solid #10b981;">
               <strong style="font-size: 12px; text-transform: uppercase; color: #10b981; display: block; margin-bottom: 4px;">
-                💡 ${language === 'ar' ? 'نصيحة الميزانية والتوفير' : 'Local Saving advice'}
+                💡 ${getTrans(dict.savingTip)}
               </strong>
               <span class="activity-text">${day.budgetTip}</span>
             </div>
@@ -431,14 +621,14 @@ export const SmartTravelGuide: React.FC = () => {
 
         <div class="meta-box">
           <div class="meta-item">
-            <div class="meta-label">${language === 'ar' ? 'الميزانية التقريبية للرحلة' : 'Estimated Total Budget'}</div>
+            <div class="meta-label">${getTrans(dict.estimatedBudget)}</div>
             <div style="font-weight: bold; font-size: 16px; margin-top: 4px; color: #10b981;">
               ${plan.totalEstimatedCostDzd.toLocaleString()} DZD
             </div>
           </div>
           <div class="meta-item">
-            <div class="meta-label">${language === 'ar' ? 'مدة الإقامة' : 'Total Days'}</div>
-            <div style="font-weight: bold; font-size: 16px; margin-top: 4px;">${plan.days.length} ${language === 'ar' ? 'أيام' : 'Days'}</div>
+            <div class="meta-label">${getTrans(dict.totalDays)}</div>
+            <div style="font-weight: bold; font-size: 16px; margin-top: 4px;">${plan.days.length} ${getTrans(dict.daysCount)}</div>
           </div>
         </div>
 
@@ -446,18 +636,18 @@ export const SmartTravelGuide: React.FC = () => {
         ${sessionAuthCardHtml}
 
         <h2 style="font-family: serif; border-bottom: 2px solid #eaeaea; padding-bottom: 8px; margin-top: 40px; margin-bottom: 20px;">
-          📅 ${language === 'ar' ? 'الجدول اليومي المفصل' : 'Day-by-Day Comprehensive Itinerary'}
+          📅 ${getTrans(dict.comprehensiveItinerary)}
         </h2>
         ${daysHtml}
       `;
     } else {
-      addNotification(language === 'ar' ? 'يرجى توليد مسار الرحلة أولاً قبل التحميل!' : 'Please generate an itinerary first before downloading!');
+      addNotification(getTrans(dict.errorGenerateFirst));
       return;
     }
 
     const printWindow = window.open('', '_blank');
     if (!printWindow) {
-      addNotification(language === 'ar' ? '⚠️ يرجى السماح بالنوافذ المنبثقة لتحميل ملف الـ PDF' : '⚠️ Please allow popups to download your travel PDF');
+      addNotification(getTrans(dict.errorAllowPopups));
       return;
     }
 
@@ -468,10 +658,18 @@ export const SmartTravelGuide: React.FC = () => {
         <meta charset="UTF-8">
         <title>${title}</title>
         <style>
-          @import url('https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;600;700;800&display=swap');
+          @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;700&family=Amiri:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;600;700;800&family=Outfit:wght@400;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
           
           body {
-            font-family: ${language === 'ar' ? "'Amiri', serif" : "'Inter', sans-serif"};
+            font-family: ${
+              language === 'ar' 
+                ? "'Noto Sans Arabic', 'Amiri', serif" 
+                : language === 'fr' 
+                  ? "'Playfair Display', 'Inter', sans-serif" 
+                  : language === 'es' 
+                    ? "'Outfit', 'Inter', sans-serif" 
+                    : "'Inter', sans-serif"
+            };
             color: #1a1a1a;
             background: #ffffff;
             line-height: 1.6;
@@ -671,12 +869,12 @@ export const SmartTravelGuide: React.FC = () => {
         </style>
       </head>
       <body>
-        <button class="btn-print no-print" onclick="window.print()">${language === 'ar' ? 'تحميل كـ PDF / طباعة' : 'Télécharger en PDF / Imprimer'}</button>
+        <button class="btn-print no-print" onclick="window.print()">${getTrans(dict.downloadPrintButton)}</button>
         
         ${htmlContent}
 
         <div class="footer">
-          <p>${language === 'ar' ? 'تم التوليد بواسطة دليل السفر الذكي RAHLA' : 'Généré par RAHLA AI Travel Guide'} &copy; 2026. ${language === 'ar' ? 'رحلة سعيدة!' : 'Bon voyage !'}</p>
+          <p>${getTrans(dict.footerMsg)} &copy; 2026. ${getTrans(dict.bonVoyage)}</p>
         </div>
 
         <script>

@@ -174,7 +174,7 @@ export const Navigation: React.FC<NavigationProps> = ({ activeView, setActiveVie
               >
                 <div className="relative p-0.5 rounded-full bg-gradient-to-tr from-emerald-600 via-white to-red-650 shadow-md shadow-emerald-500/15 group-hover:scale-105 transition duration-300">
                   <img 
-                    src="/src/assets/images/rahala_logo_1781612694384.jpg"
+                    src="/android-chrome-512x512.png"
                     alt="RAHALA Logo"
                     className="w-10 h-10 rounded-full object-cover border border-white"
                     referrerPolicy="no-referrer"
@@ -490,7 +490,7 @@ export const Navigation: React.FC<NavigationProps> = ({ activeView, setActiveVie
                 <div className="relative z-10 flex flex-col items-center text-center mt-3">
                   <div className="relative p-0.5 rounded-full bg-gradient-to-tr from-emerald-600 via-white to-red-650 shadow-lg mb-3">
                     <img
-                      src="/src/assets/images/rahala_logo_1781612694384.jpg"
+                      src="/android-chrome-512x512.png"
                       alt="Centered RAHLA circular emblem logo"
                       className="w-16 h-16 rounded-full object-cover border-2 border-white dark:border-zinc-900"
                       referrerPolicy="no-referrer"

@@ -975,24 +975,45 @@ async function downloadDefaultVideo() {
     return;
   }
 
-  const videoUrl = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4";
-  console.log('Downloading default video on same-origin server from:', videoUrl);
-  try {
-    const res = await fetch(videoUrl, {
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+  // Multi-fallback URL list to ensure high-availability
+  const candidateUrls = [
+    "https://www.w3schools.com/html/mov_bbb.mp4",
+    "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
+    "https://www.w3schools.com/html/movie.mp4"
+  ];
+
+  let success = false;
+  for (const videoUrl of candidateUrls) {
+    try {
+      console.log(`[Video Cache] Attempting download from: ${videoUrl}`);
+      const res = await fetch(videoUrl, {
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+          'Accept': '*/*'
+        }
+      });
+      
+      if (res.ok) {
+        const buffer = Buffer.from(await res.arrayBuffer());
+        fs.writeFileSync(targetPath, buffer);
+        
+        // Also copy to root for safe fallback
+        const rootPath = path.join(process.cwd(), 'rahala_trailer.mp4');
+        fs.writeFileSync(rootPath, buffer);
+        
+        console.log(`[Video Cache] Successfully cached default video from ${videoUrl}`);
+        success = true;
+        break;
+      } else {
+        console.log(`[Video Cache] Status code ${res.status} from ${videoUrl}, trying next fallback...`);
       }
-    });
-    if (!res.ok) throw new Error(`HTTP error ${res.status}`);
-    const buffer = Buffer.from(await res.arrayBuffer());
-    fs.writeFileSync(targetPath, buffer);
-    
-    // Also copy to root for safe fallback
-    const rootPath = path.join(process.cwd(), 'rahala_trailer.mp4');
-    fs.writeFileSync(rootPath, buffer);
-    console.log('Default video downloaded and saved successfully.');
-  } catch (err: any) {
-    console.warn('Could not pre-download local video cache, falling back to remote streaming redirect:', err?.message || err);
+    } catch (err: any) {
+      console.log(`[Video Cache] Skipping candidate ${videoUrl} due to connection condition: ${err?.message || 'unavailable'}`);
+    }
+  }
+
+  if (!success) {
+    console.log('[Video Cache] Local cache initialized with streaming fallback mode active.');
   }
 }
 

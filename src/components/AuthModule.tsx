@@ -364,7 +364,7 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
             <div className="absolute -inset-1-5 bg-gradient-to-r from-emerald-500 via-[#d4af37] to-emerald-700 rounded-full blur-md opacity-80 animate-pulse"></div>
             <div className="relative w-24 h-24 rounded-full overflow-hidden border-2 border-[#d4af37]/40 shadow-xl bg-slate-900">
               <img 
-                src="/src/assets/images/rahala_logo_1781612694384.jpg" 
+                src="/android-chrome-512x512.png" 
                 alt="RAHALA Logo" 
                 className="w-full h-full object-cover transform duration-500 group-hover:scale-110"
                 referrerPolicy="no-referrer"

@@ -416,13 +416,75 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({ setActiveView, s
   const { t, isRtl, language } = useLanguage();
   const { addBooking } = useApp();
 
-  // Categories visibility filters
-  const [filterHotels, setFilterHotels] = useState(true);
-  const [filterRestaurants, setFilterRestaurants] = useState(true);
-  const [filterMonuments, setFilterMonuments] = useState(true);
-  const [filterPlages, setFilterPlages] = useState(true);
-  const [filterFavorites, setFilterFavorites] = useState(true);
-  const [filterHiddenGems, setFilterHiddenGems] = useState(true);
+  // Categories visibility filters initialized from URL query parameters if present
+  const getInitialFilterState = (categoryKey: string) => {
+    const params = new URLSearchParams(window.location.search);
+    const typeParam = params.get('type');
+    if (typeParam) {
+      const activeTypes = typeParam.toLowerCase().split(',').map(t => t.trim());
+      if (categoryKey === 'monuments') return activeTypes.includes('monuments') || activeTypes.includes('monument');
+      if (categoryKey === 'plages') return activeTypes.includes('plages') || activeTypes.includes('plage') || activeTypes.includes('beaches');
+      if (categoryKey === 'hotels') return activeTypes.includes('hotels') || activeTypes.includes('hotel');
+      if (categoryKey === 'restaurants') return activeTypes.includes('restaurants') || activeTypes.includes('restaurant');
+      if (categoryKey === 'favorites') return activeTypes.includes('favorites') || activeTypes.includes('favorite');
+      if (categoryKey === 'hidden-gems') return activeTypes.includes('hidden-gems') || activeTypes.includes('hidden-gem') || activeTypes.includes('gems');
+    }
+    return true;
+  };
+
+  const [filterHotels, setFilterHotels] = useState(() => getInitialFilterState('hotels'));
+  const [filterRestaurants, setFilterRestaurants] = useState(() => getInitialFilterState('restaurants'));
+  const [filterMonuments, setFilterMonuments] = useState(() => getInitialFilterState('monuments'));
+  const [filterPlages, setFilterPlages] = useState(() => getInitialFilterState('plages'));
+  const [filterFavorites, setFilterFavorites] = useState(() => getInitialFilterState('favorites'));
+  const [filterHiddenGems, setFilterHiddenGems] = useState(() => getInitialFilterState('hidden-gems'));
+
+  // Sync category filter changes to the URL query parameters
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const activeList: string[] = [];
+    if (filterMonuments) activeList.push('monuments');
+    if (filterPlages) activeList.push('plages');
+    if (filterHotels) activeList.push('hotels');
+    if (filterRestaurants) activeList.push('restaurants');
+    if (filterFavorites) activeList.push('favorites');
+    if (filterHiddenGems) activeList.push('hidden-gems');
+
+    if (activeList.length === 6) {
+      params.delete('type');
+    } else {
+      params.set('type', activeList.join(','));
+    }
+
+    const newUrl = `${window.location.pathname}?${params.toString()}${window.location.hash}`;
+    window.history.replaceState({}, '', newUrl);
+  }, [filterMonuments, filterPlages, filterHotels, filterRestaurants, filterFavorites, filterHiddenGems]);
+
+  // Sync filters from URL if back/forward button is pressed (popstate)
+  useEffect(() => {
+    const handlePopState = () => {
+      const params = new URLSearchParams(window.location.search);
+      const typeParam = params.get('type');
+      if (typeParam) {
+        const activeTypes = typeParam.toLowerCase().split(',').map(t => t.trim());
+        setFilterMonuments(activeTypes.includes('monuments') || activeTypes.includes('monument'));
+        setFilterPlages(activeTypes.includes('plages') || activeTypes.includes('plage') || activeTypes.includes('beaches'));
+        setFilterHotels(activeTypes.includes('hotels') || activeTypes.includes('hotel'));
+        setFilterRestaurants(activeTypes.includes('restaurants') || activeTypes.includes('restaurant'));
+        setFilterFavorites(activeTypes.includes('favorites') || activeTypes.includes('favorite'));
+        setFilterHiddenGems(activeTypes.includes('hidden-gems') || activeTypes.includes('hidden-gem') || activeTypes.includes('gems'));
+      } else {
+        setFilterMonuments(true);
+        setFilterPlages(true);
+        setFilterHotels(true);
+        setFilterRestaurants(true);
+        setFilterFavorites(true);
+        setFilterHiddenGems(true);
+      }
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
 
   // Custom Favorites & Hidden Gems pins
   const [customPins, setCustomPins] = useState<PlaceItem[]>(() => {

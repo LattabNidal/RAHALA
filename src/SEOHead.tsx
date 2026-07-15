@@ -37,7 +37,7 @@ export const SEOHead: React.FC<SEOHeadProps> = ({
       <meta property="og:url" content={canonicalUrl} />
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
-      <meta property="og:image" content="https://www.rahala-dz.com/src/assets/images/rahala_logo_1781612694384.jpg" />
+      <meta property="og:image" content="https://www.rahala-dz.com/android-chrome-512x512.png" />
       <meta property="og:locale" content="fr_DZ" />
 
       {/* Twitter */}
@@ -45,7 +45,7 @@ export const SEOHead: React.FC<SEOHeadProps> = ({
       <meta property="twitter:url" content={canonicalUrl} />
       <meta property="twitter:title" content={title} />
       <meta property="twitter:description" content={description} />
-      <meta property="twitter:image" content="https://www.rahala-dz.com/src/assets/images/rahala_logo_1781612694384.jpg" />
+      <meta property="twitter:image" content="https://www.rahala-dz.com/android-chrome-512x512.png" />
     </>
   );
 };

@@ -378,6 +378,11 @@ const LanguageContext = createContext<LanguageContextType | undefined>(undefined
 
 export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [language, setLanguageState] = useState<Language>(() => {
+    const params = new URLSearchParams(window.location.search);
+    const urlLang = params.get('lang');
+    if (urlLang && ['en', 'fr', 'ar', 'es'].includes(urlLang)) {
+      return urlLang as Language;
+    }
     const saved = localStorage.getItem('rihla_lang');
     return (saved as Language) || 'en';
   });
@@ -385,9 +390,25 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const setLanguage = (lang: Language) => {
     setLanguageState(lang);
     localStorage.setItem('rihla_lang', lang);
+    const params = new URLSearchParams(window.location.search);
+    params.set('lang', lang);
+    const newUrl = `${window.location.pathname}?${params.toString()}${window.location.hash}`;
+    window.history.replaceState({}, '', newUrl);
   };
 
   const isRtl = language === 'ar';
+
+  useEffect(() => {
+    const handlePopState = () => {
+      const params = new URLSearchParams(window.location.search);
+      const urlLang = params.get('lang');
+      if (urlLang && ['en', 'fr', 'ar', 'es'].includes(urlLang) && urlLang !== language) {
+        setLanguageState(urlLang as Language);
+      }
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, [language]);
 
   useEffect(() => {
     // Inject dir rtl to html index layout for true native Arabic styling flow
