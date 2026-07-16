@@ -15,6 +15,7 @@ import {
   Key
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { Lightbox } from './Lightbox';
 
 interface PhotoItem {
   photo_reference: string;
@@ -43,6 +44,7 @@ export const RealPhotoExplorer: React.FC = () => {
   const [result, setResult] = useState<PlaceResult | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [activePhotoIdx, setActivePhotoIdx] = useState(0);
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
 
   // API Key management
   const [customKey, setCustomKey] = useState(() => {
@@ -495,8 +497,9 @@ export const RealPhotoExplorer: React.FC = () => {
                   <img
                     src={currentPhoto!.url}
                     alt={`${result.name} photo ${activePhotoIdx + 1}`}
-                    className="w-full h-full max-h-[550px] object-contain mx-auto"
+                    className="w-full h-full max-h-[550px] object-contain mx-auto cursor-pointer hover:scale-[1.01] hover:brightness-110 transition-all duration-300"
                     referrerPolicy="no-referrer"
+                    onClick={() => setIsLightboxOpen(true)}
                   />
 
                   {/* Top Quality Badge */}
@@ -616,6 +619,21 @@ export const RealPhotoExplorer: React.FC = () => {
             )}
           </div>
         )}
+
+      {/* Lightbox integration */}
+      {result && result.photos && (
+        <Lightbox
+          isOpen={isLightboxOpen}
+          images={result.photos.map((p, idx) => ({
+            url: p.url,
+            label: `${result.name} (${idx + 1}/${result.photos!.length})`,
+            attribution: p.html_attributions?.join(', ')
+          }))}
+          currentIndex={activePhotoIdx}
+          onClose={() => setIsLightboxOpen(false)}
+          onNavigate={(index) => setActivePhotoIdx(index)}
+        />
+      )}
 
       </div>
     </div>

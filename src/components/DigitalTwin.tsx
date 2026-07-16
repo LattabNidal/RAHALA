@@ -5,10 +5,12 @@ import { useApp } from '../context/AppContext';
 import { 
   Compass, RotateCw, Eye, Sparkles, BookOpen, Volume2, Info, 
   Bookmark, Sun, Moon, Database, HelpCircle, RefreshCw, 
-  Layers, MapPin, Maximize2 
+  Layers, MapPin, Maximize2, Star, MessageSquare, Image as ImageIcon
 } from 'lucide-react';
 import { mockLandmarks } from '../data/mockData';
 import { Landmark } from '../types';
+import { socialService } from '../lib/supabase';
+import { Lightbox } from './Lightbox';
 
 // Track coordinates of hotspots in 3D scene to auto-focus them
 const hotspotsData: { [key: string]: { name: string; pos: THREE.Vector3; info: string }[] } = {
@@ -822,6 +824,124 @@ export const DigitalTwin: React.FC = () => {
   const [showWireframe, setShowWireframe] = useState<boolean>(false);
   const [selectedHotspot, setSelectedHotspot] = useState<{ name: string; info: string } | null>(null);
 
+  // Reviews state
+  const [reviews, setReviews] = useState<any[]>([]);
+  const [reviewsLoading, setReviewsLoading] = useState(false);
+  const [newRating, setNewRating] = useState(5);
+  const [newComment, setNewComment] = useState('');
+  const [reviewError, setReviewError] = useState<string | null>(null);
+  const [allReviews, setAllReviews] = useState<Record<string, any[]>>({});
+
+  // Real photos & lightbox states
+  const [realPhotos, setRealPhotos] = useState<any[]>([]);
+  const [photosLoading, setPhotosLoading] = useState(false);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [lightboxPhotos, setLightboxPhotos] = useState<any[]>([]);
+  const [lightboxIdx, setLightboxIdx] = useState(0);
+
+  // Fetch all reviews for calculating average ratings on tabs/cards
+  const loadAllReviews = async () => {
+    const reviewsMap: Record<string, any[]> = {};
+    for (const landmark of mockLandmarks) {
+      try {
+        const data = await socialService.getReviews(landmark.id);
+        reviewsMap[landmark.id] = data;
+      } catch (err) {
+        console.error(`Failed to load reviews for ${landmark.id}:`, err);
+        reviewsMap[landmark.id] = [];
+      }
+    }
+    setAllReviews(reviewsMap);
+  };
+
+  // Fetch reviews for active spot
+  const loadActiveReviews = async () => {
+    setReviewsLoading(true);
+    try {
+      const data = await socialService.getReviews(activeSpot.id);
+      setReviews(data);
+      setAllReviews(prev => ({
+        ...prev,
+        [activeSpot.id]: data
+      }));
+    } catch (err) {
+      console.error('Failed to load active reviews:', err);
+    } finally {
+      setReviewsLoading(false);
+    }
+  };
+
+  const getAverageRating = (landmarkId: string) => {
+    const landmarkReviews = allReviews[landmarkId] || [];
+    if (landmarkReviews.length === 0) {
+      const landmark = mockLandmarks.find(l => l.id === landmarkId);
+      return landmark ? landmark.rating : 5.0;
+    }
+    const sum = landmarkReviews.reduce((acc, curr) => acc + curr.rating, 0);
+    return Number((sum / landmarkReviews.length).toFixed(1));
+  };
+
+  const handlePostReview = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!currentUser) {
+      setReviewError(language === 'ar' ? 'يرجى تسجيل الدخول لكتابة تعليق' : 'Please log in to submit a review.');
+      return;
+    }
+    if (!newComment.trim()) {
+      setReviewError(language === 'ar' ? 'يرجى كتابة تعليق' : 'Comment cannot be empty.');
+      return;
+    }
+
+    try {
+      await socialService.postReview({
+        user_id: currentUser.id,
+        landmark_id: activeSpot.id,
+        rating: newRating,
+        comment: newComment,
+        author_name: currentUser.name,
+        author_avatar: currentUser.avatar
+      });
+      await loadActiveReviews();
+      setNewComment('');
+      setNewRating(5);
+      setReviewError(null);
+    } catch (err) {
+      console.error('Failed to post review:', err);
+      setReviewError(language === 'ar' ? 'فشل إرسال التعليق' : 'Failed to post review.');
+    }
+  };
+
+  useEffect(() => {
+    loadAllReviews();
+  }, []);
+
+  useEffect(() => {
+    loadActiveReviews();
+    setNewComment('');
+    setNewRating(5);
+    setReviewError(null);
+
+    const fetchRealPhotos = async () => {
+      setPhotosLoading(true);
+      try {
+        const queryName = activeSpot.name;
+        const res = await fetch(`/api/places/photos?query=${encodeURIComponent(queryName)}`);
+        const data = await res.json();
+        if (data && data.photos) {
+          setRealPhotos(data.photos);
+        } else {
+          setRealPhotos([]);
+        }
+      } catch (err) {
+        console.error('Failed to fetch real photos:', err);
+        setRealPhotos([]);
+      } finally {
+        setPhotosLoading(false);
+      }
+    };
+    fetchRealPhotos();
+  }, [activeSpot.id]);
+
   const hotSpotsByLandmark: { [key: string]: { name: string; info: string; angle: number; top: string; left: string }[] } = {
     casbah: [
       { name: 'Ketchaoua Ottoman Columns', info: 'Dating back to the Ottoman Empire, combining Byzantine and Moorish engineering standards.', angle: 45, top: '40%', left: '30%' },
@@ -893,7 +1013,13 @@ export const DigitalTwin: React.FC = () => {
                 : 'bg-transparent text-[#1a1a1a]/80 dark:text-[#f5f2ed]/80 border-[#1a1a1a]/15 dark:border-white/10 hover:border-[#d4af37]'
             }`}
           >
-            {landmark.name}
+            <span className="flex items-center space-x-1.5 space-x-reverse justify-center">
+              <span>{landmark.name}</span>
+              <span className="text-[#d4af37] font-sans font-bold flex items-center space-x-0.5 shrink-0 bg-black/45 px-1 py-0.5 rounded border border-[#d4af37]/20 text-[10px]">
+                <Star size={9} className="fill-[#d4af37] text-[#d4af37]" />
+                <span>{getAverageRating(landmark.id)}</span>
+              </span>
+            </span>
           </button>
         ))}
       </div>
@@ -1151,6 +1277,37 @@ export const DigitalTwin: React.FC = () => {
         <div className="lg:col-span-4 bg-white dark:bg-[#161a23] border border-gray-200 dark:border-gray-800 rounded-2xl p-6 shadow-xs flex flex-col justify-between">
           
           <div>
+            {/* Landmark Title block with rating */}
+            <div className="mb-5 border-b border-gray-150 dark:border-gray-800 pb-4">
+              <span className="text-[10px] uppercase font-mono tracking-widest text-[#d4af37] block mb-0.5">
+                📍 {activeSpot.location}
+              </span>
+              <h2 className="text-xl font-serif font-black text-gray-900 dark:text-white leading-tight">
+                {activeSpot.name}
+              </h2>
+              {/* Average Rating Block */}
+              <div className="flex items-center space-x-1.5 space-x-reverse mt-2">
+                <div className="flex space-x-0.5">
+                  {Array.from({ length: 5 }).map((_, i) => {
+                    const avg = getAverageRating(activeSpot.id);
+                    return (
+                      <Star
+                        key={i}
+                        size={12}
+                        className={i < Math.round(avg) ? "fill-[#d4af37] text-[#d4af37]" : "text-gray-300 dark:text-gray-650"}
+                      />
+                    );
+                  })}
+                </div>
+                <span className="text-[12px] font-mono font-black text-gray-800 dark:text-gray-200">
+                  {getAverageRating(activeSpot.id)}
+                </span>
+                <span className="text-[10px] text-gray-450">
+                  ({allReviews[activeSpot.id]?.length || 0} {language === 'ar' ? 'تقييم' : 'reviews'})
+                </span>
+              </div>
+            </div>
+
             <div className="flex items-center space-x-2 space-x-reverse border-b border-gray-100 dark:border-gray-800 pb-4 mb-5">
               <BookOpen className="text-emerald-600" size={16} />
               <h3 className="text-xs font-bold uppercase tracking-wider text-gray-900 dark:text-white">
@@ -1220,6 +1377,166 @@ export const DigitalTwin: React.FC = () => {
                 )}
               </div>
             )}
+
+            {/* Real Photos of the Place */}
+            <div className="border-t border-gray-100 dark:border-gray-800 pt-5 mt-5">
+              <h4 className="text-[10px] font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 mb-3 flex items-center space-x-1.5 space-x-reverse">
+                <ImageIcon size={11} className="text-emerald-600" />
+                <span>{language === 'ar' ? 'صور حقيقية للموقع' : 'Real Google Photos of Site'}</span>
+              </h4>
+              {photosLoading ? (
+                <div className="flex items-center justify-center py-4">
+                  <RefreshCw size={14} className="animate-spin text-gray-400" />
+                </div>
+              ) : realPhotos.length > 0 ? (
+                <div className="grid grid-cols-4 gap-2">
+                  {realPhotos.slice(0, 4).map((photo, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => {
+                        setLightboxPhotos(realPhotos);
+                        setLightboxIdx(idx);
+                        setLightboxOpen(true);
+                      }}
+                      className="relative h-12 rounded-lg overflow-hidden border border-gray-250 dark:border-gray-700 hover:scale-105 active:scale-95 transition-all cursor-pointer bg-gray-100"
+                    >
+                      <img
+                        src={photo.url}
+                        alt={`${activeSpot.name} real photo ${idx + 1}`}
+                        className="w-full h-full object-cover"
+                        referrerPolicy="no-referrer"
+                      />
+                      {idx === 3 && realPhotos.length > 4 && (
+                        <div className="absolute inset-0 bg-black/60 flex items-center justify-center text-[10px] text-white font-mono font-bold">
+                          +{realPhotos.length - 4}
+                        </div>
+                      )}
+                    </button>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-[10px] text-gray-450 italic">
+                  {language === 'ar' ? 'لا توجد صور حقيقية متوفرة حالياً.' : 'No certified real photos available.'}
+                </p>
+              )}
+            </div>
+
+            {/* Reviews & Feedback Section */}
+            <div className="border-t border-gray-100 dark:border-gray-800 pt-5 mt-5">
+              <h4 className="text-[10px] font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 mb-3 flex items-center space-x-1.5 space-x-reverse">
+                <MessageSquare size={11} className="text-emerald-600" />
+                <span>{language === 'ar' ? 'آراء الزوار والتقييمات' : 'Visitor Reviews & Feedback'}</span>
+              </h4>
+
+              {/* Reviews Scroll Area */}
+              <div className="space-y-3 max-h-[160px] overflow-y-auto pr-1 scrollbar-thin mb-4">
+                {reviewsLoading ? (
+                  <div className="flex items-center justify-center py-4">
+                    <RefreshCw size={14} className="animate-spin text-gray-400" />
+                  </div>
+                ) : reviews.length > 0 ? (
+                  reviews.map((rev) => (
+                    <div key={rev.id} className="p-2.5 bg-gray-50 dark:bg-gray-900/40 border border-gray-100 dark:border-gray-800/65 rounded-xl text-[11px] font-sans">
+                      <div className="flex items-center justify-between mb-1.5">
+                        <div className="flex items-center space-x-1.5 space-x-reverse">
+                          <img
+                            src={rev.author_avatar || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80"}
+                            alt={rev.author_name}
+                            className="w-4.5 h-4.5 rounded-full object-cover"
+                          />
+                          <span className="font-bold text-gray-800 dark:text-gray-200">
+                            {rev.author_name || "Voyageur"}
+                          </span>
+                        </div>
+                        <div className="flex space-x-0.5 text-amber-400">
+                          {Array.from({ length: 5 }).map((_, i) => (
+                            <Star
+                              key={i}
+                              size={8}
+                              className={i < rev.rating ? "fill-amber-400 text-amber-400" : "text-gray-300 dark:text-gray-600"}
+                            />
+                          ))}
+                        </div>
+                      </div>
+                      <p className="text-gray-655 dark:text-gray-300 leading-normal text-[10.5px]">
+                        {rev.comment}
+                      </p>
+                      <span className="block text-[9px] text-gray-400 mt-1 font-mono">
+                        {new Date(rev.created_at || rev.date).toLocaleDateString()}
+                      </span>
+                    </div>
+                  ))
+                ) : (
+                  <p className="text-[10px] text-gray-400 italic">
+                    {language === 'ar' ? 'لا توجد تقييمات بعد. كن أول من يكتب تعليقاً!' : 'No reviews yet. Be the first to share your experience!'}
+                  </p>
+                )}
+              </div>
+
+              {/* Review Submit Form */}
+              {currentUser ? (
+                <form onSubmit={handlePostReview} className="space-y-3 bg-gray-50/50 dark:bg-gray-900/20 p-3 border border-gray-100 dark:border-gray-850/40 rounded-xl">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] font-mono font-bold text-gray-500 dark:text-gray-400">
+                      {language === 'ar' ? 'تقييمك بالنجوم:' : 'Your Star Rating:'}
+                    </span>
+                    <div className="flex space-x-1 space-x-reverse">
+                      {Array.from({ length: 5 }).map((_, i) => (
+                        <button
+                          key={i}
+                          type="button"
+                          onClick={() => setNewRating(i + 1)}
+                          className="hover:scale-115 active:scale-95 transition-all text-amber-400 cursor-pointer"
+                        >
+                          <Star
+                            size={14}
+                            className={i < newRating ? "fill-amber-400 text-amber-400" : "text-gray-300 dark:text-gray-600"}
+                          />
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="relative">
+                    <textarea
+                      value={newComment}
+                      onChange={(e) => setNewComment(e.target.value)}
+                      placeholder={language === 'ar' ? 'اكتب تعليقاً قصيراً هنا...' : 'Write a short comment here...'}
+                      rows={2}
+                      className="w-full text-[11px] p-2 border border-gray-150 dark:border-gray-800 rounded-lg focus:outline-none focus:border-emerald-600 bg-white dark:bg-gray-900 text-gray-800 dark:text-white placeholder-gray-400"
+                    />
+                  </div>
+
+                  {reviewError && (
+                    <p className="text-[9.5px] text-red-500 font-mono">
+                      {reviewError}
+                    </p>
+                  )}
+
+                  <button
+                    type="submit"
+                    className="w-full py-1.5 bg-emerald-600 hover:bg-emerald-750 text-white font-mono text-[10px] uppercase font-bold tracking-wider rounded-lg transition-all cursor-pointer shadow-md"
+                  >
+                    {language === 'ar' ? 'إرسال التقييم' : 'Submit Review'}
+                  </button>
+                </form>
+              ) : (
+                <div className="p-3 bg-gray-50/60 dark:bg-gray-900/30 border border-gray-100 dark:border-gray-800/40 rounded-xl text-center">
+                  <p className="text-[10px] text-gray-500 dark:text-gray-400 mb-2 font-sans">
+                    {language === 'ar' ? 'يجب تسجيل الدخول لنشر تقييمك.' : 'You must be logged in to post a review.'}
+                  </p>
+                  <button
+                    onClick={() => {
+                      window.location.hash = '#/auth';
+                    }}
+                    className="text-[9.5px] font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-450 underline hover:text-emerald-700 cursor-pointer"
+                  >
+                    {language === 'ar' ? 'تسجيل الدخول الآن &rarr;' : 'Log In Now &rarr;'}
+                  </button>
+                </div>
+              )}
+            </div>
+
           </div>
 
           {/* Premium access overlay if applicable */}
@@ -1253,6 +1570,19 @@ export const DigitalTwin: React.FC = () => {
         </div>
 
       </div>
+
+      {/* Lightbox component integration */}
+      <Lightbox
+        isOpen={lightboxOpen}
+        images={lightboxPhotos.map((p, idx) => ({
+          url: p.url,
+          label: `${activeSpot.name} (${idx + 1}/${lightboxPhotos.length})`,
+          attribution: p.html_attributions?.join(', ')
+        }))}
+        currentIndex={lightboxIdx}
+        onClose={() => setLightboxOpen(false)}
+        onNavigate={(index) => setLightboxIdx(index)}
+      />
 
     </div>
   );
