@@ -28,6 +28,7 @@ import {
 } from 'lucide-react';
 import { Landmark, Hotel } from '../types';
 import { heritageDb, HeritageItem } from '../data/heritageData';
+import { EnhancedPlaceDetails } from './EnhancedPlaceDetails';
 
 import { APIProvider, Map, AdvancedMarker, Pin } from '@vis.gl/react-google-maps';
 
@@ -1829,6 +1830,14 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({ setActiveView, s
                   Source: Le Journal Officiel N° 77, République Algérienne.
                 </div>
 
+                <EnhancedPlaceDetails 
+                  name={selectedHeritage.nom} 
+                  lat={selectedHeritage.latitude} 
+                  lng={selectedHeritage.longitude} 
+                  category="monument" 
+                  language={language} 
+                />
+
                 <div className="grid grid-cols-2 gap-2 mt-4">
                   {itinerary.some(item => item.id === selectedHeritage.id) ? (
                     <button
@@ -1901,6 +1910,14 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({ setActiveView, s
                     </div>
                   </div>
                 )}
+
+                <EnhancedPlaceDetails 
+                  name={selectedPlace.name} 
+                  lat={selectedPlace.lat} 
+                  lng={selectedPlace.lng} 
+                  category={selectedPlace.category} 
+                  language={language} 
+                />
 
                 <div className="grid grid-cols-2 gap-2 mt-4">
                   {selectedPlace.category === 'hotel' ? (
