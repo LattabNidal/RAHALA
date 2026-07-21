@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { User, Booking, TaxiRide } from '../types';
+import { supabaseDbService } from '../lib/supabaseDb';
 
 interface AppContextType {
   currentUser: User | null;
@@ -19,15 +20,6 @@ interface AppContextType {
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
-const defaultUser: User = {
-  id: 'usr-928',
-  email: 'lattab.nidal@gmail.com',
-  name: 'Nidal Lattab',
-  role: 'user', // Can toggle in the Dashboard to 'admin'
-  isPremium: false,
-  avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80'
-};
-
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [currentUser, setCurrentUser] = useState<User | null>(() => {
     try {
@@ -43,8 +35,6 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [bookings, setBookings] = useState<Booking[]>(() => {
     const saved = localStorage.getItem('rihla_bookings');
     if (saved) return JSON.parse(saved);
-
-    // Seed empty default
     return [];
   });
 
@@ -67,6 +57,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const [activeTaxiRide, setActiveTaxiRide] = useState<TaxiRide | null>(null);
 
+  // Sync state with localStorage as primary/local storage
   useEffect(() => {
     if (currentUser === null) {
       localStorage.removeItem('rihla_user');
@@ -87,6 +78,32 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     localStorage.setItem('rihla_notifications', JSON.stringify(notifications));
   }, [notifications]);
 
+  // Sync state with Supabase dynamically when currentUser changes
+  useEffect(() => {
+    const syncDataFromSupabase = async () => {
+      if (currentUser && supabaseDbService.isUsingCloud()) {
+        try {
+          // Fetch bookings from Cloud Supabase
+          const cloudBookings = await supabaseDbService.getBookings(currentUser.id);
+          if (cloudBookings && cloudBookings.length > 0) {
+            setBookings(cloudBookings);
+          }
+          
+          // Fetch favorites from Cloud Supabase
+          const cloudFavorites = await supabaseDbService.getFavorites(currentUser.id);
+          if (cloudFavorites) {
+            setFavorites(cloudFavorites);
+          }
+
+          addNotification('Synced successfully with Supabase Cloud Database!');
+        } catch (err) {
+          console.warn('Failed to fetch from Supabase Cloud on login:', err);
+        }
+      }
+    };
+    syncDataFromSupabase();
+  }, [currentUser]);
+
   const addBooking = (newBookingData: Omit<Booking, 'id' | 'invoiceNo' | 'userId'>) => {
     const invoiceNo = `INV-2026-${Math.floor(Math.random() * 89999 + 10000)}`;
     const id = `bkg-${Math.floor(Math.random() * 89999 + 10000)}`;
@@ -99,12 +116,27 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
     setBookings((prev) => [freshBooking, ...prev]);
     addNotification(`Success: Placed booking for "${freshBooking.targetName}". Invoice ID: ${freshBooking.invoiceNo}`);
+
+    // Sync booking with Supabase if connected
+    if (currentUser && supabaseDbService.isUsingCloud()) {
+      if (newBookingData.type === 'hotel') {
+        supabaseDbService.createHotelBooking(currentUser.id, newBookingData);
+      } else if (newBookingData.type === 'taxi' && activeTaxiRide) {
+        supabaseDbService.createTaxiBooking(currentUser.id, activeTaxiRide);
+      }
+    }
+
     return freshBooking;
   };
 
   const cancelBooking = (id: string) => {
     setBookings((prev) => prev.filter((b) => b.id !== id));
     addNotification(`Booking reservation cancelled.`);
+
+    // Sync with Supabase if connected
+    if (currentUser && supabaseDbService.isUsingCloud()) {
+      supabaseDbService.cancelHotelBooking(id);
+    }
   };
 
   const toggleFavorite = (landmarkId: string) => {
@@ -114,9 +146,19 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       if (isFav) {
         nextFavs = prev.filter((id) => id !== landmarkId);
         addNotification(`Removed landmark from bookmarks.`);
+        
+        // Sync with Supabase
+        if (currentUser && supabaseDbService.isUsingCloud()) {
+          supabaseDbService.toggleFavorite(currentUser.id, landmarkId, false);
+        }
       } else {
         nextFavs = [...prev, landmarkId];
         addNotification(`Added landmark to your favorites checklist!`);
+        
+        // Sync with Supabase
+        if (currentUser && supabaseDbService.isUsingCloud()) {
+          supabaseDbService.toggleFavorite(currentUser.id, landmarkId, true);
+        }
       }
       return nextFavs;
     });

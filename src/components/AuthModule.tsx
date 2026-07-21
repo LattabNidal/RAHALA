@@ -23,6 +23,7 @@ import {
   Globe
 } from 'lucide-react';
 import { User, Language } from '../types';
+import { supabaseDbService } from '../lib/supabaseDb';
 
 interface AuthModuleProps {
   onSuccess: (view: string) => void;
@@ -166,7 +167,7 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
     setPhase('login');
   };
 
-  const handleLoginSubmit = (e: React.FormEvent) => {
+  const handleLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage('');
     
@@ -177,10 +178,36 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
 
     setIsLoadingAuth(true);
 
+    if (supabaseDbService.isUsingCloud()) {
+      try {
+        const authData = await supabaseDbService.signIn(email, password);
+        if (authData?.user) {
+          const profile = await supabaseDbService.getProfile(authData.user.id);
+          const activeUser: User = profile || {
+            id: authData.user.id,
+            email: authData.user.email || email,
+            name: authData.user.user_metadata?.fullName || email.split('@')[0],
+            role: 'user',
+            isPremium: false,
+            avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80'
+          };
+          
+          setIsLoadingAuth(false);
+          setCurrentUser(activeUser);
+          addNotification(`${t('welcomeBackUser')}${activeUser.name}!`);
+          onSuccess(activeUser.role === 'admin' ? 'admin' : 'hotels');
+          return;
+        }
+      } catch (err: any) {
+        console.warn('Supabase Auth failed, checking local fallback...', err);
+        // Continue to local fallback in case of test accounts (e.g. admin@rahala.com)
+      }
+    }
+
+    // Local Fallback
     setTimeout(() => {
       let matchedUser: any = null;
 
-      // Direct requested check: email = admin@rahala.com and password = 1234 -> ADMIN
       if (email.toLowerCase() === 'admin@rahala.com' && password === '1234') {
         matchedUser = {
           name: 'Admin RAHLA 👨‍💼',
@@ -211,11 +238,10 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
         setCurrentUser(activeUser);
         addNotification(`${t('welcomeBackUser')}${activeUser.name}!`);
         
-        // Phase 4: Smart Redirection
         if (activeUser.role === 'admin') {
-          onSuccess('admin'); // Going towards Admin Dashboard
+          onSuccess('admin');
         } else {
-          onSuccess('hotels'); // Going towards Plan my trip ("Planifier mon voyage 💰" which is hotels & lodges module)
+          onSuccess('hotels');
         }
       } else {
         setErrorMessage(t('errInvalidCredentials'));
@@ -223,7 +249,7 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
     }, 850);
   };
 
-  const handleRegisterSubmit = (e: React.FormEvent) => {
+  const handleRegisterSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage('');
     setSuccessMessage('');
@@ -235,14 +261,6 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
 
     if (password !== confirmPassword) {
       setErrorMessage(t('errPasswordsDoNotMatch'));
-      return;
-    }
-
-    // Email duplication check
-    const users = getRegisteredUsers();
-    const isDuplicated = users.some((u: any) => u.email.toLowerCase() === email.toLowerCase());
-    if (isDuplicated) {
-      setErrorMessage(t('errEmailRegistered'));
       return;
     }
 
@@ -258,8 +276,30 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
 
     setIsLoadingAuth(true);
 
-    setTimeout(() => {
-      // Create user object
+    if (supabaseDbService.isUsingCloud()) {
+      try {
+        const authData = await supabaseDbService.signUp(email, password, name);
+        if (authData?.user) {
+          // Sync profile to database if trigger is still pending
+          await supabaseDbService.updateProfile(authData.user.id, {
+            name,
+            role,
+            isPremium: role === 'admin'
+          });
+        }
+      } catch (err: any) {
+        console.error('Supabase Sign-up failed:', err);
+        setErrorMessage(err.message || 'Supabase Sign-up error');
+        setIsLoadingAuth(false);
+        return;
+      }
+    }
+
+    // Local mirror register for backward-compatibility
+    const users = getRegisteredUsers();
+    const isDuplicated = users.some((u: any) => u.email.toLowerCase() === email.toLowerCase());
+    
+    if (!isDuplicated) {
       const newAccount = {
         name,
         email: email.toLowerCase(),
@@ -270,20 +310,17 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
           ? 'https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?auto=format&fit=crop&w=150&q=80'
           : 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80'
       };
-
-      // Save in storage
       const updatedUsersList = [...users, newAccount];
       localStorage.setItem('rihla_registered_users', JSON.stringify(updatedUsersList));
+    }
 
-      setIsLoadingAuth(false);
-      setSuccessMessage(t('successAccountCreated'));
-      
-      // Auto redirect back to login tab after brief interval (as requested: "Après inscription : Rediriger vers LOGIN")
-      setTimeout(() => {
-        setPhase('login');
-        setErrorMessage('');
-      }, 1200);
-    }, 1000);
+    setIsLoadingAuth(false);
+    setSuccessMessage(t('successAccountCreated'));
+    
+    setTimeout(() => {
+      setPhase('login');
+      setErrorMessage('');
+    }, 1200);
   };
 
   const handleGuestLogin = () => {

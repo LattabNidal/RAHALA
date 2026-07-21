@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { useApp } from '../context/AppContext';
 import { mockLandmarks } from '../data/mockData';
-import { Calendar, Compass, User, Key, KeyRound, Download, Bookmark, Trash2, Heart, Award, ArrowRight } from 'lucide-react';
+import { Calendar, Compass, User, Key, KeyRound, Download, Bookmark, Trash2, Heart, Award, ArrowRight, Database, Wifi, WifiOff, Loader, CheckCircle2, AlertCircle } from 'lucide-react';
+import { supabaseDbService, supabase } from '../lib/supabaseDb';
 
 interface UserDashboardProps {
   setActiveView: (view: string) => void;
@@ -13,6 +14,44 @@ export const UserDashboard: React.FC<UserDashboardProps> = ({ setActiveView }) =
   const { currentUser, bookings, cancelBooking, favorites, toggleFavorite, notifications } = useApp();
 
   const [activeTab, setActiveTab] = useState<'bookings' | 'favorites' | 'notifs'>('bookings');
+  
+  // Database connection testing states
+  const [dbTestResult, setDbTestResult] = useState<'idle' | 'testing' | 'success' | 'error'>('idle');
+  const [dbErrorMessage, setDbErrorMessage] = useState('');
+  const [dbStats, setDbStats] = useState<{ profilesCount: number; bookingsCount: number } | null>(null);
+
+  const testDatabaseConnection = async () => {
+    setDbTestResult('testing');
+    setDbErrorMessage('');
+    try {
+      if (!supabase) {
+        throw new Error("L'URL ou la clé d'API anonyme Supabase n'est pas définie dans l'environnement. Veuillez configurer VITE_SUPABASE_URL et VITE_SUPABASE_ANON_KEY.");
+      }
+
+      // Quick table probe
+      const { data, error, count } = await supabase
+        .from('profiles')
+        .select('*', { count: 'exact', head: true })
+        .limit(1);
+
+      if (error) throw error;
+
+      // Also grab bookings count
+      const { count: bookingsCount } = await supabase
+        .from('bookings_hotels')
+        .select('*', { count: 'exact', head: true });
+
+      setDbStats({
+        profilesCount: count || 0,
+        bookingsCount: bookingsCount || 0
+      });
+      setDbTestResult('success');
+    } catch (err: any) {
+      console.error('Supabase diagnostic ping failed:', err);
+      setDbTestResult('error');
+      setDbErrorMessage(err?.message || 'Erreur inconnue de connexion à Supabase.');
+    }
+  };
 
   // filter landmarks favorited
   const favoriteLandmarks = mockLandmarks.filter(l => favorites.includes(l.id));
@@ -100,6 +139,114 @@ export const UserDashboard: React.FC<UserDashboardProps> = ({ setActiveView }) =
                 </button>
               </div>
             )}
+          </div>
+
+          {/* Supabase Connection Diagnostics Card */}
+          <div className="bg-white dark:bg-[#162231] border border-emerald-50 dark:border-slate-800 rounded-3xl p-6 shadow-xl mt-6">
+            <div className="flex items-center space-x-2 space-x-reverse mb-3">
+              <Database className="text-emerald-600 dark:text-emerald-400" size={18} />
+              <h3 className="text-sm font-bold text-gray-800 dark:text-white">
+                Base de données cloud (Supabase)
+              </h3>
+            </div>
+            
+            <p className="text-[11px] text-gray-500 dark:text-slate-400 mb-4 leading-relaxed">
+              Vérifiez la synchronisation en temps réel de votre application Rahala avec la base de données PostgreSQL de Supabase.
+            </p>
+
+            {/* Connection Status Badge */}
+            <div className="mb-4">
+              {supabase ? (
+                <div className="p-3 bg-emerald-500/10 rounded-2xl border border-emerald-500/20 text-[11px] text-emerald-800 dark:text-emerald-400 flex items-center space-x-2 space-x-reverse">
+                  <Wifi size={14} className="text-emerald-500 animate-pulse shrink-0" />
+                  <div className="min-w-0 flex-1">
+                    <span className="font-bold block">Client Initialisé</span>
+                    <span className="text-[9px] text-gray-400 block mt-0.5 truncate" title={import.meta.env.VITE_SUPABASE_URL || ''}>
+                      {import.meta.env.VITE_SUPABASE_URL || 'Connecté'}
+                    </span>
+                  </div>
+                </div>
+              ) : (
+                <div className="p-3 bg-amber-500/10 rounded-2xl border border-amber-500/20 text-[11px] text-amber-800 dark:text-amber-400 flex items-center space-x-2 space-x-reverse">
+                  <WifiOff size={14} className="text-amber-500 shrink-0" />
+                  <div>
+                    <span className="font-bold block">Mode Local Actif (Backup)</span>
+                    <span className="text-[9px] text-gray-400 block mt-0.5">
+                      Les variables d'environnement Supabase manquent.
+                    </span>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Live Testing Area */}
+            <div className="space-y-3">
+              <button
+                onClick={testDatabaseConnection}
+                disabled={dbTestResult === 'testing'}
+                className="w-full py-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-gray-800 dark:text-white rounded-xl text-xs font-bold transition flex items-center justify-center space-x-1.5 disabled:opacity-50"
+              >
+                {dbTestResult === 'testing' ? (
+                  <>
+                    <Loader size={12} className="animate-spin text-emerald-500" />
+                    <span>Vérification en cours...</span>
+                  </>
+                ) : (
+                  <>
+                    <Database size={12} />
+                    <span>Tester la connexion en direct ⚡</span>
+                  </>
+                )}
+              </button>
+
+              {/* Success Result */}
+              {dbTestResult === 'success' && (
+                <div className="p-3 bg-emerald-500/10 border border-emerald-500/20 rounded-xl text-[10.5px] text-emerald-800 dark:text-emerald-300 animate-fade-in">
+                  <div className="flex items-center space-x-1.5 space-x-reverse font-bold mb-1">
+                    <CheckCircle2 size={13} className="text-emerald-500" />
+                    <span>Connexion Réussie !</span>
+                  </div>
+                  <p className="text-gray-500 dark:text-slate-400 mb-2 leading-relaxed">
+                    L'application communique parfaitement avec votre instance Supabase.
+                  </p>
+                  <div className="grid grid-cols-2 gap-2 text-center pt-1 border-t border-emerald-500/10">
+                    <div className="bg-emerald-500/5 p-1 rounded">
+                      <span className="font-mono text-xs block font-bold text-gray-800 dark:text-white">
+                        {dbStats?.profilesCount}
+                      </span>
+                      <span className="text-[8px] text-gray-400 block">Profils</span>
+                    </div>
+                    <div className="bg-emerald-500/5 p-1 rounded">
+                      <span className="font-mono text-xs block font-bold text-gray-800 dark:text-white">
+                        {dbStats?.bookingsCount}
+                      </span>
+                      <span className="text-[8px] text-gray-400 block">Réservations</span>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Error Result */}
+              {dbTestResult === 'error' && (
+                <div className="p-3 bg-red-500/10 border border-red-500/20 rounded-xl text-[10.5px] text-red-800 dark:text-red-300 animate-fade-in">
+                  <div className="flex items-center space-x-1.5 space-x-reverse font-bold mb-1">
+                    <AlertCircle size={13} className="text-red-500" />
+                    <span>Erreur de Connexion</span>
+                  </div>
+                  <p className="leading-relaxed text-gray-500 dark:text-slate-400 text-[10px]">
+                    {dbErrorMessage}
+                  </p>
+                  <div className="mt-2 bg-red-500/5 p-2 rounded text-[9.5px] text-gray-500 dark:text-slate-400 space-y-1">
+                    <p className="font-bold text-gray-700 dark:text-slate-300">Comment régler ça ?</p>
+                    <ol className="list-decimal list-inside space-y-0.5">
+                      <li>Ouvrez l'onglet <strong className="text-gray-800 dark:text-white">Secrets</strong> de l'IA Studio.</li>
+                      <li>Ajoutez <code className="bg-slate-100 dark:bg-slate-800 px-1 rounded text-red-500">VITE_SUPABASE_URL</code></li>
+                      <li>Ajoutez <code className="bg-slate-100 dark:bg-slate-800 px-1 rounded text-red-500">VITE_SUPABASE_ANON_KEY</code></li>
+                    </ol>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </div>
 

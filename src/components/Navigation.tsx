@@ -12,6 +12,7 @@ import {
 import { Language } from '../types';
 import { motion, AnimatePresence } from 'motion/react';
 import { CurrencyConverter } from './CurrencyConverter';
+import { supabaseDbService } from '../lib/supabaseDb';
 
 interface NavigationProps {
   activeView: string;
@@ -198,6 +199,21 @@ export const Navigation: React.FC<NavigationProps> = ({ activeView, setActiveVie
 
             {/* Right Action Hub (Languages, Notifications, Dark Mode, Profile) */}
             <div className="flex items-center space-x-1.5 space-x-reverse">
+              {/* Cloud Sync Database Status Badge */}
+              <div className="flex items-center">
+                <span className={`flex items-center gap-1.5 px-2 py-1.5 text-[9px] font-mono font-bold uppercase rounded-xl leading-none border select-none ${
+                  supabaseDbService.isUsingCloud()
+                    ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20'
+                    : 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20'
+                }`}
+                title={supabaseDbService.isUsingCloud() ? 'Live synchronization with Supabase cloud database active' : 'Running in offline backup mode using client-side localStorage'}
+                >
+                  <span className={`w-1.5 h-1.5 rounded-full ${supabaseDbService.isUsingCloud() ? 'bg-emerald-500 animate-pulse' : 'bg-amber-500'}`} />
+                  <span className="hidden lg:inline">{supabaseDbService.isUsingCloud() ? 'Supabase Connected' : 'Local DB Mode'}</span>
+                  <span className="lg:hidden">{supabaseDbService.isUsingCloud() ? 'Cloud' : 'Local'}</span>
+                </span>
+              </div>
+
               {/* Preserved Testing widgets for preview reviewers to toggle standard/admin roles seamlessly */}
               {currentUser && (
                 <div className="hidden md:flex items-center space-x-1 space-x-reverse leading-none bg-[#1a1a1a]/5 dark:bg-white/5 p-1 rounded-xl border border-slate-300/15">
