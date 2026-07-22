@@ -3,7 +3,7 @@ import { LanguageProvider, useLanguage } from './context/LanguageContext';
 import { AppProvider, useApp } from './context/AppContext';
 import androidChrome from './assets/images/android-chrome-512x512.png';
 import rahalaHeroBanner from './assets/images/rahala_hero_banner_1784119916854.jpg';
-import rahalaLogo from './assets/images/rahala_logo_1781612694384.jpg';
+import rahalaLogo from './assets/images/android-chrome-512x512.png';
 import { Navigation } from './components/Navigation';
 import { DigitalTwin } from './components/DigitalTwin';
 import { InteractiveMap } from './components/InteractiveMap';
@@ -695,10 +695,9 @@ function RihlaApp() {
                     {/* Background photo */}
                     <div className="absolute inset-0 z-0">
                       <img 
-                        src="https://images.unsplash.com/photo-1505691938895-1758d7feb511?auto=format&fit=crop&w=800&q=80" 
+                        src="/src/assets/images/casbah_d_alger/site_0565_0017-1000-1481-20140721144417.webp" 
                         alt="Algiers casbah cultural escape"
                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                        referrerPolicy="no-referrer"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent"></div>
                     </div>

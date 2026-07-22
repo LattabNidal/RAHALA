@@ -3,7 +3,7 @@ import { useLanguage } from '../context/LanguageContext';
 import { useApp } from '../context/AppContext';
 import androidChrome from '../assets/images/android-chrome-512x512.png';
 import rahalaHeroBanner from '../assets/images/rahala_hero_banner_1784119916854.jpg';
-import rahalaLogo from '../assets/images/rahala_logo_1781612694384.jpg';
+import rahalaLogo from '../assets/images/android-chrome-512x512.png';
 import { 
   Menu, X, Bell, Globe, Sparkles, User as UserIcon, 
   ShieldAlert, LogOut, Sun, Moon, CreditCard, Shield,

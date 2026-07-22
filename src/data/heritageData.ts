@@ -1,3 +1,7 @@
+const casbahFolderModules = import.meta.glob('/src/assets/images/casbah_d_alger/*.webp', { eager: true, import: 'default' });
+const casbahWebpImages = Object.values(casbahFolderModules) as string[];
+const defaultCasbahImage = casbahWebpImages.find(img => img.includes('site_0565_0017')) || casbahWebpImages[0] || '/src/assets/images/casbah_d_alger/site_0565_0017-1000-1481-20140721144417.webp';
+
 export interface HeritageItem {
   id: string;
   nom: string;
@@ -76,8 +80,8 @@ export const heritageDb: HeritageItem[] = [
     latitude: 36.7865,
     longitude: 3.0592,
     etat: "Bon",
-    description: "Cité islamique traditionnelle millénaire classée patrimoine mondial d'UNESCO. Elle comprend de magnifiques palais ottomans, d'anciennes mosquées et des venelles pittoresques face à la baie.",
-    image: "https://images.unsplash.com/photo-1596120206305-c10b0058bcde?auto=format&fit=crop&w=800&q=80",
+    description: "Dans l'un des plus beaux sites maritimes de la Méditerranée, surplombant les îlots où un comptoir carthaginois fut installé dès le IVe siècle av. J.-C., la Casbah constitue un type unique de médina, ou ville islamique. Lieu de mémoire autant que d'histoire, elle comprend des vestiges de la citadelle, des mosquées anciennes, des palais ottomans, ainsi qu'une structure urbaine traditionnelle associée à un grand sens de la communauté.",
+    image: defaultCasbahImage,
     source: "Loi Relative à la protection du patrimoine culturel d'Algérie",
     popularite: "élevée"
   },

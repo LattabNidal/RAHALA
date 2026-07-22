@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { useApp } from '../context/AppContext';
-import rahalaLogo from '../assets/images/rahala_logo_1781612694384.jpg';
+import rahalaLogo from '../assets/images/android-chrome-512x512.png';
 import { 
   LogIn, 
   Key, 

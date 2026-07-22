@@ -1,5 +1,16 @@
 import { Landmark, Hotel } from '../types';
 
+const casbahFolderModules = import.meta.glob('/src/assets/images/casbah_d_alger/*.webp', { eager: true, import: 'default' });
+const casbahWebpImages = Object.values(casbahFolderModules) as string[];
+
+const primaryCasbahImage = casbahWebpImages.find(img => img.includes('site_0565_0017')) || casbahWebpImages[0] || '/src/assets/images/casbah_d_alger/site_0565_0017-1000-1481-20140721144417.webp';
+
+const casbahFolderImages = Array.from(new Set([
+  primaryCasbahImage,
+  ...casbahWebpImages,
+  '/src/assets/images/casbah_d_alger/casbah_vaulted_alley.jpg'
+]));
+
 export const mockLandmarks: Landmark[] = [
   {
     id: 'casbah',
@@ -7,17 +18,13 @@ export const mockLandmarks: Landmark[] = [
     location: 'Algiers (Alger)',
     category: 'historical',
     rating: 4.9,
-    image: 'https://images.unsplash.com/photo-1596120206305-c10b0058bcde?auto=format&fit=crop&w=1200&q=80',
-    panoramas: [
-      'https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=1200&q=80', // Street gate
-      'https://images.unsplash.com/photo-1627581165609-b6dc24660eb6?auto=format&fit=crop&w=1200&q=80', // Traditional tile courtyard
-      'https://images.unsplash.com/photo-1618172193763-c511deb635ca?auto=format&fit=crop&w=1200&q=80'  // Sea view
-    ],
+    image: primaryCasbahImage,
+    panoramas: casbahFolderImages,
     description: {
-      en: 'A unique Islamic city of incredible history. It contains remains of citadel, ancient mosques and Ottoman-style palaces, maintaining deep-rooted Algiers culture.',
-      fr: "Un exemple unique de ville islamique historique. Elle préserve les vestiges d'une citadelle, de mosquées anciennes et de palais ottomans, au cœur de la culture algéroise.",
-      ar: 'مدينة إسلامية فريدة ذات تاريخ حافل. تضم بقايا قلعة، مساجد قديمة وقصور عثمانية مذهلة، وتحافظ على ثقافة العاصمة العريقة.',
-      es: 'Una ciudad islámica única con una historia increíble. Contiene restos de una ciudadela, mezquitas antiguas y palacios otomanos.'
+      en: 'In one of the finest maritime sites of the Mediterranean, overlooking the islets where a Carthaginian trading post was established in the 4th century BC, the Casbah is a unique type of medina. A place of history containing citadel ruins, ancient mosques, and Ottoman palaces.',
+      fr: "Dans l'un des plus beaux sites maritimes de la Méditerranée, surplombant les îlots où un comptoir carthaginois fut installé dès le IVe siècle av. J.-C., la Casbah constitue un type unique de médina. Lieu de mémoire autant que d'histoire, elle comprend des vestiges de la citadelle, des mosquées anciennes, des palais ottomans, ainsi qu'une structure urbaine traditionnelle associée à un grand sens de la communauté.",
+      ar: 'في واحد من أجمل المواقع البحرية في البحر الأبيض المتوسط، وتطل على الجزر الصغيرة حيث أسس مركز تجاري قرطاجي في القرن الرابع قبل الميلاد، تشكل القصبة نوعًا فريدًا من المدينة القديمة.',
+      es: 'En uno de los parajes marítimos más bellos del Mediterráneo, con vistas a los islotes donde se instaló un puesto comercial cartaginés en el siglo IV a.C., la Casbah constituye un tipo único de medina.'
     },
     facts: {
       en: [
@@ -44,41 +51,44 @@ export const mockLandmarks: Landmark[] = [
   },
   {
     id: 'santa-cruz',
-    name: 'Santa Cruz Fort & Cathedral',
+    name: 'Santa Cruz Fort & Chapelle Notre-Dame du Salut',
     location: 'Oran (Wahran)',
     category: 'cultural',
-    rating: 4.8,
-    image: 'https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=1200&q=80',
+    rating: 4.9,
+    image: '/src/assets/images/santa_cruz_oran_chapel_1784672157047.jpg',
     panoramas: [
-      'https://images.unsplash.com/photo-1548013146-72479768bada?auto=format&fit=crop&w=1200&q=80', // Fort walls
-      'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80'  // Panorama of Oran Port
+      '/src/assets/images/santa_cruz_oran_chapel_1784672157047.jpg'
     ],
     description: {
-      en: 'Perched on Mt. Murdjadjo, the fort provides breathtaking panoramic views of the Oran coastline and is connected to a stunning historic chapel built after a cholera outbreak.',
-      fr: "Perché sur le mont Murdjadjo, ce fort offre une vue panoramique époustouflante sur la côte d'Oran. Il côtoie une magnifique chapelle historique.",
-      ar: 'يقع الحصن على جبل مرجاجو الشامخ، ويوفر إطلالات بانورامية خلابة على ساحل وهران، وبجواره كنيسة تاريخية مهيبة بنتها الجالية للإغاثة من وباء الكوليرا.',
-      es: 'Situado en el Monte Murdjadjo, el fuerte ofrece impresionantes vistas panorámicas de la costa de Orán y está conectado a una capilla histórica.'
+      en: 'Perched on Mt. Murdjadjo, Santa Cruz Fort (1577) and the Chapelle Notre-Dame du Salut (1850) offer a breathtaking panoramic view of the Oran bay and Mers-El-Kébir.',
+      fr: "Perché sur le mont Murdjadjo, le Fort Santa-Cruz (1577) et la Chapelle Notre-Dame du Salut (1850) offrent un panorama saisissant sur la baie d'Oran et Mers-El-Kébir.",
+      ar: 'يقع حصن سانتا كروز (1577م) وكنيسة سيدة الخلاص (1850م) على جبل مرجاجو الشامخ، ويوفران إطلالة بانورامية رائعة على خليج وهران والمرسى الكبير.',
+      es: 'Situado en el Monte Murdjadjo, el Fuerte Santa Cruz (1577) y la Capilla Notre-Dame du Salut (1850) ofrecen vistas panorámicas de la bahía de Orán.'
     },
     facts: {
       en: [
-        'Built by the Spaniards between 1563 and 1577.',
-        'Underwent heavy battles between Ottoman and Spanish forces.',
-        'Offers visual line-of-sight to Spain’s coast on clear days.'
+        'Chapel erected in 1850 following the deadly cholera epidemic of 1849 (1,173 victims).',
+        'Monumental tower built in 1873 supporting a 5,000 kg bronze statue cast in Lyon.',
+        'Fort built between 1577 and 1580 under Spanish King Felipe II by engineer Jacome Palearo Fratín.',
+        'Classified as an Algerian National Historical Monument on October 6, 1950.'
       ],
       fr: [
-        'Construit par les Espagnols entre 1563 et 1577.',
-        'Fut le théâtre de rudes batailles entre Ottomans et Espagnols.',
-        'Permet d’apercevoir les côtes espagnoles par temps très clair.'
+        'Érigée en 1850 à la suite de l’épidémie de choléra de 1849 (1 173 victimes).',
+        'Tour monumentale construite en 1873 portant une statue en bronze de 5 000 kg moulée à Lyon.',
+        'Fort érigé de 1577 à 1580 sous Philippe II par l’ingénieur Jacome Palearo Fratín.',
+        'Classée Monument Historique National le 6 octobre 1950 et site naturel du Murdjadjo.'
       ],
       ar: [
-        'بناه الإسبان بين عامي 1563 و 1577 م.',
-        'شهد معارك ضارية بين القوات العثمانية والإسبانية للسيطرة عليه.',
-        'يمكن رؤية خط الأفق نحو إسبانيا في الأيام الصافية تماماً.'
+        'شُيّدت الكنيسة عام 1850م إثر وباء الكوليرا الفتاك عام 1849م (1173 ضحية).',
+        'بني البرج التذكاري عام 1873م ويحمل تمثالاً برونزياً وزنه 5000 كجم سُبك في ليون.',
+        'شُيّد الحصن بين عامي 1577 و1580م في عهد فيليب الثاني على يد المهندس باسياري فراتين.',
+        'مُصنّفة كمعلم تاريخي وطني جزائري منذ 6 أكتوبر 1950م.'
       ],
       es: [
-        'Construido por los españoles entre 1563 y 1577.',
-        'Sufrió intensas batallas entre las fuerzas otomanas y españolas.',
-        'Ofrece una línea de visión directa a la costa de España en días despejados.'
+        'Capilla erigida en 1850 tras la epidemia de cólera de 1849 (1.173 víctimas).',
+        'Torre monumental construida en 1873 con una estatua de bronce de 5.000 kg moldeada en Lyon.',
+        'Fuerte construido entre 1577 y 1580 bajo el rey Felipe II por el ingeniero Jacome Palearo Fratín.',
+        'Clasificado como Monumento Histórico Nacional el 6 de octubre de 1950.'
       ]
     }
   },
@@ -88,10 +98,20 @@ export const mockLandmarks: Landmark[] = [
     location: 'Djanet (Sahara)',
     category: 'sahara',
     rating: 5.0,
-    image: 'https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=1200&q=80', // Beautiful desert dunes
+    image: '/src/assets/images/tassili_erg_dunes_1784674389237.jpg',
     panoramas: [
-      'https://images.unsplash.com/photo-1530521951415-32410a74134f?auto=format&fit=crop&w=1200&q=80', // Rock arches
-      'https://images.unsplash.com/photo-1473580044384-7ba9967e16a0?auto=format&fit=crop&w=1200&q=80'  // Golden dunes of Djanet
+      '/src/assets/images/tassili_djanet_desert_1784672763415.jpg',
+      '/src/assets/images/tassili_erg_dunes_1784674389237.jpg',
+      '/src/assets/images/tassili_stone_forest_1784674536111.jpg',
+      '/src/assets/images/tassili_art_dancers_1784674422643.jpg',
+      '/src/assets/images/tassili_canyon_gorge_1784674464805.jpg',
+      '/src/assets/images/tassili_art_figures_1784674477805.jpg',
+      '/src/assets/images/tassili_tarout_tree_1784674506915.jpg',
+      '/src/assets/images/tassili_rock_pillars_1784674449646.jpg',
+      '/src/assets/images/tassili_folded_rocks_1784674435944.jpg',
+      '/src/assets/images/tassili_art_giraffe_1784674491289.jpg',
+      '/src/assets/images/tassili_oasis_canyon_1784674520880.jpg',
+      '/src/assets/images/tassili_reg_desert_1784674407062.jpg'
     ],
     description: {
       en: 'A vast, alien-like plateau in the Sahara containing one of the world’s most important groupings of prehistoric cave art, dating back more than 10,000 years.',

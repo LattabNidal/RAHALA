@@ -5,7 +5,7 @@ import { Language } from '../types';
 import { SEOHead } from '../SEOHead';
 import androidChrome from '../assets/images/android-chrome-512x512.png';
 import rahalaHeroBanner from '../assets/images/rahala_hero_banner_1784119916854.jpg';
-import rahalaLogo from '../assets/images/rahala_logo_1781612694384.jpg';
+import rahalaLogo from '../assets/images/android-chrome-512x512.png';
 
 interface LandingPageProps {
   onEnterAuth: (phase: 'login' | 'register') => void;

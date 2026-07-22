@@ -29,6 +29,9 @@ import {
 import { Landmark, Hotel } from '../types';
 import { heritageDb, HeritageItem } from '../data/heritageData';
 import { EnhancedPlaceDetails } from './EnhancedPlaceDetails';
+import { UnescoDocumentModal } from './UnescoDocumentModal';
+import { SantaCruzDocumentModal } from './SantaCruzDocumentModal';
+import { TassiliDocumentModal } from './TassiliDocumentModal';
 
 import { APIProvider, Map, AdvancedMarker, Pin } from '@vis.gl/react-google-maps';
 
@@ -623,6 +626,9 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({ setActiveView, s
   const [itinerary, setItinerary] = useState<HeritageItem[]>([]);
   const [heritageGroupByCity, setHeritageGroupByCity] = useState<boolean>(false);
   const [showDeveloperHub, setShowDeveloperHub] = useState(false);
+  const [unescoModalOpen, setUnescoModalOpen] = useState(false);
+  const [santaCruzModalOpen, setSantaCruzModalOpen] = useState(false);
+  const [tassiliModalOpen, setTassiliModalOpen] = useState(false);
 
   // Map settings
   const [searchQuery, setSearchQuery] = useState('');
@@ -1804,9 +1810,45 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({ setActiveView, s
                   </span>
                 </div>
 
-                <p className="text-[11px] text-gray-500 dark:text-slate-350 leading-relaxed">
+                <p className="text-[11px] text-gray-500 dark:text-slate-350 leading-relaxed mb-3">
                   {selectedHeritage.description}
                 </p>
+
+                {/* Document PDF Inspector button */}
+                {selectedHeritage?.nom.toLowerCase().includes('tassili') || selectedHeritage?.id.includes('tassili') ? (
+                  <button
+                    onClick={() => setTassiliModalOpen(true)}
+                    className="w-full py-2 px-3 mb-3 bg-amber-500/10 hover:bg-amber-500/20 text-amber-700 dark:text-amber-300 border border-amber-500/30 rounded-xl text-[11px] font-bold transition flex items-center justify-between cursor-pointer"
+                  >
+                    <span className="flex items-center gap-1.5">
+                      <span>📄</span>
+                      <span>Consulter Dossier UNESCO N° 179 (Tassili)</span>
+                    </span>
+                    <span className="font-mono text-[10px]">&rarr;</span>
+                  </button>
+                ) : selectedHeritage?.nom.toLowerCase().includes('santa') || selectedHeritage?.id.includes('santa') ? (
+                  <button
+                    onClick={() => setSantaCruzModalOpen(true)}
+                    className="w-full py-2 px-3 mb-3 bg-amber-500/10 hover:bg-amber-500/20 text-amber-700 dark:text-amber-300 border border-amber-500/30 rounded-xl text-[11px] font-bold transition flex items-center justify-between cursor-pointer"
+                  >
+                    <span className="flex items-center gap-1.5">
+                      <span>📄</span>
+                      <span>Consulter Dossier Chapelle Santa-Cruz (PDF)</span>
+                    </span>
+                    <span className="font-mono text-[10px]">&rarr;</span>
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => setUnescoModalOpen(true)}
+                    className="w-full py-2 px-3 mb-3 bg-amber-500/10 hover:bg-amber-500/20 text-amber-700 dark:text-amber-300 border border-amber-500/30 rounded-xl text-[11px] font-bold transition flex items-center justify-between cursor-pointer"
+                  >
+                    <span className="flex items-center gap-1.5">
+                      <span>📄</span>
+                      <span>Consulter Dossier UNESCO N° 555 (PDF)</span>
+                    </span>
+                    <span className="font-mono text-[10px]">&rarr;</span>
+                  </button>
+                )}
 
                 {/* Associated artwork section */}
                 {selectedHeritage.oeuvreAssociee && (
@@ -2357,6 +2399,23 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({ setActiveView, s
          </div>
        )}
 
+        <UnescoDocumentModal
+          isOpen={unescoModalOpen}
+          onClose={() => setUnescoModalOpen(false)}
+          siteName={selectedHeritage?.nom || "La Casbah d'Alger"}
+        />
+
+        <SantaCruzDocumentModal
+          isOpen={santaCruzModalOpen}
+          onClose={() => setSantaCruzModalOpen(false)}
+          siteName={selectedHeritage?.nom || "Chapelle de Santa-Cruz (Oran)"}
+        />
+
+        <TassiliDocumentModal
+          isOpen={tassiliModalOpen}
+          onClose={() => setTassiliModalOpen(false)}
+          siteName={selectedHeritage?.nom || "Parc National du Tassili n'Ajjer (Djanet)"}
+        />
      </div>
    );
  };

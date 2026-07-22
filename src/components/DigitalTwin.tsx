@@ -11,6 +11,9 @@ import { mockLandmarks } from '../data/mockData';
 import { Landmark } from '../types';
 import { socialService } from '../lib/supabase';
 import { Lightbox } from './Lightbox';
+import { UnescoDocumentModal } from './UnescoDocumentModal';
+import { SantaCruzDocumentModal } from './SantaCruzDocumentModal';
+import { TassiliDocumentModal } from './TassiliDocumentModal';
 
 // Track coordinates of hotspots in 3D scene to auto-focus them
 const hotspotsData: { [key: string]: { name: string; pos: THREE.Vector3; info: string }[] } = {
@@ -839,6 +842,11 @@ export const DigitalTwin: React.FC = () => {
   const [lightboxPhotos, setLightboxPhotos] = useState<any[]>([]);
   const [lightboxIdx, setLightboxIdx] = useState(0);
 
+  // UNESCO, Santa Cruz & Tassili Document Modal states
+  const [unescoModalOpen, setUnescoModalOpen] = useState(false);
+  const [santaCruzModalOpen, setSantaCruzModalOpen] = useState(false);
+  const [tassiliModalOpen, setTassiliModalOpen] = useState(false);
+
   // Fetch all reviews for calculating average ratings on tabs/cards
   const loadAllReviews = async () => {
     const reviewsMap: Record<string, any[]> = {};
@@ -923,21 +931,18 @@ export const DigitalTwin: React.FC = () => {
 
     const fetchRealPhotos = async () => {
       setPhotosLoading(true);
-      try {
-        const queryName = activeSpot.name;
-        const res = await fetch(`/api/places/photos?query=${encodeURIComponent(queryName)}`);
-        const data = await res.json();
-        if (data && data.photos) {
-          setRealPhotos(data.photos);
-        } else {
-          setRealPhotos([]);
-        }
-      } catch (err) {
-        console.error('Failed to fetch real photos:', err);
-        setRealPhotos([]);
-      } finally {
-        setPhotosLoading(false);
-      }
+      // Use strictly authentic photo objects provided by the user in local panoramas/image
+      const localPhotos = (activeSpot.panoramas && activeSpot.panoramas.length > 0 
+        ? activeSpot.panoramas 
+        : [activeSpot.image]
+      ).map((imgUrl, i) => ({
+        url: imgUrl,
+        author: `Cliché Authentique N°${i + 1}`,
+        attribution: activeSpot.name
+      }));
+
+      setRealPhotos(localPhotos);
+      setPhotosLoading(false);
     };
     fetchRealPhotos();
   }, [activeSpot.id]);
@@ -1316,9 +1321,68 @@ export const DigitalTwin: React.FC = () => {
             </div>
 
             {/* Target Spot Description */}
-            <p className="text-xs text-gray-650 dark:text-gray-400 leading-relaxed font-sans mb-6">
+            <p className="text-xs text-gray-650 dark:text-gray-400 leading-relaxed font-sans mb-4">
               {activeSpot.description[language] || activeSpot.description['en']}
             </p>
+
+            {/* Official Document Inspector Button Trigger */}
+            <div className="mb-6">
+              {activeSpot.id === 'tassili' || activeSpot.name.toLowerCase().includes('tassili') ? (
+                <button
+                  onClick={() => setTassiliModalOpen(true)}
+                  className="w-full py-2.5 px-3 bg-gradient-to-r from-amber-500/10 via-amber-500/20 to-amber-500/10 hover:from-amber-500/20 hover:to-amber-500/30 text-amber-700 dark:text-amber-300 border border-amber-500/40 rounded-xl text-xs font-bold transition flex items-center justify-between shadow-xs cursor-pointer group"
+                >
+                  <div className="flex items-center space-x-2 space-x-reverse">
+                    <span className="text-base">📄</span>
+                    <div className="text-left font-sans">
+                      <span className="block text-[11px] font-bold">Dossier UNESCO N° 179 — Tassili n'Ajjer</span>
+                      <span className="block text-[9px] text-amber-600/80 dark:text-amber-400/80 font-mono">
+                        Art Rupestre (+15k Peintures) & Forêt de Pierre (PDF)
+                      </span>
+                    </div>
+                  </div>
+                  <span className="text-xs group-hover:translate-x-1 transition-transform font-mono">
+                    Ouvrir &rarr;
+                  </span>
+                </button>
+              ) : activeSpot.id === 'santa-cruz' || activeSpot.name.toLowerCase().includes('santa') ? (
+                <button
+                  onClick={() => setSantaCruzModalOpen(true)}
+                  className="w-full py-2.5 px-3 bg-gradient-to-r from-amber-500/10 via-amber-500/20 to-amber-500/10 hover:from-amber-500/20 hover:to-amber-500/30 text-amber-700 dark:text-amber-300 border border-amber-500/40 rounded-xl text-xs font-bold transition flex items-center justify-between shadow-xs cursor-pointer group"
+                >
+                  <div className="flex items-center space-x-2 space-x-reverse">
+                    <span className="text-base">📄</span>
+                    <div className="text-left font-sans">
+                      <span className="block text-[11px] font-bold">Dossier Historique Chapelle Santa-Cruz</span>
+                      <span className="block text-[9px] text-amber-600/80 dark:text-amber-400/80 font-mono">
+                        Étude Choléra 1849, Tour 1873 & Fort Espagnol (PDF)
+                      </span>
+                    </div>
+                  </div>
+                  <span className="text-xs group-hover:translate-x-1 transition-transform font-mono">
+                    Ouvrir &rarr;
+                  </span>
+                </button>
+              ) : (
+                <button
+                  onClick={() => setUnescoModalOpen(true)}
+                  className="w-full py-2.5 px-3 bg-gradient-to-r from-amber-500/10 via-amber-500/20 to-amber-500/10 hover:from-amber-500/20 hover:to-amber-500/30 text-amber-700 dark:text-amber-300 border border-amber-500/40 rounded-xl text-xs font-bold transition flex items-center justify-between shadow-xs cursor-pointer group"
+                >
+                  <div className="flex items-center space-x-2 space-x-reverse">
+                    <span className="text-base">📄</span>
+                    <div className="text-left font-sans">
+                      <span className="block text-[11px] font-bold">Dossier Officiel UNESCO N° 555</span>
+                      <span className="block text-[9px] text-amber-600/80 dark:text-amber-400/80 font-mono">
+                        Fiche d'Inscription & Rapport ICOMOS (PDF)
+                      </span>
+                    </div>
+                  </div>
+                  <span className="text-xs group-hover:translate-x-1 transition-transform font-mono">
+                    Ouvrir &rarr;
+                  </span>
+                </button>
+              )}
+            </div>
 
             {/* List of facts points */}
             <div className="space-y-4 mb-6">
@@ -1378,19 +1442,26 @@ export const DigitalTwin: React.FC = () => {
               </div>
             )}
 
-            {/* Real Photos of the Place */}
+            {/* Real Photos & Gallery of the Site */}
             <div className="border-t border-gray-100 dark:border-gray-800 pt-5 mt-5">
-              <h4 className="text-[10px] font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 mb-3 flex items-center space-x-1.5 space-x-reverse">
-                <ImageIcon size={11} className="text-emerald-600" />
-                <span>{language === 'ar' ? 'صور حقيقية للموقع' : 'Real Google Photos of Site'}</span>
-              </h4>
+              <div className="flex items-center justify-between mb-3">
+                <h4 className="text-[10px] font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 flex items-center space-x-1.5 space-x-reverse">
+                  <ImageIcon size={11} className="text-emerald-600" />
+                  <span>{language === 'ar' ? 'Photothèque Officielle du Site' : 'Photothèque Officielle & Clichés Authentiques'}</span>
+                </h4>
+                {realPhotos.length > 0 && (
+                  <span className="text-[9px] font-mono text-amber-600 dark:text-amber-400 font-bold bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">
+                    {realPhotos.length} {language === 'ar' ? 'صورة' : 'Clichés'}
+                  </span>
+                )}
+              </div>
               {photosLoading ? (
                 <div className="flex items-center justify-center py-4">
                   <RefreshCw size={14} className="animate-spin text-gray-400" />
                 </div>
               ) : realPhotos.length > 0 ? (
-                <div className="grid grid-cols-4 gap-2">
-                  {realPhotos.slice(0, 4).map((photo, idx) => (
+                <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
+                  {realPhotos.map((photo, idx) => (
                     <button
                       key={idx}
                       onClick={() => {
@@ -1398,19 +1469,15 @@ export const DigitalTwin: React.FC = () => {
                         setLightboxIdx(idx);
                         setLightboxOpen(true);
                       }}
-                      className="relative h-12 rounded-lg overflow-hidden border border-gray-250 dark:border-gray-700 hover:scale-105 active:scale-95 transition-all cursor-pointer bg-gray-100"
+                      className="relative h-14 rounded-lg overflow-hidden border border-gray-250 dark:border-gray-700 hover:scale-105 active:scale-95 transition-all cursor-pointer bg-gray-100 group"
+                      title={photo.author || `${activeSpot.name} - Cliché ${idx + 1}`}
                     >
                       <img
                         src={photo.url}
-                        alt={`${activeSpot.name} real photo ${idx + 1}`}
-                        className="w-full h-full object-cover"
+                        alt={`${activeSpot.name} authentic photo ${idx + 1}`}
+                        className="w-full h-full object-cover group-hover:brightness-110 transition-all"
                         referrerPolicy="no-referrer"
                       />
-                      {idx === 3 && realPhotos.length > 4 && (
-                        <div className="absolute inset-0 bg-black/60 flex items-center justify-center text-[10px] text-white font-mono font-bold">
-                          +{realPhotos.length - 4}
-                        </div>
-                      )}
                     </button>
                   ))}
                 </div>
@@ -1582,6 +1649,25 @@ export const DigitalTwin: React.FC = () => {
         currentIndex={lightboxIdx}
         onClose={() => setLightboxOpen(false)}
         onNavigate={(index) => setLightboxIdx(index)}
+      />
+
+      {/* UNESCO & Santa Cruz Document Inspector Modals */}
+      <UnescoDocumentModal
+        isOpen={unescoModalOpen}
+        onClose={() => setUnescoModalOpen(false)}
+        siteName={activeSpot.name}
+      />
+
+      <SantaCruzDocumentModal
+        isOpen={santaCruzModalOpen}
+        onClose={() => setSantaCruzModalOpen(false)}
+        siteName={activeSpot.name}
+      />
+
+      <TassiliDocumentModal
+        isOpen={tassiliModalOpen}
+        onClose={() => setTassiliModalOpen(false)}
+        siteName={activeSpot.name}
       />
 
     </div>
