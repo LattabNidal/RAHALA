@@ -15,6 +15,17 @@ import { UnescoDocumentModal } from './UnescoDocumentModal';
 import { SantaCruzDocumentModal } from './SantaCruzDocumentModal';
 import { TassiliDocumentModal } from './TassiliDocumentModal';
 
+const timgadFolderModules = import.meta.glob('/src/assets/images/Timgad Roman Ruins/*.{webp,jpg,JPG,jpeg,png,jfif,JFIF}', { eager: true, import: 'default' });
+const timgadImagesRaw = Array.from(new Set(Object.values(timgadFolderModules) as string[])).filter(Boolean);
+const primaryTimgadImgTwin = timgadImagesRaw.find(img => img.includes('1536x864_cmsv2'))
+  || timgadImagesRaw.find(img => img.includes('Ruins-Roman-City'))
+  || timgadImagesRaw.find(img => img.includes('ruins-of-timgad')) 
+  || timgadImagesRaw.find(img => img.includes('shutterstock'))
+  || timgadImagesRaw[0];
+const timgadImagesList = primaryTimgadImgTwin
+  ? [primaryTimgadImgTwin, ...timgadImagesRaw.filter(img => img !== primaryTimgadImgTwin)]
+  : timgadImagesRaw;
+
 // Track coordinates of hotspots in 3D scene to auto-focus them
 const hotspotsData: { [key: string]: { name: string; pos: THREE.Vector3; info: string }[] } = {
   casbah: [
@@ -931,11 +942,15 @@ export const DigitalTwin: React.FC = () => {
 
     const fetchRealPhotos = async () => {
       setPhotosLoading(true);
-      // Use strictly authentic photo objects provided by the user in local panoramas/image
-      const localPhotos = (activeSpot.panoramas && activeSpot.panoramas.length > 0 
+      let photoList = (activeSpot.panoramas && activeSpot.panoramas.length > 0 
         ? activeSpot.panoramas 
-        : [activeSpot.image]
-      ).map((imgUrl, i) => ({
+        : [activeSpot.image]);
+
+      if (activeSpot.id === 'timgad' || activeSpot.name.toLowerCase().includes('timgad')) {
+        photoList = timgadImagesList.length > 0 ? timgadImagesList : photoList;
+      }
+
+      const localPhotos = photoList.map((imgUrl, i) => ({
         url: imgUrl,
         author: `Cliché Authentique N°${i + 1}`,
         attribution: activeSpot.name
@@ -1091,7 +1106,9 @@ export const DigitalTwin: React.FC = () => {
                 {/* 3D Panorama Frame (Simulated Image perspective & dynamic rotational styling) */}
                 <div className="absolute inset-0 z-0 overflow-hidden">
                   <img
-                    src={activeSpot.panoramas[activeStep] || activeSpot.image}
+                    src={(activeSpot.id === 'timgad' || activeSpot.name.toLowerCase().includes('timgad'))
+                      ? (timgadImagesList[activeStep % timgadImagesList.length] || activeSpot.image)
+                      : (activeSpot.panoramas[activeStep] || activeSpot.image)}
                     alt={activeSpot.name}
                     className="w-full h-full object-cover transition-transform duration-700 ease-out brightness-80"
                     style={{
@@ -1107,7 +1124,7 @@ export const DigitalTwin: React.FC = () => {
                   <div className="bg-black/75 backdrop-blur-md border border-white/15 px-3 py-1.5 rounded-none flex items-center space-x-2 space-x-reverse text-white pointer-events-auto">
                     <Compass className="text-[#d4af37] animate-spin-slow" size={14} />
                     <span className="text-[9px] uppercase font-mono tracking-widest font-bold">
-                      Panorama {activeStep + 1} / {activeSpot.panoramas.length}
+                      Panorama {activeStep + 1} / {((activeSpot.id === 'timgad' || activeSpot.name.toLowerCase().includes('timgad')) && timgadImagesList.length > 0 ? timgadImagesList : activeSpot.panoramas).length}
                     </span>
                   </div>
 
@@ -1171,7 +1188,7 @@ export const DigitalTwin: React.FC = () => {
                   
                   {/* Perspective steps indicators */}
                   <div className="flex space-x-1 px-2.5 py-1.5 bg-black/60 backdrop-blur-md border border-white/10 rounded-none space-x-reverse justify-center">
-                    {activeSpot.panoramas.map((_, index) => (
+                    {((activeSpot.id === 'timgad' || activeSpot.name.toLowerCase().includes('timgad')) && timgadImagesList.length > 0 ? timgadImagesList : activeSpot.panoramas).map((_, index) => (
                       <button
                         key={index}
                         onClick={() => handleStepSelect(index)}

@@ -49,6 +49,13 @@ const primaryConstantineImage = constantineImagesList.find(img => img.includes('
   || constantineImagesList[0] 
   || '/src/assets/images/Suspension Bridges of Constantine/images.webp';
 
+const timgadFolderModules = import.meta.glob('/src/assets/images/Timgad Roman Ruins/*.{webp,jpg,JPG,jpeg,png,jfif,JFIF}', { eager: true, import: 'default' });
+const timgadImagesList = Array.from(new Set(Object.values(timgadFolderModules) as string[])).filter(Boolean);
+
+const primaryTimgadImage = timgadImagesList.find(img => img.includes('1536x864_cmsv2') || img.includes('Ruins-Roman-City') || img.includes('ruins-of-timgad') || img.includes('shutterstock')) 
+  || timgadImagesList[0] 
+  || '/src/assets/images/Timgad Roman Ruins/1536x864_cmsv2_2dc330f0-bb03-5e8b-a79c-6039766aa6d4-6820234.webp';
+
 export interface PlaceItem {
   id: string;
   name: string;
@@ -273,6 +280,26 @@ const placesDb: PlaceItem[] = [
       en: 'Extreme Canyon Heights',
       fr: 'Frisson Vertigineux unique',
       ar: 'إطلالة الجرف الشامخة'
+    }
+  },
+  {
+    id: 'ruines-timgad',
+    name: 'Ruines de Timgad (Thamugadi)',
+    category: 'monument',
+    lat: 35.4844,
+    lng: 6.4681,
+    rating: 4.9,
+    image: primaryTimgadImage,
+    description: {
+      en: 'Known as the Pompeii of North Africa, created by Emperor Trajan in AD 100.',
+      fr: 'Surnommée la Pompéi d\'Afrique du Nord, colonie militaire romaine fondée par Trajan en l\'an 100.',
+      ar: 'مدينة تيمقاد الأثرية الرومانية الشامخة بباتنة المصنفة تراثاً عالمياً.'
+    },
+    address: 'Timgad, Batna',
+    specialty: {
+      en: 'UNESCO Roman Heritage',
+      fr: 'Cité Romaine Classée UNESCO',
+      ar: 'موقع روماني عالمي اليونسكو'
     }
   },
   {

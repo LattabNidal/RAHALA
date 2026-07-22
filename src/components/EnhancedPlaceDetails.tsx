@@ -18,6 +18,15 @@ const santaCruzImagesList = Object.values(santaCruzFolderModules) as string[];
 const constantineFolderModules = import.meta.glob('/src/assets/images/Suspension Bridges of Constantine/*.{webp,jpg,JPG,jpeg,png}', { eager: true, import: 'default' });
 const constantineImagesList = Object.values(constantineFolderModules) as string[];
 
+const timgadFolderModules = import.meta.glob('/src/assets/images/Timgad Roman Ruins/*.{webp,jpg,JPG,jpeg,png}', { eager: true, import: 'default' });
+const timgadImagesRaw = Array.from(new Set(Object.values(timgadFolderModules) as string[])).filter(Boolean);
+const primaryTimgadImg = timgadImagesRaw.find(img => img.includes('ruins-of-timgad')) 
+  || timgadImagesRaw.find(img => img.includes('shutterstock'))
+  || timgadImagesRaw[0];
+const timgadImagesList = primaryTimgadImg 
+  ? [primaryTimgadImg, ...timgadImagesRaw.filter(img => img !== primaryTimgadImg)]
+  : timgadImagesRaw;
+
 interface EnhancedPlaceDetailsProps {
   name: string;
   lat: number;
@@ -63,6 +72,17 @@ export const EnhancedPlaceDetails: React.FC<EnhancedPlaceDetailsProps> = ({
 
   // 1. Dynamic Images from Wikimedia Commons / Wikipedia API (Free & Legal)
   const fetchWikiImages = async (queryStr: string) => {
+    if (
+      queryStr.toLowerCase().includes('timgad') || 
+      queryStr.toLowerCase().includes('thamugadi') || 
+      name.toLowerCase().includes('timgad') || 
+      name.toLowerCase().includes('thamugadi')
+    ) {
+      setImages(timgadImagesList);
+      setImagesLoading(false);
+      return;
+    }
+
     if (queryStr.toLowerCase().includes('santa') || name.toLowerCase().includes('santa')) {
       const captureImg = santaCruzImagesList.find(img => img.includes('Capture+d’écran') || img.includes('Capture'));
       const sortedImgs = captureImg 
@@ -262,6 +282,15 @@ export const EnhancedPlaceDetails: React.FC<EnhancedPlaceDetailsProps> = ({
   // Google Maps external link formulation using exact coordinates pin syntax
   const googleMapsUrl = `https://www.google.com/maps?q=${lat},${lng}`;
 
+  const isTimgadPlace = name.toLowerCase().includes('timgad') || name.toLowerCase().includes('thamugadi');
+  const isLocalImageSet = isTimgadPlace || name.toLowerCase().includes('santa') || name.toLowerCase().includes('constantine') || name.toLowerCase().includes('sidi m\'cid');
+
+  const galleryTitle = isTimgadPlace
+    ? (language === 'ar' ? 'معرض الصور المحلية (Timgad Roman Ruins)' : 'Galerie Officielle (Timgad Roman Ruins)')
+    : isLocalImageSet
+    ? (language === 'ar' ? 'معرض الصور الرسمية للموقع' : 'Photothèque Officielle du Site')
+    : (language === 'ar' ? 'معرض صور (ويكيميديا)' : 'Free Gallery (Wikimedia)');
+
   return (
     <div className="border-t border-slate-100 dark:border-slate-800/80 pt-4 mt-4 space-y-4" id="enhanced-details-panel">
       
@@ -269,7 +298,7 @@ export const EnhancedPlaceDetails: React.FC<EnhancedPlaceDetailsProps> = ({
       <div>
         <h4 className="text-[10px] font-mono font-black tracking-widest uppercase text-emerald-600 dark:text-[#d4af37] mb-2 flex items-center gap-1.5">
           <ImageIcon size={12} />
-          <span>{language === 'ar' ? 'معرض صور مجاني (ويكيميديا)' : 'Free Gallery (Wikimedia)'}</span>
+          <span>{galleryTitle}</span>
         </h4>
 
         {imagesLoading ? (

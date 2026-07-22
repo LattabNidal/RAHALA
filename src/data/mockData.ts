@@ -36,6 +36,17 @@ const constantineFolderImages = Array.from(new Set([
   ...constantineImagesList
 ]));
 
+const timgadFolderModules = import.meta.glob('/src/assets/images/Timgad Roman Ruins/*.{webp,jpg,JPG,jpeg,png,jfif,JFIF}', { eager: true, import: 'default' });
+const timgadImagesList = Array.from(new Set(Object.values(timgadFolderModules) as string[])).filter(Boolean);
+
+const primaryTimgadImage = timgadImagesList.find(img => img.includes('1536x864_cmsv2') || img.includes('Ruins-Roman-City') || img.includes('ruins-of-timgad') || img.includes('shutterstock')) 
+  || timgadImagesList[0] 
+  || '/src/assets/images/Timgad Roman Ruins/1536x864_cmsv2_2dc330f0-bb03-5e8b-a79c-6039766aa6d4-6820234.webp';
+
+const timgadFolderImages = primaryTimgadImage 
+  ? [primaryTimgadImage, ...timgadImagesList.filter(img => img !== primaryTimgadImage)]
+  : timgadImagesList;
+
 export const mockLandmarks: Landmark[] = [
   {
     id: 'casbah',
@@ -208,11 +219,8 @@ export const mockLandmarks: Landmark[] = [
     location: 'Batna (Aures)',
     category: 'nature',
     rating: 4.7,
-    image: 'https://images.unsplash.com/photo-1627581165609-b6dc24660eb6?auto=format&fit=crop&w=1200&q=80', // Timgad columns arch
-    panoramas: [
-      'https://images.unsplash.com/photo-1618172193763-c511deb635ca?auto=format&fit=crop&w=1200&q=80', // Trajan Arch
-      'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=1200&q=80'  // Roman Amphitheater rows
-    ],
+    image: primaryTimgadImage,
+    panoramas: timgadFolderImages,
     description: {
       en: 'Known as the "Pompeii of North Africa," Timgad was a Roman military colony created by Emperor Trajan in AD 100, famous for its grid-iron city planning and towering Arch of Trajan.',
       fr: "Surnommée la « Pompéi d'Afrique du Nord », Timgad était une colonie militaire romaine fondée par l'empereur Trajan en l'an 100 de notre ère. Célèbre pour son plan en damier parfait.",

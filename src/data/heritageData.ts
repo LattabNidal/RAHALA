@@ -14,6 +14,12 @@ const defaultConstantineImage = constantineImagesList.find(img => img.includes('
   || constantineImagesList[0] 
   || '/src/assets/images/Suspension Bridges of Constantine/images.webp';
 
+const timgadFolderModules = import.meta.glob('/src/assets/images/Timgad Roman Ruins/*.{webp,jpg,JPG,jpeg,png,jfif,JFIF}', { eager: true, import: 'default' });
+const timgadImagesList = Array.from(new Set(Object.values(timgadFolderModules) as string[])).filter(Boolean);
+const defaultTimgadImage = timgadImagesList.find(img => img.includes('1536x864_cmsv2') || img.includes('Ruins-Roman-City') || img.includes('ruins-of-timgad') || img.includes('shutterstock')) 
+  || timgadImagesList[0] 
+  || '/src/assets/images/Timgad Roman Ruins/1536x864_cmsv2_2dc330f0-bb03-5e8b-a79c-6039766aa6d4-6820234.webp';
+
 export interface HeritageItem {
   id: string;
   nom: string;
@@ -49,7 +55,7 @@ export const heritageDb: HeritageItem[] = [
     longitude: 6.4681,
     etat: "Bon",
     description: "Ancienne colonie militaire romaine fondée par l'empereur Trajan en l'an 100 de notre ère. Surnommée la 'Pompéi d'Afrique du Nord', elle est caractérisée par son plan quadrillé parfait (Cardo & Decumanus) classé par l'UNESCO.",
-    image: "https://images.unsplash.com/photo-1627581165609-b6dc24660eb6?auto=format&fit=crop&w=800&q=80",
+    image: defaultTimgadImage,
     source: "Arrêté de classement JO N° 77 du 30 Décembre 2009",
     popularite: "élevée",
     oeuvreAssociee: {
