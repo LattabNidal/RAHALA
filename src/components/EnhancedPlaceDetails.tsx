@@ -15,6 +15,9 @@ import {
 const santaCruzFolderModules = import.meta.glob('/src/assets/images/Santa Cruz Fort & Chapelle Notre-Dame du Salut/*.{webp,jpg,JPG,jpeg,png}', { eager: true, import: 'default' });
 const santaCruzImagesList = Object.values(santaCruzFolderModules) as string[];
 
+const constantineFolderModules = import.meta.glob('/src/assets/images/Suspension Bridges of Constantine/*.{webp,jpg,JPG,jpeg,png}', { eager: true, import: 'default' });
+const constantineImagesList = Object.values(constantineFolderModules) as string[];
+
 interface EnhancedPlaceDetailsProps {
   name: string;
   lat: number;
@@ -66,6 +69,18 @@ export const EnhancedPlaceDetails: React.FC<EnhancedPlaceDetailsProps> = ({
         ? [captureImg, ...santaCruzImagesList.filter(i => i !== captureImg)]
         : santaCruzImagesList;
       setImages(sortedImgs);
+      setImagesLoading(false);
+      return;
+    }
+
+    if (
+      queryStr.toLowerCase().includes('constantine') || 
+      queryStr.toLowerCase().includes('mcid') || 
+      name.toLowerCase().includes('constantine') || 
+      name.toLowerCase().includes('sidi m\'cid') || 
+      name.toLowerCase().includes('mcid')
+    ) {
+      setImages(constantineImagesList);
       setImagesLoading(false);
       return;
     }

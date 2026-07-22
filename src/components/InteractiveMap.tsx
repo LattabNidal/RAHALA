@@ -42,6 +42,13 @@ const primarySantaCruzImage = santaCruzImagesList.find(img => img.includes('Capt
   || santaCruzImagesList[0] 
   || '/src/assets/images/santa_cruz_oran_chapel_1784672157047.jpg';
 
+const constantineFolderModules = import.meta.glob('/src/assets/images/Suspension Bridges of Constantine/*.{webp,jpg,JPG,jpeg,png}', { eager: true, import: 'default' });
+const constantineImagesList = Object.values(constantineFolderModules) as string[];
+
+const primaryConstantineImage = constantineImagesList.find(img => img.includes('shutterstock') || img.includes('images')) 
+  || constantineImagesList[0] 
+  || '/src/assets/images/Suspension Bridges of Constantine/images.webp';
+
 export interface PlaceItem {
   id: string;
   name: string;
@@ -255,7 +262,7 @@ const placesDb: PlaceItem[] = [
     lat: 36.3695,
     lng: 6.6171,
     rating: 4.9,
-    image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80',
+    image: primaryConstantineImage,
     description: {
       en: 'The spectacular suspension bridge suspended 175m above the rocky gorge of Rhumel.',
       fr: 'Le chef d\'œuvre légendaire reliant les falaises de Constantine à hauteur vertigineuse.',

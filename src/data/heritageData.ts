@@ -8,6 +8,12 @@ const defaultSantaCruzImage = santaCruzImagesList.find(img => img.includes('Fort
   || santaCruzImagesList[0] 
   || '/src/assets/images/santa_cruz_oran_chapel_1784672157047.jpg';
 
+const constantineFolderModules = import.meta.glob('/src/assets/images/Suspension Bridges of Constantine/*.{webp,jpg,JPG,jpeg,png}', { eager: true, import: 'default' });
+const constantineImagesList = Object.values(constantineFolderModules) as string[];
+const defaultConstantineImage = constantineImagesList.find(img => img.includes('shutterstock') || img.includes('images')) 
+  || constantineImagesList[0] 
+  || '/src/assets/images/Suspension Bridges of Constantine/images.webp';
+
 export interface HeritageItem {
   id: string;
   nom: string;
@@ -117,7 +123,7 @@ export const heritageDb: HeritageItem[] = [
     longitude: 6.6171,
     etat: "Bon",
     description: "Pont de fer suspendu grandiose à 175 mètres de hauteur au-dessus du canyon calcaire de l'Oued Rhumel, offrant un panorama à couper le souffle et reliant la cité de Constantine aux hauteurs de Sidi M'Cid.",
-    image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80",
+    image: defaultConstantineImage,
     source: "Patrimoine classé par le ministère algérien de la culture",
     popularite: "élevée",
     oeuvreAssociee: {

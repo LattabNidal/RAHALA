@@ -24,6 +24,18 @@ const santaCruzFolderImages = Array.from(new Set([
   '/src/assets/images/santa_cruz_oran_chapel_1784672157047.jpg'
 ]));
 
+const constantineFolderModules = import.meta.glob('/src/assets/images/Suspension Bridges of Constantine/*.{webp,jpg,JPG,jpeg,png}', { eager: true, import: 'default' });
+const constantineImagesList = Object.values(constantineFolderModules) as string[];
+
+const primaryConstantineImage = constantineImagesList.find(img => img.includes('shutterstock') || img.includes('images')) 
+  || constantineImagesList[0] 
+  || '/src/assets/images/Suspension Bridges of Constantine/images.webp';
+
+const constantineFolderImages = Array.from(new Set([
+  primaryConstantineImage,
+  ...constantineImagesList
+]));
+
 export const mockLandmarks: Landmark[] = [
   {
     id: 'casbah',
@@ -159,11 +171,8 @@ export const mockLandmarks: Landmark[] = [
     location: 'Constantine (Qasentina)',
     category: 'historical',
     rating: 4.9,
-    image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80', // High suspension views
-    panoramas: [
-      'https://images.unsplash.com/photo-1545231027-63b3f16260cd?auto=format&fit=crop&w=1200&q=80', // Gorge edge
-      'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=1200&q=80'  // Sidi M’Cid bridge height
-    ],
+    image: primaryConstantineImage,
+    panoramas: constantineFolderImages,
     description: {
       en: 'The city of bridges, built over a deep rocky canyon of the Rhumel River. The dramatic suspension bridges link hills together, suspended hundreds of meters above ground.',
       fr: "La ville des ponts suspendus, bâtie au-dessus des gorges du fleuve Rhumel. Ces chefs-d'œuvre audacieux relient les falaises à des hauteurs vertigineuses.",
