@@ -1,6 +1,22 @@
 import React, { useState } from 'react';
 import { FileText, Download, X, Eye, Award, ZoomIn, ZoomOut, ChevronLeft, ChevronRight, BookOpen, ShieldCheck } from 'lucide-react';
 
+const santaCruzFolderModules = import.meta.glob('/src/assets/images/Santa Cruz Fort & Chapelle Notre-Dame du Salut/*.{webp,jpg,JPG,jpeg,png}', { eager: true, import: 'default' });
+const santaCruzImagesList = Object.values(santaCruzFolderModules) as string[];
+
+const primarySantaCruzPhoto = santaCruzImagesList.find(img => img.includes('Fort_Santa_Cruz_Oran1') || img.includes('Fort-de-Santa-Cruz') || img.includes('web-oran-santa-cruz')) 
+  || santaCruzImagesList[0] 
+  || '/src/assets/images/santa_cruz_oran_chapel_1784672157047.jpg';
+
+const santaCruzGalleryItems = [
+  { src: primarySantaCruzPhoto, label: "Vue Panoramique & Fort de Santa Cruz" },
+  ...santaCruzImagesList.map((src, idx) => ({
+    src,
+    label: `Cliché Authentique N°${idx + 1} - Fort & Chapelle Santa Cruz`
+  })),
+  { src: "/src/assets/images/santa_cruz_oran_chapel_1784672157047.jpg", label: "Vue Aérienne de la Chapelle Notre-Dame du Salut" }
+].filter((item, index, self) => index === self.findIndex(t => t.src === item.src));
+
 interface SantaCruzDocumentModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -187,12 +203,12 @@ export const SantaCruzDocumentModal: React.FC<SantaCruzDocumentModalProps> = ({
                   {/* Primary Photo */}
                   <div className="my-4 border border-gray-300 p-2 bg-white rounded shadow-sm">
                     <img 
-                      src="/src/assets/images/santa_cruz_oran_chapel_1784672157047.jpg" 
+                      src={primarySantaCruzPhoto} 
                       alt="Chapelle de Santa-Cruz et Fort sur le mont Murdjadjo à Oran" 
                       className="w-full h-64 object-cover rounded"
                     />
                     <p className="text-[10px] font-sans text-gray-500 italic mt-1.5 text-center">
-                      Vue sur la chapelle Notre-Dame du Salut, la tour monumentale et la baie d'Oran depuis le mont Murdjadjo.
+                      Vue sur la chapelle Notre-Dame du Salut, la tour monumentale et le fort de Santa-Cruz sur le mont Murdjadjo.
                     </p>
                   </div>
 
@@ -355,19 +371,17 @@ export const SantaCruzDocumentModal: React.FC<SantaCruzDocumentModalProps> = ({
                   Photographies du Fort de Santa Cruz & de la Chapelle Notre-Dame du Salut (Oran)
                 </h3>
                 <p className="text-slate-400 text-xs">
-                  Vues panoramiques du mont Murdjadjo, des murailles fortifiées et de la statue surplombant la baie d'Oran.
+                  Vues panoramiques du mont Murdjadjo, des murailles fortifiées espagnoles du XVIe siècle, de la tour et de la statue de Notre-Dame du Salut.
                 </p>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="bg-[#1e1e1e] p-2 rounded-xl border border-white/10 space-y-2">
-                  <img src="/src/assets/images/santa_cruz_oran_chapel_1784672157047.jpg" alt="Santa Cruz Chapelle Vue Aérienne" className="w-full h-56 object-cover rounded-lg" />
-                  <p className="text-[11px] text-slate-300 font-mono">1. Chapelle, Tour & Fort au sommet du Murdjadjo</p>
-                </div>
-                <div className="bg-[#1e1e1e] p-2 rounded-xl border border-white/10 space-y-2">
-                  <img src="https://images.unsplash.com/photo-1548013146-72479768bada?auto=format&fit=crop&w=800&q=80" alt="Fort Santa Cruz Murailles" className="w-full h-56 object-cover rounded-lg" />
-                  <p className="text-[11px] text-slate-300 font-mono">2. Porte en pierre et Murailles du Fort de Santa Cruz (XVIe s.)</p>
-                </div>
+                {santaCruzGalleryItems.map((item, idx) => (
+                  <div key={idx} className="bg-[#1e1e1e] p-2 rounded-xl border border-white/10 space-y-2">
+                    <img src={item.src} alt={item.label} className="w-full h-56 object-cover rounded-lg" />
+                    <p className="text-[11px] text-slate-300 font-mono text-center">{item.label}</p>
+                  </div>
+                ))}
               </div>
             </div>
           )}

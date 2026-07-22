@@ -11,6 +11,19 @@ const casbahFolderImages = Array.from(new Set([
   '/src/assets/images/casbah_d_alger/casbah_vaulted_alley.jpg'
 ]));
 
+const santaCruzFolderModules = import.meta.glob('/src/assets/images/Santa Cruz Fort & Chapelle Notre-Dame du Salut/*.{webp,jpg,JPG,jpeg,png}', { eager: true, import: 'default' });
+const santaCruzImagesList = Object.values(santaCruzFolderModules) as string[];
+
+const primarySantaCruzImage = santaCruzImagesList.find(img => img.includes('Fort_Santa_Cruz_Oran1') || img.includes('Fort-de-Santa-Cruz') || img.includes('web-oran-santa-cruz')) 
+  || santaCruzImagesList[0] 
+  || '/src/assets/images/santa_cruz_oran_chapel_1784672157047.jpg';
+
+const santaCruzFolderImages = Array.from(new Set([
+  primarySantaCruzImage,
+  ...santaCruzImagesList,
+  '/src/assets/images/santa_cruz_oran_chapel_1784672157047.jpg'
+]));
+
 export const mockLandmarks: Landmark[] = [
   {
     id: 'casbah',
@@ -55,10 +68,8 @@ export const mockLandmarks: Landmark[] = [
     location: 'Oran (Wahran)',
     category: 'cultural',
     rating: 4.9,
-    image: '/src/assets/images/santa_cruz_oran_chapel_1784672157047.jpg',
-    panoramas: [
-      '/src/assets/images/santa_cruz_oran_chapel_1784672157047.jpg'
-    ],
+    image: primarySantaCruzImage,
+    panoramas: santaCruzFolderImages,
     description: {
       en: 'Perched on Mt. Murdjadjo, Santa Cruz Fort (1577) and the Chapelle Notre-Dame du Salut (1850) offer a breathtaking panoramic view of the Oran bay and Mers-El-Kébir.',
       fr: "Perché sur le mont Murdjadjo, le Fort Santa-Cruz (1577) et la Chapelle Notre-Dame du Salut (1850) offrent un panorama saisissant sur la baie d'Oran et Mers-El-Kébir.",

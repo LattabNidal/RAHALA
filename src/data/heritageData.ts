@@ -2,6 +2,12 @@ const casbahFolderModules = import.meta.glob('/src/assets/images/casbah_d_alger/
 const casbahWebpImages = Object.values(casbahFolderModules) as string[];
 const defaultCasbahImage = casbahWebpImages.find(img => img.includes('site_0565_0017')) || casbahWebpImages[0] || '/src/assets/images/casbah_d_alger/site_0565_0017-1000-1481-20140721144417.webp';
 
+const santaCruzFolderModules = import.meta.glob('/src/assets/images/Santa Cruz Fort & Chapelle Notre-Dame du Salut/*.{webp,jpg,JPG,jpeg,png}', { eager: true, import: 'default' });
+const santaCruzImagesList = Object.values(santaCruzFolderModules) as string[];
+const defaultSantaCruzImage = santaCruzImagesList.find(img => img.includes('Fort_Santa_Cruz_Oran1') || img.includes('Fort-de-Santa-Cruz') || img.includes('web-oran-santa-cruz')) 
+  || santaCruzImagesList[0] 
+  || '/src/assets/images/santa_cruz_oran_chapel_1784672157047.jpg';
+
 export interface HeritageItem {
   id: string;
   nom: string;
@@ -96,7 +102,7 @@ export const heritageDb: HeritageItem[] = [
     longitude: -0.6308,
     etat: "Restauré",
     description: "Bastion défensif à l'architecture monumentale construit par les Espagnols au XVIe siècle au sommet du mont Murdjadjo, dominant fièrement le port et le littoral de la capitale de l'Ouest algérien.",
-    image: "https://images.unsplash.com/photo-1548013146-72479768bada?auto=format&fit=crop&w=800&q=80",
+    image: defaultSantaCruzImage,
     source: "Registre national des monuments protégés",
     popularite: "élevée"
   },
@@ -7615,7 +7621,7 @@ export const heritageDb: HeritageItem[] = [
     longitude: -1.6631,
     etat: "Excellent",
     description: "Perchée majestueusement sur les hauteurs du mont Murdjadjo, cette chapelle emblématique du XIXe siècle offre une vue spectaculaire sur la baie d'Oran. Elle demeure un haut lieu mémoriel et d'attraction culturelle.",
-    image: "https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=800&q=80",
+    image: defaultSantaCruzImage,
     source: "Classé - JO N° 07 du 23/01/1968 (06/10/1950)",
     popularite: "élevée"
   },
@@ -8065,7 +8071,7 @@ export const heritageDb: HeritageItem[] = [
     longitude: -1.6635,
     etat: "Excellent",
     description: "Forteresse militaire grandiose érigée par les Espagnols au XVIe siècle au sommet culminant du Murdjadjo, classée au patrimoine national et mondial pour sa structure unique.",
-    image: "https://images.unsplash.com/photo-1507608869274-d3177c8bb4c7?auto=format&fit=crop&w=800&q=80",
+    image: defaultSantaCruzImage,
     source: "Instance de classement - JO N° 10 du 23/02/2020 (11/12/2019)",
     popularite: "élevée"
   },
