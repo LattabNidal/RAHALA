@@ -35,6 +35,13 @@ import { TassiliDocumentModal } from './TassiliDocumentModal';
 
 import { APIProvider, Map, AdvancedMarker, Pin } from '@vis.gl/react-google-maps';
 
+const santaCruzFolderModules = import.meta.glob('/src/assets/images/Santa Cruz Fort & Chapelle Notre-Dame du Salut/*.{webp,jpg,JPG,jpeg,png}', { eager: true, import: 'default' });
+const santaCruzImagesList = Object.values(santaCruzFolderModules) as string[];
+
+const primarySantaCruzImage = santaCruzImagesList.find(img => img.includes('Capture+d’écran') || img.includes('Capture') || img.includes('Fort_Santa_Cruz_Oran1') || img.includes('Fort-de-Santa-Cruz'))
+  || santaCruzImagesList[0] 
+  || '/src/assets/images/santa_cruz_oran_chapel_1784672157047.jpg';
+
 export interface PlaceItem {
   id: string;
   name: string;
@@ -186,7 +193,7 @@ const placesDb: PlaceItem[] = [
     lat: 35.6971,
     lng: -0.6308,
     rating: 4.9,
-    image: 'https://images.unsplash.com/photo-1548013146-72479768bada?auto=format&fit=crop&w=800&q=80',
+    image: primarySantaCruzImage,
     description: {
       en: 'Historic fort built on Mt Murdjadjo by Spanish rulers with breathtaking coast views.',
       fr: 'Fort historique majestueux dominant la ville d\'Oran depuis le mont Murdjadjo.',

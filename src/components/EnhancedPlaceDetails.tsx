@@ -12,6 +12,9 @@ import {
   Check
 } from 'lucide-react';
 
+const santaCruzFolderModules = import.meta.glob('/src/assets/images/Santa Cruz Fort & Chapelle Notre-Dame du Salut/*.{webp,jpg,JPG,jpeg,png}', { eager: true, import: 'default' });
+const santaCruzImagesList = Object.values(santaCruzFolderModules) as string[];
+
 interface EnhancedPlaceDetailsProps {
   name: string;
   lat: number;
@@ -57,6 +60,16 @@ export const EnhancedPlaceDetails: React.FC<EnhancedPlaceDetailsProps> = ({
 
   // 1. Dynamic Images from Wikimedia Commons / Wikipedia API (Free & Legal)
   const fetchWikiImages = async (queryStr: string) => {
+    if (queryStr.toLowerCase().includes('santa') || name.toLowerCase().includes('santa')) {
+      const captureImg = santaCruzImagesList.find(img => img.includes('Capture+d’écran') || img.includes('Capture'));
+      const sortedImgs = captureImg 
+        ? [captureImg, ...santaCruzImagesList.filter(i => i !== captureImg)]
+        : santaCruzImagesList;
+      setImages(sortedImgs);
+      setImagesLoading(false);
+      return;
+    }
+
     const cacheKey = `wiki_imgs_${queryStr}`;
     if (apiCache[cacheKey]) {
       setImages(apiCache[cacheKey]);
