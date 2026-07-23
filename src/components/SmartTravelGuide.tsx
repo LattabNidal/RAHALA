@@ -49,6 +49,7 @@ export const SmartTravelGuide: React.FC = () => {
   const [plan, setPlan] = useState<TravelPlan | null>(null);
   const [saved, setSaved] = useState<boolean>(false);
   const [activeDayIndex, setActiveDayIndex] = useState<number>(0);
+  const [activePlanIndex, setActivePlanIndex] = useState<number>(0);
 
   // Async API State (Premium Smart Guides with Google Places Photos)
   const [smartLoading, setSmartLoading] = useState<boolean>(false);
@@ -173,8 +174,6 @@ export const SmartTravelGuide: React.FC = () => {
     setError(null);
     setPlan(null);
 
-    const interest = getMappedInterest(style, preference);
-
     try {
       const response = await fetch('/api/itinerary', {
         method: 'POST',
@@ -183,8 +182,10 @@ export const SmartTravelGuide: React.FC = () => {
         },
         body: JSON.stringify({
           budget,
-          interest,
+          style,
+          preference,
           duration,
+          companion,
           language
         }),
       });
@@ -194,13 +195,18 @@ export const SmartTravelGuide: React.FC = () => {
       }
 
       const data = await response.json();
-      if (!data || !data.title || !data.days || data.days.length === 0) {
+      if (!data || (!data.plans && !data.title)) {
         throw new Error('Invalid travel plan response format.');
       }
 
       setPlan(data);
+      setActivePlanIndex(0);
       setActiveDayIndex(0);
-      addNotification(language === 'ar' ? 'تم توليد خطة رحلتك الذكية!' : 'Personalized AI travel plan generated!');
+      addNotification(
+        data.plans 
+          ? (language === 'ar' ? 'تم توليد 3 خطط رحلات متميزة كـ DZ Trip Planner!' : '3 DZ Trip Planner itineraries generated!') 
+          : (language === 'ar' ? 'تم توليد خطة رحلتك الذكية!' : 'Personalized AI travel plan generated!')
+      );
     } catch (err: any) {
       console.error(err);
       setError(
@@ -569,28 +575,57 @@ export const SmartTravelGuide: React.FC = () => {
         ` : ''}
       `;
     } else if (plan) {
-      title = plan.title;
-      const daysHtml = plan.days.map((day: any) => `
+      const isMulti = Array.isArray(plan.plans) && plan.plans.length > 0;
+      const current = isMulti ? plan.plans[activePlanIndex] || plan.plans[0] : plan;
+      title = isMulti ? current.nom : plan.title;
+      const daysList = isMulti ? current.jours : plan.days;
+      
+      const daysHtml = daysList ? daysList.map((day: any, idx: number) => `
         <div class="day-card">
           <div class="day-header">
-            <span>🌅 ${getTrans(dict.day)} ${day.dayNumber}: ${day.title}</span>
-            <span class="badge">📍 ${day.locationName}</span>
+            <span>🌅 ${getTrans(dict.day)} ${day.jour || day.dayNumber || idx + 1}: ${day.title || 'Programme'}</span>
+            <span class="badge">📍 ${day.locationName || 'Algérie'}</span>
           </div>
           
           <div class="activity">
-            <div class="activity-title">☀️ ${getTrans(dict.morning)}</div>
-            <div class="activity-text">${day.morning}</div>
+            <div class="activity-title">🌅 ${getTrans(dict.morning)}</div>
+            <div class="activity-text">${day.matin || day.morning || ''}</div>
           </div>
 
-          <div class="activity">
-            <div class="activity-title">🌤️ ${getTrans(dict.afternoon)}</div>
-            <div class="activity-text">${day.afternoon}</div>
-          </div>
+          ${day.dejeuner ? `
+            <div class="activity">
+              <div class="activity-title">🍽️ Déjeuner</div>
+              <div class="activity-text">${day.dejeuner}</div>
+            </div>
+          ` : ''}
 
           <div class="activity">
-            <div class="activity-title">🌙 ${getTrans(dict.evening)}</div>
-            <div class="activity-text">${day.evening}</div>
+            <div class="activity-title">☀️ ${getTrans(dict.afternoon)}</div>
+            <div class="activity-text">${day.apres_midi || day.afternoon || ''}</div>
           </div>
+
+          ${day.cafe ? `
+            <div class="activity">
+              <div class="activity-title">☕ Pause Café</div>
+              <div class="activity-text">${day.cafe}</div>
+            </div>
+          ` : ''}
+
+          ${day.evening ? `
+            <div class="activity">
+              <div class="activity-title">🌙 ${getTrans(dict.evening)}</div>
+              <div class="activity-text">${day.evening}</div>
+            </div>
+          ` : ''}
+
+          ${day.hebergement ? `
+            <div style="margin-top: 15px; padding: 12px; background: #fdfbf7; border-radius: 8px; border-inline-start: 3px solid #d4af37;">
+              <strong style="font-size: 12px; text-transform: uppercase; color: #d4af37; display: block; margin-bottom: 4px;">
+                🏨 Hébergement
+              </strong>
+              <span class="activity-text" style="font-weight: bold;">${day.hebergement}</span>
+            </div>
+          ` : ''}
 
           ${day.cuisineRecommendation ? `
             <div style="margin-top: 15px; padding: 12px; background: #fdfbf7; border-radius: 8px; border-inline-start: 3px solid #d4af37;">
@@ -610,7 +645,7 @@ export const SmartTravelGuide: React.FC = () => {
             </div>
           ` : ''}
         </div>
-      `).join('');
+      `).join('') : '';
 
       htmlContent = `
         <div class="header">
@@ -1308,138 +1343,191 @@ export const SmartTravelGuide: React.FC = () => {
       )}
 
       {/* RESULT VISUALIZATION CARD */}
-      {guideType === 'classic' && plan && !loading && !error && (
-        <div className="w-full bg-white dark:bg-[#161616] border border-[#1a1a1a]/15 dark:border-white/10 rounded-3xl overflow-hidden shadow-2xl animate-fade-in">
-          
-          {/* Hero Banner with overlay gradient */}
-          <div className="relative h-64 sm:h-80 flex flex-col justify-end p-6 sm:p-10 z-0">
-            <img 
-              src={getHeroImg()} 
-              alt={plan.title}
-              className="absolute inset-0 w-full h-full object-cover select-none"
-              style={{ filter: 'brightness(0.4) contrast(1.05)' }}
-              referrerPolicy="no-referrer"
-            />
-            {/* Soft gold twilight vignette */}
-            <div className="absolute inset-0 bg-gradient-to-t from-[#161616] via-transparent to-black/35"></div>
+      {guideType === 'classic' && plan && !loading && !error && (() => {
+        const isMultiPlan = Array.isArray(plan.plans) && plan.plans.length > 0;
+        const currentPlan = isMultiPlan ? plan.plans[activePlanIndex] || plan.plans[0] : plan;
+        const currentTitle = isMultiPlan ? currentPlan.nom : plan.title;
+        const currentOverview = isMultiPlan ? currentPlan.resume : plan.overview;
+        const daysList = isMultiPlan ? currentPlan.jours : plan.days;
+        const activeDay = daysList && daysList[activeDayIndex] ? daysList[activeDayIndex] : null;
 
-            {/* AI Pill Badge */}
-            <div className="absolute top-4 left-4 z-10 flex gap-2">
-              <span className="inline-flex items-center gap-1 bg-emerald-600 text-[10px] text-white font-mono font-black uppercase px-3 py-1 rounded-full border border-emerald-400">
-                <Sparkles size={11} /> AI RECOMMENDED
-              </span>
-              <span className="inline-flex items-center gap-1 bg-[#d4af37] text-[10px] text-slate-950 font-mono font-black uppercase px-3 py-1 rounded-full border border-yellow-250">
-                ★ OPTIMIZED DURATION
-              </span>
-            </div>
+        const budgetDisplay = isMultiPlan && currentPlan.budget_estime_dzd
+          ? `${currentPlan.budget_estime_dzd.min.toLocaleString()} – ${currentPlan.budget_estime_dzd.max.toLocaleString()} DZD`
+          : `${(plan.totalEstimatedCostDzd || 35000).toLocaleString()} DZD`;
 
-            {/* Title & Subtitle */}
-            <div className="relative z-10 text-white text-left">
-              <span className="text-[10px] uppercase font-mono font-black tracking-widest text-[#d4af37] block mb-1">
-                {language === 'ar' ? 'مرشدك الشخصي للجزائر في جيبك' : 'Your personal Algerian compass'}
-              </span>
-              <h3 className="text-2xl sm:text-4xl font-serif font-black leading-tight mb-2 text-[#fcfcfc] dark:text-white drop-shadow-md">
-                {plan.title}
-              </h3>
-              <p className="text-xs text-gray-200/90 font-serif italic max-w-2xl leading-relaxed drop-shadow-sm">
-                {plan.overview}
-              </p>
-            </div>
-          </div>
-
-          <div className="p-6 sm:p-10">
-            {/* Top Stat Bar */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 pb-8 border-b border-[#1a1a1a]/10 dark:border-white/10 mb-8 font-mono">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0">
-                  <Wallet size={18} />
-                </div>
-                <div>
-                  <span className="text-[9px] uppercase tracking-wider text-gray-400 block">
-                    {language === 'ar' ? 'الميزانية المقدرة' : 'Estimated Budget'}
-                  </span>
-                  <span className="text-sm font-bold text-gray-900 dark:text-white">
-                    {(plan.totalEstimatedCostDzd || 35000).toLocaleString()} DZD
+        return (
+          <div className="w-full bg-white dark:bg-[#161616] border border-[#1a1a1a]/15 dark:border-white/10 rounded-3xl overflow-hidden shadow-2xl animate-fade-in">
+            
+            {/* Multi-Plan A / B / C Selection Header */}
+            {isMultiPlan && (
+              <div className="bg-gradient-to-r from-emerald-950 via-zinc-900 to-slate-950 p-4 sm:p-6 border-b border-emerald-500/30">
+                <div className="flex items-center gap-2 mb-3">
+                  <Sparkles className="text-[#d4af37]" size={16} />
+                  <span className="text-xs font-mono font-black uppercase text-[#d4af37] tracking-wider">
+                    {language === 'ar' ? 'اختر أحد الإتيترات الثلاثة (DZ Trip Planner)' : '3 Tailored Itinerary Options (DZ Trip Planner)'}
                   </span>
                 </div>
-              </div>
-
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-amber-500/10 text-amber-600 dark:text-[#d4af37] flex items-center justify-center shrink-0">
-                  <Calendar size={18} />
-                </div>
-                <div>
-                  <span className="text-[9px] uppercase tracking-wider text-gray-400 block">
-                    {language === 'ar' ? 'عدد الأيام' : 'Duration'}
-                  </span>
-                  <span className="text-sm font-bold text-gray-900 dark:text-white">
-                    {plan.days.length} {language === 'ar' ? 'أيام' : 'Days'}
-                  </span>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                  {plan.plans.map((p: any, idx: number) => {
+                    const planLabel = idx === 0 ? 'Plan A' : idx === 1 ? 'Plan B' : 'Plan C';
+                    const isSelected = activePlanIndex === idx;
+                    return (
+                      <button
+                        key={idx}
+                        onClick={() => {
+                          setActivePlanIndex(idx);
+                          setActiveDayIndex(0);
+                        }}
+                        className={`p-4 rounded-2xl text-left transition cursor-pointer border ${
+                          isSelected
+                            ? 'bg-emerald-600/25 border-emerald-500 text-white shadow-lg ring-1 ring-emerald-400'
+                            : 'bg-white/5 hover:bg-white/10 border-white/10 text-gray-300'
+                        }`}
+                      >
+                        <div className="flex items-center justify-between mb-1">
+                          <span className={`text-[10px] font-mono font-black uppercase px-2 py-0.5 rounded ${
+                            isSelected ? 'bg-emerald-500 text-white' : 'bg-zinc-800 text-amber-400'
+                          }`}>
+                            {planLabel}
+                          </span>
+                          <span className="text-[10px] font-mono font-bold text-gray-400">
+                            {p.budget_estime_dzd ? `${(p.budget_estime_dzd.min / 1000).toFixed(0)}k–${(p.budget_estime_dzd.max / 1000).toFixed(0)}k DZD` : ''}
+                          </span>
+                        </div>
+                        <h5 className="font-serif font-black text-xs sm:text-sm line-clamp-1 text-white">
+                          {p.nom}
+                        </h5>
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
+            )}
 
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-[#d4af37]/10 text-[#d4af37] flex items-center justify-center shrink-0">
-                  <Users size={18} />
-                </div>
-                <div>
-                  <span className="text-[9px] uppercase tracking-wider text-gray-400 block">
-                    {language === 'ar' ? 'رفيق السفر' : 'Companions'}
-                  </span>
-                  <span className="text-sm font-bold text-gray-900 dark:text-white">
-                    {companion}
-                  </span>
-                </div>
+            {/* Hero Banner with overlay gradient */}
+            <div className="relative h-64 sm:h-80 flex flex-col justify-end p-6 sm:p-10 z-0">
+              <img 
+                src={getHeroImg()} 
+                alt={currentTitle}
+                className="absolute inset-0 w-full h-full object-cover select-none"
+                style={{ filter: 'brightness(0.4) contrast(1.05)' }}
+                referrerPolicy="no-referrer"
+              />
+              {/* Soft gold twilight vignette */}
+              <div className="absolute inset-0 bg-gradient-to-t from-[#161616] via-transparent to-black/35"></div>
+
+              {/* AI Pill Badge */}
+              <div className="absolute top-4 left-4 z-10 flex gap-2">
+                <span className="inline-flex items-center gap-1 bg-emerald-600 text-[10px] text-white font-mono font-black uppercase px-3 py-1 rounded-full border border-emerald-400">
+                  <Sparkles size={11} /> DZ TRIP PLANNER
+                </span>
+                <span className="inline-flex items-center gap-1 bg-[#d4af37] text-[10px] text-slate-950 font-mono font-black uppercase px-3 py-1 rounded-full border border-yellow-250">
+                  ★ {isMultiPlan ? `OPTION ${activePlanIndex === 0 ? 'A' : activePlanIndex === 1 ? 'B' : 'C'}` : 'OPTIMIZED'}
+                </span>
+              </div>
+
+              {/* Title & Subtitle */}
+              <div className="relative z-10 text-white text-left">
+                <span className="text-[10px] uppercase font-mono font-black tracking-widest text-[#d4af37] block mb-1">
+                  {language === 'ar' ? 'مرشدك الشخصي للجزائر في جيبك' : 'Your personal Algerian compass'}
+                </span>
+                <h3 className="text-2xl sm:text-4xl font-serif font-black leading-tight mb-2 text-[#fcfcfc] dark:text-white drop-shadow-md">
+                  {currentTitle}
+                </h3>
+                <p className="text-xs text-gray-200/90 font-serif italic max-w-2xl leading-relaxed drop-shadow-sm">
+                  {currentOverview}
+                </p>
               </div>
             </div>
 
-            {/* Schedule Section */}
-            <h4 className="text-lg font-serif font-black text-gray-900 dark:text-white mb-6 flex items-center gap-2">
-              <Compass size={18} className="text-emerald-500" />
-              <span>{language === 'ar' ? 'تفاصيل جدول الرحلة اليومي' : 'Day-by-Day Expedition Itinerary'}</span>
-            </h4>
-
-            {/* Day Selector Buttons */}
-            <div className="flex gap-2 mr-[-10px] overflow-x-auto pb-4 mb-6">
-              {plan.days.map((day, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => setActiveDayIndex(idx)}
-                  className={`px-4 py-2 font-mono text-[11px] font-black uppercase rounded-lg border tracking-wider transition ${
-                    activeDayIndex === idx 
-                      ? 'bg-emerald-600 border-emerald-500 text-white shadow-md' 
-                      : 'bg-slate-50 dark:bg-slate-900 hover:bg-slate-100 border-[#1a1a1a]/10 dark:border-white/10 text-gray-500 dark:text-gray-400'
-                  }`}
-                >
-                  {language === 'ar' ? `اليوم ${day.dayNumber}` : `Day ${day.dayNumber}`}
-                </button>
-              ))}
-            </div>
-
-            {/* Active Day detailed block */}
-            {plan.days[activeDayIndex] && (
-              <div className="bg-[#eae7e1]/25 dark:bg-[#202020]/20 rounded-2xl border border-[#1a1a1a]/5 dark:border-white/5 p-6 sm:p-8 animate-fade-in">
-                <div className="flex justify-between items-start gap-4 mb-6 border-b border-[#1a1a1a]/5 dark:border-white/5 pb-4">
-                  <div>
-                    <span className="text-[10px] bg-[#d4af37]/20 text-slate-800 dark:text-[#d4af37] uppercase font-mono px-2.5 py-0.5 rounded font-black tracking-widest border border-[#d4af37]/35 inline-block mb-2">
-                      {plan.days[activeDayIndex].locationName || 'Algeria'}
-                    </span>
-                    <h5 className="text-xl font-serif font-bold text-gray-900 dark:text-white">
-                      {plan.days[activeDayIndex].title}
-                    </h5>
+            <div className="p-6 sm:p-10">
+              {/* Top Stat Bar */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 pb-8 border-b border-[#1a1a1a]/10 dark:border-white/10 mb-8 font-mono">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0">
+                    <Wallet size={18} />
                   </div>
-                  {plan.days[activeDayIndex].estimatedCostDzd && (
-                    <div className="text-right shrink-0">
-                      <span className="text-[9px] uppercase font-mono text-gray-400 tracking-wider block">Coût Journalier</span>
-                      <span className="font-mono font-bold text-sm text-emerald-600 dark:text-emerald-450">
-                        {plan.days[activeDayIndex].estimatedCostDzd.toLocaleString()} DZD
-                      </span>
-                    </div>
-                  )}
+                  <div>
+                    <span className="text-[9px] uppercase tracking-wider text-gray-400 block">
+                      {language === 'ar' ? 'الميزانية المقدرة' : 'Estimated Budget'}
+                    </span>
+                    <span className="text-sm font-bold text-gray-900 dark:text-white">
+                      {budgetDisplay}
+                    </span>
+                  </div>
                 </div>
 
-                {/* Day detailed blocks */}
-                <div className="space-y-6">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-amber-500/10 text-amber-600 dark:text-[#d4af37] flex items-center justify-center shrink-0">
+                    <Calendar size={18} />
+                  </div>
+                  <div>
+                    <span className="text-[9px] uppercase tracking-wider text-gray-400 block">
+                      {language === 'ar' ? 'عدد الأيام' : 'Duration'}
+                    </span>
+                    <span className="text-sm font-bold text-gray-900 dark:text-white">
+                      {daysList ? daysList.length : 0} {language === 'ar' ? 'أيام' : 'Days'}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-[#d4af37]/10 text-[#d4af37] flex items-center justify-center shrink-0">
+                    <Users size={18} />
+                  </div>
+                  <div>
+                    <span className="text-[9px] uppercase tracking-wider text-gray-400 block">
+                      {language === 'ar' ? 'رفيق السفر' : 'Companions'}
+                    </span>
+                    <span className="text-sm font-bold text-gray-900 dark:text-white">
+                      {companion}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Schedule Section */}
+              <h4 className="text-lg font-serif font-black text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+                <Compass size={18} className="text-emerald-500" />
+                <span>{language === 'ar' ? 'تفاصيل جدول الرحلة اليومي' : 'Day-by-Day Expedition Itinerary'}</span>
+              </h4>
+
+              {/* Day Selector Buttons */}
+              {daysList && daysList.length > 0 && (
+                <div className="flex gap-2 mr-[-10px] overflow-x-auto pb-4 mb-6">
+                  {daysList.map((day: any, idx: number) => {
+                    const dayNum = day.jour || day.dayNumber || idx + 1;
+                    return (
+                      <button
+                        key={idx}
+                        onClick={() => setActiveDayIndex(idx)}
+                        className={`px-4 py-2 font-mono text-[11px] font-black uppercase rounded-lg border tracking-wider transition cursor-pointer ${
+                          activeDayIndex === idx 
+                            ? 'bg-emerald-600 border-emerald-500 text-white shadow-md' 
+                            : 'bg-slate-50 dark:bg-slate-900 hover:bg-slate-100 border-[#1a1a1a]/10 dark:border-white/10 text-gray-500 dark:text-gray-400'
+                        }`}
+                      >
+                        {language === 'ar' ? `اليوم ${dayNum}` : `Jour ${dayNum}`}
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+
+              {/* Active Day detailed block */}
+              {activeDay && (
+                <div className="bg-[#eae7e1]/25 dark:bg-[#202020]/20 rounded-2xl border border-[#1a1a1a]/5 dark:border-white/5 p-6 sm:p-8 animate-fade-in space-y-6">
+                  <div className="flex justify-between items-start gap-4 border-b border-[#1a1a1a]/5 dark:border-white/5 pb-4">
+                    <div>
+                      <span className="text-[10px] bg-[#d4af37]/20 text-slate-800 dark:text-[#d4af37] uppercase font-mono px-2.5 py-0.5 rounded font-black tracking-widest border border-[#d4af37]/35 inline-block mb-2">
+                        {activeDay.locationName || (language === 'ar' ? `اليوم ${activeDay.jour || activeDayIndex + 1}` : `Jour ${activeDay.jour || activeDayIndex + 1}`)}
+                      </span>
+                      <h5 className="text-xl font-serif font-bold text-gray-900 dark:text-white">
+                        {activeDay.title || (language === 'ar' ? `أنشطة اليوم ${activeDay.jour || activeDayIndex + 1}` : `Programme du Jour ${activeDay.jour || activeDayIndex + 1}`)}
+                      </h5>
+                    </div>
+                  </div>
+
                   {/* Morning */}
                   <div className="flex gap-4">
                     <span className="w-8 h-8 rounded-full bg-amber-500/10 text-amber-600 dark:text-[#d4af37] flex items-center justify-center shrink-0 font-mono text-[10px] font-bold">
@@ -1447,128 +1535,169 @@ export const SmartTravelGuide: React.FC = () => {
                     </span>
                     <div>
                       <p className="text-xs uppercase font-mono font-black text-gray-400 tracking-wider">
-                        {language === 'ar' ? 'الصباح والاستكشاف الأولي' : 'Morning Sightseeing'}
+                        {language === 'ar' ? 'الصباح والاستكشاف' : 'Matinée'}
                       </p>
                       <p className="text-xs text-slate-700 dark:text-gray-300 mt-1 leading-relaxed">
-                        {plan.days[activeDayIndex].morning}
+                        {activeDay.matin || activeDay.morning}
                       </p>
                     </div>
                   </div>
+
+                  {/* Lunch / Déjeuner */}
+                  {(activeDay.dejeuner || activeDay.afternoon) && (
+                    <div className="flex gap-4">
+                      <span className="w-8 h-8 rounded-full bg-emerald-500/10 text-emerald-650 dark:text-emerald-400 flex items-center justify-center shrink-0 font-mono text-[10px] font-bold">
+                        🍽️
+                      </span>
+                      <div>
+                        <p className="text-xs uppercase font-mono font-black text-emerald-600 dark:text-emerald-400 tracking-wider">
+                          {language === 'ar' ? 'الغداء والتذوق المحلي' : 'Déjeuner & Spécialité Locale'}
+                        </p>
+                        <p className="text-xs text-slate-700 dark:text-gray-300 mt-1 leading-relaxed">
+                          {activeDay.dejeuner || activeDay.afternoon}
+                        </p>
+                      </div>
+                    </div>
+                  )}
 
                   {/* Afternoon */}
-                  <div className="flex gap-4">
-                    <span className="w-8 h-8 rounded-full bg-emerald-500/10 text-emerald-650 dark:text-emerald-400 flex items-center justify-center shrink-0 font-mono text-[10px] font-bold">
-                      ☀️
-                    </span>
-                    <div>
-                      <p className="text-xs uppercase font-mono font-black text-gray-400 tracking-wider">
-                        {language === 'ar' ? 'بعد الظهر والغداء' : 'Afternoon Adventures & local hub'}
-                      </p>
-                      <p className="text-xs text-slate-700 dark:text-gray-300 mt-1 leading-relaxed">
-                        {plan.days[activeDayIndex].afternoon}
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Evening */}
-                  <div className="flex gap-4">
-                    <span className="w-8 h-8 rounded-full bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center shrink-0 font-mono text-[10px] font-bold">
-                      🌙
-                    </span>
-                    <div>
-                      <p className="text-xs uppercase font-mono font-black text-gray-400 tracking-wider">
-                        {language === 'ar' ? 'المساء والراحة والعشاء' : 'Evening Chillout'}
-                      </p>
-                      <p className="text-xs text-slate-700 dark:text-gray-300 mt-1 leading-relaxed">
-                        {plan.days[activeDayIndex].evening}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Cuisine & Tips expansion bars */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8 pt-6 border-t border-[#1a1a1a]/5 dark:border-white/5">
-                  {plan.days[activeDayIndex].cuisineRecommendation && (
-                    <div className="p-4 bg-amber-500/5 hover:bg-amber-500/10 transition border border-amber-500/10 rounded-xl">
-                      <div className="flex items-center gap-1.5 mb-1.5 text-amber-750 dark:text-amber-400 uppercase font-mono text-[10px] font-bold">
-                        <Coffee size={12} />
-                        <span>{language === 'ar' ? 'توصيات المأكولات التقليدية' : 'Tradition Culinary Pick'}</span>
+                  {activeDay.apres_midi && (
+                    <div className="flex gap-4">
+                      <span className="w-8 h-8 rounded-full bg-sky-500/10 text-sky-600 dark:text-sky-400 flex items-center justify-center shrink-0 font-mono text-[10px] font-bold">
+                        ☀️
+                      </span>
+                      <div>
+                        <p className="text-xs uppercase font-mono font-black text-gray-400 tracking-wider">
+                          {language === 'ar' ? 'بعد الظهر' : 'Après-midi'}
+                        </p>
+                        <p className="text-xs text-slate-700 dark:text-gray-300 mt-1 leading-relaxed">
+                          {activeDay.apres_midi}
+                        </p>
                       </div>
-                      <p className="text-xs text-slate-600 dark:text-gray-300 italic">
-                        {plan.days[activeDayIndex].cuisineRecommendation}
+                    </div>
+                  )}
+
+                  {/* Evening / Café */}
+                  {(activeDay.evening || activeDay.cafe) && (
+                    <div className="flex gap-4">
+                      <span className="w-8 h-8 rounded-full bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center shrink-0 font-mono text-[10px] font-bold">
+                        ☕
+                      </span>
+                      <div>
+                        <p className="text-xs uppercase font-mono font-black text-gray-400 tracking-wider">
+                          {language === 'ar' ? 'المساء والاستراحة / Café' : 'Soir & Pause Café'}
+                        </p>
+                        <p className="text-xs text-slate-700 dark:text-gray-300 mt-1 leading-relaxed">
+                          {activeDay.cafe || activeDay.evening}
+                        </p>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Hotel / Hébergement */}
+                  {activeDay.hebergement && (
+                    <div className="flex gap-4 p-4 bg-amber-500/5 border border-amber-500/10 rounded-xl">
+                      <span className="w-8 h-8 rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0 font-mono text-[10px] font-bold">
+                        🏨
+                      </span>
+                      <div>
+                        <p className="text-xs uppercase font-mono font-black text-amber-700 dark:text-amber-400 tracking-wider">
+                          {language === 'ar' ? 'الإقامة الموصى بها' : 'Hébergement du soir'}
+                        </p>
+                        <p className="text-xs text-slate-700 dark:text-gray-300 mt-1 font-semibold">
+                          {activeDay.hebergement}
+                        </p>
+                      </div>
+                    </div>
+                  )}
+
+                </div>
+              )}
+
+              {/* Practical Advice & Bonus Section */}
+              {(currentPlan.conseils_pratiques || currentPlan.bonus) && (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8 pt-6 border-t border-[#1a1a1a]/10 dark:border-white/10">
+                  {currentPlan.conseils_pratiques && (
+                    <div className="p-5 bg-emerald-500/5 border border-emerald-500/20 rounded-2xl">
+                      <div className="flex items-center gap-2 mb-2 text-emerald-700 dark:text-emerald-400 font-mono text-xs font-black uppercase">
+                        <Info size={14} />
+                        <span>{language === 'ar' ? 'نصائح ومعلومات عملية' : 'Conseils Pratiques & Logistique'}</span>
+                      </div>
+                      <p className="text-xs text-slate-700 dark:text-gray-300 leading-relaxed">
+                        {currentPlan.conseils_pratiques}
                       </p>
                     </div>
                   )}
 
-                  {plan.days[activeDayIndex].budgetTip && (
-                    <div className="p-4 bg-emerald-500/5 hover:bg-emerald-500/10 transition border border-emerald-500/10 rounded-xl">
-                      <div className="flex items-center gap-1.5 mb-1.5 text-emerald-850 dark:text-emerald-400 uppercase font-mono text-[10px] font-bold">
-                        <Info size={12} />
-                        <span>{language === 'ar' ? 'نصيحة الميزانية والتراخيص' : 'Local Money Saving advice'}</span>
+                  {currentPlan.bonus && (
+                    <div className="p-5 bg-[#d4af37]/10 border border-[#d4af37]/30 rounded-2xl">
+                      <div className="flex items-center gap-2 mb-2 text-amber-800 dark:text-amber-300 font-mono text-xs font-black uppercase">
+                        <Sparkles size={14} />
+                        <span>{language === 'ar' ? 'تجربة استثنائية (Bonus)' : 'Expérience "Hors des sentiers battus"'}</span>
                       </div>
-                      <p className="text-xs text-slate-600 dark:text-gray-300">
-                        {plan.days[activeDayIndex].budgetTip}
+                      <p className="text-xs text-slate-700 dark:text-gray-300 italic leading-relaxed">
+                        {currentPlan.bonus}
                       </p>
                     </div>
                   )}
                 </div>
+              )}
+
+              <SocialShare 
+                title={currentTitle || 'RAHLA Travel Guide'}
+                text={language === 'ar'
+                  ? `شاهد مساري السياحي المخصص في الجزائر: ${currentTitle} المولد بالذكاء الاصطناعي مع RAHLA! 🇩🇿`
+                  : `Check out my custom Algeria travel plan: ${currentTitle} generated by RAHLA AI! 🇩🇿✈️`}
+                url={window.location.origin + '/#/ai-guide'}
+                language={language}
+                handleDownloadPDF={handleDownloadPDF}
+                addNotification={addNotification}
+              />
+
+              {/* Action Buttons */}
+              <div className="flex flex-col sm:flex-row gap-4 justify-between items-center mt-10 pt-8 border-t border-[#1a1a1a]/10 dark:border-white/10">
+                <div className="flex gap-2 w-full sm:w-auto">
+                  <button
+                    onClick={handleSaveTrip}
+                    className={`flex-1 sm:flex-initial flex items-center justify-center gap-2 px-6 py-3 rounded-xl border font-mono text-xs font-black uppercase tracking-wider transition ${
+                      saved 
+                        ? 'bg-red-500/10 border-red-500 text-red-500' 
+                        : 'hover:bg-slate-50 dark:hover:bg-slate-900 border-[#1a1a1a]/15 dark:border-white/10 text-gray-700 dark:text-white'
+                    }`}
+                  >
+                    <Bookmark size={14} className={saved ? 'fill-red-500' : ''} />
+                    <span>{saved ? (language === 'ar' ? 'تم الحفظ ❤️ ' : 'Saved') : (language === 'ar' ? 'حفظ الخطة' : 'Save Plan')}</span>
+                  </button>
+                </div>
+
+                <div className="flex gap-3 w-full sm:w-auto">
+                  <button
+                    onClick={resetWizard}
+                    className="flex-1 sm:flex-initial flex items-center justify-center gap-2 px-6 py-3 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-900 font-mono text-xs font-black uppercase tracking-wider text-gray-500 dark:text-gray-400 transition"
+                  >
+                    <RefreshCw size={12} />
+                    <span>{language === 'ar' ? 'البدء من جديد' : 'New Custom Trip'}</span>
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      addNotification(language === 'ar' ? 'جاري توجيهك لصفحة الدفع لتأكيد حجز رحلتك المتكاملة...' : 'Redirecting to checkout & billing to secure your booking...');
+                      setTimeout(() => {
+                        window.location.hash = '#/billing';
+                      }, 1000);
+                    }}
+                    className="flex-1 sm:flex-auto px-8 py-3 bg-[#1a1a1a] dark:bg-[#f5f2ed] text-[#f5f2ed] dark:text-[#1a1a1a] font-mono text-xs font-black uppercase tracking-widest hover:bg-[#d4af37] dark:hover:bg-[#d4af37] hover:text-black transition rounded-xl shadow-lg border border-[#d4af37] cursor-pointer"
+                  >
+                    {language === 'ar' ? 'احجز رحلتك الآن' : 'Book Your Odyssey Now'}
+                  </button>
+                </div>
               </div>
-            )}
 
-            <SocialShare 
-              title={plan?.title || 'RAHLA Travel Guide'}
-              text={language === 'ar'
-                ? `شاهد مساري السياحي المخصص في الجزائر: ${plan?.title || 'RAHLA Travel Guide'} المولد بالذكاء الاصطناعي مع RAHLA! 🇩🇿`
-                : `Check out my custom Algeria travel plan: ${plan?.title || 'RAHLA Travel Guide'} generated by RAHLA AI! 🇩🇿✈️`}
-              url={window.location.origin + '/#/ai-guide'}
-              language={language}
-              handleDownloadPDF={handleDownloadPDF}
-              addNotification={addNotification}
-            />
-
-            {/* Action Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-between items-center mt-10 pt-8 border-t border-[#1a1a1a]/10 dark:border-white/10">
-              <div className="flex gap-2 w-full sm:w-auto">
-                <button
-                  onClick={handleSaveTrip}
-                  className={`flex-1 sm:flex-initial flex items-center justify-center gap-2 px-6 py-3 rounded-xl border font-mono text-xs font-black uppercase tracking-wider transition ${
-                    saved 
-                      ? 'bg-red-500/10 border-red-500 text-red-500' 
-                      : 'hover:bg-slate-50 dark:hover:bg-slate-900 border-[#1a1a1a]/15 dark:border-white/10 text-gray-700 dark:text-white'
-                  }`}
-                >
-                  <Bookmark size={14} className={saved ? 'fill-red-500' : ''} />
-                  <span>{saved ? (language === 'ar' ? 'تم الحفظ ❤️ ' : 'Saved') : (language === 'ar' ? 'حفظ الخطة' : 'Save Plan')}</span>
-                </button>
-              </div>
-
-              <div className="flex gap-3 w-full sm:w-auto">
-                <button
-                  onClick={resetWizard}
-                  className="flex-1 sm:flex-initial flex items-center justify-center gap-2 px-6 py-3 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-900 font-mono text-xs font-black uppercase tracking-wider text-gray-500 dark:text-gray-400 transition"
-                >
-                  <RefreshCw size={12} />
-                  <span>{language === 'ar' ? 'البدء من جديد' : 'New Custom Trip'}</span>
-                </button>
-
-                <button
-                  onClick={() => {
-                    addNotification(language === 'ar' ? 'جاري توجيهك لصفحة الدفع لتأكيد حجز رحلتك المتكاملة...' : 'Redirecting to checkout & billing to secure your booking...');
-                    setTimeout(() => {
-                      window.location.hash = '#/billing';
-                    }, 1000);
-                  }}
-                  className="flex-1 sm:flex-auto px-8 py-3 bg-[#1a1a1a] dark:bg-[#f5f2ed] text-[#f5f2ed] dark:text-[#1a1a1a] font-mono text-xs font-black uppercase tracking-widest hover:bg-[#d4af37] dark:hover:bg-[#d4af37] hover:text-black transition rounded-xl shadow-lg border border-[#d4af37] cursor-pointer"
-                >
-                  {language === 'ar' ? 'احجز رحلتك الآن' : 'Book Your Odyssey Now'}
-                </button>
-              </div>
             </div>
 
           </div>
-
-        </div>
-      )}
+        );
+      })()}
 
       {/* MULTISTEP WIZARD (OPTION A) */}
       {!plan && !smartGuide && !loading && !smartLoading && !error && !smartError && (

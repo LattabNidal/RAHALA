@@ -76,28 +76,37 @@ app.post('/api/chat', async (req, res) => {
   }
 });
 
-// Fullstack API: Server side proxy endpoint for Gemini AI Travel Itinerary Planner
+// Fullstack API: Server side proxy endpoint for Gemini AI Travel Itinerary Planner (DZ Trip Planner)
 app.post('/api/itinerary', async (req, res) => {
-  const { budget = 'moderate', interest = 'culture', duration = 3, language = 'en' } = req.body;
+  const { budget = 'Medium', style = 'Culture', preference = 'City Center', duration = '1-3 DAYS', companion = 'Solo', language = 'fr' } = req.body;
   
-  const numDays = Math.min(Math.max(Number(duration) || 3, 1), 14); // Limit days between 1 and 14 for safety
+  const numDays = typeof duration === 'number' ? duration : duration.includes('1-3') ? 3 : duration.includes('4-7') ? 5 : 7;
   
   try {
     const aiInstance = getAiClient();
     
     const languageLabel = language === 'ar' ? 'Arabic' : language === 'fr' ? 'French' : language === 'es' ? 'Spanish' : 'English';
     
-    // Construct the system instruction and prompt
-    const systemIns = `You are an elite, highly expert, and poetic Algerian Travel Planner called "Rihla DZ Itinerary Architect".
-      Your task is to generate a highly detailed, professional, and visually engaging day-by-day travel itinerary for Algeria.
-      You MUST strictly reply in the requested output language (${languageLabel}) and match the requested options: Budget: ${budget}, Interest target: ${interest}, and Duration: ${numDays} days.
-      Respond ONLY with a JSON object conforming exactly to the requested Schema. Do not wrap with \`\`\`json, return raw JSON.
-      Provide realistic places, real hotel standards matched to the budget, actual popular traditional culinary options (such as couscous, rechta, shakshouka, m'hadjeb, mint tea), and transport advice.`;
+    // System Instructions strictly matching user's Google AI Studio DZ Trip Planner prompt
+    const systemIns = `Tu es "DZ Trip Planner", un expert en tourisme algérien : géographie, histoire, gastronomie, hôtellerie et logistique de transport à travers les 58 wilayas d'Algérie. Ton rôle est de générer des plans de voyage complets, réalistes et personnalisés à partir de 5 critères fournis par l'utilisateur : budget, style de voyage, préférence de paysage, durée totale, et compagnons de voyage.
 
-    const prompt = `Generate a magnificent day-by-day travel itinerary for ${numDays} days in Algeria.
-      The traveler's budget level is: ${budget} (economy has cheap street eats and shared transport, moderate has local guesthouses and comfortable trains/buses, luxury VIP has boutique hotels, private local drivers, and fine traditional dining).
-      Their primary interest is: ${interest} (desert: focuses on Sahara, Ghardaia, Taghit, or Djanet; history: focuses on Timgad, Tipasa, Roman archives, Casbah; culinary: focuses on culinary tours, food markets, cookery lessons; coastal: beaches of Oran, Bejaia, Jijel, Algiers; culture: museums, folk music, architecture).
-      Language of output must be: ${languageLabel}.`;
+RÈGLES GÉNÉRALES :
+1. Tu dois toujours proposer 3 itinéraires alternatifs distincts (Plan A, Plan B, Plan C) répondant tous aux mêmes critères, mais avec des régions ou villes différentes, pour que l'utilisateur puisse comparer.
+2. Chaque plan doit couvrir uniquement des lieux réels et existants en Algérie (villes, monuments, sites historiques/naturels, restaurants, cafés, hôtels). Si tu n'es pas certain qu'un établissement précis existe encore, indique-le clairement au lieu d'inventer un nom.
+3. N'invente jamais de prix exacts si tu n'es pas sûr : donne des fourchettes réalistes en DZD (dinars algériens) selon le budget choisi.
+4. Adapte le rythme et le type d'activités aux compagnons de voyage (${companion}) et au style choisi (${style}).
+5. Respecte strictement le nombre de jours indiqué par l'utilisateur (${numDays} jours).
+6. Tu dois retourner UNIQUEMENT un objet JSON valide conforme au schéma demandé avec exactement 3 plans (Plan A, Plan B, Plan C) dans le tableau "plans". Language of output: ${languageLabel}.`;
+
+    const prompt = `Génère 3 plans de voyage détaillés en Algérie selon ces critères :
+
+- Budget : ${budget}
+- Style de voyage : ${style}
+- Préférence de paysage : ${preference}
+- Durée totale : ${numDays} jours
+- Compagnons de voyage : ${companion}
+
+Réponds en suivant strictement la structure définie dans tes instructions système (Plan A / B / C, programme jour par jour, budget estimé, conseils pratiques, bonus).`;
 
     const response = await aiInstance.models.generateContent({
       model: 'gemini-3.5-flash',
@@ -109,42 +118,58 @@ app.post('/api/itinerary', async (req, res) => {
         responseSchema: {
           type: Type.OBJECT,
           properties: {
-            title: { type: Type.STRING, description: "Catches the soul of the trip, e.g. 'Royal Ottoman & Roman Footsteps in Algiers & Constantine'" },
-            overview: { type: Type.STRING, description: "A beautiful, poetic introductory paragraph summarizing what they will experience." },
-            totalEstimatedCostDzd: { type: Type.NUMBER, description: "Total budget estimate in DZD (Algerian Dinar)" },
-            days: {
+            plans: {
               type: Type.ARRAY,
+              description: "Array of 3 distinct alternative travel plans (Plan A, Plan B, Plan C)",
               items: {
                 type: Type.OBJECT,
                 properties: {
-                  dayNumber: { type: Type.INTEGER },
-                  title: { type: Type.STRING, description: "Captivating title of this day, e.g., 'Discovering the Ancient Algiers Casbah'" },
-                  morning: { type: Type.STRING, description: "Morning exploration details and main site visited" },
-                  afternoon: { type: Type.STRING, description: "Afternoon exploration details, food, and sightseeing" },
-                  evening: { type: Type.STRING, description: "Evening relaxation, specific traditional dinner spot, or cultural show" },
-                  cuisineRecommendation: { type: Type.STRING, description: "Specific traditional dish or food to try on this day, e.g., 'Warm Rechta with white sauce or honey-glazed pastries with mint tea'" },
-                  budgetTip: { type: Type.STRING, description: "Localized money-saving or convenience advice for this specific day" },
-                  estimatedCostDzd: { type: Type.NUMBER, description: "Estimated daily cost in DZD" },
-                  locationName: { type: Type.STRING, description: "The city or key area covered today, e.g. 'Algiers', 'Constantine', 'Ghardaia'" }
+                  nom: { type: Type.STRING, description: "Nom de l'itinéraire, ex: 'Plan A: Route des Ziban et de l'Aurès'" },
+                  resume: { type: Type.STRING, description: "Résumé en 2-3 phrases (thème, régions traversées, ambiance générale)" },
+                  budget_estime_dzd: {
+                    type: Type.OBJECT,
+                    properties: {
+                      min: { type: Type.NUMBER, description: "Fourchette basse du budget total estimé en DZD" },
+                      max: { type: Type.NUMBER, description: "Fourchette haute du budget total estimé en DZD" }
+                    },
+                    required: ["min", "max"]
+                  },
+                  jours: {
+                    type: Type.ARRAY,
+                    items: {
+                      type: Type.OBJECT,
+                      properties: {
+                        jour: { type: Type.INTEGER },
+                        matin: { type: Type.STRING, description: "Activité/site du matin (nom réel, description historique/culturelle)" },
+                        dejeuner: { type: Type.STRING, description: "Nom de restaurant ou cuisine locale recommandée + prix DZD" },
+                        apres_midi: { type: Type.STRING, description: "Activité/site de l'après-midi" },
+                        hebergement: { type: Type.STRING, description: "Nom d'hôtel/guesthouse réel + gamme de prix + quartier" },
+                        cafe: { type: Type.STRING, description: "Café/pause recommandé + spécialité locale à essayer" }
+                      },
+                      required: ["jour", "matin", "dejeuner", "apres_midi", "hebergement", "cafe"]
+                    }
+                  },
+                  conseils_pratiques: { type: Type.STRING, description: "Transports recommandés entre étapes, meilleure période, précautions" },
+                  bonus: { type: Type.STRING, description: "Site ou expérience hors des sentiers battus propre à la région" }
                 },
-                required: ["dayNumber", "title", "morning", "afternoon", "evening", "locationName"]
+                required: ["nom", "resume", "budget_estime_dzd", "jours", "conseils_pratiques", "bonus"]
               }
             }
           },
-          required: ["title", "overview", "days"]
+          required: ["plans"]
         }
       }
     });
 
     const parsedData = JSON.parse(response.text || '{}');
+    if (!parsedData.plans || parsedData.plans.length === 0) {
+      throw new Error('Invalid plans output');
+    }
     res.json(parsedData);
 
   } catch (error: any) {
-    // Elegant quiet handling - avoid log parsers classifying this as a fatal app crash since we have an optimized local itinerary fallback generator
-    console.log('Activating optimized offline itinerary fallback engine.');
-    
-    // Serve custom beautiful local fallback
-    const fallback = generateServerFallbackItinerary(numDays, budget, interest, language);
+    console.log('Activating optimized DZ Trip Planner offline fallback engine.');
+    const fallback = generateServerFallback3Plans(numDays, budget, style, preference, companion, language);
     res.json(fallback);
   }
 });
@@ -408,6 +433,87 @@ app.post('/api/smart-places-guide', async (req, res) => {
     res.json(fallback);
   }
 });
+
+function generateServerFallback3Plans(numDays: number, budget: string, style: string, preference: string, companion: string, language: string) {
+  const isAr = language === 'ar';
+  
+  const minCost = budget.toLowerCase().includes('low') || budget.toLowerCase().includes('economy') ? 15000 : budget.toLowerCase().includes('luxury') ? 60000 : 30000;
+  const maxCost = minCost * 1.8;
+
+  // Helper generator for days
+  const makeDays = (city1: string, city2: string, site1: string, site2: string, food1: string, food2: string, hotel: string) => {
+    const list = [];
+    for (let i = 1; i <= numDays; i++) {
+      const city = i % 2 === 1 ? city1 : city2;
+      list.push({
+        jour: i,
+        matin: isAr 
+          ? `جولة صباحية في ${city}: زيارة ${i % 2 === 1 ? site1 : site2} واكتشاف المعالم التاريخية والثقافية.` 
+          : `Matinée à ${city} : Visite de ${i % 2 === 1 ? site1 : site2} et immersion culturelle au cœur des vestiges.`,
+        dejeuner: isAr 
+          ? `غداء تقليدي في مطعم محبوب بـ ${city} (${food1} - حوالي 1200 إلى 2500 دج).` 
+          : `Déjeuner local à ${city} (${food1} - environ 1200 à 2500 DZD).`,
+        apres_midi: isAr 
+          ? `استكشاف أزقة ${city} العتيقة والأسواق الشعبية واقتناء الهدايا التذكارية.` 
+          : `Après-midi : Promenade dans les souks de ${city} et découverte des ateliers d'artisanat.`,
+        hebergement: isAr 
+          ? `${hotel} (حي هادئ وموقع ممتاز - 6000 إلى 15000 دج / ليلة).` 
+          : `${hotel} (Quartier central et confortable - 6000 à 15000 DZD / nuit).`,
+        cafe: isAr 
+          ? `استراحة في مقهى تقليدي بـ ${city} لتذوق الشاي بالنعناع مع ${food2}.` 
+          : `Pause café/thé à ${city} avec dégustation de ${food2}.`
+      });
+    }
+    return list;
+  };
+
+  return {
+    plans: [
+      {
+        nom: isAr ? "Plan A : Route des Ziban et de l'Aurès (Biskra & Batna)" : "Plan A : Route des Ziban et de l'Aurès (Biskra & Batna)",
+        resume: isAr 
+          ? "Un itinéraire équilibré traversant les gorges impressionnantes des Aurès et les oasis luxuriantes de Biskra. Idéal pour une immersion entre histoire romaine et traditions sahariennes."
+          : "Un itinéraire équilibré traversant les gorges impressionnantes des Aurès et les oasis luxuriantes de Biskra. Idéal pour une immersion entre histoire romaine et traditions sahariennes.",
+        budget_estime_dzd: { min: minCost, max: maxCost },
+        jours: makeDays("Biskra", "Batna", "Gorges de Ghoufi & Balcon de Rhoufi", "Ruines Romaines de Timgad", "Chakhchoukha de Biskra", "Makroud aux dattes", "Hôtel des Ziban Biskra"),
+        conseils_pratiques: isAr 
+          ? "Transport : Location de voiture ou taxis inter-wilayas. Meilleure période : Octobre à Avril. Prévoir des vêtements chauds pour les nuits dans l'Aurès."
+          : "Transport recommandé : Voiture de location ou taxi inter-wilayas. Meilleure période : Octobre à Avril. Prévoyez des vêtements chauds pour les nuits fraîches dans les montagnes.",
+        bonus: isAr 
+          ? "Visite du canyon caché de M'Chounèche et dégustation des dattes Deglet Nour directement dans la palmeraie."
+          : "Visite du canyon caché de M'Chounèche et dégustation des dattes Deglet Nour directement chez le récoltant."
+      },
+      {
+        nom: isAr ? "Plan B : Cœur Historique d'Alger la Blanche & Tipasa" : "Plan B : Cœur Historique d'Alger la Blanche & Tipasa",
+        resume: isAr 
+          ? "Un circuit culturel captivant reliant les ruelles ottomanes de la Casbah d'Alger aux majestueuses ruines romaines de Tipasa en bord de mer."
+          : "Un circuit culturel captivant reliant les ruelles ottomanes de la Casbah d'Alger aux majestueuses ruines romaines de Tipasa en bord de mer.",
+        budget_estime_dzd: { min: minCost * 1.1, max: maxCost * 1.15 },
+        jours: makeDays("Alger", "Tipasa", "Casbah d'Alger (UNESCO) & Ketchaoua", "Parc Archéologique de Tipasa & Tombeau de la Chrétienne", "Rechta Algéroise au poulet", "Baklawa & Thé à la menthe", "Hôtel Albert 1er Alger"),
+        conseils_pratiques: isAr 
+          ? "Transport : Métro/Téléphérique à Alger, bus ou taxi privé pour Tipasa. Prenez un guide officiel pour la Casbah."
+          : "Transport : Métro, tramway et téléphérique à Alger. Taxi ou bus pour Tipasa. Il est fortement recommandé de prendre un guide agréé pour la Casbah.",
+        bonus: isAr 
+          ? "Pause thé au coucher du soleil sur le toit d'un Dar traditionnel dans la Casbah avec vue panoramique sur la baie."
+          : "Dégustation de poissons frais grillés au port de Tipasa suivi d'un thé sur les toits d'un Dar de la Casbah."
+      },
+      {
+        nom: isAr ? "Plan C : Joyaux de l'Est - Constantine & Guelma" : "Plan C : Joyaux de l'Est - Constantine & Guelma",
+        resume: isAr 
+          ? "Un voyage spectaculaire à travers la ville des ponts suspendus (Constantine) et les sources thermales naturelles de Guelma."
+          : "Un voyage spectaculaire à travers la ville des ponts suspendus (Constantine) et les sources thermales naturelles de Guelma.",
+        budget_estime_dzd: { min: minCost * 0.95, max: maxCost * 1.05 },
+        jours: makeDays("Constantine", "Guelma", "Pont Sidi M'Cid & Palais Ahmed Bey", "Thermal Cascade de Hammam Debagh", "Djewziya & Trida de Constantine", "Tamina & Café Maure", "Hôtel Cirta Constantine"),
+        conseils_pratiques: isAr 
+          ? "Transport : Train régional ou voiture. Pensez à réserver l'accès aux hammams thermaux à l'avance en haute saison."
+          : "Transport : Train SNTF ou voiture. Prévoyez des maillots de bain pour les sources thermales de Hammam Debagh.",
+        bonus: isAr 
+          ? "Traversée à pied de la passerelle Perrégaux et achat de la véritable Djewziya artisanale à Bab El Kantara."
+          : "Baignade sous les cascades thermales calcaire jaunes de Hammam Chellala (Hammam Debagh)."
+      }
+    ]
+  };
+}
 
 function generateServerFallbackItinerary(numDays: number, budget: string, interest: string, language: string) {
   // Localization dictionary
