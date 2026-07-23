@@ -25,6 +25,7 @@ import { WeatherWidget } from './components/WeatherWidget';
 import { SmartTravelGuide } from './components/SmartTravelGuide';
 import { PromoVideo } from './components/PromoVideo';
 import { SocialClub } from './components/SocialClub';
+import { MobileBottomNav } from './components/MobileBottomNav';
 import { mockLandmarks } from './data/mockData';
 import { Sparkles, Heart, Compass, Star, ChevronLeft, ChevronRight, BookOpen, Hotel, Moon, Sun, ShieldCheck } from 'lucide-react';
 
@@ -36,6 +37,18 @@ function RihlaApp() {
   const [darkMode, setDarkMode] = useState(false);
   const [activeHeroSlide, setActiveHeroSlide] = useState(0);
   const [isSessionVerifying, setIsSessionVerifying] = useState(true);
+
+  const citiesScrollRef = React.useRef<HTMLDivElement>(null);
+
+  const scrollCities = (direction: 'left' | 'right') => {
+    if (citiesScrollRef.current) {
+      const scrollAmount = 360;
+      citiesScrollRef.current.scrollBy({
+        left: direction === 'left' ? -scrollAmount : scrollAmount,
+        behavior: 'smooth'
+      });
+    }
+  };
 
   // Simulate global AuthService style verification at app startup (Bonus Loader)
   useEffect(() => {
@@ -426,7 +439,7 @@ function RihlaApp() {
                 <Subscription />
               </div>
 
-              {/* 🟢 NEW SECTION 1: Explore Top Cities */}
+              {/* 🟢 NEW SECTION 1: Explore Top Cities (Sliding City Carousel) */}
               <div className="mt-16 sm:mt-24 pt-12 border-t border-[#E2E8F0]">
                 <div className="flex flex-col md:flex-row md:items-end justify-between mb-8">
                   <div>
@@ -440,121 +453,166 @@ function RihlaApp() {
                       Explore Top Cities
                     </h2>
                     <p className="text-xs text-[#94A3B8] mt-1 max-w-xl">
-                      Immersez-vous dans les joyaux les plus recherchés d'Algérie, personnalisés selon vos habitudes de voyage.
+                      Immersez-vous dans les joyaux les plus recherchés d'Algérie, personnalisés selon vos habitudes de voyage. Glissez pour explorer toutes les villes.
                     </p>
                   </div>
-                  <div className="mt-4 md:mt-0 flex gap-2 items-center text-xs font-mono text-[#94A3B8]">
-                    <span className="inline-block px-2 py-1 rounded bg-[#3B82F6]/10 text-[#3B82F6] text-[10px] uppercase font-black tracking-widest">
+
+                  {/* Sliding controls & AI tag */}
+                  <div className="mt-4 md:mt-0 flex gap-3 items-center">
+                    <span className="hidden sm:inline-block px-2.5 py-1 rounded-full bg-[#3B82F6]/10 text-[#3B82F6] text-[10px] font-mono font-black uppercase tracking-widest border border-[#3B82F6]/20">
                       Powered by AI
                     </span>
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => scrollCities('left')}
+                        aria-label="Glisser vers la gauche"
+                        className="w-9 h-9 rounded-full bg-white hover:bg-slate-50 border border-[#E2E8F0] text-[#334155] flex items-center justify-center transition shadow-sm active:scale-95 cursor-pointer"
+                      >
+                        <ChevronLeft size={18} />
+                      </button>
+                      <button
+                        onClick={() => scrollCities('right')}
+                        aria-label="Glisser vers la droite"
+                        className="w-9 h-9 rounded-full bg-[#3B82F6] hover:bg-[#3B82F6]/90 text-white flex items-center justify-center transition shadow-sm active:scale-95 cursor-pointer"
+                      >
+                        <ChevronRight size={18} />
+                      </button>
+                    </div>
                   </div>
                 </div>
 
                 {/* Horizontal scrollable carousel */}
-                <div className="flex gap-6 overflow-x-auto pb-6 scrollbar-thin scrollbar-thumb-blue-200 snap-x">
-                  
-                  {/* City Card 1: Algiers (Capital) */}
-                  <div className="relative group min-w-[280px] sm:min-w-[340px] h-[400px] rounded-[24px] overflow-hidden shadow-sm hover:shadow-md transition-all duration-500 ease-out snap-start flex flex-col justify-end p-6 border border-[#E2E8F0] hover:scale-[1.02]">
-                    {/* Background photo */}
-                    <div className="absolute inset-0 z-0">
-                      <img 
-                        src="https://images.unsplash.com/photo-1543872084-c7bd3822856f?auto=format&fit=crop&w=800&q=80" 
-                        alt="Algiers Skyline at Sunset"
-                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                        referrerPolicy="no-referrer"
-                      />
-                      {/* Soft bright gradient overlay to wash details slightly while retaining beauty */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-white via-white/20 to-transparent"></div>
-                    </div>
+                <div 
+                  ref={citiesScrollRef}
+                  className="flex gap-6 overflow-x-auto pb-6 scrollbar-thin scrollbar-thumb-blue-200 snap-x scroll-smooth"
+                >
+                  {[
+                    {
+                      name: "Algiers",
+                      subtitle: "Capital of Algeria & Ottoman Casbah",
+                      image: "https://images.unsplash.com/photo-1543872084-c7bd3822856f?auto=format&fit=crop&w=800&q=80",
+                      badge: "★ Capital & UNESCO",
+                      badgeBg: "bg-[#3B82F6] text-white",
+                      match: "98.7%",
+                      topTag: "High-Match IA"
+                    },
+                    {
+                      name: "Oran",
+                      subtitle: "Coastal Energy & Santa Cruz Fort",
+                      image: "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?auto=format&fit=crop&w=800&q=80",
+                      badge: "🔥 Coastal Energy",
+                      badgeBg: "bg-[#22D3EE] text-[#334155]",
+                      match: "99.4%",
+                      topTag: "Best Choice"
+                    },
+                    {
+                      name: "Constantine",
+                      subtitle: "City of Suspended Bridges & Rhumel Canyon",
+                      image: "https://images.unsplash.com/photo-1578898835028-267b093df022?auto=format&fit=crop&w=800&q=80",
+                      badge: "🌉 Bridges & Heritage",
+                      badgeBg: "bg-amber-500 text-white",
+                      match: "97.8%",
+                      topTag: "Historic Wonder"
+                    },
+                    {
+                      name: "Taghit & Ghardaïa",
+                      subtitle: "Oasis Golden Dunes & M'zab Valley",
+                      image: "https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=800&q=80",
+                      badge: "🏜️ Sahara Magic",
+                      badgeBg: "bg-orange-500 text-white",
+                      match: "96.5%",
+                      topTag: "Oasis Experience"
+                    },
+                    {
+                      name: "Tlemcen",
+                      subtitle: "Pearl of Maghreb & El Mechouar Palace",
+                      image: "https://images.unsplash.com/photo-1518684079-3c830dcef090?auto=format&fit=crop&w=800&q=80",
+                      badge: "🏛️ Royal Heritage",
+                      badgeBg: "bg-emerald-600 text-white",
+                      match: "95.9%",
+                      topTag: "Cultural Gem"
+                    },
+                    {
+                      name: "Annaba",
+                      subtitle: "Saint Augustine Basilica & Turquoise Coast",
+                      image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80",
+                      badge: "🌊 Turquoise Coast",
+                      badgeBg: "bg-sky-500 text-white",
+                      match: "96.2%",
+                      topTag: "Mediterranean"
+                    },
+                    {
+                      name: "Djanet",
+                      subtitle: "Tassili n'Ajjer Rock Art & Starry Desert",
+                      image: "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=800&q=80",
+                      badge: "🌌 UNESCO Plateau",
+                      badgeBg: "bg-indigo-600 text-white",
+                      match: "98.1%",
+                      topTag: "Bucket List"
+                    },
+                    {
+                      name: "Bejaia",
+                      subtitle: "Cap Carbon & Gouraya National Park",
+                      image: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=800&q=80",
+                      badge: "⛰️ Gouraya & Gulf",
+                      badgeBg: "bg-teal-600 text-white",
+                      match: "97.3%",
+                      topTag: "Nature Escapes"
+                    }
+                  ].map((city, idx) => (
+                    <div 
+                      key={idx}
+                      className="relative group min-w-[280px] sm:min-w-[340px] h-[400px] rounded-[24px] overflow-hidden shadow-sm hover:shadow-md transition-all duration-500 ease-out snap-start flex flex-col justify-end p-6 border border-[#E2E8F0] hover:scale-[1.02] shrink-0"
+                    >
+                      {/* Background photo */}
+                      <div className="absolute inset-0 z-0">
+                        <img 
+                          src={city.image} 
+                          alt={city.name}
+                          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                          referrerPolicy="no-referrer"
+                        />
+                        {/* Soft bright gradient overlay */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-white via-white/20 to-transparent"></div>
+                      </div>
 
-                    {/* AI Badge inside top-left corner */}
-                    <div className="absolute top-4 left-4 z-10">
-                      <span className="inline-flex items-center gap-1 bg-[#3B82F6] text-[10px] text-white font-mono font-black uppercase px-3 py-1 rounded-full tracking-wider shadow-sm">
-                        <Sparkles size={10} className="animate-pulse" /> Recommended
-                      </span>
-                    </div>
-
-                    {/* Personalisation details inside top-right corner */}
-                    <div className="absolute top-4 right-4 z-10">
-                      <span className="inline-flex items-center gap-1 bg-white/90 text-[9px] text-[#334155] font-mono font-bold px-2.5 py-0.5 rounded-full border border-[#E2E8F0] backdrop-blur-md">
-                        <span>✨</span> High-Match IA
-                      </span>
-                    </div>
-
-                    {/* Card Content body */}
-                    <div className="relative z-10 bg-white/95 backdrop-blur-md border border-[#E2E8F0] p-4 rounded-2xl shadow-sm">
-                      <h3 className="text-xl sm:text-2xl font-serif font-black text-[#334155] leading-tight mb-1">
-                        Algiers
-                      </h3>
-                      <p className="text-[11px] text-[#94A3B8] mb-4 font-sans font-medium">
-                        Discover the capital of Algeria
-                      </p>
-                      
-                      <div className="flex items-center justify-between">
-                        <span className="text-[9px] font-mono text-[#3B82F6] tracking-wider uppercase font-extrabold flex items-center gap-1">
-                          <Sparkles size={10} /> Match Score: 98.7%
+                      {/* AI Badge inside top-left corner */}
+                      <div className="absolute top-4 left-4 z-10">
+                        <span className={`inline-flex items-center gap-1 text-[10px] font-mono font-black uppercase px-3 py-1 rounded-full tracking-wider shadow-sm ${city.badgeBg}`}>
+                          {city.badge}
                         </span>
-                        <button
-                          onClick={() => setActiveView('map')}
-                          className="px-4 py-2 bg-[#3B82F6] hover:bg-[#3B82F6]/95 text-white text-xs font-black rounded-full transition shadow-sm active:scale-95 cursor-pointer"
-                        >
-                          Explore
-                        </button>
+                      </div>
+
+                      {/* Personalisation details inside top-right corner */}
+                      <div className="absolute top-4 right-4 z-10">
+                        <span className="inline-flex items-center gap-1 bg-white/90 text-[9px] text-[#334155] font-mono font-bold px-2.5 py-0.5 rounded-full border border-[#E2E8F0] backdrop-blur-md">
+                          <span>✨</span> {city.topTag}
+                        </span>
+                      </div>
+
+                      {/* Card Content body */}
+                      <div className="relative z-10 bg-white/95 backdrop-blur-md border border-[#E2E8F0] p-4 rounded-2xl shadow-sm">
+                        <h3 className="text-xl sm:text-2xl font-serif font-black text-[#334155] leading-tight mb-1">
+                          {city.name}
+                        </h3>
+                        <p className="text-[11px] text-[#94A3B8] mb-4 font-sans font-medium line-clamp-1">
+                          {city.subtitle}
+                        </p>
+                        
+                        <div className="flex items-center justify-between">
+                          <span className="text-[9px] font-mono text-[#3B82F6] tracking-wider uppercase font-extrabold flex items-center gap-1">
+                            <Sparkles size={10} /> Match Score: {city.match}
+                          </span>
+                          <button
+                            onClick={() => setActiveView('map')}
+                            className="px-4 py-2 bg-[#3B82F6] hover:bg-[#3B82F6]/95 text-white text-xs font-black rounded-full transition shadow-sm active:scale-95 cursor-pointer"
+                          >
+                            Explore
+                          </button>
+                        </div>
                       </div>
                     </div>
-                  </div>
-
-                  {/* City Card 2: Oran (Coastal City) */}
-                  <div className="relative group min-w-[280px] sm:min-w-[340px] h-[400px] rounded-[24px] overflow-hidden shadow-sm hover:shadow-md transition-all duration-500 ease-out snap-start flex flex-col justify-end p-6 border border-[#E2E8F0] hover:scale-[1.02]">
-                    {/* Background photo */}
-                    <div className="absolute inset-0 z-0">
-                      <img 
-                        src="https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?auto=format&fit=crop&w=800&q=80" 
-                        alt="Oran Coastline Mediterranean"
-                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                        referrerPolicy="no-referrer"
-                      />
-                      {/* Soft bright gradient overlay */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-white via-white/20 to-transparent"></div>
-                    </div>
-
-                    {/* AI Highlight Badge */}
-                    <div className="absolute top-4 left-4 z-10 flex gap-2">
-                      <span className="inline-flex items-center gap-1 bg-[#22D3EE] text-[10px] text-[#334155] font-mono font-black uppercase px-3 py-1 rounded-full tracking-wider shadow-sm">
-                        🔥 Best Choice
-                      </span>
-                    </div>
-
-                    {/* Top Right Rating badge */}
-                    <div className="absolute top-4 right-4 z-10">
-                      <span className="inline-flex items-center gap-1 bg-[#3B82F6]/90 text-[9px] text-white font-mono font-black px-2.5 py-1 rounded-full shadow-sm">
-                        ★ Coastal Energy
-                      </span>
-                    </div>
-
-                    {/* Card Content body */}
-                    <div className="relative z-10 bg-white/95 backdrop-blur-md border border-[#E2E8F0] p-4 rounded-2xl shadow-sm">
-                      <h3 className="text-xl sm:text-2xl font-serif font-black text-[#334155] leading-tight mb-1">
-                        Oran
-                      </h3>
-                      <p className="text-[11px] text-[#94A3B8] mb-4 font-sans font-medium">
-                        Feel the coastal energy
-                      </p>
-                      
-                      <div className="flex items-center justify-between">
-                        <span className="text-[9px] font-mono text-[#3B82F6] tracking-wider uppercase font-extrabold flex items-center gap-1">
-                          <Sparkles size={10} /> Match Score: 99.4%
-                        </span>
-                        <button
-                          onClick={() => setActiveView('map')}
-                          className="px-4 py-2 bg-[#3B82F6] hover:bg-[#3B82F6]/95 text-white text-xs font-black rounded-full transition shadow-sm active:scale-95 cursor-pointer"
-                        >
-                          Explore
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-
+                  ))}
                 </div>
               </div>
 
@@ -775,12 +833,15 @@ function RihlaApp() {
       </main>
 
       {/* Structured footer layout */}
-      <footer className="bg-[#eae7e1]/80 dark:bg-[#121212]/80 border-t border-[#1a1a1a]/15 dark:border-white/10 py-10 transition-colors duration-300">
+      <footer className="bg-[#eae7e1]/80 dark:bg-[#121212]/80 border-t border-[#1a1a1a]/15 dark:border-white/10 py-10 pb-20 md:pb-10 transition-colors duration-300">
         <div className="max-w-7xl mx-auto px-4 text-center text-[10px] uppercase tracking-widest text-[#1a1a1a]/60 dark:text-[#f5f2ed]/60 font-mono">
           <p className="mb-2 font-bold text-[#d4af37]">© 2026 Rihla DZ — Independent Algeria Chronicles</p>
           <p className="lowercase font-sans text-xs tracking-normal font-semibold text-gray-500">Secured with luxury standards and powered by state-of-the-art Gemini local intelligence.</p>
         </div>
       </footer>
+
+      {/* Mobile Bottom Navigation Bar (Mobile First 2026) */}
+      <MobileBottomNav activeView={activeView} setActiveView={setActiveView} language={language} />
 
     </div>
   );
