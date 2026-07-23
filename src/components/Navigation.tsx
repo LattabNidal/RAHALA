@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { useApp } from '../context/AppContext';
-import androidChrome from '../assets/images/android-chrome-512x512.png';
-import rahalaHeroBanner from '../assets/images/rahala_hero_banner_1784119916854.jpg';
-import rahalaLogo from '../assets/images/android-chrome-512x512.png';
 import { 
   Menu, X, Bell, Globe, Sparkles, User as UserIcon, 
   ShieldAlert, LogOut, Sun, Moon, CreditCard, Shield,
@@ -13,6 +10,7 @@ import { Language } from '../types';
 import { motion, AnimatePresence } from 'motion/react';
 import { CurrencyConverter } from './CurrencyConverter';
 import { supabaseDbService } from '../lib/supabaseDb';
+import rahalaLogo from '../assets/images/android-chrome-512x512.png';
 
 interface NavigationProps {
   activeView: string;
@@ -30,10 +28,6 @@ export const Navigation: React.FC<NavigationProps> = ({ activeView, setActiveVie
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
   const [converterOpen, setConverterOpen] = useState(false);
   const [converterModalOpen, setConverterModalOpen] = useState(false);
-
-  // Close sidebar drawer on window resize above mobile screen if unwanted
-  // but since we replace horizontal links completely as requested, 
-  // keeping the sliding sidebar for desktop too provides a consistent, high-fidelity experience!
 
   const unreadCount = notifications.filter(n => !n.read).length;
 
@@ -83,7 +77,6 @@ export const Navigation: React.FC<NavigationProps> = ({ activeView, setActiveVie
     navItems.push({ id: 'admin', label: t('navAdmin'), icon: ShieldAlert });
   }
 
-  // Dual-language descriptive sub-labels for luxury tourist finish
   const getSubtitle = (id: string) => {
     if (language === 'ar') {
       switch(id) {
@@ -133,7 +126,6 @@ export const Navigation: React.FC<NavigationProps> = ({ activeView, setActiveVie
     }
   };
 
-  // Custom Lucide Icon mapping
   const iconMap: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {
     'explore': Compass,
     'digital-twin': Box,
@@ -151,85 +143,69 @@ export const Navigation: React.FC<NavigationProps> = ({ activeView, setActiveVie
 
   return (
     <>
-      <nav id="navbar-header" className="sticky top-0 z-50 bg-white/95 dark:bg-[#111317]/95 border-b border-gray-200 dark:border-gray-800 backdrop-blur-md transition-colors duration-300">
+      <nav id="navbar-header" className="sticky top-0 z-50 bg-white/85 border-b border-[#E2E8F0] backdrop-blur-md transition-all duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
+          <div className="flex items-center justify-between h-16 sm:h-20">
             
-            {/* Left Area: Hamburger and Brand Logo */}
             <div className="flex items-center space-x-3 space-x-reverse">
-              {/* Modern Rounded Hamburger Trigger */}
               <button
-                id="hamburger-menu-trigger"
-                onClick={() => setMenuOpen(!menuOpen)}
-                className="p-2 sm:p-2.5 text-[#1a1a1a]/80 hover:text-emerald-600 dark:text-[#f5f2ed]/85 dark:hover:text-[#d4af37] bg-[#1a1a1a]/5 dark:bg-white/5 hover:bg-[#1a1a1a]/10 dark:hover:bg-white/10 rounded-xl transition duration-250 cursor-pointer flex items-center justify-center border border-slate-300/10"
-                title="Ouvrir le menu de navigation"
+                id="drawer-toggle-button"
+                onClick={() => setMenuOpen(true)}
+                className="p-2 sm:p-2.5 text-[#334155] hover:text-[#3B82F6] bg-[#F8FAFC] hover:bg-[#E2E8F0] rounded-xl transition duration-200 cursor-pointer flex items-center justify-center border border-[#E2E8F0]"
+                title="Consulter le menu"
               >
-                <Menu size={20} className="transition-transform duration-200 hover:scale-105" />
+                <Menu size={18} />
               </button>
 
-              {/* Brand Logo Identity */}
-              <button 
-                id="navbar-brand-button"
-                onClick={() => {
-                  setActiveView('explore');
-                  setMenuOpen(false);
-                }}
-                className="flex items-center space-x-2.5 space-x-reverse group focus:outline-none focus:ring-2 focus:ring-emerald-500/50 p-1 rounded-xl"
+              <div 
+                onClick={() => setActiveView('explore')} 
+                className="flex items-center space-x-2.5 space-x-reverse group focus:outline-none p-1 rounded-xl cursor-pointer"
               >
-                <div className="relative p-0.5 rounded-full bg-gradient-to-tr from-emerald-600 via-white to-red-650 shadow-md shadow-emerald-500/15 group-hover:scale-105 transition duration-300">
-                  <img 
-                    src={rahalaLogo}
-                    alt="RAHALA Logo"
-                    className="w-10 h-10 rounded-full object-cover border border-white"
-                    referrerPolicy="no-referrer"
-                  />
-                  <span className="absolute bottom-0 -right-0.5 w-3 h-3 bg-emerald-500 border-2 border-white rounded-full flex items-center justify-center animate-ping-slow"></span>
+                <div className="relative p-0.5 rounded-full bg-gradient-to-tr from-[#3B82F6] via-[#22D3EE] to-[#FDBA74] shadow-sm group-hover:scale-105 transition duration-300">
+                  <div className="w-8 h-8 rounded-full overflow-hidden bg-white p-0.5">
+                    <img 
+                      src={rahalaLogo} 
+                      alt="RAHALA Logo badge" 
+                      className="w-full h-full rounded-full object-cover"
+                    />
+                  </div>
+                  <div className="absolute bottom-0 -right-0.5 w-2.5 h-2.5 bg-[#3B82F6] border-2 border-white rounded-full flex items-center justify-center animate-ping-slow" />
                 </div>
                 
-                <div className="text-right flex flex-col justify-center select-none">
-                  <span className="block text-xl font-extrabold tracking-tight font-display bg-gradient-to-r from-emerald-600 via-emerald-500 to-red-600 bg-clip-text text-transparent leading-none">
-                    {t('appName')}
+                <div className="flex flex-col text-right">
+                  <span className="text-lg sm:text-xl font-serif font-black tracking-wider bg-gradient-to-r from-[#3B82F6] to-[#22D3EE] bg-clip-text text-transparent uppercase select-none">
+                    RAHALA
                   </span>
-                  <span className="block text-[8px] tracking-wider uppercase text-emerald-600 dark:text-[#d4af37] font-mono font-black mt-0.5">
-                    Algérie 🇩🇿
+                  <span className="text-[7.5px] tracking-widest font-mono text-[#94A3B8] font-bold uppercase select-none leading-none">
+                    L’Algérie Autrement
                   </span>
                 </div>
-              </button>
+              </div>
             </div>
 
-            {/* Right Action Hub (Languages, Notifications, Dark Mode, Profile) */}
-            <div className="flex items-center space-x-1.5 space-x-reverse">
-              {/* Cloud Sync Database Status Badge */}
-              <div className="flex items-center">
-                <span className={`flex items-center gap-1.5 px-2 py-1.5 text-[9px] font-mono font-bold uppercase rounded-xl leading-none border select-none ${
-                  supabaseDbService.isUsingCloud()
-                    ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20'
-                    : 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20'
-                }`}
-                title={supabaseDbService.isUsingCloud() ? 'Live synchronization with Supabase cloud database active' : 'Running in offline backup mode using client-side localStorage'}
-                >
-                  <span className={`w-1.5 h-1.5 rounded-full ${supabaseDbService.isUsingCloud() ? 'bg-emerald-500 animate-pulse' : 'bg-amber-500'}`} />
-                  <span className="hidden lg:inline">{supabaseDbService.isUsingCloud() ? 'Supabase Connected' : 'Local DB Mode'}</span>
-                  <span className="lg:hidden">{supabaseDbService.isUsingCloud() ? 'Cloud' : 'Local'}</span>
-                </span>
+            <div className="flex items-center space-x-2.5 space-x-reverse">
+              
+              <div className="flex items-center space-x-1.5 space-x-reverse">
+                <div className="flex items-center">
+                  <span className={`flex items-center gap-1.5 px-3 py-1.5 text-[9px] font-mono font-bold uppercase rounded-xl leading-none border select-none ${
+                    supabaseDbService.isUsingCloud()
+                      ? 'bg-[#3B82F6]/10 text-[#3B82F6] border-[#3B82F6]/20'
+                      : 'bg-[#F8FAFC] text-[#94A3B8] border-[#E2E8F0]'
+                  }`}>
+                    <span className={`w-1.5 h-1.5 rounded-full ${supabaseDbService.isUsingCloud() ? 'bg-[#3B82F6] animate-pulse' : 'bg-[#94A3B8]'}`} />
+                    <span>{supabaseDbService.isUsingCloud() ? 'Cloud Sync Sync' : 'Local Sandbox Offline'}</span>
+                  </span>
+                </div>
               </div>
 
-              {/* Preserved Testing widgets for preview reviewers to toggle standard/admin roles seamlessly */}
               {currentUser && (
-                <div className="hidden md:flex items-center space-x-1 space-x-reverse leading-none bg-[#1a1a1a]/5 dark:bg-white/5 p-1 rounded-xl border border-slate-300/15">
-                  <button 
-                    onClick={toggleUserRole}
-                    className="px-2 py-1 text-[9px] font-mono border border-dashed border-[#1a1a1a]/30 text-[#1a1a1a]/80 dark:border-white/30 dark:text-[#f5f2ed]/80 hover:bg-emerald-500/10 hover:text-emerald-600 dark:hover:text-emerald-400 transition-all rounded-md cursor-pointer"
-                    title="Toggle active user role for simulation purposes"
-                  >
-                    ROLE: {currentUser.role.toUpperCase()}
-                  </button>
-                  <button 
+                <div className="hidden sm:flex items-center space-x-1 space-x-reverse leading-none bg-[#F8FAFC] p-1 rounded-xl border border-[#E2E8F0]">
+                  <button
                     onClick={togglePremium}
-                    className={`px-2 py-1 text-[9px] font-mono border transition-all rounded-md cursor-pointer ${
+                    className={`px-3 py-1.5 text-[9px] font-mono rounded-lg transition select-none cursor-pointer ${
                       currentUser.isPremium 
-                        ? 'bg-[#d4af37] text-black border-[#d4af37] shadow-xs font-black' 
-                        : 'border-dashed border-[#1a1a1a]/30 text-[#1a1a1a]/70 hover:bg-[#d4af37]/10 dark:border-white/30 dark:text-white/75'
+                        ? 'bg-[#3B82F6] text-white border border-[#3B82F6] shadow-sm font-black' 
+                        : 'border border-dashed border-[#E2E8F0] text-[#94A3B8] hover:bg-[#3B82F6]/10 hover:text-[#3B82F6]'
                     }`}
                     title="Toggle Premium subscription simulated flow"
                   >
@@ -238,14 +214,14 @@ export const Navigation: React.FC<NavigationProps> = ({ activeView, setActiveVie
                 </div>
               )}
 
-              {/* Dark Mode Theme Switcher */}
+              {/* Decorative Theme switcher that maintains light theme styling */}
               <button
                 id="darkmode-switcher"
-                onClick={() => setDarkMode(!darkMode)}
-                className="p-2 sm:p-2.5 text-[#1a1a1a]/70 hover:text-[#d4af37] hover:bg-[#1a1a1a]/5 dark:text-[#f5f2ed]/70 dark:hover:bg-white/5 rounded-xl transition cursor-pointer flex items-center justify-center"
-                title="Togglage Theme"
+                onClick={() => setDarkMode(false)}
+                className="p-2 sm:p-2.5 text-[#334155] hover:text-[#3B82F6] hover:bg-[#F8FAFC] rounded-xl transition cursor-pointer flex items-center justify-center"
+                title="Thème Premium (Clair)"
               >
-                {darkMode ? <Sun size={15} /> : <Moon size={15} />}
+                <Sun size={15} />
               </button>
 
               {/* 🪙 Currency Converter Navbar Trigger */}
@@ -260,21 +236,19 @@ export const Navigation: React.FC<NavigationProps> = ({ activeView, setActiveVie
                   }}
                   className={`flex items-center space-x-1.5 space-x-reverse p-2 text-xs font-bold uppercase rounded-xl transition duration-200 cursor-pointer relative ${
                     converterOpen 
-                      ? 'text-emerald-600 bg-emerald-50/50 dark:text-emerald-400 dark:bg-emerald-950/20' 
-                      : 'text-[#1a1a1a]/70 hover:text-emerald-600 hover:bg-[#1a1a1a]/5 dark:text-[#f5f2ed]/70 dark:hover:bg-white/5'
+                      ? 'text-[#3B82F6] bg-[#3B82F6]/10' 
+                      : 'text-[#334155] hover:text-[#3B82F6] hover:bg-[#F8FAFC]'
                   }`}
-                  title={language === 'ar' ? 'محول العملات' : language === 'fr' ? 'Convertisseur' : 'Currency Converter'}
                 >
-                  <Coins size={15} className="text-emerald-600 dark:text-emerald-400" />
+                  <Coins size={15} className="text-[#3B82F6]" />
                   <span className="hidden md:inline">
-                    {language === 'ar' ? 'تحويل' : language === 'fr' ? 'Convertir' : language === 'es' ? 'Convertir' : 'Convert'}
+                    {language === 'ar' ? 'تحويل' : language === 'fr' ? 'Convertir' : 'Convert'}
                   </span>
-                  {/* Small "Tourist" subtle pulse indicator badge */}
-                  <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-emerald-500 animate-pulse border border-white dark:border-zinc-900" title="Useful for tourists" />
+                  <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-[#3B82F6] animate-pulse border border-white" />
                 </button>
                 
                 {converterOpen && (
-                  <div className={`absolute ${isRtl ? 'left-0' : 'right-0'} mt-2 w-80 sm:w-96 rounded-2xl bg-white dark:bg-[#161a22] border border-gray-200 dark:border-gray-800 shadow-2xl z-50 animate-fade-in`}>
+                  <div className={`absolute ${isRtl ? 'left-0' : 'right-0'} mt-2 w-80 sm:w-96 rounded-2xl bg-white border border-[#E2E8F0] shadow-xl z-50 animate-fade-in`}>
                     <CurrencyConverter onClose={() => setConverterOpen(false)} />
                   </div>
                 )}
@@ -290,7 +264,7 @@ export const Navigation: React.FC<NavigationProps> = ({ activeView, setActiveVie
                     setProfileDropdownOpen(false);
                     setConverterOpen(false);
                   }}
-                  className="flex items-center space-x-1 space-x-reverse p-2 text-[#1a1a1a]/70 hover:text-[#d4af37] hover:bg-[#1a1a1a]/5 dark:text-[#f5f2ed]/70 dark:hover:bg-white/5 rounded-xl transition cursor-pointer"
+                  className="flex items-center space-x-1 space-x-reverse p-2 text-[#334155] hover:text-[#3B82F6] hover:bg-[#F8FAFC] rounded-xl transition cursor-pointer"
                 >
                   <Globe size={15} />
                   <span className="hidden sm:inline text-xs font-bold uppercase">
@@ -299,22 +273,22 @@ export const Navigation: React.FC<NavigationProps> = ({ activeView, setActiveVie
                 </button>
                 
                 {langDropdownOpen && (
-                  <div className={`absolute ${isRtl ? 'left-0' : 'right-0'} mt-2 w-44 rounded-xl bg-white dark:bg-[#161a22] border border-gray-200 dark:border-gray-800 shadow-xl py-1.5 z-50 animate-fade-in`}>
+                  <div className={`absolute ${isRtl ? 'left-0' : 'right-0'} mt-2 w-44 rounded-xl bg-white border border-[#E2E8F0] shadow-xl py-1.5 z-50 animate-fade-in`}>
                     {languagesList.map((lang) => {
                       const isActive = lang.code === language;
                       return (
                         <button
-                          key={lang.code}
-                          onClick={() => handleLangSelect(lang.code)}
-                          className={`flex items-center justify-between w-full text-start px-4 py-2 text-xs font-bold uppercase tracking-wider transition-all cursor-pointer ${
-                            isActive 
-                              ? 'text-emerald-600 bg-emerald-50/50 dark:text-emerald-400 dark:bg-emerald-950/20 border-l-4 border-emerald-600 font-black'
-                              : 'text-gray-700 hover:text-emerald-600 hover:bg-gray-50 dark:text-gray-350 dark:hover:text-emerald-400 dark:hover:bg-gray-800/40'
-                          }`}
+                           key={lang.code}
+                           onClick={() => handleLangSelect(lang.code)}
+                           className={`flex items-center justify-between w-full text-start px-4 py-2 text-xs font-bold uppercase tracking-wider transition-all cursor-pointer ${
+                             isActive 
+                               ? 'text-[#3B82F6] bg-[#3B82F6]/10 border-l-4 border-[#3B82F6] font-black'
+                               : 'text-[#334155] hover:text-[#3B82F6] hover:bg-[#F8FAFC]'
+                           }`}
                         >
                           <span className="flex items-center space-x-1.5 space-x-reverse">
                             <span>{lang.label}</span>
-                            {isActive && <span className="text-[10px] text-[#d4af37]">✓</span>}
+                            {isActive && <span className="text-[10px] text-[#3B82F6]">✓</span>}
                           </span>
                           <span className="text-sm">{lang.flag}</span>
                         </button>
@@ -334,21 +308,21 @@ export const Navigation: React.FC<NavigationProps> = ({ activeView, setActiveVie
                     setProfileDropdownOpen(false);
                     setConverterOpen(false);
                   }}
-                  className="p-2 sm:p-2.5 text-[#1a1a1a]/70 hover:text-[#d4af37] hover:bg-[#1a1a1a]/5 dark:text-[#f5f2ed]/70 dark:hover:bg-white/5 rounded-xl transition relative cursor-pointer"
+                  className="p-2 sm:p-2.5 text-[#334155] hover:text-[#3B82F6] hover:bg-[#F8FAFC] rounded-xl transition relative cursor-pointer"
                 >
                   <Bell size={15} />
                   {unreadCount > 0 && (
-                    <span className="absolute top-1.5 right-1.5 w-2.5 h-2.5 rounded-full bg-[#d4af37] border-2 border-[#f5f2ed] dark:border-[#121212] animate-pulse" />
+                    <span className="absolute top-1.5 right-1.5 w-2.5 h-2.5 rounded-full bg-[#3B82F6] border-2 border-white animate-pulse" />
                   )}
                 </button>
                 {notifDropdownOpen && (
-                  <div className={`absolute ${isRtl ? 'left-0' : 'right-0'} mt-2 w-72 rounded-xl bg-white dark:bg-[#161a22] border border-gray-200 dark:border-gray-800 shadow-xl z-50 animate-fade-in overflow-hidden`}>
-                    <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-800 flex justify-between items-center bg-gray-50 dark:bg-gray-900 rounded-t-xl">
-                      <span className="text-xs font-black uppercase tracking-wider text-gray-800 dark:text-gray-200">Notifications</span>
+                  <div className={`absolute ${isRtl ? 'left-0' : 'right-0'} mt-2 w-72 rounded-xl bg-white border border-[#E2E8F0] shadow-xl z-50 animate-fade-in overflow-hidden`}>
+                    <div className="px-4 py-3 border-b border-[#E2E8F0] flex justify-between items-center bg-[#F8FAFC] rounded-t-xl">
+                      <span className="text-xs font-black uppercase tracking-wider text-[#334155]">Notifications</span>
                       {unreadCount > 0 && (
                         <button
                           onClick={clearNotifications}
-                          className="text-[10px] font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-450 hover:underline cursor-pointer"
+                          className="text-[10px] font-bold uppercase tracking-wider text-[#3B82F6] hover:underline cursor-pointer"
                         >
                           Clear All
                         </button>
@@ -356,14 +330,14 @@ export const Navigation: React.FC<NavigationProps> = ({ activeView, setActiveVie
                     </div>
                     <div className="max-h-60 overflow-y-auto py-1.5">
                       {notifications.length === 0 ? (
-                        <div className="px-4 py-6 text-center text-xs text-[#1a1a1a]/60 dark:text-[#f5f2ed]/60 font-serif italic">
+                        <div className="px-4 py-6 text-center text-xs text-[#94A3B8] font-serif italic">
                           Pas de messages aujourd'hui
                         </div>
                       ) : (
                         notifications.map((notif) => (
-                           <div key={notif.id} className="px-4 py-3 border-b border-[#1a1a1a]/5 dark:border-white/5 last:border-none hover:bg-[#1a1a1a]/5 dark:hover:bg-white/5 transition text-left">
-                             <p className="text-xs text-[#1a1a1a] dark:text-[#f5f2ed] leading-relaxed font-sans">{notif.message}</p>
-                             <span className="text-[9px] text-gray-500 font-mono mt-1 block">{notif.date}</span>
+                           <div key={notif.id} className="px-4 py-3 border-b border-[#E2E8F0] last:border-none hover:bg-[#F8FAFC] transition text-left">
+                             <p className="text-xs text-[#334155] leading-relaxed font-sans">{notif.message}</p>
+                             <span className="text-[9px] text-[#94A3B8] font-mono mt-1 block">{notif.date}</span>
                            </div>
                         ))
                       )}
@@ -384,25 +358,25 @@ export const Navigation: React.FC<NavigationProps> = ({ activeView, setActiveVie
                         setNotifDropdownOpen(false);
                         setConverterOpen(false);
                       }}
-                      className="flex items-center space-x-1.5 space-x-reverse p-1 hover:bg-[#1a1a1a]/5 dark:hover:bg-white/5 rounded-xl transition focus:outline-none cursor-pointer"
+                      className="flex items-center space-x-1.5 space-x-reverse p-1 hover:bg-[#F8FAFC] rounded-xl transition focus:outline-none cursor-pointer"
                     >
                       <img
                         src={currentUser.avatar || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80'}
                         alt="avatar profile user"
-                        className="w-7 h-7 object-cover rounded-full border border-gray-400/35"
+                        className="w-7 h-7 object-cover rounded-full border border-[#E2E8F0]"
                       />
                     </button>
                     {profileDropdownOpen && (
-                      <div className={`absolute ${isRtl ? 'left-0' : 'right-0'} mt-2 w-56 rounded-xl bg-white dark:bg-[#161a22] border border-gray-200 dark:border-gray-800 shadow-xl py-1.5 z-50 animate-fade-in`}>
-                        <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900 rounded-t-lg text-left">
-                          <p className="text-xs font-black text-gray-900 dark:text-gray-100 truncate mb-1 font-serif italic">{currentUser.name}</p>
-                          <p className="text-[10px] text-gray-500 font-mono truncate">{currentUser.email}</p>
+                      <div className={`absolute ${isRtl ? 'left-0' : 'right-0'} mt-2 w-56 rounded-xl bg-white border border-[#E2E8F0] shadow-xl py-1.5 z-50 animate-fade-in`}>
+                        <div className="px-4 py-3 border-b border-[#E2E8F0] bg-[#F8FAFC] rounded-t-lg text-left">
+                          <p className="text-xs font-black text-[#3B82F6] truncate mb-1 font-serif italic">{currentUser.name}</p>
+                          <p className="text-[10px] text-[#94A3B8] font-mono truncate">{currentUser.email}</p>
                           <div className="mt-2.5 flex space-x-1.5 space-x-reverse">
-                            <span className="px-2 py-0.5 text-[8px] font-mono font-black uppercase border border-emerald-500/30 text-emerald-600 dark:text-emerald-450 rounded bg-emerald-500/5">
+                            <span className="px-2 py-0.5 text-[8px] font-mono font-black uppercase border border-[#E2E8F0] text-[#334155] rounded bg-[#F8FAFC]">
                               {currentUser.role}
                             </span>
                             {currentUser.isPremium && (
-                              <span className="px-2 py-0.5 text-[8px] font-mono font-black uppercase bg-emerald-100 dark:bg-emerald-950/35 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800 rounded">
+                              <span className="px-2 py-0.5 text-[8px] font-mono font-black uppercase bg-[#3B82F6]/10 text-[#3B82F6] border border-[#3B82F6]/20 rounded">
                                 VIP
                               </span>
                             )}
@@ -414,7 +388,7 @@ export const Navigation: React.FC<NavigationProps> = ({ activeView, setActiveVie
                             setProfileDropdownOpen(false);
                             setMenuOpen(false);
                           }}
-                          className="flex w-full px-4 py-2.5 text-xs text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-850 items-center space-x-2 space-x-reverse transition uppercase tracking-wider font-extrabold cursor-pointer"
+                          className="flex w-full px-4 py-2.5 text-xs text-[#334155] hover:text-[#3B82F6] hover:bg-[#F8FAFC] items-center space-x-2 space-x-reverse transition uppercase tracking-wider font-extrabold cursor-pointer"
                         >
                           <UserIcon size={12} />
                           <span>{t('navDashboard')}</span>
@@ -425,7 +399,7 @@ export const Navigation: React.FC<NavigationProps> = ({ activeView, setActiveVie
                             window.location.hash = '#/landing';
                             setProfileDropdownOpen(false);
                           }}
-                          className="flex w-full px-4 py-2.5 text-xs text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/25 items-center space-x-2 space-x-reverse border-t border-[#1a1a1a]/10 dark:border-white/10 transition uppercase tracking-wider font-extrabold cursor-pointer"
+                          className="flex w-full px-4 py-2.5 text-xs text-rose-500 hover:bg-rose-50 items-center space-x-2 space-x-reverse border-t border-[#E2E8F0] transition uppercase tracking-wider font-extrabold cursor-pointer"
                         >
                           <LogOut size={12} />
                           <span>{t('seConnecter') ? 'Log Out' : 'Déconnexion'}</span>
@@ -439,9 +413,9 @@ export const Navigation: React.FC<NavigationProps> = ({ activeView, setActiveVie
                       window.location.hash = '#/login';
                       setActiveView('auth');
                     }}
-                    className="px-3.5 py-1.5 bg-gradient-to-r from-emerald-600 to-emerald-750 hover:from-emerald-700 hover:to-emerald-850 text-white text-[11px] font-mono font-extrabold uppercase tracking-widest rounded-xl transition-all cursor-pointer shadow-md shadow-emerald-600/10 active:scale-95"
+                    className="px-3.5 py-1.5 bg-[#3B82F6] hover:bg-[#3B82F6]/90 text-white text-[11px] font-mono font-extrabold uppercase tracking-widest rounded-xl transition-all cursor-pointer shadow-sm active:scale-95 border border-[#3B82F6]/10"
                   >
-                    {language === 'ar' ? 'تسجيل الدخول' : language === 'fr' ? 'Connexion' : language === 'es' ? 'Iniciar sesión' : 'Login'}
+                    {language === 'ar' ? 'تسجيل الدخول' : language === 'fr' ? 'Connexion' : 'Login'}
                   </button>
                 )}
               </div>
@@ -451,112 +425,61 @@ export const Navigation: React.FC<NavigationProps> = ({ activeView, setActiveVie
         </div>
       </nav>
 
-      {/* 🔮 MODERN SLIDING SIDEBAR / DRAWER COMPONENT INTERFACE */}
+      {/* --- SIDEBAR MENU DRAWER (SLIDES IN) --- */}
       <AnimatePresence>
         {menuOpen && (
           <>
-            {/* Dark blur overlay backdrop click to close */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setMenuOpen(false)}
-              className="fixed inset-0 z-[60] bg-slate-950/50 dark:bg-black/75 backdrop-blur-xs cursor-pointer"
+              className="fixed inset-0 bg-[#334155]/40 backdrop-blur-xs z-100 cursor-pointer"
             />
-
-            {/* Draggable Slide-out Sidebar Box Drawer */}
+            
             <motion.div
               initial={{ x: isRtl ? '100%' : '-100%' }}
               animate={{ x: 0 }}
               exit={{ x: isRtl ? '100%' : '-100%' }}
-              transition={{ type: 'spring', damping: 27, stiffness: 220 }}
-              drag="x"
-              dragConstraints={isRtl ? { left: 0, right: 350 } : { left: -350, right: 0 }}
-              dragElastic={0.15}
-              onDragEnd={(e, info) => {
-                // Swipe validation for mobile swipe support
-                const swipeThreshold = 80;
-                const isSwipeClose = isRtl ? info.offset.x > swipeThreshold : info.offset.x < -swipeThreshold;
-                if (isSwipeClose) {
-                  setMenuOpen(false);
-                }
-              }}
-              className={`fixed top-0 bottom-0 ${isRtl ? 'right-0' : 'left-0'} z-[70] w-80 max-w-[85vw] h-screen bg-white/95 dark:bg-[#121212]/95 border-r border-gray-200 dark:border-gray-800 backdrop-blur-md shadow-2xl flex flex-col justify-between overflow-hidden select-none text-left`}
+              transition={{ type: 'spring', damping: 25, stiffness: 220 }}
+              className={`fixed top-0 bottom-0 ${isRtl ? 'right-0' : 'left-0'} w-80 max-w-full bg-white border-r border-[#E2E8F0] z-101 shadow-2xl flex flex-col justify-between overflow-hidden`}
+              dir={isRtl ? 'rtl' : 'ltr'}
             >
               
-              {/* Header section (La photo/logo en haut du menu) */}
-              <div className="relative p-6 border-b border-gray-200 dark:border-gray-800 shrink-0 overflow-hidden bg-slate-50/50 dark:bg-black/30">
-                {/* Immersive Algeria scenic textured backdrop */}
-                <div className="absolute inset-0 z-0 pointer-events-none opacity-20">
-                  <img 
-                    src="https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=400&q=80" 
-                    alt="Immersive scenic desert background helper"
-                    className="w-full h-full object-cover filter blur-[2px]"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-b from-transparent to-white dark:to-[#121212]"></div>
-                </div>
-
-                {/* Close Button "X" inside top-corner */}
-                <button
-                  onClick={() => setMenuOpen(false)}
-                  className="absolute top-4 right-4 p-1.5 rounded-xl bg-slate-200/60 dark:bg-zinc-800/80 hover:bg-slate-300 dark:hover:bg-zinc-700 text-slate-700 hover:text-black dark:text-zinc-400 dark:hover:text-white transition duration-200 cursor-pointer"
-                  title="Fermer le menu"
-                >
-                  <X size={16} />
-                </button>
-
-                {/* Main Brand Centered Logo inside header block */}
-                <div className="relative z-10 flex flex-col items-center text-center mt-3">
-                  <div className="relative p-0.5 rounded-full bg-gradient-to-tr from-emerald-600 via-white to-red-650 shadow-lg mb-3">
-                    <img
-                      src={rahalaLogo}
-                      alt="Centered RAHLA circular emblem logo"
-                      className="w-16 h-16 rounded-full object-cover border-2 border-white dark:border-zinc-900"
-                      referrerPolicy="no-referrer"
+              <div className="p-5 border-b border-[#E2E8F0] flex justify-between items-center bg-[#F8FAFC]">
+                <div className="flex items-center space-x-2 space-x-reverse">
+                  <div className="w-8 h-8 rounded-full overflow-hidden bg-[#3B82F6]/10 p-0.5 border border-[#3B82F6]/20">
+                    <img 
+                      src={rahalaLogo} 
+                      alt="Mini brand logo navigation deck slider" 
+                      className="w-full h-full rounded-full object-cover"
                     />
-                    <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-emerald-600 rounded-full border border-white flex items-center justify-center text-[10px] text-white">🇩🇿</div>
                   </div>
-
-                  <h3 className="text-xl font-black tracking-tight font-display bg-gradient-to-r from-emerald-600 via-emerald-500 to-red-600 bg-clip-text text-transparent leading-none">
-                    {t('appName')}
-                  </h3>
-                  <p className="text-[8.5px] font-mono font-bold uppercase tracking-widest text-[#d4af37] mt-1.5 leading-none">
-                    {t('tagline') || 'Découvrez l’Algérie autrement'}
-                  </p>
-                </div>
-              </div>
-
-              {/* Scrollable vertical navigation list (Contenu du menu) */}
-              <div className="flex-1 overflow-y-auto py-4 px-3 space-y-1.5 scrollbar-thin dark:scrollbar-thumb-zinc-800">
-                
-                {/* Prominent Tourist Currency Converter option in mobile/drawer list */}
-                <button
-                  onClick={() => {
-                    setConverterModalOpen(true);
-                    setMenuOpen(false);
-                  }}
-                  className="w-full flex items-center gap-3.5 px-3.5 py-3 rounded-2xl text-left transition-all duration-200 group relative overflow-hidden cursor-pointer bg-emerald-500/5 hover:bg-emerald-600/10 border border-emerald-500/15 text-emerald-700 dark:text-emerald-400"
-                >
-                  <div className="p-2 rounded-xl bg-emerald-600 text-white dark:bg-emerald-500/20 dark:text-emerald-400 shrink-0">
-                    <Coins size={16} />
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <div className="flex items-center justify-between">
-                      <span className="block text-xs font-black uppercase tracking-wider">
-                        {language === 'ar' ? 'محول العملات' : language === 'fr' ? 'Convertisseur' : language === 'es' ? 'Conversor de divisas' : 'Currency Converter'}
-                      </span>
-                      <span className="px-1.5 py-0.5 text-[8px] font-mono font-black uppercase bg-emerald-600 text-white rounded-md animate-pulse">
-                        TOURIST
-                      </span>
-                    </div>
-                    <span className="block text-[9px] text-emerald-600/75 dark:text-emerald-450 truncate mt-0.5 leading-none">
-                      {language === 'ar' ? 'تحويل العملات للدينار الجزائري' : language === 'fr' ? 'Dinar Algérien (DZD) en temps réel' : 'Real-time Algerian Dinar (DZD) exchange'}
+                  <div>
+                    <span className="text-base font-serif font-black tracking-widest text-[#334155] uppercase leading-none block">
+                      RAHALA
+                    </span>
+                    <span className="text-[7.5px] font-mono text-[#94A3B8] font-bold block uppercase mt-0.5">
+                      Algerian Smart Companion
                     </span>
                   </div>
+                </div>
+                
+                <button
+                  onClick={() => setMenuOpen(false)}
+                  className="p-1.5 rounded-lg bg-white hover:bg-[#E2E8F0] border border-[#E2E8F0] text-[#334155] transition cursor-pointer"
+                >
+                  <X size={15} />
                 </button>
+              </div>
+
+              <div className="flex-1 overflow-y-auto px-4 py-6 space-y-2">
+                <p className="px-3 text-[9px] font-mono uppercase tracking-[0.2em] text-[#94A3B8] font-black mb-3">
+                  {language === 'ar' ? 'البوابة الذكية لقسنطينة والجزائر' : 'Smart Gateway Portals'}
+                </p>
 
                 {navItems.map((item) => {
-                  const Icon = iconMap[item.id] || Sparkles;
+                  const Icon = iconMap[item.id] || Compass;
                   const isActive = activeView === item.id;
                   return (
                     <button
@@ -565,58 +488,50 @@ export const Navigation: React.FC<NavigationProps> = ({ activeView, setActiveVie
                         setActiveView(item.id);
                         setMenuOpen(false);
                       }}
-                      className={`w-full flex items-center gap-3.5 px-3.5 py-3 rounded-2xl text-left transition-all duration-200 group relative overflow-hidden cursor-pointer ${
-                        isActive
-                          ? 'bg-emerald-600/10 text-emerald-700 dark:text-emerald-400 font-extrabold border-l-4 border-emerald-550'
-                          : 'text-slate-800 dark:text-zinc-350 hover:bg-slate-100/65 dark:hover:bg-zinc-900 hover:text-emerald-600 dark:hover:text-emerald-400'
+                      className={`w-full flex items-center p-3 rounded-2xl transition-all duration-200 text-right font-sans cursor-pointer ${
+                        isActive 
+                          ? 'bg-[#3B82F6]/10 text-[#3B82F6] font-bold border-l-4 border-[#3B82F6] pl-2 shadow-sm'
+                          : 'text-[#334155] hover:bg-[#F8FAFC] hover:text-[#3B82F6]'
                       }`}
                     >
-                      <div className={`p-2 rounded-xl transition shrink-0 ${
-                        isActive
-                          ? 'bg-emerald-600 text-white dark:bg-emerald-500/20 dark:text-emerald-400'
-                          : 'bg-slate-100 dark:bg-zinc-800/50 group-hover:bg-emerald-600/10 group-hover:text-emerald-600 dark:group-hover:text-emerald-400'
-                      }`}>
+                      <div className={`p-2 rounded-xl shrink-0 ${isActive ? 'bg-[#3B82F6] text-white' : 'bg-[#F8FAFC] text-[#94A3B8] border border-[#E2E8F0]'} ml-3`}>
                         <Icon size={16} />
                       </div>
                       
-                      <div className="min-w-0 flex-1">
-                        <div className="flex items-center justify-between">
-                          <span className="block text-xs font-bold uppercase tracking-wider">{item.label}</span>
-                          {isActive && <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 dark:bg-emerald-400"></span>}
-                        </div>
-                        <span className="block text-[9px] text-gray-400 dark:text-zinc-500 truncate mt-0.5 leading-none">
+                      <div className="min-w-0 flex-1 text-left">
+                        <span className="block text-xs font-black uppercase tracking-wider">{item.label}</span>
+                        <span className={`block text-[8px] truncate leading-none mt-0.5 ${isActive ? 'text-[#3B82F6]' : 'text-[#94A3B8]'}`}>
                           {getSubtitle(item.id)}
                         </span>
                       </div>
+                      
+                      <ChevronRight size={12} className={`opacity-40 shrink-0 ${isActive ? 'text-[#3B82F6]' : 'text-[#94A3B8]'}`} />
                     </button>
                   );
                 })}
               </div>
 
-              {/* Secure Footer module (Section en bas : Rôle + Bouton Déconnexion) */}
-              <div className="p-4 border-t border-[#1a1a1a]/10 dark:border-white/10 bg-slate-100/50 dark:bg-black/30 shrink-0">
-                
-                {/* User Profile Info Card */}
-                <div className="flex items-center gap-3 bg-white/40 dark:bg-white/5 p-3 rounded-2xl border border-slate-300/15 dark:border-zinc-800/40">
+              <div className="p-4 border-t border-[#E2E8F0] bg-[#F8FAFC]">
+                <div className="flex items-center space-x-3 space-x-reverse mb-3">
                   <img
                     src={currentUser?.avatar || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80'}
                     alt="user profile avatar miniature file"
-                    className="w-10 h-10 object-cover rounded-full border border-gray-400/35 shrink-0"
+                    className="w-10 h-10 object-cover rounded-full border border-[#E2E8F0] shrink-0"
                   />
                   <div className="min-w-0 flex-1">
-                    <p className="text-xs font-black truncate text-[#1a1a1a] dark:text-[#f5f2ed] leading-tight font-serif italic">
+                    <p className="text-xs font-black truncate text-[#334155] leading-tight font-serif italic">
                       {currentUser?.name || (language === 'fr' ? 'Visiteur' : language === 'ar' ? 'زائر' : 'Guest Traveler')}
                     </p>
-                    <p className="text-[10px] font-mono truncate text-gray-500 mt-0.5 leading-none">
+                    <p className="text-[10px] font-mono truncate text-[#94A3B8] mt-0.5 leading-none">
                       {currentUser?.email || 'guest@rahala-dz.com'}
                     </p>
                     
                     <div className="mt-2 flex flex-wrap gap-1 leading-none">
-                      <span className="inline-block px-2.5 py-0.5 text-[8px] font-mono font-black uppercase bg-emerald-100 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-450 rounded-full border border-emerald-500/20">
+                      <span className="inline-block px-2.5 py-0.5 text-[8px] font-mono font-black uppercase bg-[#3B82F6]/10 text-[#3B82F6] rounded-full border border-[#3B82F6]/20">
                         Rôle: {currentUser?.role?.toUpperCase() || 'GUEST'}
                       </span>
                       {currentUser?.isPremium && (
-                        <span className="inline-block px-2 py-0.5 text-[8px] font-mono font-bold uppercase bg-[#d4af37]/15 text-[#d4af37] border border-[#d4af37]/30 rounded-full animate-pulse">
+                        <span className="inline-block px-2 py-0.5 text-[8px] font-mono font-bold uppercase bg-[#FDBA74]/20 text-[#3B82F6] border border-[#FDBA74]/30 rounded-full animate-pulse">
                           ★ VIP Gold
                         </span>
                       )}
@@ -624,13 +539,11 @@ export const Navigation: React.FC<NavigationProps> = ({ activeView, setActiveVie
                   </div>
                 </div>
 
-                {/* Instant preview triggers for layout inspectors */}
                 {currentUser && (
                   <div className="mt-3 grid grid-cols-2 gap-1.5 leading-none">
                     <button
                       onClick={toggleUserRole}
-                      className="px-2 py-1.5 text-[8px] font-mono font-extrabold text-slate-800 dark:text-zinc-300 bg-white/40 dark:bg-zinc-900 border border-slate-300/35 dark:border-zinc-800 rounded-lg text-center cursor-pointer hover:border-emerald-500/25 select-none"
-                      title="Basculer le rôle pour l'inspection"
+                      className="px-2 py-1.5 text-[8px] font-mono font-extrabold text-[#334155] bg-white border border-[#E2E8F0] rounded-lg text-center cursor-pointer hover:border-[#3B82F6]/25 select-none"
                     >
                       🔄 Test Rôle
                     </button>
@@ -638,17 +551,15 @@ export const Navigation: React.FC<NavigationProps> = ({ activeView, setActiveVie
                       onClick={togglePremium}
                       className={`px-2 py-1.5 text-[8px] font-mono font-extrabold border rounded-lg text-center cursor-pointer transition select-none ${
                         currentUser.isPremium
-                          ? 'bg-[#d4af37]/15 text-[#d4af37] border-[#d4af37]/35 shadow-xs'
-                          : 'bg-white/40 dark:bg-zinc-900 text-slate-600 dark:text-zinc-400 border-slate-300/25 dark:border-zinc-800'
+                          ? 'bg-[#3B82F6]/10 text-[#3B82F6] border-[#3B82F6]/35'
+                          : 'bg-white text-[#94A3B8] border-[#E2E8F0]'
                       }`}
-                      title="Basculer l'accès VIP Gold pour l'inspection"
                     >
                       ★ Test VIP Play
                     </button>
                   </div>
                 )}
 
-                {/* Se Déconnecter / Se Connecter Button */}
                 {currentUser ? (
                   <button
                     onClick={() => {
@@ -656,8 +567,7 @@ export const Navigation: React.FC<NavigationProps> = ({ activeView, setActiveVie
                       window.location.hash = '#/landing';
                       setMenuOpen(false);
                     }}
-                    className="w-full mt-3.5 py-2.5 bg-rose-600 hover:bg-rose-700 dark:bg-rose-950/20 dark:hover:bg-rose-950/40 text-white dark:text-rose-400 rounded-xl transition font-mono font-bold text-[10px] uppercase tracking-widest flex items-center justify-center gap-2 cursor-pointer shadow-sm shadow-red-500/10 hover:-translate-y-0.5 active:translate-y-0 duration-300"
-                    title="Déconnecter RAHLA"
+                    className="w-full mt-3.5 py-2.5 bg-rose-500 hover:bg-rose-600 text-white rounded-xl transition font-mono font-bold text-[10px] uppercase tracking-widest flex items-center justify-center gap-2 cursor-pointer shadow-sm hover:-translate-y-0.5 active:translate-y-0 duration-300"
                   >
                     <LogOut size={11} />
                     Se déconnecter
@@ -668,8 +578,7 @@ export const Navigation: React.FC<NavigationProps> = ({ activeView, setActiveVie
                       window.location.hash = '#/login';
                       setMenuOpen(false);
                     }}
-                    className="w-full mt-3.5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl transition font-mono font-bold text-[10px] uppercase tracking-widest flex items-center justify-center gap-2 cursor-pointer shadow-sm shadow-emerald-500/10 hover:-translate-y-0.5 active:translate-y-0 duration-300"
-                    title="Se connecter à RAHLA"
+                    className="w-full mt-3.5 py-2.5 bg-[#3B82F6] hover:bg-[#3B82F6]/90 text-white rounded-xl transition font-mono font-bold text-[10px] uppercase tracking-widest flex items-center justify-center gap-2 cursor-pointer shadow-sm hover:-translate-y-0.5 active:translate-y-0 duration-300"
                   >
                     <UserIcon size={11} />
                     Se connecter
@@ -683,31 +592,27 @@ export const Navigation: React.FC<NavigationProps> = ({ activeView, setActiveVie
         )}
       </AnimatePresence>
 
-      {/* 🪙 MOBILE CURRENCY CONVERTER MODAL OVERLAY */}
       <AnimatePresence>
         {converterModalOpen && (
           <div className="fixed inset-0 z-100 flex items-center justify-center p-4">
-            {/* Backdrop Blur overlay */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setConverterModalOpen(false)}
-              className="fixed inset-0 bg-slate-950/65 dark:bg-black/80 backdrop-blur-xs cursor-pointer"
+              className="fixed inset-0 bg-[#334155]/40 backdrop-blur-xs cursor-pointer"
             />
             
-            {/* Modal Body */}
             <motion.div
               initial={{ scale: 0.95, opacity: 0, y: 15 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.95, opacity: 0, y: 15 }}
               transition={{ type: 'spring', duration: 0.3 }}
-              className="relative bg-white dark:bg-[#121418] border border-gray-200 dark:border-gray-800 rounded-3xl shadow-2xl w-full max-w-sm overflow-hidden z-10"
+              className="relative bg-white border border-[#E2E8F0] rounded-3xl shadow-2xl w-full max-w-sm overflow-hidden z-10"
             >
-              {/* Close Button "X" inside top-corner */}
               <button
                 onClick={() => setConverterModalOpen(false)}
-                className="absolute top-4 right-4 p-1.5 rounded-xl bg-slate-100 dark:bg-zinc-800 hover:bg-slate-200 dark:hover:bg-zinc-700 text-slate-500 hover:text-black dark:text-zinc-400 dark:hover:text-white transition duration-200 cursor-pointer z-20"
+                className="absolute top-4 right-4 p-1.5 rounded-xl bg-[#F8FAFC] hover:bg-[#E2E8F0] text-[#334155] transition duration-200 cursor-pointer z-20"
                 title="Fermer"
               >
                 <X size={16} />

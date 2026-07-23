@@ -1,5 +1,106 @@
 import React, { useState } from 'react';
 import { FileText, Download, X, Eye, CheckCircle2, ShieldAlert, Award, Search, ZoomIn, ZoomOut, Printer, Bookmark, MapPin, Building, ChevronLeft, ChevronRight } from 'lucide-react';
+import { TimgadDocumentModal } from './TimgadDocumentModal';
+import { useLanguage } from '../context/LanguageContext';
+
+const translations = {
+  fr: {
+    title: "LISTE DU PATRIMOINE MONDIAL",
+    org: "ORGANISATION DES NATIONS UNIES POUR L'ÉDUCATION, LA SCIENCE ET LA CULTURE",
+    idBoxTitle: "A) IDENTIFICATION DU BIEN",
+    bienPropose: "Bien proposé :",
+    lieu: "Lieu :",
+    etatPartie: "État Partie :",
+    dateInscription: "Date d'inscription :",
+    photoCaption: "Document Officiel UNESCO N° 555 : Site authentique et architecture séculaire de la Casbah d'Alger.",
+    valeurTitre: "VALEUR UNIVERSELLE EXCEPTIONNELLE — BRÈVE SYNTHÈSE",
+    criteresTitle: "CRITÈRES D'INSCRIPTION & ÉVALUATION DU BIEN (2009 / 1990)",
+    criteresII: "Critère (ii) : Influence sur l'Architecture & l'Urbanisme",
+    criteresV: "Critère (v) : Exemple Éminent d'Habitat Humain Traditionnel",
+    integriteAuthenticiteTitle: "INTÉGRITÉ & AUTHENTICITÉ",
+    protectionTitle: "PROTECTION ET CADRE JURIDIQUE",
+    rapportIcomosTitle: "RAPPORT D'ÉVALUATION DE L'ICOMOS (NOVEMBRE 1991)",
+    page1: "Page 1 de 3",
+    page2: "Page 2 de 3",
+    page3: "Page 3 de 3",
+    certifie: "✓ DOCUMENT OFFICIEL CERTIFIÉ",
+    orgDate: "ORGANISATION UNESCO • 1990/1992",
+    tabDoc: "Document Certifié ICOMOS (Textes)",
+    tabPhotos: "Galerie Photographique d'Époque"
+  },
+  en: {
+    title: "WORLD HERITAGE LIST",
+    org: "UNITED NATIONS EDUCATIONAL, SCIENTIFIC AND CULTURAL ORGANIZATION",
+    idBoxTitle: "A) IDENTIFICATION OF THE PROPERTY",
+    bienPropose: "Property proposed:",
+    lieu: "Location:",
+    etatPartie: "State Party:",
+    dateInscription: "Inscription Date:",
+    photoCaption: "Official UNESCO Document N° 555: Authentic site and secular architecture of the Casbah of Algiers.",
+    valeurTitre: "OUTSTANDING UNIVERSAL VALUE — BRIEF SYNTHESIS",
+    criteresTitle: "INSCRIPTION CRITERIA & PROPERTY EVALUATION (2009 / 1990)",
+    criteresII: "Criterion (ii): Influence on Architecture & Urbanism",
+    criteresV: "Criterion (v): Eminently Representative Example of Traditional Human Habitat",
+    integriteAuthenticiteTitle: "INTEGRITY & AUTHENTICITY",
+    protectionTitle: "PROTECTION AND LEGAL FRAMEWORK",
+    rapportIcomosTitle: "ICOMOS EVALUATION REPORT (NOVEMBER 1991)",
+    page1: "Page 1 of 3",
+    page2: "Page 2 of 3",
+    page3: "Page 3 of 3",
+    certifie: "✓ OFFICIAL CERTIFIED DOCUMENT",
+    orgDate: "UNESCO ORGANIZATION • 1990/1992",
+    tabDoc: "ICOMOS Certified Document (Texts)",
+    tabPhotos: "Historical Photo Gallery"
+  },
+  ar: {
+    title: "قائمة التراث العالمي",
+    org: "منظمة الأمم المتحدة للتربية والعلم والثقافة",
+    idBoxTitle: "أ) تحديد المعلم الأثري",
+    bienPropose: "المعلم المقترح:",
+    lieu: "الموقع:",
+    etatPartie: "الدولة الطرف:",
+    dateInscription: "تاريخ التسجيل:",
+    photoCaption: "وثيقة اليونسكو الرسمية رقم 555: موقع أصيل وعمارة علمانية لقصبة الجزائر.",
+    valeurTitre: "القيمة العالمية الاستثنائية — ملخص موجز",
+    criteresTitle: "معايير التسجيل وتقييم المعلم (2009 / 1990)",
+    criteresII: "المعيار (ثانياً): التأثير على العمارة والتخطيط العمراني",
+    criteresV: "المعيار (خامساً): مثال بارز للموائل البشرية التقليدية",
+    integriteAuthenticiteTitle: "النزاهة والأصالة",
+    protectionTitle: "الحماية والإطار القانوني",
+    rapportIcomosTitle: "تقرير تقييم الإيكوموس (نوفمبر 1991)",
+    page1: "الصفحة 1 من 3",
+    page2: "الصفحة 2 من 3",
+    page3: "الصفحة 3 من 3",
+    certifie: "✓ وثيقة رسمية معتمدة",
+    orgDate: "منظمة اليونسكو • 1990/1992",
+    tabDoc: "وثيقة الإيكوموس المعتمدة (نصوص)",
+    tabPhotos: "معرض الصور التاريخية"
+  },
+  es: {
+    title: "LISTA DEL PATRIMONIO MUNDIAL",
+    org: "ORGANIZACIÓN DE LAS NACIONES UNIDAS PARA LA EDUCACIÓN, LA CIENCIA Y LA CULTURA",
+    idBoxTitle: "A) IDENTIFICACIÓN DEL BIEN",
+    bienPropose: "Bien propuesto:",
+    lieu: "Ubicación:",
+    etatPartie: "Estado Parte:",
+    dateInscription: "Fecha de inscripción:",
+    photoCaption: "Documento Oficial UNESCO N° 555: Sitio auténtico y arquitectura secular de la Casbah de Argel.",
+    valeurTitre: "VALOR UNIVERSAL EXCEPCIONAL — BREVE SÍNTESIS",
+    criteresTitle: "CRITERIOS DE INSCRIPCIÓN Y EVALUACIÓN DEL BIEN (2009 / 1990)",
+    criteresII: "Criterio (ii): Influencia en la Arquitectura y Urbanismo",
+    criteresV: "Criterio (v): Ejemplo Eminente de Hábitat Humano Tradicional",
+    integriteAuthenticiteTitle: "INTEGRIDAD Y AUTENTICIDAD",
+    protectionTitle: "PROTECCIÓN Y MARCO JURÍDICO",
+    rapportIcomosTitle: "INFORME DE EVALUACIÓN DEL ICOMOS (NOVIEMBRE 1991)",
+    page1: "Página 1 de 3",
+    page2: "Página 2 de 3",
+    page3: "Página 3 de 3",
+    certifie: "✓ DOCUMENTO OFICIAL CERTIFICADO",
+    orgDate: "ORGANIZACIÓN UNESCO • 1990/1992",
+    tabDoc: "Documento Certificado ICOMOS (Textos)",
+    tabPhotos: "Galería de Fotos Históricas"
+  }
+};
 
 interface UnescoDocumentModalProps {
   isOpen: boolean;
@@ -15,8 +116,14 @@ export const UnescoDocumentModal: React.FC<UnescoDocumentModalProps> = ({
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [zoomLevel, setZoomLevel] = useState<number>(100);
   const [activeTab, setActiveTab] = useState<'document' | 'photos' | 'criteria'>('document');
+  const { language, setLanguage, isRtl } = useLanguage();
+  const t = translations[language];
 
   if (!isOpen) return null;
+
+  if (siteName.toLowerCase().includes('timgad') || siteName.toLowerCase().includes('thamugadi')) {
+    return <TimgadDocumentModal isOpen={isOpen} onClose={onClose} siteName={siteName} />;
+  }
 
   const handleDownload = () => {
     // Generate text download or simulate file download
@@ -42,20 +149,20 @@ export const UnescoDocumentModal: React.FC<UnescoDocumentModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80 backdrop-blur-md animate-fade-in">
-      <div className="bg-[#1e1e1e] text-slate-100 border border-amber-500/30 rounded-2xl w-full max-w-5xl h-[92vh] flex flex-col shadow-2xl overflow-hidden">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-green-900/80 backdrop-blur-sm animate-fade-in" dir={isRtl ? 'rtl' : 'ltr'}>
+      <div className="bg-white text-black border border-red-600 rounded-2xl w-full max-w-5xl h-[92vh] flex flex-col shadow-2xl overflow-hidden">
         
         {/* PDF Header Toolbar */}
-        <div className="bg-[#2d2d2d] border-b border-white/10 p-3 flex flex-wrap items-center justify-between gap-2 text-xs">
+        <div className="bg-green-700 border-b border-green-600 p-3 flex flex-wrap items-center justify-between gap-2 text-xs">
           <div className="flex items-center space-x-2 space-x-reverse min-w-0">
-            <div className="w-8 h-8 rounded-lg bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-400 font-bold shrink-0">
+            <div className="w-8 h-8 rounded-lg bg-white/20 border border-white/40 flex items-center justify-center text-white font-bold shrink-0">
               <Award size={18} />
             </div>
             <div className="min-w-0">
-              <h2 className="font-mono font-bold text-amber-400 text-xs sm:text-sm truncate">
+              <h2 className="font-mono font-bold text-white text-xs sm:text-sm truncate">
                 UNESCO_Dossier_N555_Casbah_dAlger.pdf
               </h2>
-              <p className="text-[10px] text-slate-400 font-mono">
+              <p className="text-[10px] text-green-100 font-mono">
                 Patrimoine Mondial de l'Humanité • République Algérienne Démocratique et Populaire
               </p>
             </div>
@@ -63,42 +170,61 @@ export const UnescoDocumentModal: React.FC<UnescoDocumentModalProps> = ({
 
           {/* Navigation & Controls */}
           <div className="flex items-center space-x-1 sm:space-x-2 space-x-reverse">
-            <div className="flex items-center bg-black/40 rounded-lg p-1 border border-white/10 font-mono text-[11px]">
+
+            {/* Language Switcher Pills */}
+            <div className="flex items-center bg-green-800 rounded-lg p-1 border border-red-600/30 font-mono text-[10px] space-x-1 space-x-reverse">
+              {(['fr', 'ar', 'en', 'es'] as const).map(lang => (
+                <button
+                  key={lang}
+                  onClick={() => setLanguage(lang)}
+                  className={`px-2 py-0.5 rounded font-bold uppercase transition cursor-pointer ${
+                    language === lang 
+                      ? 'bg-red-600 text-white shadow-xs' 
+                      : 'text-green-100 hover:text-white hover:bg-green-600'
+                  }`}
+                  title={`Language: ${lang.toUpperCase()}`}
+                >
+                  {lang}
+                </button>
+              ))}
+            </div>
+
+            <div className="flex items-center bg-green-800 rounded-lg p-1 border border-green-600 font-mono text-[11px]">
               <button 
                 onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
                 disabled={currentPage === 1}
-                className="p-1 hover:bg-white/10 rounded disabled:opacity-30 cursor-pointer"
+                className="p-1 hover:bg-green-600 rounded disabled:opacity-30 cursor-pointer text-white"
                 title="Page précédente"
               >
-                <ChevronLeft size={14} />
+                <ChevronLeft size={14} className={isRtl ? 'rotate-180' : ''} />
               </button>
-              <span className="px-2 text-amber-300 font-bold">
+              <span className="px-2 text-white font-bold">
                 {currentPage} / 3
               </span>
               <button 
                 onClick={() => setCurrentPage(prev => Math.min(3, prev + 1))}
                 disabled={currentPage === 3}
-                className="p-1 hover:bg-white/10 rounded disabled:opacity-30 cursor-pointer"
+                className="p-1 hover:bg-green-600 rounded disabled:opacity-30 cursor-pointer text-white"
                 title="Page suivante"
               >
-                <ChevronRight size={14} />
+                <ChevronRight size={14} className={isRtl ? 'rotate-180' : ''} />
               </button>
             </div>
 
-            <div className="hidden md:flex items-center bg-black/40 rounded-lg p-1 border border-white/10 font-mono text-[11px]">
+            <div className="hidden md:flex items-center bg-green-800 rounded-lg p-1 border border-green-600 font-mono text-[11px]">
               <button 
                 onClick={() => setZoomLevel(prev => Math.max(75, prev - 25))}
-                className="p-1 hover:bg-white/10 rounded cursor-pointer"
+                className="p-1 hover:bg-green-600 rounded cursor-pointer text-white"
                 title="Zoom arrière"
               >
                 <ZoomOut size={14} />
               </button>
-              <span className="px-2 text-slate-300">
+              <span className="px-2 text-white">
                 {zoomLevel}%
               </span>
               <button 
                 onClick={() => setZoomLevel(prev => Math.min(150, prev + 25))}
-                className="p-1 hover:bg-white/10 rounded cursor-pointer"
+                className="p-1 hover:bg-green-600 rounded cursor-pointer text-white"
                 title="Zoom avant"
               >
                 <ZoomIn size={14} />
@@ -107,7 +233,7 @@ export const UnescoDocumentModal: React.FC<UnescoDocumentModalProps> = ({
 
             <button
               onClick={handleDownload}
-              className="bg-amber-500 hover:bg-amber-600 text-black font-bold px-3 py-1.5 rounded-lg flex items-center space-x-1.5 text-xs transition cursor-pointer"
+              className="bg-red-600 hover:bg-red-700 text-white font-bold px-3 py-1.5 rounded-lg flex items-center space-x-1.5 text-xs transition cursor-pointer"
             >
               <Download size={13} />
               <span className="hidden sm:inline">Télécharger Officiel</span>
@@ -124,34 +250,34 @@ export const UnescoDocumentModal: React.FC<UnescoDocumentModalProps> = ({
         </div>
 
         {/* View Tabs */}
-        <div className="bg-[#242424] border-b border-white/5 px-4 py-2 flex space-x-2 space-x-reverse text-xs font-mono">
+        <div className="bg-green-800 border-b border-green-700 px-4 py-2 flex space-x-2 space-x-reverse text-xs font-mono">
           <button
             onClick={() => setActiveTab('document')}
-            className={`px-3 py-1 rounded-md transition cursor-pointer flex items-center space-x-1.5 ${
-              activeTab === 'document' ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40 font-bold' : 'text-slate-400 hover:text-white'
+            className={`px-3 py-1 rounded-md transition cursor-pointer flex items-center space-x-1.5 space-x-reverse whitespace-nowrap ${
+              activeTab === 'document' ? 'bg-red-600 text-white border border-red-700 font-bold' : 'text-green-100 hover:text-white'
             }`}
           >
             <FileText size={13} />
-            <span>Document Certifié ICOMOS (Textes)</span>
+            <span>{t.tabDoc}</span>
           </button>
 
           <button
             onClick={() => setActiveTab('photos')}
-            className={`px-3 py-1 rounded-md transition cursor-pointer flex items-center space-x-1.5 ${
-              activeTab === 'photos' ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40 font-bold' : 'text-slate-400 hover:text-white'
+            className={`px-3 py-1 rounded-md transition cursor-pointer flex items-center space-x-1.5 space-x-reverse whitespace-nowrap ${
+              activeTab === 'photos' ? 'bg-red-600 text-white border border-red-700 font-bold' : 'text-green-100 hover:text-white'
             }`}
           >
             <Eye size={13} />
-            <span>Galerie Photographique d'Époque</span>
+            <span>{t.tabPhotos}</span>
           </button>
         </div>
 
         {/* PDF Document Canvas View */}
-        <div className="flex-1 overflow-y-auto p-4 sm:p-8 bg-[#121212] flex justify-center">
+        <div className="flex-1 overflow-y-auto p-4 sm:p-8 bg-green-50 flex justify-center">
           
           {activeTab === 'document' && (
             <div 
-              className="bg-[#fcfbf9] text-gray-900 shadow-2xl border border-gray-300 p-6 sm:p-12 max-w-3xl w-full min-h-[850px] font-serif transition-transform duration-200"
+              className="bg-white text-black shadow-2xl border border-green-200 p-6 sm:p-12 max-w-3xl w-full min-h-[850px] font-serif transition-transform duration-200"
               style={{ transform: `scale(${zoomLevel / 100})`, transformOrigin: 'top center' }}
             >
               {/* PAGE 1 CONTENT */}
@@ -159,57 +285,57 @@ export const UnescoDocumentModal: React.FC<UnescoDocumentModalProps> = ({
                 <div className="space-y-6 animate-fade-in text-xs sm:text-sm leading-relaxed">
                   
                   {/* Official UNESCO Stamp & Header */}
-                  <div className="border-b-2 border-gray-900 pb-4 flex justify-between items-start">
+                  <div className="border-b-2 border-red-600 pb-4 flex justify-between items-start">
                     <div>
-                      <h1 className="text-base sm:text-xl font-bold uppercase tracking-widest text-gray-900">
-                        LISTE DU PATRIMOINE MONDIAL
+                      <h1 className="text-base sm:text-xl font-bold uppercase tracking-widest text-black">
+                        {t.title}
                       </h1>
-                      <p className="text-xs font-sans font-bold text-amber-800 uppercase tracking-wider mt-0.5">
-                        ORGANISATION DES NATIONS UNIES POUR L'ÉDUCATION, LA SCIENCE ET LA CULTURE
+                      <p className="text-xs font-sans font-bold text-green-700 uppercase tracking-wider mt-0.5">
+                        {t.org}
                       </p>
                     </div>
-                    <div className="text-right font-mono text-xs border-2 border-gray-900 p-2 font-bold bg-amber-50/50">
+                    <div className="text-right font-mono text-xs border-2 border-red-600 p-2 font-bold bg-white">
                       N° 555
                     </div>
                   </div>
 
                   {/* Identification Box */}
-                  <div className="bg-amber-50/40 border border-amber-200 p-4 font-sans text-xs space-y-2">
-                    <h2 className="font-bold font-serif text-sm border-b border-amber-200 pb-1 text-amber-900">
-                      A) IDENTIFICATION DU BIEN
+                  <div className="bg-green-50 border border-green-200 p-4 font-sans text-xs space-y-2">
+                    <h2 className="font-bold font-serif text-sm border-b border-green-200 pb-1 text-green-900">
+                      {t.idBoxTitle}
                     </h2>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-gray-800">
-                      <div><strong className="text-gray-900">Bien proposé :</strong> La Casbah d'Alger</div>
-                      <div><strong className="text-gray-900">Lieu :</strong> Ville d'Alger (Wilaya d'Alger)</div>
-                      <div><strong className="text-gray-900">État Partie :</strong> Algérie 🇩🇿</div>
-                      <div><strong className="text-gray-900">Date d'inscription :</strong> 6 mars 1990 (UNESCO 1992)</div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-black">
+                      <div><strong className="text-black">{t.bienPropose}</strong> La Casbah d'Alger</div>
+                      <div><strong className="text-black">{t.lieu}</strong> Ville d'Alger (Wilaya d'Alger)</div>
+                      <div><strong className="text-black">{t.etatPartie}</strong> Algérie 🇩🇿</div>
+                      <div><strong className="text-black">{t.dateInscription}</strong> 6 mars 1990 (UNESCO 1992)</div>
                     </div>
                   </div>
 
                   {/* High Resolution Primary Photo */}
-                  <div className="my-4 border border-gray-300 p-2 bg-white rounded shadow-sm">
+                  <div className="my-4 border border-green-200 p-2 bg-white rounded shadow-sm">
                     <img 
                       src="/src/assets/images/casbah_d_alger/site_0565_0017-1000-1481-20140721144417.webp" 
                       alt="Casbah d'Alger - Vue panoramique officielle" 
                       className="w-full h-64 object-cover rounded"
                     />
-                    <p className="text-[10px] font-sans text-gray-500 italic mt-1.5 text-center">
-                      Document Officiel UNESCO N° 555 : Site authentique et architecture séculaire de la Casbah d'Alger.
+                    <p className="text-[10px] font-sans text-green-700 italic mt-1.5 text-center">
+                      {t.photoCaption}
                     </p>
                   </div>
 
                   {/* Brève Synthèse */}
                   <div>
-                    <h2 className="font-bold font-sans text-sm text-gray-900 uppercase border-b border-gray-300 pb-1 mb-2">
-                      VALEUR UNIVERSELLE EXCEPTIONNELLE — BRÈVE SYNTHÈSE
+                    <h2 className="font-bold font-sans text-sm text-black uppercase border-b border-green-200 pb-1 mb-2">
+                      {t.valeurTitre}
                     </h2>
-                    <p className="text-justify italic text-gray-800 leading-relaxed bg-amber-50/30 p-3 border-l-4 border-amber-600">
+                    <p className="text-justify italic text-black leading-relaxed bg-red-50/30 p-3 border-l-4 border-red-600">
                       « Dans l’un des plus beaux sites maritimes de la Méditerranée, surplombant les îlots où un comptoir carthaginois fut installé dès le IVe siècle av. J.-C., la Casbah constitue un type unique de médina , ou ville islamique. Lieu de mémoire autant que d’histoire, elle comprend des vestiges de la citadelle, des mosquées anciennes, des palais ottomans, ainsi qu’une structure urbaine traditionnelle associée à un grand sens de la communauté. »
                     </p>
                   </div>
 
                   {/* Description Détallée */}
-                  <div className="space-y-3 text-gray-800 font-sans text-xs">
+                  <div className="space-y-3 text-black font-sans text-xs">
                     <p className="text-justify">
                       La Casbah d'Alger apparaît comme un exemple significatif de ville historique maghrébine qui eut une grande influence sur l'urbanisme dans la partie occidentale de la Méditerranée et en Afrique sub-saharienne.
                     </p>
@@ -221,9 +347,9 @@ export const UnescoDocumentModal: React.FC<UnescoDocumentModalProps> = ({
                     </p>
                   </div>
 
-                  <div className="pt-4 border-t border-gray-300 flex justify-between text-[10px] font-mono text-gray-500">
+                  <div className="pt-4 border-t border-green-200 flex justify-between text-[10px] font-mono text-green-700">
                     <span>UNESCO • Patrimoine Mondial N° 555</span>
-                    <span>Page 1 de 3</span>
+                    <span>{t.page1}</span>
                   </div>
                 </div>
               )}
@@ -232,28 +358,28 @@ export const UnescoDocumentModal: React.FC<UnescoDocumentModalProps> = ({
               {currentPage === 2 && (
                 <div className="space-y-6 animate-fade-in text-xs sm:text-sm leading-relaxed">
                   
-                  <div className="border-b border-gray-400 pb-2">
-                    <h2 className="font-bold font-sans text-base text-gray-900 uppercase">
-                      CRITÈRES D'INSCRIPTION & ÉVALUATION DU BIEN (2009 / 1990)
+                  <div className="border-b border-green-200 pb-2">
+                    <h2 className="font-bold font-sans text-base text-black uppercase">
+                      {t.criteresTitle}
                     </h2>
                   </div>
 
                   {/* Critères */}
                   <div className="space-y-4 font-sans text-xs">
-                    <div className="p-3 bg-[#f5f2ed] border-l-4 border-gray-800">
-                      <h3 className="font-bold text-gray-900 mb-1">
-                        Critère (ii) : Influence sur l'Architecture & l'Urbanisme
+                    <div className="p-3 bg-white border-l-4 border-green-800">
+                      <h3 className="font-bold text-black mb-1">
+                        {t.criteresII}
                       </h3>
-                      <p className="text-gray-800 text-justify">
+                      <p className="text-black text-justify">
                         La Casbah d'Alger a exercé une influence considérable sur l'architecture et la planification urbaine en Afrique du Nord, en Andalousie et en Afrique sub-saharienne durant les XVIe et XVIIe siècles. Ces échanges se manifestent par le caractère spécifique de son habitat et par la densité de sa stratification urbaine.
                       </p>
                     </div>
 
-                    <div className="p-3 bg-[#f5f2ed] border-l-4 border-gray-800">
-                      <h3 className="font-bold text-gray-900 mb-1">
-                        Critère (v) : Exemple Éminent d'Habitat Humain Traditionnel
+                    <div className="p-3 bg-white border-l-4 border-green-800">
+                      <h3 className="font-bold text-black mb-1">
+                        {t.criteresV}
                       </h3>
-                      <p className="text-gray-800 text-justify">
+                      <p className="text-black text-justify">
                         La Casbah d'Alger est un exemple éminent d'un habitat humain traditionnel représentatif de la culture musulmane profondément méditerranéenne, synthèse de nombreuses traditions. Les vestiges de la citadelle, des mosquées anciennes, des palais ottomans, ainsi qu'une structure urbaine traditionnelle associée à un grand sens de la communauté sont les témoins de cette culture.
                       </p>
                     </div>
@@ -261,11 +387,11 @@ export const UnescoDocumentModal: React.FC<UnescoDocumentModalProps> = ({
 
                   {/* Intégrité & Authenticité */}
                   <div className="space-y-3 font-sans text-xs pt-2">
-                    <h3 className="font-bold font-serif text-sm text-gray-900 border-b border-gray-300 pb-1">
-                      INTÉGRITÉ & AUTHENTICITÉ
+                    <h3 className="font-bold font-serif text-sm text-black border-b border-green-200 pb-1">
+                      {t.integriteAuthenticiteTitle}
                     </h3>
                     
-                    <div className="text-gray-800 space-y-2">
+                    <div className="text-black space-y-2">
                       <p>
                         <strong>Intégrité :</strong> Malgré les mutations et les aléas sismiques qu'elle a subis, la Casbah d'Alger conserve toujours son intégrité. Dans leur ensemble, les caractères esthétiques, les matériaux utilisés et les éléments architecturaux gardent leurs aspects originaux qui expriment les valeurs ayant prévalu au classement du site en 1992.
                       </p>
@@ -276,18 +402,18 @@ export const UnescoDocumentModal: React.FC<UnescoDocumentModalProps> = ({
                   </div>
 
                   {/* Protection & Gestion */}
-                  <div className="bg-amber-50/50 p-4 border border-amber-200 font-sans text-xs space-y-2">
-                    <h3 className="font-bold font-serif text-sm text-amber-900 border-b border-amber-200 pb-1">
-                      PROTECTION ET CADRE JURIDIQUE
+                  <div className="bg-green-50 p-4 border border-green-200 font-sans text-xs space-y-2">
+                    <h3 className="font-bold font-serif text-sm text-green-900 border-b border-green-200 pb-1">
+                      {t.protectionTitle}
                     </h3>
-                    <p className="text-gray-800 text-justify">
+                    <p className="text-black text-justify">
                       La Casbah d'Alger fut classée site historique national en novembre 1991 et secteur sauvegardé en 2003. Le cadre juridique comprend les lois 98.04 (protection du patrimoine culturel) et le Plan de sauvegarde et de mise en valeur (PPSMVSS, décret n° 324-2003) géré par la Direction de la Culture de la Wilaya d'Alger et l'OGEBC.
                     </p>
                   </div>
 
-                  <div className="pt-4 border-t border-gray-300 flex justify-between text-[10px] font-mono text-gray-500">
+                  <div className="pt-4 border-t border-green-200 flex justify-between text-[10px] font-mono text-green-700">
                     <span>UNESCO • Patrimoine Mondial N° 555</span>
-                    <span>Page 2 de 3</span>
+                    <span>{t.page2}</span>
                   </div>
                 </div>
               )}
@@ -296,21 +422,21 @@ export const UnescoDocumentModal: React.FC<UnescoDocumentModalProps> = ({
               {currentPage === 3 && (
                 <div className="space-y-6 animate-fade-in text-xs sm:text-sm leading-relaxed">
                   
-                  <div className="border-b-2 border-gray-900 pb-2 flex justify-between items-center">
-                    <h2 className="font-bold font-serif text-base text-gray-900 uppercase">
-                      RAPPORT D'ÉVALUATION DE L'ICOMOS (NOVEMBRE 1991)
+                  <div className="border-b-2 border-red-600 pb-2 flex justify-between items-center">
+                    <h2 className="font-bold font-serif text-base text-black uppercase">
+                      {t.rapportIcomosTitle}
                     </h2>
-                    <span className="font-mono text-[10px] bg-gray-200 px-2 py-0.5 rounded">DOCUMENT D'ARCHIVE</span>
+                    <span className="font-mono text-[10px] bg-green-100 px-2 py-0.5 rounded text-green-900">DOCUMENT D'ARCHIVE</span>
                   </div>
 
-                  <div className="space-y-4 font-sans text-xs text-gray-800">
-                    <div className="p-3 bg-gray-100 border border-gray-300 font-mono text-[11px] leading-relaxed">
+                  <div className="space-y-4 font-sans text-xs text-black">
+                    <div className="p-3 bg-green-50 border border-green-200 font-mono text-[11px] leading-relaxed">
                       <p><strong>B) RECOMMANDATION DE L'ICOMOS :</strong></p>
                       <p>Que l'inscription de ce bien culturel sur la Liste du Patrimoine mondial soit confirmée avec l'engagement des autorités algériennes à l'égard de la conservation de la Casbah.</p>
                     </div>
 
                     <div>
-                      <h3 className="font-bold text-gray-900 mb-1">C) OBSERVATIONS HISTORIQUES ET ARCHITECTURALES :</h3>
+                      <h3 className="font-bold text-black mb-1">C) OBSERVATIONS HISTORIQUES ET ARCHITECTURALES :</h3>
                       <p className="text-justify mb-2">
                         Accueilli à bras ouverts par la population locale, un corsaire turc — Khaïr al-Din — installe sa capitale à Alger (1516) et soumet une grande partie du littoral algérien au sultan ottoman.
                       </p>
@@ -319,8 +445,8 @@ export const UnescoDocumentModal: React.FC<UnescoDocumentModalProps> = ({
                       </p>
                     </div>
 
-                    <div className="border-t border-gray-300 pt-3">
-                      <h3 className="font-bold text-gray-900 mb-1">D) JUSTIFICATION DU CLASSEMENT :</h3>
+                    <div className="border-t border-green-200 pt-3">
+                      <h3 className="font-bold text-black mb-1">D) JUSTIFICATION DU CLASSEMENT :</h3>
                       <p className="text-justify">
                         Un très intelligent plan de réaménagement de la Casbah est en cours pour réinstaller le confort moderne sans bouleverser l'urbanisme traditionnel, et conserver ce précieux témoin d'événements historiques parmi les plus marquants de l'histoire du peuple algérien.
                       </p>
@@ -329,15 +455,15 @@ export const UnescoDocumentModal: React.FC<UnescoDocumentModalProps> = ({
 
                   {/* Stamp Seal */}
                   <div className="pt-6 flex justify-end">
-                    <div className="border-2 border-amber-800 text-amber-900 p-3 font-mono text-[10px] text-center uppercase tracking-widest rounded bg-amber-50">
-                      ✓ DOCUMENT OFFICIEL CERTIFIÉ<br />
-                      ORGANISATION UNESCO • 1990/1992
+                    <div className="border-2 border-red-600 text-red-900 p-3 font-mono text-[10px] text-center uppercase tracking-widest rounded bg-white">
+                      {t.certifie}<br />
+                      {t.orgDate}
                     </div>
                   </div>
 
-                  <div className="pt-4 border-t border-gray-300 flex justify-between text-[10px] font-mono text-gray-500">
+                  <div className="pt-4 border-t border-green-200 flex justify-between text-[10px] font-mono text-green-700">
                     <span>UNESCO • Patrimoine Mondial N° 555</span>
-                    <span>Page 3 de 3</span>
+                    <span>{t.page3}</span>
                   </div>
                 </div>
               )}
@@ -348,11 +474,11 @@ export const UnescoDocumentModal: React.FC<UnescoDocumentModalProps> = ({
           {/* GALLERY TAB VIEW */}
           {activeTab === 'photos' && (
             <div className="w-full max-w-4xl space-y-6">
-              <div className="bg-[#1e1e1e] p-4 rounded-xl border border-white/10">
-                <h3 className="text-amber-400 font-bold font-serif text-sm mb-1">
+              <div className="bg-white p-4 rounded-xl border border-green-200">
+                <h3 className="text-green-900 font-bold font-serif text-sm mb-1">
                   Photographies Authentiques de la Casbah d'Alger (Dossier UNESCO N° 555)
                 </h3>
-                <p className="text-slate-400 text-xs">
+                <p className="text-black text-xs">
                   Collection complète des clichés authentiques certifiés : panorama des terrasses, ruelles en escalier, patios ottomans, fontaines zellige et passages sous voûte (sabat).
                 </p>
               </div>
@@ -368,9 +494,9 @@ export const UnescoDocumentModal: React.FC<UnescoDocumentModalProps> = ({
                   { src: "/src/assets/images/casbah_d_alger/site_0565_0022-1000-1481-20140721144409.webp", label: "Comptoir Historique & Vestiges de la Casbah" },
                   { src: "/src/assets/images/casbah_d_alger/casbah_vaulted_alley.jpg", label: "Ruelle Voûtée Traditionnelle" }
                 ].map((item, idx) => (
-                  <div key={idx} className="bg-[#1e1e1e] p-2 rounded-xl border border-white/10 space-y-2">
+                  <div key={idx} className="bg-white p-2 rounded-xl border border-green-200 space-y-2">
                     <img src={item.src} alt={item.label} className="w-full h-56 object-cover rounded-lg" />
-                    <p className="text-[11px] text-slate-300 font-mono text-center">{item.label}</p>
+                    <p className="text-[11px] text-green-900 font-mono text-center">{item.label}</p>
                   </div>
                 ))}
               </div>

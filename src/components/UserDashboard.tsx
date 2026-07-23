@@ -3,7 +3,7 @@ import { useLanguage } from '../context/LanguageContext';
 import { useApp } from '../context/AppContext';
 import { mockLandmarks } from '../data/mockData';
 import { Calendar, Compass, User, Key, KeyRound, Download, Bookmark, Trash2, Heart, Award, ArrowRight, Database, Wifi, WifiOff, Loader, CheckCircle2, AlertCircle } from 'lucide-react';
-import { supabaseDbService, supabase } from '../lib/supabaseDb';
+import { supabase } from '../lib/supabaseDb';
 
 interface UserDashboardProps {
   setActiveView: (view: string) => void;
@@ -29,7 +29,7 @@ export const UserDashboard: React.FC<UserDashboardProps> = ({ setActiveView }) =
       }
 
       // Quick table probe
-      const { data, error, count } = await supabase
+      const { count, error } = await supabase
         .from('profiles')
         .select('*', { count: 'exact', head: true })
         .limit(1);
@@ -57,14 +57,14 @@ export const UserDashboard: React.FC<UserDashboardProps> = ({ setActiveView }) =
   const favoriteLandmarks = mockLandmarks.filter(l => favorites.includes(l.id));
 
   return (
-    <div className="py-6 sm:py-10 max-w-7xl mx-auto px-4" id="user-dashboard-viewport">
+    <div className="py-8 sm:py-12 max-w-7xl mx-auto px-4 bg-[#F8FAFC]" id="user-dashboard-viewport">
       
-      {/* Upper header */}
-      <div className="text-center max-w-xl mx-auto mb-8 sm:mb-10">
-        <h1 className="text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white">
+      {/* Upper header with premium styling */}
+      <div className="text-center max-w-2xl mx-auto mb-10 sm:mb-12">
+        <h1 className="text-3xl sm:text-4xl font-serif tracking-tight text-[#334155] font-black uppercase">
           {t('dashboardTitle')}
         </h1>
-        <p className="mt-3 text-xs text-gray-500 dark:text-slate-400">
+        <p className="mt-3 text-xs tracking-wider text-[#94A3B8] font-semibold uppercase">
           {t('dashboardSubtitle')}
         </p>
       </div>
@@ -72,107 +72,118 @@ export const UserDashboard: React.FC<UserDashboardProps> = ({ setActiveView }) =
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
         
         {/* Profile Stats Panel - 4 Columns */}
-        <div className="lg:col-span-4 bg-white dark:bg-[#162231] border border-emerald-50 dark:border-slate-800 rounded-3xl p-6 shadow-xl flex flex-col justify-between">
-          <div>
-            <div className="text-center pb-6 border-b border-gray-100 dark:border-slate-800 mb-6">
-              <img 
-                src={currentUser?.avatar || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80'} 
-                alt="Profile Avatar"
-                className="w-20 h-20 rounded-2xl object-cover mx-auto ring-4 ring-emerald-500/20 mb-4"
-              />
-              <h3 className="text-base font-bold text-gray-800 dark:text-white leading-none mb-1">
+        <div className="lg:col-span-4 bg-white border border-[#E2E8F0] rounded-[24px] p-6 sm:p-8 shadow-sm flex flex-col justify-between relative overflow-hidden">
+          
+          {/* Subtle gold/blue gradient accent background */}
+          <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-[#3B82F6]/5 to-transparent blur-2xl pointer-events-none" />
+          <div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr from-[#22D3EE]/10 to-transparent blur-2xl pointer-events-none" />
+
+          <div className="relative z-10">
+            <div className="text-center pb-6 border-b border-[#E2E8F0] mb-6">
+              <div className="relative w-24 h-24 mx-auto mb-4 group">
+                <div className="absolute -inset-1 bg-gradient-to-r from-[#3B82F6] to-[#22D3EE] rounded-2xl blur opacity-20 group-hover:opacity-40 transition-opacity duration-500" />
+                <img 
+                  src={currentUser?.avatar || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80'} 
+                  alt="Profile Avatar"
+                  className="relative w-24 h-24 rounded-2xl object-cover ring-2 ring-[#E2E8F0]"
+                />
+              </div>
+              <h3 className="text-lg font-serif font-bold text-[#334155] leading-none mb-2">
                 {currentUser?.name}
               </h3>
-              <p className="text-[10px] font-mono text-gray-400">{currentUser?.email}</p>
+              <p className="text-[10px] font-mono text-[#94A3B8] tracking-wider">{currentUser?.email}</p>
 
-              <div className="mt-4 flex justify-center space-x-2 space-x-reverse">
-                <span className="px-2.5 py-1 text-[9px] font-bold uppercase rounded bg-gray-100 text-gray-700 dark:bg-slate-800 dark:text-slate-300">
-                  {currentUser?.role} account
+              <div className="mt-4 flex flex-wrap justify-center gap-2">
+                <span className="px-3 py-1 text-[9px] font-mono tracking-widest uppercase rounded-full bg-[#F8FAFC] text-[#334155] border border-[#E2E8F0]">
+                  {currentUser?.role} Account
                 </span>
-                <span className={`px-2.5 py-1 text-[9px] font-bold uppercase rounded flex items-center space-x-1 ${
+                <span className={`px-3 py-1 text-[9px] font-mono tracking-widest uppercase rounded-full flex items-center gap-1.5 border ${
                   currentUser?.isPremium 
-                    ? 'bg-amber-100 text-amber-800 dark:bg-amber-950/40 dark:text-amber-400' 
-                    : 'bg-slate-100 text-slate-500'
+                    ? 'bg-[#3B82F6]/10 text-[#3B82F6] border-[#3B82F6]/20' 
+                    : 'bg-[#F8FAFC] text-[#94A3B8] border-[#E2E8F0]'
                 }`}>
-                  <Award size={10} className="fill-amber-400" />
-                  <span>{currentUser?.isPremium ? 'Gold VIP Member' : 'Standard Visitor'}</span>
+                  <Award size={10} className="text-[#3B82F6]" />
+                  <span>{currentUser?.isPremium ? 'VIP Gold Member' : 'Standard Visitor'}</span>
                 </span>
               </div>
             </div>
 
-            {/* Travel stats counters */}
+            {/* Travel stats counters with high contrast */}
             <div className="grid grid-cols-3 gap-3 text-center mb-6">
-              <div className="p-3 bg-gray-50/50 dark:bg-slate-900 rounded-2xl">
-                <span className="block text-[14px] font-black font-mono text-gray-800 dark:text-white">{bookings.length}</span>
-                <span className="text-[9px] text-gray-400 uppercase tracking-widest block mt-0.5">Stays Reserved</span>
+              <div className="p-3 bg-[#F8FAFC] rounded-2xl border border-[#E2E8F0]">
+                <span className="block text-lg font-black font-mono text-[#3B82F6]">{bookings.length}</span>
+                <span className="text-[8px] text-[#94A3B8] font-mono uppercase tracking-wider block mt-1">Reserved</span>
               </div>
-              <div className="p-3 bg-gray-50/50 dark:bg-slate-900 rounded-2xl">
-                <span className="block text-[14px] font-black font-mono text-gray-800 dark:text-white">{favorites.length}</span>
-                <span className="text-[9px] text-gray-400 uppercase tracking-widest block mt-0.5">Favorites</span>
+              <div className="p-3 bg-[#F8FAFC] rounded-2xl border border-[#E2E8F0]">
+                <span className="block text-lg font-black font-mono text-[#3B82F6]">{favorites.length}</span>
+                <span className="text-[8px] text-[#94A3B8] font-mono uppercase tracking-wider block mt-1">Favorites</span>
               </div>
-              <div className="p-3 bg-gray-50/50 dark:bg-slate-900 rounded-2xl">
-                <span className="block text-[14px] font-black font-mono text-gray-800 dark:text-white">{notifications.length}</span>
-                <span className="text-[9px] text-gray-400 uppercase tracking-widest block mt-0.5">Alerts Logs</span>
+              <div className="p-3 bg-[#F8FAFC] rounded-2xl border border-[#E2E8F0]">
+                <span className="block text-lg font-black font-mono text-[#3B82F6]">{notifications.length}</span>
+                <span className="text-[8px] text-[#94A3B8] font-mono uppercase tracking-wider block mt-1">Notifs</span>
               </div>
             </div>
           </div>
 
-          <div className="pt-6 border-t border-gray-100 dark:border-slate-800 text-xs">
+          <div className="pt-6 border-t border-[#E2E8F0] text-xs relative z-10">
             {currentUser?.isPremium ? (
-              <div className="p-3.5 bg-gradient-to-br from-amber-50 to-orange-50 dark:from-slate-900/60 dark:to-[#1a2332] rounded-2xl border border-amber-200/40 text-[10.5px]">
-                <strong className="text-amber-800 dark:text-amber-400 flex items-center space-x-1.5 space-x-reverse mb-1">
-                  <span>✨ VIP Gold Privilege active</span>
+              <div className="p-4 bg-[#3B82F6]/5 rounded-2xl border border-[#3B82F6]/25 text-[10.5px] relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-16 h-16 bg-[#22D3EE]/5 rounded-full blur-xl pointer-events-none" />
+                <strong className="text-[#3B82F6] flex items-center gap-1.5 mb-1.5 uppercase tracking-wider font-mono text-[9px]">
+                  ✨ VIP Gold Privileges Active
                 </strong>
-                <p className="text-gray-500 leading-normal">
-                  Enjoy unlimited virtual twin look-arounds, unlimited live smart AI chat guides, and 15% cashback priorities on stay reservations.
+                <p className="text-[#334155] leading-relaxed font-sans font-medium">
+                  Enjoy unlimited high-fidelity virtual 3D twins, non-stop AI smart travel companions, and priority reservation allocations.
                 </p>
               </div>
             ) : (
-              <div className="p-3.5 bg-gray-50/50 dark:bg-slate-900/60 rounded-2xl text-[10.5px] border border-gray-100 dark:border-slate-800/40">
-                <strong>Standard Account limitations</strong>
-                <p className="text-gray-400 mt-1 leading-normal mb-3">Upgrade plan to unlock high-fidelity virtual 3D twins, non-stop AI guide help, and priorities on taxi booking.</p>
+              <div className="p-4 bg-[#F8FAFC] rounded-2xl text-[10.5px] border border-[#E2E8F0]">
+                <strong className="text-[#334155] block mb-1 uppercase tracking-wider font-mono text-[9px]">Standard Account</strong>
+                <p className="text-[#94A3B8] mt-1 leading-relaxed mb-4">
+                  Upgrade your plan to unlock high-fidelity virtual 3D twins, premium smart concierge companion help, and instant taxi routing.
+                </p>
                 <button
                   onClick={() => setActiveView('explore')}
-                  className="text-emerald-600 dark:text-emerald-400 font-extrabold hover:underline block flex items-center space-x-1"
+                  className="text-[#3B82F6] font-extrabold hover:underline block flex items-center gap-1"
                 >
-                  <span>Explore Membership &rarr;</span>
+                  <span>Explore Premium Plans &rarr;</span>
                 </button>
               </div>
             )}
           </div>
 
           {/* Supabase Connection Diagnostics Card */}
-          <div className="bg-white dark:bg-[#162231] border border-emerald-50 dark:border-slate-800 rounded-3xl p-6 shadow-xl mt-6">
-            <div className="flex items-center space-x-2 space-x-reverse mb-3">
-              <Database className="text-emerald-600 dark:text-emerald-400" size={18} />
-              <h3 className="text-sm font-bold text-gray-800 dark:text-white">
-                Base de données cloud (Supabase)
+          <div className="bg-[#F8FAFC] border border-[#E2E8F0] rounded-3xl p-5 mt-6 relative overflow-hidden">
+            <div className="flex items-center gap-2 mb-3 relative z-10">
+              <Database className="text-[#3B82F6]" size={16} />
+              <h3 className="text-xs font-mono uppercase tracking-wider text-[#334155]">
+                Cloud Sync (Supabase)
               </h3>
             </div>
             
-            <p className="text-[11px] text-gray-500 dark:text-slate-400 mb-4 leading-relaxed">
-              Vérifiez la synchronisation en temps réel de votre application Rahala avec la base de données PostgreSQL de Supabase.
+            <p className="text-[10.5px] text-[#94A3B8] mb-4 leading-relaxed font-semibold">
+              Validate real-time synchronization between your tourist profile and the PostgreSQL cloud engine.
             </p>
 
             {/* Connection Status Badge */}
-            <div className="mb-4">
+            <div className="mb-4 relative z-10">
               {supabase ? (
-                <div className="p-3 bg-emerald-500/10 rounded-2xl border border-emerald-500/20 text-[11px] text-emerald-800 dark:text-emerald-400 flex items-center space-x-2 space-x-reverse">
-                  <Wifi size={14} className="text-emerald-500 animate-pulse shrink-0" />
+                <div className="p-3 bg-[#3B82F6]/5 rounded-2xl border border-[#3B82F6]/10 text-[10.5px] text-[#3B82F6] flex items-center gap-2">
+                  <Wifi size={13} className="text-[#3B82F6] animate-pulse shrink-0" />
                   <div className="min-w-0 flex-1">
-                    <span className="font-bold block">Client Initialisé</span>
-                    <span className="text-[9px] text-gray-400 block mt-0.5 truncate" title={import.meta.env.VITE_SUPABASE_URL || ''}>
-                      {import.meta.env.VITE_SUPABASE_URL || 'Connecté'}
+                    <span className="font-bold block text-[#334155] text-[9px] uppercase tracking-wider">Cloud Connected</span>
+                    <span className="text-[8px] text-[#94A3B8] block mt-0.5 truncate" title={import.meta.env.VITE_SUPABASE_URL || ''}>
+                      {import.meta.env.VITE_SUPABASE_URL || 'Active Sync Node'}
                     </span>
                   </div>
                 </div>
               ) : (
-                <div className="p-3 bg-amber-500/10 rounded-2xl border border-amber-500/20 text-[11px] text-amber-800 dark:text-amber-400 flex items-center space-x-2 space-x-reverse">
-                  <WifiOff size={14} className="text-amber-500 shrink-0" />
+                <div className="p-3 bg-white rounded-2xl border border-[#E2E8F0] text-[10.5px] text-[#334155] flex items-center gap-2">
+                  <WifiOff size={13} className="text-[#94A3B8] shrink-0" />
                   <div>
-                    <span className="font-bold block">Mode Local Actif (Backup)</span>
-                    <span className="text-[9px] text-gray-400 block mt-0.5">
-                      Les variables d'environnement Supabase manquent.
+                    <span className="font-bold block text-[#94A3B8] text-[9px] uppercase tracking-wider">Local Backup Active</span>
+                    <span className="text-[8px] text-[#94A3B8] block mt-0.5">
+                      Cloud sync offline. Run in secure sandbox mock state.
                     </span>
                   </div>
                 </div>
@@ -180,47 +191,47 @@ export const UserDashboard: React.FC<UserDashboardProps> = ({ setActiveView }) =
             </div>
 
             {/* Live Testing Area */}
-            <div className="space-y-3">
+            <div className="space-y-3 relative z-10">
               <button
                 onClick={testDatabaseConnection}
                 disabled={dbTestResult === 'testing'}
-                className="w-full py-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-gray-800 dark:text-white rounded-xl text-xs font-bold transition flex items-center justify-center space-x-1.5 disabled:opacity-50"
+                className="w-full py-2.5 bg-[#3B82F6] hover:bg-[#3B82F6]/90 text-white rounded-xl text-xs font-mono uppercase tracking-widest transition flex items-center justify-center gap-2 disabled:opacity-50 font-bold border border-[#3B82F6]/10 cursor-pointer"
               >
                 {dbTestResult === 'testing' ? (
                   <>
-                    <Loader size={12} className="animate-spin text-emerald-500" />
-                    <span>Vérification en cours...</span>
+                    <Loader size={12} className="animate-spin text-white" />
+                    <span>Checking Nodes...</span>
                   </>
                 ) : (
                   <>
                     <Database size={12} />
-                    <span>Tester la connexion en direct ⚡</span>
+                    <span>Ping Cloud Database</span>
                   </>
                 )}
               </button>
 
               {/* Success Result */}
               {dbTestResult === 'success' && (
-                <div className="p-3 bg-emerald-500/10 border border-emerald-500/20 rounded-xl text-[10.5px] text-emerald-800 dark:text-emerald-300 animate-fade-in">
-                  <div className="flex items-center space-x-1.5 space-x-reverse font-bold mb-1">
-                    <CheckCircle2 size={13} className="text-emerald-500" />
-                    <span>Connexion Réussie !</span>
+                <div className="p-3 bg-[#3B82F6]/10 border border-[#3B82F6]/20 rounded-xl text-[10px] text-[#3B82F6] animate-fade-in font-mono">
+                  <div className="flex items-center gap-1.5 font-bold mb-1.5">
+                    <CheckCircle2 size={12} className="text-[#3B82F6]" />
+                    <span className="uppercase tracking-wider">PONG SUCCESSFUL</span>
                   </div>
-                  <p className="text-gray-500 dark:text-slate-400 mb-2 leading-relaxed">
-                    L'application communique parfaitement avec votre instance Supabase.
+                  <p className="text-[#334155] mb-2 leading-relaxed">
+                    Secure handshake resolved with PostgreSQL cloud.
                   </p>
-                  <div className="grid grid-cols-2 gap-2 text-center pt-1 border-t border-emerald-500/10">
-                    <div className="bg-emerald-500/5 p-1 rounded">
-                      <span className="font-mono text-xs block font-bold text-gray-800 dark:text-white">
+                  <div className="grid grid-cols-2 gap-2 text-center pt-1.5 border-t border-[#E2E8F0]">
+                    <div className="bg-white p-1.5 rounded-lg border border-[#E2E8F0]">
+                      <span className="text-xs block font-bold text-[#334155]">
                         {dbStats?.profilesCount}
                       </span>
-                      <span className="text-[8px] text-gray-400 block">Profils</span>
+                      <span className="text-[7.5px] text-[#94A3B8] block uppercase tracking-wider">Profiles</span>
                     </div>
-                    <div className="bg-emerald-500/5 p-1 rounded">
-                      <span className="font-mono text-xs block font-bold text-gray-800 dark:text-white">
+                    <div className="bg-white p-1.5 rounded-lg border border-[#E2E8F0]">
+                      <span className="text-xs block font-bold text-[#334155]">
                         {dbStats?.bookingsCount}
                       </span>
-                      <span className="text-[8px] text-gray-400 block">Réservations</span>
+                      <span className="text-[7.5px] text-[#94A3B8] block uppercase tracking-wider">Bookings</span>
                     </div>
                   </div>
                 </div>
@@ -228,20 +239,19 @@ export const UserDashboard: React.FC<UserDashboardProps> = ({ setActiveView }) =
 
               {/* Error Result */}
               {dbTestResult === 'error' && (
-                <div className="p-3 bg-red-500/10 border border-red-500/20 rounded-xl text-[10.5px] text-red-800 dark:text-red-300 animate-fade-in">
-                  <div className="flex items-center space-x-1.5 space-x-reverse font-bold mb-1">
-                    <AlertCircle size={13} className="text-red-500" />
-                    <span>Erreur de Connexion</span>
+                <div className="p-3 bg-red-50 border border-red-200 rounded-xl text-[10px] text-red-600 animate-fade-in font-mono">
+                  <div className="flex items-center gap-1.5 font-bold mb-1.5">
+                    <AlertCircle size={12} className="text-red-500" />
+                    <span className="uppercase tracking-wider">SYNC EXCEPTION</span>
                   </div>
-                  <p className="leading-relaxed text-gray-500 dark:text-slate-400 text-[10px]">
+                  <p className="leading-relaxed text-red-500 text-[9px] mb-2">
                     {dbErrorMessage}
                   </p>
-                  <div className="mt-2 bg-red-500/5 p-2 rounded text-[9.5px] text-gray-500 dark:text-slate-400 space-y-1">
-                    <p className="font-bold text-gray-700 dark:text-slate-300">Comment régler ça ?</p>
+                  <div className="bg-white p-2 rounded-lg text-[8.5px] text-[#94A3B8] space-y-1 border border-[#E2E8F0]">
+                    <p className="font-bold text-[#334155]">Environment Credentials Hint:</p>
                     <ol className="list-decimal list-inside space-y-0.5">
-                      <li>Ouvrez l'onglet <strong className="text-gray-800 dark:text-white">Secrets</strong> de l'IA Studio.</li>
-                      <li>Ajoutez <code className="bg-slate-100 dark:bg-slate-800 px-1 rounded text-red-500">VITE_SUPABASE_URL</code></li>
-                      <li>Ajoutez <code className="bg-slate-100 dark:bg-slate-800 px-1 rounded text-red-500">VITE_SUPABASE_ANON_KEY</code></li>
+                      <li>Add <code className="text-[#3B82F6]">VITE_SUPABASE_URL</code> in Workspace.</li>
+                      <li>Add <code className="text-[#3B82F6]">VITE_SUPABASE_ANON_KEY</code> to enable.</li>
                     </ol>
                   </div>
                 </div>
@@ -253,34 +263,34 @@ export const UserDashboard: React.FC<UserDashboardProps> = ({ setActiveView }) =
         {/* Dashboard Tabs Grid Options - 8 Columns */}
         <div className="lg:col-span-8 flex flex-col space-y-6">
           
-          {/* Tabs navigation list */}
-          <div className="flex border-b border-gray-100 dark:border-slate-800 text-xs font-bold bg-white dark:bg-[#162231] p-2 rounded-2xl shadow-md space-x-1 space-x-reverse justify-around">
+          {/* Tabs navigation list - Premium Glassmorphic Selector */}
+          <div className="flex border border-[#E2E8F0] text-xs bg-white p-1.5 rounded-2xl shadow-sm gap-1">
             <button
               onClick={() => setActiveTab('bookings')}
-              className={`flex-1 py-2 rounded-xl text-center transition ${
+              className={`flex-1 py-3 rounded-xl text-center font-mono uppercase tracking-wider text-[10px] transition-all cursor-pointer font-bold ${
                 activeTab === 'bookings' 
-                  ? 'bg-emerald-600 text-white shadow-md' 
-                  : 'text-gray-500 hover:text-emerald-600 hover:bg-emerald-50/40 dark:text-slate-350'
+                  ? 'bg-[#3B82F6] text-white shadow-sm font-extrabold' 
+                  : 'text-[#94A3B8] hover:text-[#3B82F6] hover:bg-[#F8FAFC]'
               }`}
             >
               My Reserved Stays
             </button>
             <button
               onClick={() => setActiveTab('favorites')}
-              className={`flex-1 py-2 rounded-xl text-center transition ${
+              className={`flex-1 py-3 rounded-xl text-center font-mono uppercase tracking-wider text-[10px] transition-all cursor-pointer font-bold ${
                 activeTab === 'favorites' 
-                  ? 'bg-emerald-600 text-white shadow-md' 
-                  : 'text-gray-500 hover:text-emerald-600 hover:bg-emerald-50/40 dark:text-slate-350'
+                  ? 'bg-[#3B82F6] text-white shadow-sm font-extrabold' 
+                  : 'text-[#94A3B8] hover:text-[#3B82F6] hover:bg-[#F8FAFC]'
               }`}
             >
               Bookmarks Favorites
             </button>
             <button
               onClick={() => setActiveTab('notifs')}
-              className={`flex-1 py-2 rounded-xl text-center transition ${
+              className={`flex-1 py-3 rounded-xl text-center font-mono uppercase tracking-wider text-[10px] transition-all cursor-pointer font-bold ${
                 activeTab === 'notifs' 
-                  ? 'bg-emerald-600 text-white shadow-md' 
-                  : 'text-gray-500 hover:text-emerald-600 hover:bg-emerald-50/40 dark:text-slate-350'
+                  ? 'bg-[#3B82F6] text-white shadow-sm font-extrabold' 
+                  : 'text-[#94A3B8] hover:text-[#3B82F6] hover:bg-[#F8FAFC]'
               }`}
             >
               Logs Notifications ({notifications.length})
@@ -288,17 +298,17 @@ export const UserDashboard: React.FC<UserDashboardProps> = ({ setActiveView }) =
           </div>
 
           {/* Tab contents section */}
-          <div className="bg-white dark:bg-[#162231] border border-emerald-50 dark:border-slate-800 rounded-3xl p-6 shadow-xl flex-1">
+          <div className="bg-white border border-[#E2E8F0] rounded-[24px] p-6 sm:p-8 shadow-sm flex-1">
             
             {activeTab === 'bookings' && (
               <div className="space-y-4">
                 {bookings.length === 0 ? (
-                  <div className="text-center py-10">
-                    <Calendar className="text-gray-300 mx-auto mb-3" size={24} />
-                    <p className="text-xs text-gray-400">No active hotel room bookings on file.</p>
+                  <div className="text-center py-16">
+                    <Calendar className="text-[#94A3B8] mx-auto mb-4" size={32} />
+                    <p className="text-xs text-[#94A3B8] tracking-wider">No active hotel room bookings on file.</p>
                     <button
                       onClick={() => setActiveView('hotels')}
-                      className="mt-4 px-4 py-2 bg-emerald-600 text-white text-[11px] font-bold rounded-xl shadow-md hover:bg-emerald-700"
+                      className="mt-6 px-6 py-2.5 bg-[#3B82F6] hover:bg-[#3B82F6]/90 text-white text-[10px] font-mono font-bold uppercase tracking-widest rounded-xl transition cursor-pointer"
                     >
                       Book a Stay now
                     </button>
@@ -307,34 +317,34 @@ export const UserDashboard: React.FC<UserDashboardProps> = ({ setActiveView }) =
                   bookings.map((bkg) => (
                     <div 
                       key={bkg.id}
-                      className="p-4 bg-gray-50/50 dark:bg-slate-900/60 rounded-2xl border border-gray-100 dark:border-slate-800/40 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
+                      className="p-4 bg-[#F8FAFC] rounded-2xl border border-[#E2E8F0] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 transition-all hover:border-[#3B82F6]/30"
                     >
                       <div>
-                        <div className="flex items-center space-x-2 space-x-reverse">
-                          <span className="px-2 py-0.5 bg-emerald-100 text-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-400 text-[8px] font-bold rounded uppercase">
+                        <div className="flex items-center gap-2">
+                          <span className="px-2.5 py-0.5 bg-[#3B82F6]/10 text-[#3B82F6] border border-[#3B82F6]/20 text-[8px] font-mono font-bold rounded-full uppercase tracking-wider">
                             {bkg.type.toUpperCase()}
                           </span>
-                          <span className="text-[10px] font-mono text-gray-400">Invoice: {bkg.invoiceNo}</span>
+                          <span className="text-[9px] font-mono text-[#94A3B8] uppercase">Inv: {bkg.invoiceNo}</span>
                         </div>
-                        <h4 className="font-bold text-gray-800 dark:text-white text-xs mt-1.5">{bkg.targetName}</h4>
-                        <div className="flex space-x-3 space-x-reverse text-[10px] text-gray-500 dark:text-slate-400 mt-1 font-mono">
+                        <h4 className="font-serif font-bold text-[#334155] text-sm mt-2">{bkg.targetName}</h4>
+                        <div className="flex flex-wrap gap-x-4 gap-y-1 text-[9px] text-[#94A3B8] mt-2 font-mono uppercase tracking-wider">
                           <span>📅 Check-In: {bkg.date}</span>
                           {bkg.endDate && <span>🌙 Check-Out: {bkg.endDate}</span>}
                           {bkg.guests && <span>👥 Guests: {bkg.guests}</span>}
                         </div>
                       </div>
 
-                      <div className="flex items-center space-x-2.5 space-x-reverse w-full sm:w-auto justify-between sm:justify-end border-t border-gray-100 dark:border-slate-800 pt-3 sm:pt-0 sm:border-none">
-                        <div className="text-left">
-                          <span className="block text-[8px] font-mono text-gray-400 uppercase">Paid amount</span>
-                          <span className="font-black text-emerald-600 dark:text-emerald-400 text-xs font-mono">{bkg.totalPriceDZD.toLocaleString()} DZD</span>
+                      <div className="flex items-center gap-4 w-full sm:w-auto justify-between sm:justify-end border-t border-[#E2E8F0] pt-3 sm:pt-0 sm:border-none">
+                        <div className="text-left sm:text-right">
+                          <span className="block text-[7px] font-mono text-[#94A3B8] uppercase tracking-wider">Paid Amount</span>
+                          <span className="font-bold text-[#3B82F6] text-xs font-mono">{bkg.totalPriceDZD.toLocaleString()} DZD</span>
                         </div>
                         <button
                           onClick={() => cancelBooking(bkg.id)}
-                          className="p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20 rounded-xl transition"
+                          className="p-2.5 text-rose-600 hover:bg-rose-50 rounded-xl transition cursor-pointer border border-[#E2E8F0]"
                           title="Cancel Reservation booking"
                         >
-                          <Trash2 size={14} />
+                          <Trash2 size={13} />
                         </button>
                       </div>
                     </div>
@@ -346,33 +356,33 @@ export const UserDashboard: React.FC<UserDashboardProps> = ({ setActiveView }) =
             {activeTab === 'favorites' && (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {favoriteLandmarks.length === 0 ? (
-                  <div className="col-span-2 text-center py-10 text-xs text-gray-405">
-                    <Heart className="text-gray-300 mx-auto mb-3" size={24} />
-                    <span>No bookmarked landmarks favorite checklist registered.</span>
+                  <div className="col-span-2 text-center py-16">
+                    <Heart className="text-[#94A3B8] mx-auto mb-4" size={32} />
+                    <span className="text-xs text-[#94A3B8] tracking-wider">No bookmarked landmarks favorite checklist registered.</span>
                   </div>
                 ) : (
                   favoriteLandmarks.map((landmark) => (
                     <div 
                       key={landmark.id}
-                      className="p-3 bg-gray-50/50 dark:bg-slate-900/60 rounded-2xl border border-gray-100 dark:border-slate-800/40 flex justify-between items-center group"
+                      className="p-3 bg-[#F8FAFC] rounded-2xl border border-[#E2E8F0] flex justify-between items-center group hover:border-[#3B82F6]/30 transition-all"
                     >
-                      <div className="flex items-center space-x-2.5 space-x-reverse">
+                      <div className="flex items-center gap-3">
                         <img 
                           src={landmark.image} 
                           alt={landmark.name}
-                          className="w-10 h-10 rounded-xl object-cover"
+                          className="w-11 h-11 rounded-xl object-cover ring-1 ring-[#E2E8F0]"
                         />
-                        <div>
-                          <h4 className="text-[11px] font-bold text-gray-800 dark:text-white truncate max-w-[130px]">{landmark.name}</h4>
-                          <span className="text-[9px] text-gray-400">{landmark.location}</span>
+                        <div className="min-w-0">
+                          <h4 className="text-[11px] font-serif font-bold text-[#334155] truncate max-w-[150px]">{landmark.name}</h4>
+                          <span className="text-[9px] text-[#94A3B8] block truncate max-w-[150px] font-medium">{landmark.location}</span>
                         </div>
                       </div>
 
                       <button
                         onClick={() => toggleFavorite(landmark.id)}
-                        className="p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20 rounded-xl"
+                        className="p-2.5 text-rose-600 hover:bg-rose-50 rounded-xl transition cursor-pointer border border-[#E2E8F0]"
                       >
-                        <Trash2 size={13} />
+                        <Trash2 size={12} />
                       </button>
                     </div>
                   ))
@@ -381,19 +391,19 @@ export const UserDashboard: React.FC<UserDashboardProps> = ({ setActiveView }) =
             )}
 
             {activeTab === 'notifs' && (
-              <div className="space-y-3.5">
+              <div className="space-y-3">
                 {notifications.length === 0 ? (
-                  <div className="text-center py-10 text-xs text-gray-400">
+                  <div className="text-center py-16 text-xs text-[#94A3B8] tracking-wider">
                     No historic notification logs.
                   </div>
                 ) : (
                   notifications.map((notif) => (
                     <div 
                       key={notif.id}
-                      className="p-3 bg-gray-50/20 dark:bg-slate-900/45 rounded-xl border border-gray-100 dark:border-slate-800/20"
+                      className="p-4 bg-[#F8FAFC] rounded-xl border border-[#E2E8F0] hover:border-[#3B82F6]/25 transition-all"
                     >
-                      <p className="text-xs text-gray-700 dark:text-slate-350 leading-relaxed font-sans">{notif.message}</p>
-                      <span className="text-[9px] text-gray-400 font-mono mt-1 block">{notif.date}</span>
+                      <p className="text-xs text-[#334155] leading-relaxed font-sans font-semibold">{notif.message}</p>
+                      <span className="text-[9px] text-[#94A3B8] font-mono mt-2 block">{notif.date}</span>
                     </div>
                   ))
                 )}

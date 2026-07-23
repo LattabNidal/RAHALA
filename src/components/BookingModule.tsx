@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { useApp } from '../context/AppContext';
-import { Star, Check, DollarSign, Calendar, Users, Eye, Coffee, Landmark, ArrowLeft, Download, MapPin, Shield } from 'lucide-react';
+import { 
+  Star, Check, DollarSign, Calendar, Users, Eye, 
+  Coffee, Landmark, ArrowLeft, Download, MapPin, 
+  Shield, Search, ChevronDown, Sparkles
+} from 'lucide-react';
 import { mockHotels } from '../data/mockData';
 import { Hotel } from '../types';
 import { HotelInteractiveMap } from './HotelInteractiveMap';
@@ -71,35 +75,110 @@ export const BookingModule: React.FC<BookingModuleProps> = ({ setActiveView }) =
   };
 
   return (
-    <div className="py-6 sm:py-10 max-w-7xl mx-auto px-4" id="booking-module-room">
+    <div className="py-6 sm:py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 font-sans text-[#334155] bg-[#F8FAFC]" id="booking-module-room">
       
       {/* Upper header */}
-      <div className="text-center max-w-xl mx-auto mb-8 sm:mb-10">
-        <h1 className="text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white font-display">
+      <div className="text-center max-w-xl mx-auto mb-10 sm:mb-12">
+        <span className="text-[10px] font-mono font-black text-[#3B82F6] tracking-[0.2em] uppercase block mb-2">
+          {isRtl ? 'إقامات جزائرية معتمدة' : 'PREMIUM LODGING INDEX'}
+        </span>
+        <h1 className="text-3xl sm:text-4xl font-serif font-black tracking-tight text-[#334155]">
           {t('hotelTitle')}
         </h1>
-        <p className="mt-3 text-xs text-gray-500 dark:text-slate-400">
+        <p className="mt-3 text-xs text-[#94A3B8] leading-relaxed max-w-md mx-auto">
           {t('hotelSubtitle')}
         </p>
       </div>
 
       {!selectedHotel ? (
         <>
-          {/* Quick city filter */}
-          <div className="flex space-x-2 space-x-reverse overflow-x-auto pb-4 justify-start sm:justify-center pr-1 mb-8" id="hotel-city-filters">
-            {citiesList.map((city) => (
-              <button
-                key={city.value}
-                onClick={() => setSelectedCity(city.value)}
-                className={`px-4 py-2.5 text-[11px] font-bold rounded-xl transition whitespace-nowrap border cursor-pointer ${
-                  selectedCity === city.value
-                    ? 'bg-slate-900 border-slate-900 text-white dark:bg-emerald-600 dark:border-emerald-600 shadow-md'
-                    : 'bg-white text-gray-650 border-gray-150 dark:bg-[#162231] dark:border-slate-800 dark:text-slate-300'
-                }`}
-              >
-                {city.label}
-              </button>
-            ))}
+          {/* --- TRIVAGO-STYLE CENTRAL SEARCH WIDGET --- */}
+          <div className="bg-white border border-[#E2E8F0] rounded-[24px] p-5 sm:p-6 shadow-md shadow-[#3B82F6]/5 max-w-5xl mx-auto mb-12" id="trivago-search-bar-panel">
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+              
+              {/* Destination Dropdown Selector */}
+              <div className="md:col-span-4 relative text-left">
+                <label className="block text-[8px] font-mono uppercase tracking-wider text-[#94A3B8] mb-1">
+                  {isRtl ? 'الوجهة السياحية' : 'DESTINATION'}
+                </label>
+                <div className="relative">
+                  <select
+                    value={selectedCity}
+                    onChange={(e) => setSelectedCity(e.target.value)}
+                    className="w-full text-xs font-black bg-[#F8FAFC] border border-[#E2E8F0] px-4 py-3 rounded-xl text-[#334155] focus:outline-none focus:border-[#3B82F6] appearance-none cursor-pointer"
+                  >
+                    {citiesList.map((city) => (
+                      <option key={city.value} value={city.value}>
+                        {city.label}
+                      </option>
+                    ))}
+                  </select>
+                  <ChevronDown size={14} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#94A3B8] pointer-events-none" />
+                </div>
+              </div>
+
+              {/* Check-In Date */}
+              <div className="md:col-span-3 text-left">
+                <label className="block text-[8px] font-mono uppercase tracking-wider text-[#94A3B8] mb-1 flex items-center gap-1">
+                  <Calendar size={10} className="text-[#3B82F6]" />
+                  <span>{isRtl ? 'تاريخ الدخول' : 'CHECK-IN'}</span>
+                </label>
+                <input 
+                  type="date" 
+                  value={startDate}
+                  onChange={(e) => setStartDate(e.target.value)}
+                  className="w-full text-xs font-black bg-[#F8FAFC] border border-[#E2E8F0] px-4 py-3 rounded-xl text-[#334155] focus:outline-none focus:border-[#3B82F6] cursor-pointer"
+                />
+              </div>
+
+              {/* Check-Out Date */}
+              <div className="md:col-span-3 text-left">
+                <label className="block text-[8px] font-mono uppercase tracking-wider text-[#94A3B8] mb-1 flex items-center gap-1">
+                  <Calendar size={10} className="text-[#3B82F6]" />
+                  <span>{isRtl ? 'تاريخ الخروج' : 'CHECK-OUT'}</span>
+                </label>
+                <input 
+                  type="date" 
+                  value={endDate}
+                  onChange={(e) => setEndDate(e.target.value)}
+                  className="w-full text-xs font-black bg-[#F8FAFC] border border-[#E2E8F0] px-4 py-3 rounded-xl text-[#334155] focus:outline-none focus:border-[#3B82F6] cursor-pointer"
+                />
+              </div>
+
+              {/* Guest Count Dropdown */}
+              <div className="md:col-span-2 text-left">
+                <label className="block text-[8px] font-mono uppercase tracking-wider text-[#94A3B8] mb-1 flex items-center gap-1">
+                  <Users size={10} className="text-[#3B82F6]" />
+                  <span>{isRtl ? 'عدد النزلاء' : 'GUESTS'}</span>
+                </label>
+                <div className="relative">
+                  <select
+                    value={guestCount}
+                    onChange={(e) => setGuestCount(Number(e.target.value))}
+                    className="w-full text-xs font-black bg-[#F8FAFC] border border-[#E2E8F0] px-4 py-3 rounded-xl text-[#334155] focus:outline-none focus:border-[#3B82F6] appearance-none cursor-pointer"
+                  >
+                    {[1, 2, 3, 4, 5].map((num) => (
+                      <option key={num} value={num}>
+                        {num} {num === 1 ? (isRtl ? 'شخص' : 'Guest') : (isRtl ? 'أشخاص' : 'Guests')}
+                      </option>
+                    ))}
+                  </select>
+                  <ChevronDown size={14} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#94A3B8] pointer-events-none" />
+                </div>
+              </div>
+
+            </div>
+
+            {/* Simulated search status badge */}
+            <div className="mt-4 pt-4 border-t border-[#E2E8F0] flex items-center justify-between text-[10px] text-[#94A3B8] font-mono">
+              <span className="flex items-center gap-1.5">
+                <Sparkles size={11} className="text-[#3B82F6] animate-pulse" />
+                <span>{isRtl ? 'البحث التلقائي الذكي مفعل' : 'Auto-filtering matches instantly'}</span>
+              </span>
+              <span className="font-bold text-[#3B82F6]">
+                {filteredHotels.length} {isRtl ? 'فنادق مطابقة' : 'stays found'}
+              </span>
+            </div>
           </div>
 
           {/* Map & Lodging dual workspace list */}
@@ -107,12 +186,12 @@ export const BookingModule: React.FC<BookingModuleProps> = ({ setActiveView }) =
             
             {/* Left stays card listing panel (7 cols) */}
             <div className="lg:col-span-7 xl:col-span-7 flex flex-col space-y-6">
-              <div className="flex items-center justify-between border-b border-gray-100 dark:border-slate-800 pb-3">
-                <h2 className="text-sm font-black uppercase text-slate-800 dark:text-slate-200 tracking-wider">
-                  {isRtl ? 'خيارات الفنادق المتاحة' : 'Available Luxury Lodgings'} ({filteredHotels.length})
+              <div className="flex items-center justify-between border-b border-[#E2E8F0] pb-3">
+                <h2 className="text-xs font-black uppercase text-[#334155] tracking-wider">
+                  {isRtl ? 'الفنادق المتاحة للحجز' : 'Luxury retreats matching search'} ({filteredHotels.length})
                 </h2>
-                <span className="text-[10px] text-gray-400 font-mono">
-                  {selectedCity === 'all' ? (isRtl ? 'الجزائر بأكملها' : 'All of Algeria') : selectedCity}
+                <span className="px-2.5 py-1 bg-[#3B82F6]/5 text-[#3B82F6] rounded-full text-[9px] font-mono font-bold uppercase tracking-wider border border-[#3B82F6]/10">
+                  {selectedCity === 'all' ? (isRtl ? 'كل الولايات' : 'Algeria') : selectedCity}
                 </span>
               </div>
 
@@ -124,53 +203,55 @@ export const BookingModule: React.FC<BookingModuleProps> = ({ setActiveView }) =
                       key={hotel.id}
                       onMouseEnter={() => setHoveredHotelId(hotel.id)}
                       onMouseLeave={() => setHoveredHotelId(null)}
-                      className={`bg-white dark:bg-[#162231] border rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between transform ${
+                      className={`bg-white border rounded-[20px] overflow-hidden shadow-xs hover:shadow-md transition-all duration-300 flex flex-col justify-between transform ${
                         isHovered 
-                          ? 'border-emerald-500/80 scale-[1.02] shadow-lg shadow-emerald-500/5' 
-                          : 'border-slate-100 dark:border-slate-800'
+                          ? 'border-[#3B82F6]/50 scale-[1.01]' 
+                          : 'border-[#E2E8F0]'
                       }`}
                     >
                       <div className="relative h-44 overflow-hidden">
                         <img 
                           src={hotel.image} 
                           alt={hotel.name}
-                          className="w-full h-full object-cover"
+                          className="w-full h-full object-cover transition-transform duration-700 hover:scale-103"
                         />
-                        <div className="absolute top-3 right-3 bg-black/55 backdrop-blur-md text-white rounded-lg px-2 py-1 text-[10px] font-bold flex items-center space-x-1">
-                          <Star size={10} className="fill-amber-400 text-amber-400" />
+                        <div className="absolute top-3 right-3 bg-white/95 border border-[#E2E8F0] text-[#334155] rounded-xl px-2 py-1 text-[10px] font-bold flex items-center space-x-1 space-x-reverse shadow-xs">
+                          <Star size={10} className="fill-[#FDBA74] text-[#FDBA74]" />
                           <span>{hotel.rating}</span>
                         </div>
-                        <div className="absolute bottom-3 left-3 bg-slate-900/80 backdrop-blur-md text-white rounded-lg px-2 py-0.5 text-[9px] font-bold flex items-center gap-1">
-                          <MapPin size={9} className="text-emerald-400" />
+                        <div className="absolute bottom-3 left-3 bg-white/90 border border-[#E2E8F0] text-[#334155] rounded-xl px-2 py-1 text-[9px] font-bold flex items-center gap-1 shadow-xs">
+                          <MapPin size={9} className="text-[#3B82F6]" />
                           <span>{hotel.location}</span>
                         </div>
                       </div>
 
                       <div className="p-5 flex-1 flex flex-col justify-between">
                         <div>
-                          <h3 className="text-sm font-extrabold text-gray-800 dark:text-white leading-tight mb-1 truncate group-hover:text-emerald-500 transition">
+                          <h3 className="text-sm font-black text-[#334155] leading-tight mb-2 truncate hover:text-[#3B82F6] transition-colors">
                             {hotel.name}
                           </h3>
-                          <p className="text-[10px] font-mono text-gray-400 mb-2">{hotel.location}, Algeria</p>
-                          <p className="text-[10.5px] text-gray-500 dark:text-slate-400 leading-normal line-clamp-3 mb-4">
+                          <p className="text-[10px] text-[#94A3B8] font-semibold mb-3">
+                            {hotel.location}, Algeria
+                          </p>
+                          <p className="text-[11px] text-[#94A3B8] leading-relaxed line-clamp-3 mb-5">
                             {hotel.description[isRtl ? 'ar' : 'en']}
                           </p>
                         </div>
 
                         <div>
                           {/* Price and Action row */}
-                          <div className="flex items-end justify-between border-t border-gray-50 dark:border-slate-800/40 pt-4 mt-2">
+                          <div className="flex items-center justify-between border-t border-[#E2E8F0] pt-4 mt-2">
                             <div>
-                              <span className="block text-[8px] font-mono text-gray-400 uppercase tracking-widest">Starting at</span>
-                              <span className="text-sm font-black text-emerald-600 dark:text-emerald-400 font-mono">
-                                {hotel.pricePerNight.toLocaleString()} DZD <span className="text-[9px] font-normal text-slate-400">/night</span>
+                              <span className="block text-[8px] font-mono text-[#94A3B8] uppercase tracking-wider">Starting at</span>
+                              <span className="text-sm font-black text-[#3B82F6] font-mono">
+                                {hotel.pricePerNight.toLocaleString()} DZD <span className="text-[9px] font-normal text-[#94A3B8]">/night</span>
                               </span>
                             </div>
                             <button
                               onClick={() => setSelectedHotel(hotel)}
-                              className="px-3.5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold shadow-md transition cursor-pointer"
+                              className="px-4 py-2.5 bg-[#3B82F6] hover:bg-[#3B82F6]/90 text-white rounded-xl text-xs font-bold transition shadow-xs cursor-pointer focus:outline-none"
                             >
-                              {isRtl ? 'احجز الآن' : 'Book room'}
+                              {isRtl ? 'احجز الآن' : 'Book stay'}
                             </button>
                           </div>
                         </div>
@@ -182,7 +263,11 @@ export const BookingModule: React.FC<BookingModuleProps> = ({ setActiveView }) =
             </div>
 
             {/* Right Map workspace panel (5 cols) */}
-            <div className="lg:col-span-5 xl:col-span-5 lg:sticky lg:top-24">
+            <div className="lg:col-span-5 xl:col-span-5 lg:sticky lg:top-24 border border-[#E2E8F0] rounded-[24px] overflow-hidden bg-white shadow-xs p-1">
+              <div className="bg-[#F8FAFC] py-2 px-4 border-b border-[#E2E8F0] flex items-center justify-between">
+                <span className="text-[10px] font-mono font-bold uppercase text-[#334155] tracking-wider">Interactive Stays Map</span>
+                <span className="w-2 h-2 rounded-full bg-[#3B82F6] animate-pulse" />
+              </div>
               <HotelInteractiveMap
                 hotels={filteredHotels}
                 selectedHotel={selectedHotel}
@@ -196,14 +281,14 @@ export const BookingModule: React.FC<BookingModuleProps> = ({ setActiveView }) =
         </>
       ) : (
         /* Selected Room Booking sheet */
-        <div className="bg-white dark:bg-[#162231] border border-emerald-50 dark:border-slate-800 rounded-3xl p-6 sm:p-8 shadow-2xl max-w-2xl mx-auto relative overflow-hidden animate-scale-up">
+        <div className="bg-white border border-[#E2E8F0] rounded-[24px] p-6 sm:p-8 shadow-md max-w-2xl mx-auto relative overflow-hidden animate-scale-up">
           
           <button
             onClick={() => {
               setSelectedHotel(null);
               setBookingFinished(null);
             }}
-            className="absolute top-6 right-6 p-2 bg-gray-50 dark:bg-slate-900 rounded-xl hover:bg-gray-100 dark:hover:bg-slate-850 text-gray-500 transition"
+            className="absolute top-6 right-6 p-2 bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl hover:bg-[#E2E8F0] text-[#334155] transition cursor-pointer"
           >
             <ArrowLeft size={16} />
           </button>
@@ -214,50 +299,50 @@ export const BookingModule: React.FC<BookingModuleProps> = ({ setActiveView }) =
                 <img 
                   src={selectedHotel.image} 
                   alt={selectedHotel.name}
-                  className="w-20 h-20 rounded-2xl object-cover"
+                  className="w-20 h-20 rounded-xl object-cover border border-[#E2E8F0]"
                 />
-                <div>
-                  <span className="px-2 py-0.5 bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400 text-[9px] rounded-lg font-bold font-mono uppercase tracking-wider">SELECTED STAY</span>
-                  <h3 className="text-lg font-bold text-gray-900 dark:text-white mt-1 leading-none">{selectedHotel.name}</h3>
-                  <p className="text-[10px] text-gray-400 mt-1">{selectedHotel.location}, Algeria</p>
+                <div className="text-left">
+                  <span className="px-2.5 py-0.5 bg-[#3B82F6]/5 text-[#3B82F6] border border-[#3B82F6]/10 text-[9px] rounded-lg font-bold font-mono uppercase tracking-wider">SELECTED STAY</span>
+                  <h3 className="text-lg font-serif font-black text-[#334155] mt-1.5 leading-none">{selectedHotel.name}</h3>
+                  <p className="text-[10px] text-[#94A3B8] mt-1 font-semibold">{selectedHotel.location}, Algeria</p>
                 </div>
               </div>
 
               {/* Form elements selection */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6 pt-4 border-t border-gray-50 dark:border-slate-800/80">
-                <div>
-                  <label className="block text-[9px] font-mono text-gray-400 uppercase mb-1 flex items-center space-x-1 space-x-reverse">
-                    <Calendar size={10} />
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6 pt-4 border-t border-[#E2E8F0]">
+                <div className="text-left">
+                  <label className="block text-[9px] font-mono text-[#94A3B8] uppercase mb-1.5 flex items-center gap-1">
+                    <Calendar size={10} className="text-[#3B82F6]" />
                     <span>Check-In Date</span>
                   </label>
                   <input 
                     type="date" 
                     value={startDate}
                     onChange={(e) => setStartDate(e.target.value)}
-                    className="w-full text-xs font-semibold border border-gray-150 dark:border-slate-800 dark:bg-slate-900 px-3 py-2.5 rounded-xl text-gray-700 dark:text-slate-200 focus:outline-emerald-500"
+                    className="w-full text-xs font-bold border border-[#E2E8F0] bg-[#F8FAFC] px-3 py-2.5 rounded-xl text-[#334155] focus:outline-none focus:border-[#3B82F6]"
                   />
                 </div>
-                <div>
-                  <label className="block text-[9px] font-mono text-gray-400 uppercase mb-1 flex items-center space-x-1 space-x-reverse">
-                    <Calendar size={10} />
+                <div className="text-left">
+                  <label className="block text-[9px] font-mono text-[#94A3B8] uppercase mb-1.5 flex items-center gap-1">
+                    <Calendar size={10} className="text-[#3B82F6]" />
                     <span>Check-Out Date</span>
                   </label>
                   <input 
                     type="date" 
                     value={endDate}
                     onChange={(e) => setEndDate(e.target.value)}
-                    className="w-full text-xs font-semibold border border-gray-150 dark:border-slate-800 dark:bg-slate-900 px-3 py-2.5 rounded-xl text-gray-700 dark:text-slate-200 focus:outline-emerald-500"
+                    className="w-full text-xs font-bold border border-[#E2E8F0] bg-[#F8FAFC] px-3 py-2.5 rounded-xl text-[#334155] focus:outline-none focus:border-[#3B82F6]"
                   />
                 </div>
-                <div>
-                  <label className="block text-[9px] font-mono text-gray-400 uppercase mb-1 flex items-center space-x-1 space-x-reverse">
-                    <Users size={10} />
+                <div className="text-left">
+                  <label className="block text-[9px] font-mono text-[#94A3B8] uppercase mb-1.5 flex items-center gap-1">
+                    <Users size={10} className="text-[#3B82F6]" />
                     <span>Guests count</span>
                   </label>
                   <select 
                     value={guestCount}
                     onChange={(e) => setGuestCount(Number(e.target.value))}
-                    className="w-full text-xs font-semibold border border-gray-150 dark:border-slate-800 dark:bg-slate-900 px-3 py-2.5 rounded-xl text-gray-700 dark:text-slate-200 focus:outline-emerald-500"
+                    className="w-full text-xs font-bold border border-[#E2E8F0] bg-[#F8FAFC] px-3 py-2.5 rounded-xl text-[#334155] focus:outline-none focus:border-[#3B82F6] cursor-pointer"
                   >
                     {[1, 2, 3, 4, 5].map((n) => (
                       <option key={n} value={n}>{n} guest{n > 1 ? 's' : ''}</option>
@@ -267,43 +352,43 @@ export const BookingModule: React.FC<BookingModuleProps> = ({ setActiveView }) =
               </div>
 
               {/* Calculation panel */}
-              <div className="p-4 bg-gray-50/60 dark:bg-slate-900/60 rounded-2xl border border-gray-100 dark:border-slate-800/80 text-xs text-gray-600 dark:text-slate-350 space-y-2 mb-6 font-sans">
+              <div className="p-4 bg-[#F8FAFC] rounded-xl border border-[#E2E8F0] text-xs text-[#334155] space-y-2.5 mb-6">
                 <div className="flex justify-between">
-                  <span>Room price per night:</span>
-                  <span className="font-bold text-gray-800 dark:text-white">{selectedHotel.pricePerNight.toLocaleString()} DZD</span>
+                  <span className="text-[#94A3B8] font-medium">Room price per night:</span>
+                  <span className="font-bold">{selectedHotel.pricePerNight.toLocaleString()} DZD</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>Total duration of stays:</span>
-                  <span className="font-bold text-gray-800 dark:text-white">{getDaysCount()} night{getDaysCount() > 1 ? 's' : ''}</span>
+                  <span className="text-[#94A3B8] font-medium">Total duration of stays:</span>
+                  <span className="font-bold">{getDaysCount()} night{getDaysCount() > 1 ? 's' : ''}</span>
                 </div>
-                <div className="flex justify-between border-t border-gray-100 dark:border-slate-800/40 pt-2 text-sm text-gray-800 dark:text-white font-extrabold">
-                  <span>Estimated Total (DZD):</span>
-                  <span className="text-emerald-600">{(selectedHotel.pricePerNight * getDaysCount()).toLocaleString()} DZD</span>
+                <div className="flex justify-between border-t border-[#E2E8F0] pt-2 text-sm font-black">
+                  <span className="text-[#334155]">Estimated Total (DZD):</span>
+                  <span className="text-[#3B82F6]">{(selectedHotel.pricePerNight * getDaysCount()).toLocaleString()} DZD</span>
                 </div>
               </div>
 
               {/* RAHALA Safe Travel Insurance Banner */}
               {setActiveView && (
-                <div className="mb-6 p-4 rounded-2xl border border-emerald-500/25 bg-emerald-500/5 dark:bg-emerald-500/5 flex items-start gap-3 relative overflow-hidden font-sans">
-                  <div className="w-10 h-10 rounded-full bg-emerald-600 text-white flex items-center justify-center shrink-0 shadow-lg shadow-emerald-500/20">
-                    <Shield size={18} className="animate-pulse" />
+                <div className="mb-6 p-4 rounded-xl border border-[#3B82F6]/20 bg-[#3B82F6]/5 flex items-start gap-3 relative overflow-hidden text-left">
+                  <div className="w-9 h-9 rounded-full bg-[#3B82F6] text-white flex items-center justify-center shrink-0">
+                    <Shield size={16} />
                   </div>
-                  <div className="text-left flex-1">
+                  <div className="flex-1">
                     <div className="flex items-center gap-1.5 leading-none">
-                      <span className="font-extrabold text-[9px] text-[#d4af37] font-mono tracking-widest uppercase">
+                      <span className="font-black text-[8px] text-[#FDBA74] font-mono tracking-widest uppercase">
                         AI SAFE RECOMMENDATION
                       </span>
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping"></span>
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#3B82F6] animate-ping" />
                     </div>
-                    <h4 className="text-xs font-black text-slate-800 dark:text-white mt-1 leading-tight">
+                    <h4 className="text-xs font-bold text-[#334155] mt-1">
                       Protect your journey to {selectedHotel.location}!
                     </h4>
-                    <p className="text-[10.5px] text-slate-500 dark:text-slate-400 leading-relaxed mt-1">
+                    <p className="text-[10px] text-[#94A3B8] leading-relaxed mt-1">
                       Our system recommends securing your stay with local licensed insurance partners (BNA, AXA, Cardif, CPA).
                     </p>
                     <button
                       onClick={() => setActiveView('safe-travel')}
-                      className="mt-2 text-[10px] font-mono font-black uppercase text-emerald-600 hover:text-emerald-700 dark:text-emerald-450 dark:hover:text-emerald-300 flex items-center gap-1 cursor-pointer"
+                      className="mt-2 text-[9px] font-mono font-black uppercase text-[#3B82F6] hover:text-[#22D3EE] flex items-center gap-1 cursor-pointer focus:outline-none"
                     >
                       Compare Insurance Plans &rarr;
                     </button>
@@ -313,7 +398,7 @@ export const BookingModule: React.FC<BookingModuleProps> = ({ setActiveView }) =
 
               <button
                 onClick={handleBookSubmit}
-                className="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-lg transition"
+                className="w-full py-3 bg-[#3B82F6] hover:bg-[#3B82F6]/90 text-white font-bold text-xs rounded-xl shadow-xs transition cursor-pointer focus:outline-none"
               >
                 Proceed to Secure Payment Checkout
               </button>
@@ -321,29 +406,29 @@ export const BookingModule: React.FC<BookingModuleProps> = ({ setActiveView }) =
           ) : (
             /* Post Booking Complete & Invoice panel */
             <div className="text-center py-6 animate-scale-up">
-              <div className="w-14 h-14 rounded-full bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mx-auto mb-4">
-                <Check size={28} />
+              <div className="w-12 h-12 rounded-full bg-[#3B82F6]/10 text-[#3B82F6] flex items-center justify-center mx-auto mb-4 border border-[#3B82F6]/25">
+                <Check size={24} />
               </div>
-              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Room Booking Completed!</h3>
-              <p className="text-xs text-gray-400 font-mono mb-6">Invoice Certificate No: {bookingFinished.invoiceNo}</p>
+              <h3 className="text-xl font-serif font-black text-[#334155] mb-2">Room Booking Completed!</h3>
+              <p className="text-xs text-[#94A3B8] font-mono mb-6">Invoice Certificate No: {bookingFinished.invoiceNo}</p>
 
-              <div className="bg-gray-50 dark:bg-slate-900 rounded-3xl p-5 text-xs text-left max-w-sm mx-auto border border-gray-100 dark:border-slate-800/40 space-y-2.5 mb-6">
-                <p className="font-bold text-[10px] text-gray-400 uppercase tracking-widest border-b border-gray-100 dark:border-slate-800 pb-2">Receipt invoice breaksheet</p>
+              <div className="bg-[#F8FAFC] rounded-2xl p-5 text-xs text-left max-w-sm mx-auto border border-[#E2E8F0] space-y-2.5 mb-6">
+                <p className="font-bold text-[9px] text-[#94A3B8] uppercase tracking-widest border-b border-[#E2E8F0] pb-2">Receipt invoice breaksheet</p>
                 <div className="flex justify-between">
-                  <span className="text-gray-400">Hotel Spot:</span>
-                  <span className="font-bold text-gray-700 dark:text-slate-200">{selectedHotel.name}</span>
+                  <span className="text-[#94A3B8]">Hotel Spot:</span>
+                  <span className="font-bold text-[#334155]">{selectedHotel.name}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-400">Check-In:</span>
-                  <span className="font-bold text-gray-700 dark:text-slate-200">{startDate}</span>
+                  <span className="text-[#94A3B8]">Check-In:</span>
+                  <span className="font-bold text-[#334155]">{startDate}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-400">Total days:</span>
-                  <span className="font-bold text-gray-700 dark:text-slate-200">{getDaysCount()} nights</span>
+                  <span className="text-[#94A3B8]">Total days:</span>
+                  <span className="font-bold text-[#334155]">{getDaysCount()} nights</span>
                 </div>
-                <div className="flex justify-between border-t border-gray-100 dark:border-slate-800 pt-2 text-sm font-extrabold">
-                  <span className="text-gray-400">Amount Paid:</span>
-                  <span className="text-emerald-600">{(selectedHotel.pricePerNight * getDaysCount()).toLocaleString()} DZD</span>
+                <div className="flex justify-between border-t border-[#E2E8F0] pt-2 text-sm font-black">
+                  <span className="text-[#334155]">Amount Paid:</span>
+                  <span className="text-[#3B82F6]">{(selectedHotel.pricePerNight * getDaysCount()).toLocaleString()} DZD</span>
                 </div>
               </div>
 
@@ -357,13 +442,13 @@ export const BookingModule: React.FC<BookingModuleProps> = ({ setActiveView }) =
                           <head>
                             <title>Rihla DZ Travel Invoice - ${bookingFinished.invoiceNo}</title>
                             <style>
-                              body { font-family: sans-serif; padding: 40px; color: #333; }
-                              .header { text-align: center; border-bottom: 2px solid #059669; padding-bottom: 20px; }
-                              .title { font-size: 24px; font-weight: bold; color: #059669; }
+                              body { font-family: sans-serif; padding: 40px; color: #334155; background: #F8FAFC; }
+                              .header { text-align: center; border-bottom: 2px solid #3B82F6; padding-bottom: 20px; }
+                              .title { font-size: 24px; font-weight: bold; color: #3B82F6; }
                               .details { margin: 30px 0; }
-                              .row { display: flex; justify-content: space-between; margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 5px; }
-                              .total { font-size: 18px; font-weight: bold; margin-top: 20px; text-align: right; color: #059669; }
-                              .footer { text-align: center; margin-top: 50px; font-size: 11px; color: #999; }
+                              .row { display: flex; justify-content: space-between; margin-bottom: 10px; border-bottom: 1px solid #E2E8F0; padding-bottom: 5px; }
+                              .total { font-size: 18px; font-weight: bold; margin-top: 20px; text-align: right; color: #3B82F6; }
+                              .footer { text-align: center; margin-top: 50px; font-size: 11px; color: #94A3B8; }
                             </style>
                           </head>
                           <body>
@@ -389,7 +474,7 @@ export const BookingModule: React.FC<BookingModuleProps> = ({ setActiveView }) =
                       printWindow.document.close();
                     }
                   }}
-                  className="flex-1 py-2.5 bg-gray-900 text-white rounded-xl text-xs font-bold transition flex items-center justify-center space-x-2 space-x-reverse"
+                  className="flex-1 py-2.5 bg-[#334155] hover:bg-[#334155]/90 text-white rounded-xl text-xs font-bold transition flex items-center justify-center space-x-2 space-x-reverse cursor-pointer"
                 >
                   <Download size={13} />
                   <span>{t('invoiceBtn')}</span>
@@ -399,7 +484,7 @@ export const BookingModule: React.FC<BookingModuleProps> = ({ setActiveView }) =
                     setSelectedHotel(null);
                     setBookingFinished(null);
                   }}
-                  className="flex-1 py-2.5 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 rounded-xl text-xs font-bold transition"
+                  className="flex-1 py-2.5 bg-[#3B82F6]/10 text-[#3B82F6] hover:bg-[#3B82F6]/20 rounded-xl text-xs font-bold transition cursor-pointer"
                 >
                   Book other stays
                 </button>
@@ -412,13 +497,13 @@ export const BookingModule: React.FC<BookingModuleProps> = ({ setActiveView }) =
 
       {/* Stripe payment sheet modal */}
       {stripeFormOpen && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 z-100 animate-fade-in">
-          <div className="bg-white dark:bg-[#162231] w-full max-w-sm rounded-3xl p-6 shadow-2xl relative border border-emerald-50 dark:border-slate-800 animate-scale-up">
-            <div className="flex justify-between items-center border-b border-gray-100 dark:border-slate-800 pb-3 mb-4">
-              <span className="text-xs font-extrabold uppercase tracking-wider text-gray-800 dark:text-white">Secure Checkout (Stripe powered)</span>
+        <div className="fixed inset-0 bg-[#334155]/40 backdrop-blur-xs flex items-center justify-center p-4 z-50 animate-fade-in">
+          <div className="bg-white w-full max-w-sm rounded-[24px] p-6 shadow-xl relative border border-[#E2E8F0] animate-scale-up text-left">
+            <div className="flex justify-between items-center border-b border-[#E2E8F0] pb-3 mb-4">
+              <span className="text-xs font-black uppercase tracking-wider text-[#334155]">Secure Checkout (Stripe powered)</span>
               <button 
                 onClick={() => setStripeFormOpen(false)}
-                className="text-xs text-gray-400 hover:text-gray-600"
+                className="text-xs text-[#94A3B8] hover:text-[#334155] font-bold"
               >
                 Cancel
               </button>
@@ -426,42 +511,42 @@ export const BookingModule: React.FC<BookingModuleProps> = ({ setActiveView }) =
 
             <div className="space-y-4 text-xs">
               <div>
-                <label className="block text-[9px] font-mono text-gray-400 mb-1">CREDIT/DEBIT CARD NUMBER</label>
+                <label className="block text-[8px] font-mono text-[#94A3B8] mb-1">CREDIT/DEBIT CARD NUMBER</label>
                 <input 
                   type="text" 
                   value={cardNumber}
                   onChange={(e) => setCardNumber(e.target.value)}
-                  className="w-full text-xs font-semibold border border-gray-150 dark:border-slate-800 dark:bg-slate-900 px-3 py-2 text-gray-700 dark:text-slate-200 rounded-xl focus:outline-emerald-500"
+                  className="w-full text-xs font-black border border-[#E2E8F0] bg-[#F8FAFC] px-3 py-2 text-[#334155] rounded-xl focus:outline-none focus:border-[#3B82F6]"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-[9px] font-mono text-gray-400 mb-1">EXPIRY DATE (MM / YY)</label>
+                  <label className="block text-[8px] font-mono text-[#94A3B8] mb-1">EXPIRY DATE (MM / YY)</label>
                   <input 
                     type="text" 
                     placeholder="12 / 29"
-                    className="w-full text-xs font-semibold border border-gray-150 dark:border-slate-800 dark:bg-slate-900 px-3 py-2 text-gray-700 dark:text-slate-200 rounded-xl focus:outline-emerald-500"
+                    className="w-full text-xs font-black border border-[#E2E8F0] bg-[#F8FAFC] px-3 py-2 text-[#334155] rounded-xl focus:outline-none focus:border-[#3B82F6]"
                   />
                 </div>
                 <div>
-                  <label className="block text-[9px] font-mono text-gray-400 mb-1">CVV CODE</label>
+                  <label className="block text-[8px] font-mono text-[#94A3B8] mb-1">CVV CODE</label>
                   <input 
                     type="text" 
                     placeholder="391"
-                    className="w-full text-xs font-semibold border border-gray-150 dark:border-slate-800 dark:bg-slate-900 px-3 py-2 text-gray-700 dark:text-slate-200 rounded-xl focus:outline-emerald-500"
+                    className="w-full text-xs font-black border border-[#E2E8F0] bg-[#F8FAFC] px-3 py-2 text-[#334155] rounded-xl focus:outline-none focus:border-[#3B82F6]"
                   />
                 </div>
               </div>
 
-              <div className="p-3 bg-emerald-50/50 dark:bg-emerald-950/25 border border-emerald-100/30 rounded-xl text-emerald-800 dark:text-emerald-300">
-                <span className="block font-bold">Safe SSL encrypted channel</span>
+              <div className="p-3 bg-[#3B82F6]/5 border border-[#3B82F6]/15 rounded-xl text-[#3B82F6] font-medium leading-relaxed">
+                <span className="block font-black text-xs mb-1">Safe SSL encrypted channel</span>
                 Amount scheduled: {selectedHotel ? (selectedHotel.pricePerNight * getDaysCount()).toLocaleString() : 0} DZD
               </div>
 
               <button
                 onClick={handlePayConfirm}
-                className="w-full py-2.5 bg-emerald-650 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-lg transition"
+                className="w-full py-2.5 bg-[#3B82F6] hover:bg-[#3B82F6]/90 text-white font-bold text-xs rounded-xl shadow-xs transition cursor-pointer focus:outline-none"
               >
                 Confirm Payment & Authorize
               </button>

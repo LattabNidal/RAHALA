@@ -32,7 +32,7 @@ interface AuthModuleProps {
 // Default initial accounts pre-registered for testing out-of-the-box
 const DEFAULT_ACCOUNTS = [
   {
-    name: 'Admin RAHLA 👨💼',
+    name: 'Admin RAHLA 👨‍💼',
     email: 'admin@rahala.com',
     password: '1234',
     role: 'admin',
@@ -134,7 +134,7 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
       usersList = [...DEFAULT_ACCOUNTS];
     }
 
-    // Force/Upsert lattab.nidal@gmail.com with requested temporary credentials
+    // Force/Upsert lattab.nidal@gmail.com with credentials
     const targetEmail = 'lattab.nidal@gmail.com';
     const index = usersList.findIndex((u: any) => u.email.toLowerCase() === targetEmail);
     if (index >= 0) {
@@ -154,7 +154,7 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
     localStorage.setItem('rihla_registered_users', JSON.stringify(usersList));
   }, []);
 
-  // Helper to fetch custom users lists
+  // Helper to fetch registered users lists
   const getRegisteredUsers = () => {
     const saved = localStorage.getItem('rihla_registered_users');
     return saved ? JSON.parse(saved) : DEFAULT_ACCOUNTS;
@@ -200,7 +200,6 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
         }
       } catch (err: any) {
         console.warn('Supabase Auth failed, checking local fallback...', err);
-        // Continue to local fallback in case of test accounts (e.g. admin@rahala.com)
       }
     }
 
@@ -264,7 +263,7 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
       return;
     }
 
-    // SÉCURITÉ ADMIN: Pour créer un Admin
+    // SECURITY ADMIN: code verification
     if (role === 'admin') {
       if (adminCode !== 'RAHLA2025') {
         setErrorMessage(t('errIncorrectAdminCode'));
@@ -280,7 +279,6 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
       try {
         const authData = await supabaseDbService.signUp(email, password, name);
         if (authData?.user) {
-          // Sync profile to database if trigger is still pending
           await supabaseDbService.updateProfile(authData.user.id, {
             name,
             role,
@@ -295,7 +293,7 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
       }
     }
 
-    // Local mirror register for backward-compatibility
+    // Local mirror register for fallback
     const users = getRegisteredUsers();
     const isDuplicated = users.some((u: any) => u.email.toLowerCase() === email.toLowerCase());
     
@@ -337,28 +335,28 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
       setIsLoadingAuth(false);
       setCurrentUser(activeUser);
       addNotification(t('welcomeGuest'));
-      onSuccess('explore'); // Mode invité redirection to 'explore' view which allows destinations browsing
+      onSuccess('explore');
     }, 600);
   };
 
   return (
-    <div className="min-h-screen w-full flex flex-col justify-center items-center px-4 py-8 bg-gradient-to-br from-[#051c0f] via-[#092516] to-[#040e09] relative overflow-hidden font-sans select-none" id="rahla-auth-authmodule" dir={isRtl ? 'rtl' : 'ltr'}>
+    <div className="min-h-screen w-full flex flex-col justify-center items-center px-4 py-8 bg-[#F8FAFC] relative overflow-hidden font-sans select-none" id="rahla-auth-authmodule" dir={isRtl ? 'rtl' : 'ltr'}>
       
-      {/* FLOATING HIGH-CONTRAST LANGUAGE CHANGER SELECTOR */}
-      <div className={`absolute top-4 ${isRtl ? 'left-4' : 'right-4'} z-50 flex items-center gap-2`}>
+      {/* FLOATING LANG CHANGER */}
+      <div className={`absolute top-6 ${isRtl ? 'left-6' : 'right-6'} z-50 flex items-center gap-2`}>
         <div className="relative">
           <button
             type="button"
             onClick={() => setLangOpen(!langOpen)}
-            className="flex items-center gap-2 px-3 py-1.5 bg-slate-950/85 hover:bg-slate-900 text-white hover:text-[#d4af37] border border-white/15 rounded-full text-xs font-semibold tracking-wider uppercase transition shadow-xl cursor-pointer"
+            className="flex items-center gap-2 px-4 py-2 bg-white hover:bg-[#F8FAFC] text-[#334155] border border-[#E2E8F0] rounded-full text-[10px] font-bold tracking-widest uppercase transition-all shadow-sm cursor-pointer"
           >
-            <Globe size={14} className="text-[#d4af37]" />
+            <Globe size={13} className="text-[#3B82F6]" />
             <span>{languagesList.find(l => l.code === language)?.label}</span>
             <span className="text-sm">{languagesList.find(l => l.code === language)?.flag}</span>
           </button>
           
           {langOpen && (
-            <div className={`absolute ${isRtl ? 'left-0' : 'right-0'} mt-2 w-40 bg-slate-950/95 border border-white/20 rounded-xl shadow-2xl py-1 z-50 overflow-hidden backdrop-blur-md`}>
+            <div className={`absolute ${isRtl ? 'left-0' : 'right-0'} mt-2 w-40 bg-white border border-[#E2E8F0] rounded-2xl shadow-md py-1.5 z-50 overflow-hidden`}>
               {languagesList.map((lang) => {
                 const isActive = lang.code === language;
                 return (
@@ -371,8 +369,8 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
                     }}
                     className={`flex items-center justify-between w-full px-4 py-2 text-xs font-semibold uppercase tracking-wider transition-all text-start ${
                       isActive 
-                        ? 'text-[#d4af37] bg-white/10 font-bold border-l-2 border-[#d4af37] rtl:border-l-0 rtl:border-r-2'
-                        : 'text-slate-300 hover:text-[#d4af37] hover:bg-white/5'
+                        ? 'text-[#3B82F6] bg-[#3B82F6]/5 font-bold border-l-2 border-[#3B82F6] rtl:border-l-0 rtl:border-r-2'
+                        : 'text-[#334155] hover:text-[#3B82F6] hover:bg-[#F8FAFC]'
                     }`}
                   >
                     <span>{lang.label}</span>
@@ -385,88 +383,88 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
         </div>
       </div>
 
-      {/* Decorative stars / geometric patterns on background */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-emerald-950/20 via-transparent to-transparent pointer-events-none" />
-      <div className="absolute -top-40 -left-40 w-96 h-96 bg-[#d4af37]/5 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-emerald-700/5 rounded-full blur-3xl pointer-events-none" />
+      {/* Decorative premium ambient glows with bright pastel blue and cyan colors */}
+      <div className="absolute top-0 left-1/4 w-[400px] h-[400px] bg-[#3B82F6]/5 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-[#22D3EE]/5 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute inset-0 opacity-[0.02] bg-[radial-gradient(#3B82F6_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none" />
 
-      {/* Standalone card styled beautifully as a "Carte Blanche" with shadow + rounded corners */}
-      <div className="bg-white dark:bg-[#121413] w-full max-w-md border border-slate-200/80 dark:border-zinc-800/80 rounded-3xl p-6 sm:p-10 shadow-2xl relative overflow-hidden transition-all duration-300">
+      {/* Standalone clean white card container */}
+      <div className="bg-white w-full max-w-md border border-[#E2E8F0] rounded-[32px] p-6 sm:p-10 shadow-sm relative overflow-hidden transition-all duration-300">
         
-        {/* Algerian theme visual line accent inside card */}
-        <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-emerald-600 via-[#d4af37] to-red-650"></div>
+        {/* Accent strip */}
+        <div className="absolute top-0 left-0 right-0 h-[4px] bg-gradient-to-r from-[#3B82F6] to-[#22D3EE]"></div>
         
         {/* Top Branding Header */}
-        <div className="text-center mb-6 flex flex-col items-center">
-          <div className="relative mb-3 group">
-            <div className="absolute -inset-1-5 bg-gradient-to-r from-emerald-500 via-[#d4af37] to-emerald-700 rounded-full blur-md opacity-80 animate-pulse"></div>
-            <div className="relative w-24 h-24 rounded-full overflow-hidden border-2 border-[#d4af37]/40 shadow-xl bg-slate-900">
+        <div className="text-center mb-8 flex flex-col items-center">
+          <div className="relative mb-4 group">
+            <div className="absolute -inset-1 bg-gradient-to-r from-[#3B82F6] to-[#22D3EE] rounded-full blur opacity-20"></div>
+            <div className="relative w-20 h-20 rounded-full overflow-hidden border border-[#E2E8F0] shadow-sm bg-[#F8FAFC] p-0.5">
               <img 
                 src={rahalaLogo} 
                 alt="RAHALA Logo" 
-                className="w-full h-full object-cover transform duration-500 group-hover:scale-110"
+                className="w-full h-full rounded-full object-cover"
                 referrerPolicy="no-referrer"
               />
             </div>
           </div>
-          <h2 className="text-3xl font-serif font-black tracking-widest bg-gradient-to-r from-emerald-700 via-emerald-600 to-emerald-800 dark:from-emerald-400 dark:via-[#d4af37] dark:to-emerald-200 bg-clip-text text-transparent leading-none font-bold">RAHALA</h2>
-          <p className="text-[10px] font-mono tracking-wider font-extrabold text-[#d4af37] dark:text-[#d4af37] uppercase mt-1">
+          <h2 className="text-3xl font-serif tracking-tight text-[#334155] font-black leading-none uppercase">RAHALA</h2>
+          <p className="text-[9px] font-mono tracking-[0.2em] font-black text-[#3B82F6] uppercase mt-2 leading-none">
             {t('assistantSub')}
           </p>
         </div>
 
-        {/* Dynamic Global Loader Overlay for UI smoothness */}
+        {/* Loading Overlay */}
         {isLoadingAuth && (
-          <div className="absolute inset-0 bg-black/60 dark:bg-black/80 backdrop-blur-sm z-50 flex flex-col items-center justify-center space-y-4 animate-fade-in">
-            <div className="w-12 h-12 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
-            <p className="text-xs font-mono font-bold tracking-widest text-[#d4af37] uppercase">{t('verifying')}</p>
+          <div className="absolute inset-0 bg-white/95 backdrop-blur-md z-50 flex flex-col items-center justify-center space-y-4">
+            <div className="w-10 h-10 border-2 border-[#3B82F6] border-t-transparent rounded-full animate-spin"></div>
+            <p className="text-[10px] font-mono font-bold tracking-[0.2em] text-[#3B82F6] uppercase">{t('verifying')}</p>
           </div>
         )}
 
-        {/* --- DUAL TAB SWITCHERS : LOGIN vs SIGNUP (Unconditional) --- */}
-        <div className="flex border border-slate-200 dark:border-zinc-800 mb-6 bg-slate-50 dark:bg-zinc-900 rounded-2xl p-1 z-10 relative">
+        {/* DUAL TAB SWITCHERS */}
+        <div className="flex border border-[#E2E8F0] mb-8 bg-[#F8FAFC] rounded-2xl p-1 z-10 relative">
           <button
             type="button"
             onClick={() => { setPhase('login'); setErrorMessage(''); setSuccessMessage(''); }}
-            className={`flex-1 py-2.5 text-xs font-mono font-bold uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
+            className={`flex-1 py-2.5 text-[10px] font-mono font-bold uppercase tracking-widest rounded-xl transition-all flex items-center justify-center gap-2 cursor-pointer ${
               phase === 'login' 
-                ? 'bg-slate-900 text-white dark:bg-[#d4af37] dark:text-slate-950 shadow-md font-extrabold' 
-                : 'text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-white'
+                ? 'bg-[#3B82F6] text-white shadow-sm font-extrabold' 
+                : 'text-[#94A3B8] hover:text-[#3B82F6]'
             }`}
           >
-            <LogIn size={13} /> {t('loginTab')}
+            <LogIn size={12} /> {t('loginTab')}
           </button>
           <button
             type="button"
             onClick={() => { setPhase('register'); setErrorMessage(''); setSuccessMessage(''); }}
-            className={`flex-1 py-2.5 text-xs font-mono font-bold uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
+            className={`flex-1 py-2.5 text-[10px] font-mono font-bold uppercase tracking-widest rounded-xl transition-all flex items-center justify-center gap-2 cursor-pointer ${
               phase === 'register' 
-                ? 'bg-slate-900 text-white dark:bg-[#d4af37] dark:text-slate-950 shadow-md font-extrabold' 
-                : 'text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-white'
+                ? 'bg-[#3B82F6] text-white shadow-sm font-extrabold' 
+                : 'text-[#94A3B8] hover:text-[#3B82F6]'
             }`}
           >
-            <UserPlus size={13} /> {t('registerTab')}
+            <UserPlus size={12} /> {t('registerTab')}
           </button>
         </div>
 
-        {/* --- PHASE 2 : CONNEXION LOGIN PAGE --- */}
+        {/* CONNEXION LOGIN PAGE */}
         {phase === 'login' && (
-          <form onSubmit={handleLoginSubmit} className="space-y-4 animate-fade-in" id="auth-phase-login">
-            <div className="flex items-center justify-between pb-2 border-b border-slate-100 dark:border-white/5">
+          <form onSubmit={handleLoginSubmit} className="space-y-4" id="auth-phase-login">
+            <div className="flex items-center justify-between pb-3 border-b border-[#E2E8F0]">
               <button
                 type="button"
                 onClick={() => window.location.hash = '#/landing'}
-                className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400 hover:text-emerald-705 font-sans font-bold transition-all focus:outline-none"
+                className="flex items-center gap-1.5 text-xs text-[#94A3B8] hover:text-[#3B82F6] font-sans font-bold transition-all focus:outline-none"
               >
                 <ArrowLeft size={13} />
                 {t('mainMenu')}
               </button>
-              <span className="text-[10px] font-mono font-black text-slate-700 dark:text-[#d4af37] uppercase tracking-wider">{t('secureAccess')}</span>
+              <span className="text-[10px] font-mono font-black text-[#3B82F6] uppercase tracking-widest">{t('secureAccess')}</span>
             </div>
 
-            {/* QUICK CONNEXION OPTION: USER VS ADMIN */}
-            <div className="bg-slate-50 dark:bg-zinc-900/60 p-2.5 border border-slate-200 dark:border-zinc-800/80 rounded-2xl flex items-center justify-between gap-2.5">
-              <span className="text-[10px] font-mono font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest pl-1">{t('quickSelection')}</span>
+            {/* QUICK CONNEXION SELECTION */}
+            <div className="bg-[#F8FAFC] p-3 border border-[#E2E8F0] rounded-2xl flex items-center justify-between gap-2.5">
+              <span className="text-[10px] font-mono font-bold text-[#94A3B8] uppercase tracking-wider pl-1">{t('quickSelection')}</span>
               <div className="flex gap-2">
                 <button
                   type="button"
@@ -474,7 +472,7 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
                     setEmail('user@rahla.dz');
                     setPassword('password');
                   }}
-                  className="px-2.5 py-1 text-[10px] font-mono font-bold uppercase rounded-lg bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-500/20 hover:bg-emerald-500/20 transition-all cursor-pointer"
+                  className="px-2.5 py-1 text-[10px] font-mono font-bold uppercase rounded-lg bg-[#3B82F6]/10 text-[#3B82F6] border border-[#3B82F6]/20 hover:bg-[#3B82F6]/20 transition-all cursor-pointer"
                 >
                   {t('travelerRole')}
                 </button>
@@ -484,7 +482,7 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
                     setEmail('admin@rahala.com');
                     setPassword('1234');
                   }}
-                  className="px-2.5 py-1 text-[10px] font-mono font-black uppercase rounded-lg bg-amber-500/10 text-[#c2410c] dark:text-[#d4af37] border border-[#d4af37]/30 hover:bg-amber-500/20 transition-all cursor-pointer"
+                  className="px-2.5 py-1 text-[10px] font-mono font-black uppercase rounded-lg bg-[#22D3EE]/10 text-[#334155] border border-[#22D3EE]/20 hover:bg-[#22D3EE]/20 transition-all cursor-pointer"
                 >
                   {t('adminRole')}
                 </button>
@@ -492,50 +490,50 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
             </div>
 
             {errorMessage && (
-              <div className="p-3 bg-rose-50 dark:bg-red-950/40 border-l-4 border-rose-500 text-rose-800 dark:text-rose-200 text-xs font-bold leading-relaxed animate-bounce flex items-center gap-2 rounded-r-xl">
-                <AlertTriangle size={15} className="text-rose-600 dark:text-rose-400 flex-shrink-0" />
+              <div className="p-3 bg-red-50 border-l-4 border-red-500 text-red-700 text-xs font-bold leading-relaxed flex items-center gap-2 rounded-r-xl">
+                <AlertTriangle size={15} className="text-red-500 flex-shrink-0" />
                 <span>{errorMessage}</span>
               </div>
             )}
 
             {successMessage && (
-              <div className="p-3 bg-emerald-50 dark:bg-emerald-950/40 border-l-4 border-emerald-500 text-emerald-800 dark:text-emerald-250 text-xs font-bold leading-relaxed flex items-center gap-2 rounded-r-xl animate-pulse">
-                <ShieldCheck size={15} className="text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
+              <div className="p-3 bg-emerald-50 border-l-4 border-emerald-500 text-emerald-700 text-xs font-bold leading-relaxed flex items-center gap-2 rounded-r-xl">
+                <ShieldCheck size={15} className="text-emerald-500 flex-shrink-0" />
                 <span>{successMessage}</span>
               </div>
             )}
 
             <div>
-              <label className="block text-[9px] font-mono uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-1.5">{t('adresseMail')}</label>
+              <label className="block text-[9px] font-mono uppercase tracking-widest text-[#94A3B8] mb-1.5">{t('adresseMail')}</label>
               <div className="relative">
-                <Mail className="absolute left-3.5 top-3.5 text-slate-400" size={14} />
+                <Mail className="absolute left-3.5 top-3.5 text-[#94A3B8]" size={14} />
                 <input 
                   type="email" 
                   value={email}
                   placeholder={t('emailPlaceholder')}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full text-xs font-semibold pl-10 pr-3.5 py-3 bg-slate-50 dark:bg-zinc-950 border border-slate-200 dark:border-zinc-805/80 rounded-xl text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-emerald-600"
+                  className="w-full text-xs font-semibold pl-10 pr-3.5 py-3 bg-white border border-[#E2E8F0] rounded-xl text-[#334155] placeholder-[#94A3B8] focus:outline-none focus:border-[#3B82F6] transition-all"
                   required
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-[9px] font-mono uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-1.5">{t('motDePasse')}</label>
+              <label className="block text-[9px] font-mono uppercase tracking-widest text-[#94A3B8] mb-1.5">{t('motDePasse')}</label>
               <div className="relative">
-                <Lock className="absolute left-3.5 top-3.5 text-slate-400" size={14} />
+                <Lock className="absolute left-3.5 top-3.5 text-[#94A3B8]" size={14} />
                 <input 
                   type={showPassword ? 'text' : 'password'} 
                   value={password}
                   placeholder={t('passwordPlaceholder')}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full text-xs font-semibold pl-10 pr-10 py-3 bg-slate-50 dark:bg-zinc-950 border border-slate-200 dark:border-zinc-805/80 rounded-xl text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-emerald-600"
+                  className="w-full text-xs font-semibold pl-10 pr-10 py-3 bg-white border border-[#E2E8F0] rounded-xl text-[#334155] placeholder-[#94A3B8] focus:outline-none focus:border-[#3B82F6] transition-all"
                   required
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3.5 top-3.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors"
+                  className="absolute right-3.5 top-3.5 text-[#94A3B8] hover:text-[#334155] transition-colors"
                 >
                   {showPassword ? <EyeOff size={14} /> : <Eye size={14} />}
                 </button>
@@ -544,15 +542,15 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
 
             <button
               type="submit"
-              className="w-full mt-2 py-3.5 bg-gradient-to-r from-emerald-600 via-emerald-650 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white font-mono font-bold text-xs uppercase tracking-widest rounded-xl hover:shadow-lg hover:shadow-emerald-500/20 active:scale-97 cursor-pointer transition-all flex items-center justify-center gap-2"
+              className="w-full mt-2 py-3.5 bg-[#3B82F6] hover:bg-[#3B82F6]/90 text-white font-mono font-bold text-xs uppercase tracking-widest rounded-xl hover:shadow-sm cursor-pointer transition-all flex items-center justify-center gap-2 border border-[#3B82F6]/10"
             >
               <LogIn size={14} />
               {t('loginBtn')}
             </button>
 
-            {/* Link toggle for Sign up from login */}
+            {/* Switch link */}
             <div className="text-center pt-2">
-              <span className="text-xs text-slate-500 dark:text-slate-400 font-sans">{t('noAccount')}</span>
+              <span className="text-xs text-[#94A3B8] font-sans">{t('noAccount')} </span>
               <button
                 type="button"
                 onClick={() => {
@@ -560,19 +558,19 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
                   setSuccessMessage('');
                   setErrorMessage('');
                 }}
-                className="text-xs font-bold text-emerald-600 dark:text-emerald-450 hover:underline hover:text-emerald-750"
+                className="text-xs font-bold text-[#3B82F6] hover:underline"
               >
                 {t('signupBtn')}
               </button>
             </div>
 
-            {/* Alternatif mode invité rapide */}
-            <div className="text-center pt-3 border-t border-slate-100 dark:border-white/5 space-y-2">
-              <p className="text-[10px] text-slate-400">{t('demoAccountsHint')}</p>
+            {/* Quick Guest login option */}
+            <div className="text-center pt-3 border-t border-[#E2E8F0] space-y-2">
+              <p className="text-[10px] text-[#94A3B8]">{t('demoAccountsHint')}</p>
               <button
                 type="button"
                 onClick={handleGuestLogin}
-                className="text-xs font-bold text-[#d4af37] hover:underline"
+                className="text-xs font-bold text-[#3B82F6] hover:underline"
               >
                 {t('guestModeBtn')}
               </button>
@@ -580,94 +578,94 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
           </form>
         )}
 
-        {/* --- PHASE 3 : INSCRIPTION REGISTER PAGE --- */}
+        {/* INSCRIPTION REGISTER PAGE */}
         {phase === 'register' && (
-          <form onSubmit={handleRegisterSubmit} className="space-y-4 animate-fade-in" id="auth-phase-register">
-            <div className="flex items-center justify-between pb-2 border-b border-slate-100 dark:border-white/5">
+          <form onSubmit={handleRegisterSubmit} className="space-y-4" id="auth-phase-register">
+            <div className="flex items-center justify-between pb-2 border-b border-[#E2E8F0]">
               <button
                 type="button"
                 onClick={() => window.location.hash = '#/landing'}
-                className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400 hover:text-emerald-705 font-sans font-bold transition-all focus:outline-none"
+                className="flex items-center gap-1.5 text-xs text-[#94A3B8] hover:text-[#3B82F6] font-sans font-bold transition-all focus:outline-none"
               >
                 <ArrowLeft size={13} />
                 {t('mainMenu')}
               </button>
-              <span className="text-[10px] font-mono font-black text-slate-700 dark:text-[#d4af37] uppercase tracking-wider">{t('creerCompte')}</span>
+              <span className="text-[10px] font-mono font-black text-[#3B82F6] uppercase tracking-wider">{t('creerCompte')}</span>
             </div>
 
             {errorMessage && (
-              <div className="p-3 bg-rose-50 dark:bg-red-950/40 border-l-4 border-rose-500 text-rose-800 dark:text-rose-200 text-xs font-bold leading-relaxed animate-bounce flex items-center gap-2 rounded-r-xl">
-                <AlertTriangle size={15} className="text-rose-600 dark:text-rose-400 flex-shrink-0" />
+              <div className="p-3 bg-red-50 border-l-4 border-red-500 text-red-700 text-xs font-bold leading-relaxed flex items-center gap-2 rounded-r-xl animate-shake">
+                <AlertTriangle size={15} className="text-red-500 flex-shrink-0" />
                 <span>{errorMessage}</span>
               </div>
             )}
 
             {successMessage && (
-              <div className="p-3 bg-emerald-50 dark:bg-emerald-950/40 border-l-4 border-emerald-500 text-emerald-800 dark:text-emerald-250 text-xs font-bold leading-relaxed flex items-center gap-2 rounded-r-xl">
-                <ShieldCheck size={15} className="text-emerald-600 dark:text-emerald-400" />
+              <div className="p-3 bg-emerald-50 border-l-4 border-emerald-500 text-emerald-700 text-xs font-bold leading-relaxed flex items-center gap-2 rounded-r-xl">
+                <ShieldCheck size={15} className="text-emerald-500" />
                 <span>{successMessage}</span>
               </div>
             )}
 
             <div>
-              <label className="block text-[9px] font-mono uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-1.5">{t('fullNameLabel')}</label>
+              <label className="block text-[9px] font-mono uppercase tracking-widest text-[#94A3B8] mb-1.5">{t('fullNameLabel')}</label>
               <input 
                 type="text" 
                 value={name}
                 placeholder={t('fullNamePlaceholder')}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full text-xs font-semibold px-3.5 py-3 bg-slate-50 dark:bg-zinc-950 border border-slate-200 dark:border-zinc-805/80 rounded-xl text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-emerald-600"
+                className="w-full text-xs font-semibold px-3.5 py-3 bg-white border border-[#E2E8F0] rounded-xl text-[#334155] placeholder-[#94A3B8] focus:outline-none focus:border-[#3B82F6]"
                 required
               />
             </div>
 
             <div>
-              <label className="block text-[9px] font-mono uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-1.5">{t('emailLabel')}</label>
+              <label className="block text-[9px] font-mono uppercase tracking-widest text-[#94A3B8] mb-1.5">{t('emailLabel')}</label>
               <input 
                 type="email" 
                 value={email}
                 placeholder={t('emailRegPlaceholder')}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full text-xs font-semibold px-3.5 py-3 bg-slate-50 dark:bg-zinc-950 border border-slate-200 dark:border-zinc-805/80 rounded-xl text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-emerald-600"
+                className="w-full text-xs font-semibold px-3.5 py-3 bg-white border border-[#E2E8F0] rounded-xl text-[#334155] placeholder-[#94A3B8] focus:outline-none focus:border-[#3B82F6]"
                 required
               />
             </div>
 
             <div>
-              <label className="block text-[9px] font-mono uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-1.5">{t('passwordLabel')}</label>
+              <label className="block text-[9px] font-mono uppercase tracking-widest text-[#94A3B8] mb-1.5">{t('passwordLabel')}</label>
               <input 
                 type="password" 
                 value={password}
                 placeholder={t('passwordRegPlaceholder')}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full text-xs font-semibold px-3.5 py-3 bg-slate-50 dark:bg-zinc-950 border border-slate-200 dark:border-zinc-805/80 rounded-xl text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-emerald-600"
+                className="w-full text-xs font-semibold px-3.5 py-3 bg-white border border-[#E2E8F0] rounded-xl text-[#334155] placeholder-[#94A3B8] focus:outline-none focus:border-[#3B82F6]"
                 required
               />
             </div>
 
             <div>
-              <label className="block text-[9px] font-mono uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-1.5">{t('confirmPasswordLabel')}</label>
+              <label className="block text-[9px] font-mono uppercase tracking-widest text-[#94A3B8] mb-1.5">{t('confirmPasswordLabel')}</label>
               <input 
                 type="password" 
                 value={confirmPassword}
                 placeholder={t('confirmPasswordPlaceholder')}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                className="w-full text-xs font-semibold px-3.5 py-3 bg-slate-50 dark:bg-zinc-950 border border-slate-200 dark:border-zinc-805/80 rounded-xl text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-emerald-600"
+                className="w-full text-xs font-semibold px-3.5 py-3 bg-white border border-[#E2E8F0] rounded-xl text-[#334155] placeholder-[#94A3B8] focus:outline-none focus:border-[#3B82F6]"
                 required
               />
             </div>
 
             <div className="grid grid-cols-2 gap-3">
               <div className="col-span-2">
-                <label className="block text-[9px] font-mono uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-1.5">{t('accountTypeLabel')}</label>
+                <label className="block text-[9px] font-mono uppercase tracking-widest text-[#94A3B8] mb-1.5">{t('accountTypeLabel')}</label>
                 <div className="flex gap-2">
                   <button
                     type="button"
                     onClick={() => setRole('user')}
                     className={`flex-1 py-2.5 text-xs font-bold border rounded-xl flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
                       role === 'user' 
-                        ? 'bg-emerald-500/15 text-emerald-800 border-emerald-500' 
-                        : 'border-slate-200 dark:border-white/10 text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-white/5'
+                        ? 'bg-[#3B82F6]/10 text-[#3B82F6] border-[#3B82F6]' 
+                        : 'border-[#E2E8F0] text-[#94A3B8] hover:bg-[#F8FAFC]'
                     }`}
                   >
                     <UserIcon size={12} />
@@ -678,8 +676,8 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
                     onClick={() => setRole('admin')}
                     className={`flex-1 py-2.5 text-xs font-bold border rounded-xl flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
                       role === 'admin' 
-                        ? 'bg-[#d4af37]/15 text-[#d4af37] border-[#d4af37]' 
-                        : 'border-slate-200 dark:border-white/10 text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-white/5'
+                        ? 'bg-[#22D3EE]/10 text-[#334155] border-[#22D3EE]' 
+                        : 'border-[#E2E8F0] text-[#94A3B8] hover:bg-[#F8FAFC]'
                     }`}
                   >
                     <ShieldCheck size={12} />
@@ -689,10 +687,10 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
               </div>
             </div>
 
-            {/* --- SÉCURITÉ ADMIN : Code Secret d'Administration --- */}
+            {/* Admin safety verification code field */}
             {role === 'admin' && (
-              <div className="p-3 bg-amber-500/5 border border-[#d4af37]/20 rounded-2xl animate-fade-in">
-                <label className="block text-[10px] font-mono font-extrabold uppercase tracking-widest text-[#d4af37] mb-1.5 flex items-center gap-1">
+              <div className="p-3 bg-[#F8FAFC] border border-[#E2E8F0] rounded-2xl animate-fade-in">
+                <label className="block text-[10px] font-mono font-extrabold uppercase tracking-widest text-[#334155] mb-1.5 flex items-center gap-1">
                   <Key size={11} /> {t('adminCodeLabel')}
                 </label>
                 <input 
@@ -700,7 +698,7 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
                   value={adminCode}
                   placeholder={t('adminCodePlaceholder')}
                   onChange={(e) => setAdminCode(e.target.value)}
-                  className="w-full text-xs font-mono px-3 py-2 bg-slate-100 dark:bg-slate-950 border border-[#d4af37]/30 rounded-lg text-slate-900 dark:text-amber-100 placeholder-amber-700/50 focus:outline-none"
+                  className="w-full text-xs font-mono px-3 py-2 bg-white border border-[#E2E8F0] rounded-lg text-[#334155] placeholder-[#94A3B8] focus:outline-none"
                   required={role === 'admin'}
                 />
               </div>
@@ -708,15 +706,15 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
 
             <button
               type="submit"
-              className="w-full mt-2 py-3.5 bg-gradient-to-r from-slate-900 to-slate-850 dark:from-[#d4af37] dark:to-amber-600 text-white dark:text-black font-mono font-black text-xs uppercase tracking-widest rounded-xl hover:shadow-lg hover:shadow-amber-500/20 active:scale-97 cursor-pointer transition-all flex items-center justify-center gap-2"
+              className="w-full mt-2 py-3.5 bg-[#3B82F6] hover:bg-[#3B82F6]/90 text-white font-mono font-black text-xs uppercase tracking-widest rounded-xl hover:shadow-sm cursor-pointer transition-all flex items-center justify-center gap-2"
             >
               <UserCheck size={14} />
               {t('createAccountBtn')}
             </button>
 
-            {/* Link toggle for Login from Sign up */}
+            {/* Toggle link */}
             <div className="text-center pt-2">
-              <span className="text-xs text-slate-500 dark:text-slate-400 font-sans">{t('alreadyHaveAccount')}</span>
+              <span className="text-xs text-[#94A3B8] font-sans">{t('alreadyHaveAccount')}</span>
               <button
                 type="button"
                 onClick={() => {
@@ -724,7 +722,7 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
                   setSuccessMessage('');
                   setErrorMessage('');
                 }}
-                className="text-xs font-bold text-emerald-600 dark:text-emerald-450 hover:underline hover:text-emerald-750"
+                className="text-xs font-bold text-[#3B82F6] hover:underline"
               >
                 {t('loginBtn')}
               </button>
@@ -732,66 +730,66 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
           </form>
         )}
 
-        {/* Dynamic bottom information widget */}
-        <div className="mt-6 pt-5 border-t border-slate-100 dark:border-white/5 flex flex-col items-center">
+        {/* Dynamic test accounts helper */}
+        <div className="mt-6 pt-5 border-t border-[#E2E8F0] flex flex-col items-center">
           <button
             onClick={() => setShowTestAccounts(!showTestAccounts)}
-            className="text-[10px] font-mono font-bold tracking-widest uppercase text-slate-500 hover:text-emerald-600 transition-colors"
+            className="text-[10px] font-mono font-bold tracking-widest uppercase text-[#94A3B8] hover:text-[#3B82F6] transition-colors"
           >
             {showTestAccounts ? t('hideTestAccountsBtn') : t('showTestAccountsBtn')}
           </button>
           
           {showTestAccounts && (
-            <div className="mt-3 w-full bg-slate-50 dark:bg-slate-950/80 rounded-2xl p-4 border border-slate-200 dark:border-emerald-500/10 text-[10px] space-y-2 text-slate-600 dark:text-slate-300 select-text animate-slide-down">
-              <p className="font-mono text-[9px] font-bold text-emerald-700 dark:text-[#d4af37] uppercase">{t('demoCredentialsTitle')}</p>
+            <div className="mt-3 w-full bg-[#F8FAFC] rounded-2xl p-4 border border-[#E2E8F0] text-[10px] space-y-2 text-[#334155] select-text animate-slide-down">
+              <p className="font-mono text-[9px] font-bold text-[#3B82F6] uppercase">{t('demoCredentialsTitle')}</p>
               
-              <div className="border-t border-slate-200/50 dark:border-white/5 pt-2 flex justify-between items-center">
+              <div className="border-t border-[#E2E8F0] pt-2 flex justify-between items-center">
                 <div>
-                  <p className="font-extrabold text-[#d4af37]">{t('demoAdminTitle')}</p>
-                  <p className="font-mono text-slate-500 dark:text-slate-400">Email: <span className="text-emerald-700 dark:text-emerald-450 font-bold">admin@rahala.com</span></p>
-                  <p className="font-mono text-slate-500 dark:text-slate-400">Mot de passe: <span className="font-bold text-slate-800 dark:text-white">1234</span></p>
+                  <p className="font-extrabold text-[#3B82F6]">{t('demoAdminTitle')}</p>
+                  <p className="font-mono text-[#94A3B8]">Email: <span className="text-[#3B82F6] font-bold">admin@rahala.com</span></p>
+                  <p className="font-mono text-[#94A3B8]">Mot de passe: <span className="font-bold text-[#334155]">1234</span></p>
                 </div>
                 <button
                   type="button"
                   onClick={() => handleApplyTestCredentials('admin@rahala.com', '1234')}
-                  className="px-2 py-1 bg-emerald-600 text-white font-mono rounded cursor-pointer text-[8px]"
+                  className="px-2.5 py-1 bg-[#3B82F6] text-white font-mono rounded cursor-pointer text-[8px]"
                 >
                   {t('fillBtn')}
                 </button>
               </div>
 
-              <div className="border-t border-slate-200/50 dark:border-white/5 pt-2 flex justify-between items-center">
+              <div className="border-t border-[#E2E8F0] pt-2 flex justify-between items-center">
                 <div>
-                  <p className="font-extrabold text-slate-700 dark:text-slate-200">{t('demoUserTitle')}</p>
-                  <p className="font-mono text-slate-500 dark:text-slate-400">Email: <span className="text-emerald-700 dark:text-emerald-450 font-bold">user@rahla.dz</span></p>
-                  <p className="font-mono text-slate-500 dark:text-slate-400">Mot de passe: <span className="font-bold text-slate-800 dark:text-white">password</span></p>
+                  <p className="font-extrabold text-[#334155]">{t('demoUserTitle')}</p>
+                  <p className="font-mono text-[#94A3B8]">Email: <span className="text-[#3B82F6] font-bold">user@rahla.dz</span></p>
+                  <p className="font-mono text-[#94A3B8]">Mot de passe: <span className="font-bold text-[#334155]">password</span></p>
                 </div>
                 <button
                   type="button"
                   onClick={() => handleApplyTestCredentials('user@rahla.dz', 'password')}
-                  className="px-2 py-1 bg-emerald-600 text-white font-mono rounded cursor-pointer text-[8px]"
+                  className="px-2.5 py-1 bg-[#3B82F6] text-white font-mono rounded cursor-pointer text-[8px]"
                 >
                   {t('fillBtn')}
                 </button>
               </div>
 
-              <div className="border-t border-[#1a1a1a]/5 dark:border-white/5 pt-2 flex justify-between items-center">
+              <div className="border-t border-[#E2E8F0] pt-2 flex justify-between items-center">
                 <div>
-                  <p className="font-extrabold text-slate-700 dark:text-slate-200">{t('demoPremiumUserTitle')}</p>
-                  <p className="font-mono text-slate-500 dark:text-slate-400">Email: <span className="text-emerald-700 dark:text-emerald-450 font-bold">lattab.nidal@gmail.com</span></p>
-                  <p className="font-mono text-slate-500 dark:text-slate-400">Mot de passe: <span className="font-bold text-slate-800 dark:text-white">lattab.nidal@gmail.com</span></p>
+                  <p className="font-extrabold text-[#334155]">{t('demoPremiumUserTitle')}</p>
+                  <p className="font-mono text-[#94A3B8]">Email: <span className="text-[#3B82F6] font-bold">lattab.nidal@gmail.com</span></p>
+                  <p className="font-mono text-[#94A3B8]">Mot de passe: <span className="font-bold text-[#334155]">lattab.nidal@gmail.com</span></p>
                 </div>
                 <button
                   type="button"
                   onClick={() => handleApplyTestCredentials('lattab.nidal@gmail.com', 'lattab.nidal@gmail.com')}
-                  className="px-2 py-1 bg-emerald-600 text-white font-mono rounded cursor-pointer text-[8px]"
+                  className="px-2.5 py-1 bg-[#3B82F6] text-white font-mono rounded cursor-pointer text-[8px]"
                 >
                   {t('fillBtn')}
                 </button>
               </div>
 
-              <p className="border-t border-[#1a1a1a]/5 dark:border-white/5 pt-2 text-[8px] font-sans text-emerald-700 dark:text-emerald-400 flex items-center gap-1 italic">
-                {t('adminCreationHint')} <span className="font-bold font-mono text-slate-950 dark:text-white bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-zinc-800 px-1 rounded">RAHLA2025</span>.
+              <p className="border-t border-[#E2E8F0] pt-2 text-[8px] font-sans text-[#3B82F6] flex items-center gap-1 italic font-medium">
+                {t('adminCreationHint')} <span className="font-bold font-mono text-[#334155] bg-white border border-[#E2E8F0] px-1 rounded">RAHLA2025</span>.
               </p>
             </div>
           )}
@@ -801,4 +799,3 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
     </div>
   );
 };
-

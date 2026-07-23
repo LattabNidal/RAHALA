@@ -47,6 +47,17 @@ const timgadFolderImages = primaryTimgadImage
   ? [primaryTimgadImage, ...timgadImagesList.filter(img => img !== primaryTimgadImage)]
   : timgadImagesList;
 
+const djemilaFolderModules = import.meta.glob('/src/assets/images/Amphithéâtre  Arc de Djemila (Cuicul)/*.{webp,jpg,JPG,jpeg,png}', { eager: true, import: 'default' });
+const djemilaImagesList = Array.from(new Set(Object.values(djemilaFolderModules) as string[])).filter(Boolean);
+
+const primaryDjemilaImage = djemilaImagesList.find(img => img.includes('theatre-djemila') || img.includes('52664290936') || img.includes('site_0191')) 
+  || djemilaImagesList[0] 
+  || '/src/assets/images/Amphithéâtre  Arc de Djemila (Cuicul)/theatre-djemila-1024x576.webp';
+
+const djemilaFolderImages = primaryDjemilaImage 
+  ? [primaryDjemilaImage, ...djemilaImagesList.filter(img => img !== primaryDjemilaImage)]
+  : djemilaImagesList;
+
 export const mockLandmarks: Landmark[] = [
   {
     id: 'casbah',
@@ -247,6 +258,43 @@ export const mockLandmarks: Landmark[] = [
         'Un sitio del Patrimonio Mundial de la UNESCO increíblemente conservado sin construcciones modernas.',
         'Alberga el majestuoso Arco de Trajano, un arco de triunfo reconstruido en el siglo II.',
         'El diseño de cuadrícula es el mejor ejemplo sobreviviente de planificación urbana romana.'
+      ]
+    }
+  },
+  {
+    id: 'djemila',
+    name: 'Amphithéâtre & Arc de Djemila (Cuicul)',
+    location: 'Djemila (Setif)',
+    category: 'historical',
+    rating: 4.9,
+    image: primaryDjemilaImage,
+    panoramas: djemilaFolderImages,
+    description: {
+      en: 'Set 900 meters high in the mountains of Kabylie, Cuicul (Djemila) is one of the most stunning Roman archaeological ruins adapted to mountain terrain, featuring the Triumphal Arch of Caracalla and a 3,000-seat theatre.',
+      fr: "Niché à 900 m d'altitude dans les montagnes de Kabylie, le site de Djémila (l'antique Cuicul) est l'un des ensembles de ruines romaines de montagne les plus spectaculaires au monde, célèbre pour son Arc de Caracalla et son grand théâtre antique.",
+      ar: 'تقع جمود جميلة (كويكول) على ارتفاع 900 متر في جبال الكابلي، وتعتبر واحدة من أروع الآثار الرومانية التلية المصنفة يونسكو، وتتميز بقوس كاراكالا والمسرح الأثري.',
+      es: 'Situada a 900 metros de altitud en las montañas de Kabilia, Cuicul (Djemila) es una de las ruinas romanas de montaña más impresionantes del mundo.'
+    },
+    facts: {
+      en: [
+        'UNESCO World Heritage site N° 191 since 1982.',
+        'Features a remarkably preserved 4th-century paleochristian baptistery with original dome.',
+        'Houses the famous Djemila Museum containing hundreds of square meters of pristine Roman mosaics.'
+      ],
+      fr: [
+        'Inscrit au Patrimoine Mondial de l’UNESCO (N° 191) depuis 1982.',
+        'Abrite un baptistère paléochrétien circulaire avec coupole d’origine en parfait état.',
+        'Possède un musée renfermant d’inestimables mosaïques romaines conservées intactes.'
+      ],
+      ar: [
+        'مصنفة كإرث عالمي في قائمة اليونسكو (رقم 191) منذ عام 1982.',
+        'تضم معمودية مسيحية مبكرة دائرية مع قبتها الأصلية المحفوظة بشكل كامل.',
+        'تضم متحفاً فريداً يحوي مئات الأمتار المربعة من الفسيفساء الرومانية الأصلية.'
+      ],
+      es: [
+        'Sitio del Patrimonio Mundial de la UNESCO desde 1982.',
+        'Cuenta con un baptisterio paleocristiano circular con su cúpula original conservada.',
+        'Alberga un museo con una excepcional colección de mosaicos romanos.'
       ]
     }
   }

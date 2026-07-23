@@ -1,6 +1,6 @@
 {
-  "name": "Remix: Rihla DZ",
-  "description": "An intelligent tourism platform for Algeria featuring virtual digital twin tours, AI companion guides, interactive map booking, multi-language support (AR/FR/EN/ES), and mock payment systems.",
+  "name": "RAHALA",
+  "description": "The premier AI-powered, luxury tourism platform dedicated to Algeria featuring immersive virtual 3D digital twins, AI travel companion guide, smart local transportation booking, and multi-language support.",
   "requestFramePermissions": [],
   "majorCapabilities": [
     "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"

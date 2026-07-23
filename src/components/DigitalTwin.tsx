@@ -14,6 +14,8 @@ import { Lightbox } from './Lightbox';
 import { UnescoDocumentModal } from './UnescoDocumentModal';
 import { SantaCruzDocumentModal } from './SantaCruzDocumentModal';
 import { TassiliDocumentModal } from './TassiliDocumentModal';
+import { DjemilaDocumentModal } from './DjemilaDocumentModal';
+import { TimgadDocumentModal } from './TimgadDocumentModal';
 
 const timgadFolderModules = import.meta.glob('/src/assets/images/Timgad Roman Ruins/*.{webp,jpg,JPG,jpeg,png,jfif,JFIF}', { eager: true, import: 'default' });
 const timgadImagesRaw = Array.from(new Set(Object.values(timgadFolderModules) as string[])).filter(Boolean);
@@ -52,6 +54,11 @@ const hotspotsData: { [key: string]: { name: string; pos: THREE.Vector3; info: s
     { name: 'Roman Arch Plaque', pos: new THREE.Vector3(0, 5, 1.1), info: 'Sandstone engraved attic dedicating the triumphal gateway to Emperor Trajan (AD 100).' },
     { name: 'Corinthian Fluted Capitals', pos: new THREE.Vector3(-3, 3.2, 1.5), info: 'Classical Roman columns made of high-grade fossilized Aurean limestone.' },
     { name: 'Decumanus Maximus paved road', pos: new THREE.Vector3(2, -2, 4), info: 'Symmetric grid-iron stone chariot tracks perfectly aligned with the Roman forum.' }
+  ],
+  djemila: [
+    { name: 'Arc de Caracalla (216 apr. J.-C.)', pos: new THREE.Vector3(0, 5, 1.1), info: 'Porte monumentale ouvrant la voie vers Sitifis, érigée en l’honneur de Caracalla et Julia Domna.' },
+    { name: 'Théâtre Romain Antique (3 000 seats)', pos: new THREE.Vector3(-3, 3.2, 1.5), info: 'Édifice adossé à la pente naturelle de la colline, offrant une acoustique exceptionnelle.' },
+    { name: 'Forum Sévérien & Temple des Septimes', pos: new THREE.Vector3(2, -2, 4), info: 'Vaste place publique dallée de Cuicul dominée par le temple dynastique des Sévères.' }
   ]
 };
 
@@ -853,10 +860,12 @@ export const DigitalTwin: React.FC = () => {
   const [lightboxPhotos, setLightboxPhotos] = useState<any[]>([]);
   const [lightboxIdx, setLightboxIdx] = useState(0);
 
-  // UNESCO, Santa Cruz & Tassili Document Modal states
+  // UNESCO, Santa Cruz, Tassili & Djemila Document Modal states
   const [unescoModalOpen, setUnescoModalOpen] = useState(false);
   const [santaCruzModalOpen, setSantaCruzModalOpen] = useState(false);
   const [tassiliModalOpen, setTassiliModalOpen] = useState(false);
+  const [djemilaModalOpen, setDjemilaModalOpen] = useState(false);
+  const [timgadModalOpen, setTimgadModalOpen] = useState(false);
 
   // Fetch all reviews for calculating average ratings on tabs/cards
   const loadAllReviews = async () => {
@@ -1008,10 +1017,10 @@ export const DigitalTwin: React.FC = () => {
       
       {/* Overview Block */}
       <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-12">
-        <h1 className="text-3xl font-serif font-bold italic tracking-tight text-[#1a1a1a] dark:text-[#f5f2ed] sm:text-4xl text-center">
+        <h1 className="text-3xl font-serif font-bold italic tracking-tight text-[#334155] sm:text-4xl text-center">
           {t('twinTitle')}
         </h1>
-        <p className="mt-4 text-xs tracking-widest uppercase font-mono text-[#d4af37]">
+        <p className="mt-4 text-xs tracking-widest uppercase font-mono text-[#3B82F6]">
           {t('twinSubtitle')}
         </p>
       </div>
@@ -1029,14 +1038,14 @@ export const DigitalTwin: React.FC = () => {
             }}
             className={`px-4 py-2.5 text-xs font-mono uppercase tracking-wider transition-all duration-300 rounded-none border ${
               activeSpot.id === landmark.id
-                ? 'bg-[#1a1a1a] dark:bg-[#f5f2ed] text-[#f5f2ed] dark:text-[#1a1a1a] border-[#d4af37] font-bold shadow-lg'
-                : 'bg-transparent text-[#1a1a1a]/80 dark:text-[#f5f2ed]/80 border-[#1a1a1a]/15 dark:border-white/10 hover:border-[#d4af37]'
+                ? 'bg-[#3B82F6] text-white border-[#3B82F6] font-bold shadow-sm'
+                : 'bg-transparent text-[#334155] border-[#E2E8F0] hover:border-[#3B82F6]'
             }`}
           >
             <span className="flex items-center space-x-1.5 space-x-reverse justify-center">
               <span>{landmark.name}</span>
-              <span className="text-[#d4af37] font-sans font-bold flex items-center space-x-0.5 shrink-0 bg-black/45 px-1 py-0.5 rounded border border-[#d4af37]/20 text-[10px]">
-                <Star size={9} className="fill-[#d4af37] text-[#d4af37]" />
+              <span className="text-[#3B82F6] font-sans font-bold flex items-center space-x-0.5 shrink-0 bg-[#3B82F6]/5 px-1.5 py-0.5 rounded border border-[#3B82F6]/10 text-[10px]">
+                <Star size={9} className="fill-[#3B82F6] text-[#3B82F6]" />
                 <span>{getAverageRating(landmark.id)}</span>
               </span>
             </span>
@@ -1051,8 +1060,8 @@ export const DigitalTwin: React.FC = () => {
         <div className="lg:col-span-8 flex flex-col space-y-4">
           
           {/* Real-time solid 3D mode vs 360 photo screen mode toggle */}
-          <div className="flex bg-[#eae7e1] dark:bg-black p-1 border border-[#1a1a1a]/10 dark:border-white/10 justify-between items-center">
-            <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-[#1a1a1a]/80 dark:text-white/80 pl-3">
+          <div className="flex bg-[#F8FAFC] p-1 border border-[#E2E8F0] justify-between items-center rounded-xl">
+            <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-[#334155] pl-3">
               🖥️ Viewing module mode selection:
             </span>
             <div className="flex space-x-1 space-x-reverse">
@@ -1061,13 +1070,13 @@ export const DigitalTwin: React.FC = () => {
                   setViewMode('exact3d');
                   setSelectedHotspot(null);
                 }}
-                className={`flex items-center space-x-1.5 px-3 py-1.5 font-mono text-[9px] uppercase tracking-widest cursor-pointer border ${
+                className={`flex items-center space-x-1.5 px-3 py-1.5 font-mono text-[9px] uppercase tracking-widest cursor-pointer border rounded-lg ${
                   viewMode === 'exact3d'
-                    ? 'bg-[#1a1a1a] text-[#f5f2ed] dark:bg-[#f5f2ed] dark:text-black border-[#d4af37] font-bold'
-                    : 'bg-transparent text-[#1a1a1a] dark:text-white border-transparent'
+                    ? 'bg-[#3B82F6] text-white border-[#3B82F6] font-bold shadow-sm'
+                    : 'bg-transparent text-[#334155] border-transparent'
                 }`}
               >
-                <Layers size={11} className="text-[#d4af37]" />
+                <Layers size={11} className="text-[#3B82F6]" />
                 <span>Exact 3D Solid Mesh</span>
               </button>
               <button
@@ -1075,13 +1084,13 @@ export const DigitalTwin: React.FC = () => {
                   setViewMode('panorama');
                   setSelectedHotspot(null);
                 }}
-                className={`flex items-center space-x-1.5 px-3 py-1.5 font-mono text-[9px] uppercase tracking-widest cursor-pointer border ${
+                className={`flex items-center space-x-1.5 px-3 py-1.5 font-mono text-[9px] uppercase tracking-widest cursor-pointer border rounded-lg ${
                   viewMode === 'panorama'
-                    ? 'bg-[#1a1a1a] text-[#f5f2ed] dark:bg-[#f5f2ed] dark:text-black border-[#d4af37] font-bold'
-                    : 'bg-transparent text-[#1a1a1a] dark:text-white border-transparent'
+                    ? 'bg-[#3B82F6] text-white border-[#3B82F6] font-bold shadow-sm'
+                    : 'bg-transparent text-[#334155] border-transparent'
                 }`}
               >
-                <Compass size={11} className="text-[#d4af37]" />
+                <Compass size={11} className="text-[#3B82F6]" />
                 <span>360° Photo Panorama</span>
               </button>
             </div>
@@ -1219,20 +1228,20 @@ export const DigitalTwin: React.FC = () => {
 
           {/* Render real-time exact 3D controls bar if 3D mode is active */}
           {viewMode === 'exact3d' && (
-            <div className="bg-white dark:bg-[#161a23] border border-gray-200 dark:border-gray-800 p-4 rounded-xl flex flex-wrap gap-4 items-center justify-between mt-4 shadow-xs">
+            <div className="bg-white border border-[#E2E8F0] p-4 rounded-xl flex flex-wrap gap-4 items-center justify-between mt-4 shadow-xs">
               
               {/* Dynamic light preset controller triggers */}
               <div className="flex items-center space-x-2 space-x-reverse">
-                <span className="text-[10px] font-mono uppercase tracking-widest text-gray-500 dark:text-gray-400 font-bold">
+                <span className="text-[10px] font-mono uppercase tracking-widest text-[#94A3B8] font-bold">
                   ☀️ Solar Gaze Ambient:
                 </span>
-                <div className="flex border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
+                <div className="flex border border-[#E2E8F0] rounded-lg overflow-hidden">
                   <button
                     onClick={() => setLightPreset('day')}
                     className={`px-3 py-1 text-[9px] font-mono uppercase tracking-widest cursor-pointer ${
                       lightPreset === 'day' 
-                        ? 'bg-emerald-600 text-white font-bold' 
-                        : 'bg-transparent text-gray-500 hover:text-emerald-600'
+                        ? 'bg-[#3B82F6] text-white font-bold' 
+                        : 'bg-transparent text-[#94A3B8] hover:text-[#3B82F6]'
                     }`}
                   >
                     Day Oasis
@@ -1241,8 +1250,8 @@ export const DigitalTwin: React.FC = () => {
                     onClick={() => setLightPreset('sunset')}
                     className={`px-3 py-1 text-[9px] font-mono uppercase tracking-widest cursor-pointer ${
                       lightPreset === 'sunset' 
-                        ? 'bg-emerald-600 text-white font-bold' 
-                        : 'bg-transparent text-gray-500 hover:text-emerald-600'
+                        ? 'bg-[#3B82F6] text-white font-bold' 
+                        : 'bg-transparent text-[#94A3B8] hover:text-[#3B82F6]'
                     }`}
                   >
                     Sunset Warm
@@ -1251,8 +1260,8 @@ export const DigitalTwin: React.FC = () => {
                     onClick={() => setLightPreset('midnight')}
                     className={`px-3 py-1 text-[9px] font-mono uppercase tracking-widest cursor-pointer ${
                       lightPreset === 'midnight' 
-                        ? 'bg-emerald-600 text-white font-bold' 
-                        : 'bg-transparent text-gray-500 hover:text-emerald-600'
+                        ? 'bg-[#3B82F6] text-white font-bold' 
+                        : 'bg-transparent text-[#94A3B8] hover:text-[#3B82F6]'
                     }`}
                   >
                     Desert Void
@@ -1262,15 +1271,15 @@ export const DigitalTwin: React.FC = () => {
 
               {/* Wireframe solid polygons toggle */}
               <div className="flex items-center space-x-2 space-x-reverse">
-                <span className="text-[10px] font-mono uppercase tracking-widest text-gray-500 dark:text-gray-400 font-bold">
+                <span className="text-[10px] font-mono uppercase tracking-widest text-[#94A3B8] font-bold">
                   📐 Digital Twin Blueprint:
                 </span>
                 <button
                   onClick={() => setShowWireframe(!showWireframe)}
                   className={`px-3 py-1 border font-mono text-[9px] uppercase tracking-widest transition-all cursor-pointer rounded-lg ${
                     showWireframe 
-                      ? 'bg-emerald-600 text-white border-emerald-600 font-bold' 
-                      : 'border-gray-200 text-gray-700 dark:border-gray-750 dark:text-gray-300'
+                      ? 'bg-[#3B82F6] text-white border-[#3B82F6] font-bold' 
+                      : 'border-[#E2E8F0] text-[#334155]'
                   }`}
                 >
                   {showWireframe ? 'View Solid Architectural Model' : 'View Polygon Wireframes'}
@@ -1282,13 +1291,13 @@ export const DigitalTwin: React.FC = () => {
 
           {/* Audio voice simulation bar */}
           {audioFeedbackOn && viewMode === 'panorama' && (
-            <div className="p-4 bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800 text-xs text-gray-800 dark:text-gray-200 animate-fade-in rounded-xl mt-4">
+            <div className="p-4 bg-[#F8FAFC] border border-[#E2E8F0] text-xs text-[#334155] animate-fade-in rounded-xl mt-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-2.5 space-x-reverse">
-                  <Volume2 className="text-emerald-600 animate-bounce" size={16} />
+                  <Volume2 className="text-[#3B82F6] animate-bounce" size={16} />
                   <span className="font-semibold">Playing: Simulated Historic Echo acoustics for {activeSpot.name} ...</span>
                 </div>
-                <span className="font-mono text-[10px] text-gray-400">Sample: 44.1kHz</span>
+                <span className="font-mono text-[10px] text-[#94A3B8]">Sample: 44.1kHz</span>
               </div>
             </div>
           )}
@@ -1296,15 +1305,15 @@ export const DigitalTwin: React.FC = () => {
         </div>
  
         {/* Informative Chronicle Sidebar - 4 Columns */}
-        <div className="lg:col-span-4 bg-white dark:bg-[#161a23] border border-gray-200 dark:border-gray-800 rounded-2xl p-6 shadow-xs flex flex-col justify-between">
+        <div className="lg:col-span-4 bg-white border border-[#E2E8F0] rounded-2xl p-6 shadow-xs flex flex-col justify-between">
           
           <div>
             {/* Landmark Title block with rating */}
-            <div className="mb-5 border-b border-gray-150 dark:border-gray-800 pb-4">
-              <span className="text-[10px] uppercase font-mono tracking-widest text-[#d4af37] block mb-0.5">
+            <div className="mb-5 border-b border-[#E2E8F0] pb-4">
+              <span className="text-[10px] uppercase font-mono tracking-widest text-[#3B82F6] block mb-0.5">
                 📍 {activeSpot.location}
               </span>
-              <h2 className="text-xl font-serif font-black text-gray-900 dark:text-white leading-tight">
+              <h2 className="text-xl font-serif font-black text-[#334155] leading-tight">
                 {activeSpot.name}
               </h2>
               {/* Average Rating Block */}
@@ -1347,14 +1356,50 @@ export const DigitalTwin: React.FC = () => {
               {activeSpot.id === 'tassili' || activeSpot.name.toLowerCase().includes('tassili') ? (
                 <button
                   onClick={() => setTassiliModalOpen(true)}
-                  className="w-full py-2.5 px-3 bg-gradient-to-r from-amber-500/10 via-amber-500/20 to-amber-500/10 hover:from-amber-500/20 hover:to-amber-500/30 text-amber-700 dark:text-amber-300 border border-amber-500/40 rounded-xl text-xs font-bold transition flex items-center justify-between shadow-xs cursor-pointer group"
+                  className="w-full py-2.5 px-3 bg-gradient-to-r from-amber-500/5 via-amber-500/10 to-amber-500/5 hover:from-amber-500/10 hover:to-amber-500/20 text-amber-850 border border-amber-500/20 rounded-xl text-xs font-bold transition flex items-center justify-between shadow-xs cursor-pointer group"
                 >
                   <div className="flex items-center space-x-2 space-x-reverse">
                     <span className="text-base">📄</span>
                     <div className="text-left font-sans">
                       <span className="block text-[11px] font-bold">Dossier UNESCO N° 179 — Tassili n'Ajjer</span>
-                      <span className="block text-[9px] text-amber-600/80 dark:text-amber-400/80 font-mono">
+                      <span className="block text-[9px] text-amber-700 font-mono">
                         Art Rupestre (+15k Peintures) & Forêt de Pierre (PDF)
+                      </span>
+                    </div>
+                  </div>
+                  <span className="text-xs group-hover:translate-x-1 transition-transform font-mono">
+                    Ouvrir &rarr;
+                  </span>
+                </button>
+              ) : activeSpot.id === 'djemila' || activeSpot.name.toLowerCase().includes('djemila') || activeSpot.name.toLowerCase().includes('cuicul') ? (
+                <button
+                  onClick={() => setDjemilaModalOpen(true)}
+                  className="w-full py-2.5 px-3 bg-gradient-to-r from-amber-500/5 via-amber-500/10 to-amber-500/5 hover:from-amber-500/10 hover:to-amber-500/20 text-amber-850 border border-amber-500/20 rounded-xl text-xs font-bold transition flex items-center justify-between shadow-xs cursor-pointer group"
+                >
+                  <div className="flex items-center space-x-2 space-x-reverse">
+                    <span className="text-base">📄</span>
+                    <div className="text-left font-sans">
+                      <span className="block text-[11px] font-bold">Dossier UNESCO N° 191 — Djémila (Cuicul)</span>
+                      <span className="block text-[9px] text-amber-700 font-mono">
+                        Arc de Caracalla, Théâtre Antique & Galerie Photos (PDF)
+                      </span>
+                    </div>
+                  </div>
+                  <span className="text-xs group-hover:translate-x-1 transition-transform font-mono">
+                    Ouvrir &rarr;
+                  </span>
+                </button>
+              ) : activeSpot.id === 'timgad' || activeSpot.name.toLowerCase().includes('timgad') || activeSpot.name.toLowerCase().includes('thamugadi') ? (
+                <button
+                  onClick={() => setTimgadModalOpen(true)}
+                  className="w-full py-2.5 px-3 bg-gradient-to-r from-amber-500/5 via-amber-500/10 to-amber-500/5 hover:from-amber-500/10 hover:to-amber-500/20 text-amber-850 border border-amber-500/20 rounded-xl text-xs font-bold transition flex items-center justify-between shadow-xs cursor-pointer group"
+                >
+                  <div className="flex items-center space-x-2 space-x-reverse">
+                    <span className="text-base">📄</span>
+                    <div className="text-left font-sans">
+                      <span className="block text-[11px] font-bold">Rapport Périodique UNESCO N° 194 — Timgad</span>
+                      <span className="block text-[9px] text-amber-700 font-mono">
+                        Arc de Trajan, Plan Orthogonal & Bonnes Pratiques OGEBC (PDF)
                       </span>
                     </div>
                   </div>
@@ -1365,13 +1410,13 @@ export const DigitalTwin: React.FC = () => {
               ) : activeSpot.id === 'santa-cruz' || activeSpot.name.toLowerCase().includes('santa') ? (
                 <button
                   onClick={() => setSantaCruzModalOpen(true)}
-                  className="w-full py-2.5 px-3 bg-gradient-to-r from-amber-500/10 via-amber-500/20 to-amber-500/10 hover:from-amber-500/20 hover:to-amber-500/30 text-amber-700 dark:text-amber-300 border border-amber-500/40 rounded-xl text-xs font-bold transition flex items-center justify-between shadow-xs cursor-pointer group"
+                  className="w-full py-2.5 px-3 bg-gradient-to-r from-amber-500/5 via-amber-500/10 to-amber-500/5 hover:from-amber-500/10 hover:to-amber-500/20 text-amber-850 border border-amber-500/20 rounded-xl text-xs font-bold transition flex items-center justify-between shadow-xs cursor-pointer group"
                 >
                   <div className="flex items-center space-x-2 space-x-reverse">
                     <span className="text-base">📄</span>
                     <div className="text-left font-sans">
                       <span className="block text-[11px] font-bold">Dossier Historique Chapelle Santa-Cruz</span>
-                      <span className="block text-[9px] text-amber-600/80 dark:text-amber-400/80 font-mono">
+                      <span className="block text-[9px] text-amber-700 font-mono">
                         Étude Choléra 1849, Tour 1873 & Fort Espagnol (PDF)
                       </span>
                     </div>
@@ -1383,13 +1428,13 @@ export const DigitalTwin: React.FC = () => {
               ) : (
                 <button
                   onClick={() => setUnescoModalOpen(true)}
-                  className="w-full py-2.5 px-3 bg-gradient-to-r from-amber-500/10 via-amber-500/20 to-amber-500/10 hover:from-amber-500/20 hover:to-amber-500/30 text-amber-700 dark:text-amber-300 border border-amber-500/40 rounded-xl text-xs font-bold transition flex items-center justify-between shadow-xs cursor-pointer group"
+                  className="w-full py-2.5 px-3 bg-gradient-to-r from-amber-500/5 via-amber-500/10 to-amber-500/5 hover:from-amber-500/10 hover:to-amber-500/20 text-amber-850 border border-amber-500/20 rounded-xl text-xs font-bold transition flex items-center justify-between shadow-xs cursor-pointer group"
                 >
                   <div className="flex items-center space-x-2 space-x-reverse">
                     <span className="text-base">📄</span>
                     <div className="text-left font-sans">
                       <span className="block text-[11px] font-bold">Dossier Officiel UNESCO N° 555</span>
-                      <span className="block text-[9px] text-amber-600/80 dark:text-amber-400/80 font-mono">
+                      <span className="block text-[9px] text-amber-700 font-mono">
                         Fiche d'Inscription & Rapport ICOMOS (PDF)
                       </span>
                     </div>
@@ -1405,10 +1450,10 @@ export const DigitalTwin: React.FC = () => {
             <div className="space-y-4 mb-6">
               {(activeSpot.facts[language] || activeSpot.facts['en']).map((fact, id) => (
                 <div key={id} className="flex items-start space-x-3 space-x-reverse">
-                  <div className="w-5 h-5 bg-emerald-600 text-white flex items-center justify-center text-[9px] font-mono font-bold shrink-0 mt-0.5 rounded-full">
+                  <div className="w-5 h-5 bg-[#3B82F6] text-white flex items-center justify-center text-[9px] font-mono font-bold shrink-0 mt-0.5 rounded-full">
                     {id + 1}
                   </div>
-                  <p className="text-xs text-gray-700 dark:text-gray-300 leading-relaxed font-sans">
+                  <p className="text-xs text-[#334155] leading-relaxed font-sans">
                     {fact}
                   </p>
                 </div>
@@ -1417,8 +1462,8 @@ export const DigitalTwin: React.FC = () => {
 
             {/* 3D Model specific hotspot facts catalog trigger */}
             {viewMode === 'exact3d' && (
-              <div className="border-t border-gray-100 dark:border-gray-800 pt-5 mt-5">
-                <h4 className="text-[10px] font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 mb-3 flex items-center space-x-1">
+              <div className="border-t border-[#E2E8F0] pt-5 mt-5">
+                <h4 className="text-[10px] font-bold uppercase tracking-wider text-[#3B82F6] mb-3 flex items-center space-x-1">
                   <Sparkles size={11} />
                   <span>3D Key Structural Hotspots (Exact)</span>
                 </h4>
@@ -1433,13 +1478,13 @@ export const DigitalTwin: React.FC = () => {
                       }}
                       className={`text-right w-full text-start px-3 py-2 text-xs transition-all border rounded-xl cursor-pointer ${
                         selectedHotspot?.name === spot.name
-                          ? 'bg-emerald-50 dark:bg-emerald-950/20 text-emerald-700 dark:text-emerald-400 border-emerald-600 font-bold'
-                          : 'bg-gray-50 hover:bg-gray-100 dark:bg-gray-900 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300 border-transparent'
+                          ? 'bg-[#3B82F6]/5 text-[#3B82F6] border-[#3B82F6] font-bold'
+                          : 'bg-[#F8FAFC] hover:bg-[#F8FAFC]/80 text-[#334155] border-transparent'
                       }`}
                     >
                       <span className="flex items-center justify-between">
                         <span className="font-semibold text-[11px] truncate">{spot.name}</span>
-                        <span className="text-[9px] text-emerald-600 dark:text-emerald-400 font-bold">Zoom &rarr;</span>
+                        <span className="text-[9px] text-[#3B82F6] font-bold">Zoom &rarr;</span>
                       </span>
                     </button>
                   ))}
@@ -1447,11 +1492,11 @@ export const DigitalTwin: React.FC = () => {
 
                 {/* Hotspot details bubble inline if selected */}
                 {selectedHotspot && (
-                  <div className="mt-4 p-3.5 border border-emerald-100 dark:border-emerald-900/50 bg-emerald-50/30 dark:bg-emerald-950/10 rounded-xl text-xs animate-fade-in font-sans leading-relaxed">
-                    <strong className="block text-emerald-700 dark:text-emerald-400 mb-1 text-[11px] font-bold uppercase border-b border-emerald-100 dark:border-emerald-900/30 pb-1">
+                  <div className="mt-4 p-3.5 border border-[#3B82F6]/25 bg-[#3B82F6]/5 rounded-xl text-xs animate-fade-in font-sans leading-relaxed">
+                    <strong className="block text-[#3B82F6] mb-1 text-[11px] font-bold uppercase border-b border-[#3B82F6]/10 pb-1">
                       🔍 {selectedHotspot.name}
                     </strong>
-                    <p className="text-gray-750 dark:text-gray-350 text-[11px]">
+                    <p className="text-[#334155] text-[11px]">
                       {selectedHotspot.info}
                     </p>
                   </div>
@@ -1460,14 +1505,14 @@ export const DigitalTwin: React.FC = () => {
             )}
 
             {/* Real Photos & Gallery of the Site */}
-            <div className="border-t border-gray-100 dark:border-gray-800 pt-5 mt-5">
+            <div className="border-t border-[#E2E8F0] pt-5 mt-5">
               <div className="flex items-center justify-between mb-3">
-                <h4 className="text-[10px] font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 flex items-center space-x-1.5 space-x-reverse">
-                  <ImageIcon size={11} className="text-emerald-600" />
+                <h4 className="text-[10px] font-bold uppercase tracking-wider text-[#3B82F6] flex items-center space-x-1.5 space-x-reverse">
+                  <ImageIcon size={11} className="text-[#3B82F6]" />
                   <span>{language === 'ar' ? 'Photothèque Officielle du Site' : 'Photothèque Officielle & Clichés Authentiques'}</span>
                 </h4>
                 {realPhotos.length > 0 && (
-                  <span className="text-[9px] font-mono text-amber-600 dark:text-amber-400 font-bold bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">
+                  <span className="text-[9px] font-mono text-amber-600 font-bold bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">
                     {realPhotos.length} {language === 'ar' ? 'صورة' : 'Clichés'}
                   </span>
                 )}
@@ -1486,7 +1531,7 @@ export const DigitalTwin: React.FC = () => {
                         setLightboxIdx(idx);
                         setLightboxOpen(true);
                       }}
-                      className="relative h-14 rounded-lg overflow-hidden border border-gray-250 dark:border-gray-700 hover:scale-105 active:scale-95 transition-all cursor-pointer bg-gray-100 group"
+                      className="relative h-14 rounded-lg overflow-hidden border border-gray-200 hover:scale-105 active:scale-95 transition-all cursor-pointer bg-[#F8FAFC] group"
                       title={photo.author || `${activeSpot.name} - Cliché ${idx + 1}`}
                     >
                       <img
@@ -1499,16 +1544,16 @@ export const DigitalTwin: React.FC = () => {
                   ))}
                 </div>
               ) : (
-                <p className="text-[10px] text-gray-450 italic">
+                <p className="text-[10px] text-gray-400 italic">
                   {language === 'ar' ? 'لا توجد صور حقيقية متوفرة حالياً.' : 'No certified real photos available.'}
                 </p>
               )}
             </div>
 
             {/* Reviews & Feedback Section */}
-            <div className="border-t border-gray-100 dark:border-gray-800 pt-5 mt-5">
-              <h4 className="text-[10px] font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 mb-3 flex items-center space-x-1.5 space-x-reverse">
-                <MessageSquare size={11} className="text-emerald-600" />
+            <div className="border-t border-[#E2E8F0] pt-5 mt-5">
+              <h4 className="text-[10px] font-bold uppercase tracking-wider text-[#3B82F6] mb-3 flex items-center space-x-1.5 space-x-reverse">
+                <MessageSquare size={11} className="text-[#3B82F6]" />
                 <span>{language === 'ar' ? 'آراء الزوار والتقييمات' : 'Visitor Reviews & Feedback'}</span>
               </h4>
 
@@ -1520,7 +1565,7 @@ export const DigitalTwin: React.FC = () => {
                   </div>
                 ) : reviews.length > 0 ? (
                   reviews.map((rev) => (
-                    <div key={rev.id} className="p-2.5 bg-gray-50 dark:bg-gray-900/40 border border-gray-100 dark:border-gray-800/65 rounded-xl text-[11px] font-sans">
+                    <div key={rev.id} className="p-2.5 bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl text-[11px] font-sans">
                       <div className="flex items-center justify-between mb-1.5">
                         <div className="flex items-center space-x-1.5 space-x-reverse">
                           <img
@@ -1528,7 +1573,7 @@ export const DigitalTwin: React.FC = () => {
                             alt={rev.author_name}
                             className="w-4.5 h-4.5 rounded-full object-cover"
                           />
-                          <span className="font-bold text-gray-800 dark:text-gray-200">
+                          <span className="font-bold text-[#334155]">
                             {rev.author_name || "Voyageur"}
                           </span>
                         </div>
@@ -1537,15 +1582,15 @@ export const DigitalTwin: React.FC = () => {
                             <Star
                               key={i}
                               size={8}
-                              className={i < rev.rating ? "fill-amber-400 text-amber-400" : "text-gray-300 dark:text-gray-600"}
+                              className={i < rev.rating ? "fill-amber-400 text-amber-400" : "text-gray-200"}
                             />
                           ))}
                         </div>
                       </div>
-                      <p className="text-gray-655 dark:text-gray-300 leading-normal text-[10.5px]">
+                      <p className="text-[#334155] leading-normal text-[10.5px]">
                         {rev.comment}
                       </p>
-                      <span className="block text-[9px] text-gray-400 mt-1 font-mono">
+                      <span className="block text-[9px] text-[#94A3B8] mt-1 font-mono">
                         {new Date(rev.created_at || rev.date).toLocaleDateString()}
                       </span>
                     </div>
@@ -1559,9 +1604,9 @@ export const DigitalTwin: React.FC = () => {
 
               {/* Review Submit Form */}
               {currentUser ? (
-                <form onSubmit={handlePostReview} className="space-y-3 bg-gray-50/50 dark:bg-gray-900/20 p-3 border border-gray-100 dark:border-gray-850/40 rounded-xl">
+                <form onSubmit={handlePostReview} className="space-y-3 bg-[#F8FAFC] p-3 border border-[#E2E8F0] rounded-xl">
                   <div className="flex items-center justify-between">
-                    <span className="text-[10px] font-mono font-bold text-gray-500 dark:text-gray-400">
+                    <span className="text-[10px] font-mono font-bold text-[#94A3B8]">
                       {language === 'ar' ? 'تقييمك بالنجوم:' : 'Your Star Rating:'}
                     </span>
                     <div className="flex space-x-1 space-x-reverse">
@@ -1574,7 +1619,7 @@ export const DigitalTwin: React.FC = () => {
                         >
                           <Star
                             size={14}
-                            className={i < newRating ? "fill-amber-400 text-amber-400" : "text-gray-300 dark:text-gray-600"}
+                            className={i < newRating ? "fill-amber-400 text-amber-400" : "text-gray-300"}
                           />
                         </button>
                       ))}
@@ -1587,7 +1632,7 @@ export const DigitalTwin: React.FC = () => {
                       onChange={(e) => setNewComment(e.target.value)}
                       placeholder={language === 'ar' ? 'اكتب تعليقاً قصيراً هنا...' : 'Write a short comment here...'}
                       rows={2}
-                      className="w-full text-[11px] p-2 border border-gray-150 dark:border-gray-800 rounded-lg focus:outline-none focus:border-emerald-600 bg-white dark:bg-gray-900 text-gray-800 dark:text-white placeholder-gray-400"
+                      className="w-full text-[11px] p-2 border border-[#E2E8F0] rounded-lg focus:outline-none focus:border-[#3B82F6] bg-white text-[#334155] placeholder-gray-400"
                     />
                   </div>
 
@@ -1599,21 +1644,21 @@ export const DigitalTwin: React.FC = () => {
 
                   <button
                     type="submit"
-                    className="w-full py-1.5 bg-emerald-600 hover:bg-emerald-750 text-white font-mono text-[10px] uppercase font-bold tracking-wider rounded-lg transition-all cursor-pointer shadow-md"
+                    className="w-full py-1.5 bg-[#3B82F6] hover:bg-[#3B82F6]/90 text-white font-mono text-[10px] uppercase font-bold tracking-wider rounded-lg transition-all cursor-pointer shadow-sm"
                   >
                     {language === 'ar' ? 'إرسال التقييم' : 'Submit Review'}
                   </button>
                 </form>
               ) : (
-                <div className="p-3 bg-gray-50/60 dark:bg-gray-900/30 border border-gray-100 dark:border-gray-800/40 rounded-xl text-center">
-                  <p className="text-[10px] text-gray-500 dark:text-gray-400 mb-2 font-sans">
+                <div className="p-3 bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl text-center">
+                  <p className="text-[10px] text-[#94A3B8] mb-2 font-sans">
                     {language === 'ar' ? 'يجب تسجيل الدخول لنشر تقييمك.' : 'You must be logged in to post a review.'}
                   </p>
                   <button
                     onClick={() => {
                       window.location.hash = '#/auth';
                     }}
-                    className="text-[9.5px] font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-450 underline hover:text-emerald-700 cursor-pointer"
+                    className="text-[9.5px] font-bold uppercase tracking-wider text-[#3B82F6] underline hover:text-[#3B82F6]/80 cursor-pointer"
                   >
                     {language === 'ar' ? 'تسجيل الدخول الآن &rarr;' : 'Log In Now &rarr;'}
                   </button>
@@ -1624,22 +1669,22 @@ export const DigitalTwin: React.FC = () => {
           </div>
 
           {/* Premium access overlay if applicable */}
-          <div className="mt-8 pt-6 border-t border-gray-100 dark:border-gray-800">
-            <div className="bg-gray-50 dark:bg-gray-900/40 p-4 border border-gray-100 dark:border-gray-800 rounded-xl">
-              <h4 className="text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 mb-2.5 flex items-center space-x-1.5 space-x-reverse">
-                <Sparkles size={13} className="text-emerald-600" />
+          <div className="mt-8 pt-6 border-t border-[#E2E8F0]">
+            <div className="bg-[#F8FAFC] p-4 border border-[#E2E8F0] rounded-xl">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-[#3B82F6] mb-2.5 flex items-center space-x-1.5 space-x-reverse">
+                <Sparkles size={13} className="text-[#3B82F6]" />
                 <span>Rihla Gold VIP 3D rendering Privilege</span>
               </h4>
-              <p className="text-[10px] text-gray-500 dark:text-gray-400 leading-relaxed mb-3">
+              <p className="text-[10px] text-[#94A3B8] leading-relaxed mb-3">
                 Access higher precision textures, automated vector alignment, and immersive acoustic parameters.
               </p>
               {currentUser?.isPremium ? (
-                <span className="inline-flex items-center space-x-1 border border-emerald-200 dark:border-emerald-800 py-1 px-2.5 bg-emerald-50 dark:bg-emerald-950/20 text-emerald-600 dark:text-emerald-400 text-[9px] font-bold uppercase tracking-wider rounded-lg">
+                <span className="inline-flex items-center space-x-1 border border-[#3B82F6]/20 py-1 px-2.5 bg-[#3B82F6]/5 text-[#3B82F6] text-[9px] font-bold uppercase tracking-wider rounded-lg">
                   <span>✓ Authorized VIP Level Access</span>
                 </span>
               ) : (
                 <button 
-                  className="text-[9px] font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-450 underline hover:text-emerald-700 cursor-pointer"
+                  className="text-[9px] font-bold uppercase tracking-wider text-[#3B82F6] underline hover:text-[#3B82F6]/80 cursor-pointer"
                   onClick={() => {
                     const el = document.getElementById('dashboard-premium-pricing');
                     if(el) el.scrollIntoView({ behavior: 'smooth' });
@@ -1684,6 +1729,18 @@ export const DigitalTwin: React.FC = () => {
       <TassiliDocumentModal
         isOpen={tassiliModalOpen}
         onClose={() => setTassiliModalOpen(false)}
+        siteName={activeSpot.name}
+      />
+
+      <DjemilaDocumentModal
+        isOpen={djemilaModalOpen}
+        onClose={() => setDjemilaModalOpen(false)}
+        siteName={activeSpot.name}
+      />
+
+      <TimgadDocumentModal
+        isOpen={timgadModalOpen}
+        onClose={() => setTimgadModalOpen(false)}
         siteName={activeSpot.name}
       />
 

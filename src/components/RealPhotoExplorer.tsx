@@ -73,7 +73,8 @@ export const RealPhotoExplorer: React.FC = () => {
     { name: "Basilique Notre-Dame d'Afrique", label: { en: "Notre-Dame d'Afrique", fr: "Notre-Dame d'Afrique", ar: "كنيسة السيدة الإفريقية" } },
     { name: "Jardin d'Essai d'Hamma", label: { en: "Hamma Test Garden", fr: "Jardin d'Essai d'Hamma", ar: "حديقة التجارب الحامة" } },
     { name: "Mémorial du Martyr Alger", label: { en: "Martyrs' Memorial", fr: "Mémorial du Martyr", ar: "مقام الشهيد" } },
-    { name: "Ruines Romaines de Tipaza", label: { en: "Tipaza Roman Ruins", fr: "Ruines de Tipaza", ar: "الآثار الرومانية بتيبازة" } }
+    { name: "Ruines Romaines de Tipaza", label: { en: "Tipaza Roman Ruins", fr: "Ruines de Tipaza", ar: "الآثار الرومانية بتيبازة" } },
+    { name: "Amphithéâtre & Arc de Djemila", label: { en: "Djemila Cuicul Ruins", fr: "Amphithéâtre & Arc de Djémila (Cuicul)", ar: "آثار جميلة الرومانية" } }
   ];
 
   // Primary fetch handler implementation
@@ -252,15 +253,15 @@ export const RealPhotoExplorer: React.FC = () => {
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
-              className="bg-amber-50 dark:bg-amber-950/20 border border-amber-200/60 dark:border-amber-900/30 rounded-2xl p-5 space-y-4"
+              className="bg-amber-50 border border-amber-200/60 rounded-2xl p-5 space-y-4"
             >
               <div className="flex items-start gap-3">
                 <AlertCircle className="text-amber-600 shrink-0 mt-0.5" size={18} />
                 <div className="space-y-1">
-                  <h4 className="text-xs font-black text-amber-800 dark:text-amber-400 uppercase tracking-wider">
+                  <h4 className="text-xs font-black text-amber-800 uppercase tracking-wider">
                     {language === 'ar' ? 'مفتاح Google Maps Platform API' : 'Configuration Google Maps Platform'}
                   </h4>
-                  <p className="text-xs text-amber-700/80 dark:text-amber-500/80 leading-relaxed font-sans">
+                  <p className="text-xs text-amber-700/80 leading-relaxed font-sans">
                     {language === 'ar'
                       ? 'النظام يستخدم المفتاح المدمج بالخادم افتراضياً. إذا كنت تريد استخدام مفتاحك الخاص للبحث بلا قيود، يمكنك إدخاله وحفظه محلياً في متصفحك.'
                       : 'L\'application utilise automatiquement la clé serveur par défaut. Si vous préférez utiliser votre propre clé Google Maps API, insérez-la ci-dessous (enregistrée uniquement localement dans votre navigateur).'}
@@ -274,7 +275,7 @@ export const RealPhotoExplorer: React.FC = () => {
                   placeholder="AIzaSy..."
                   value={customKey}
                   onChange={(e) => setCustomKey(e.target.value)}
-                  className="flex-1 px-4 py-2.5 bg-white dark:bg-slate-900 border border-amber-200 dark:border-amber-900/40 rounded-xl text-xs font-mono text-amber-950 dark:text-amber-200 focus:outline-none focus:ring-1 focus:ring-amber-500"
+                  className="flex-1 px-4 py-2.5 bg-white border border-amber-200 rounded-xl text-xs font-mono text-amber-950 focus:outline-[#3B82F6]"
                 />
                 <div className="flex gap-2">
                   <button
@@ -287,7 +288,7 @@ export const RealPhotoExplorer: React.FC = () => {
                   {customKey && (
                     <button
                       onClick={handleClearCustomKey}
-                      className="px-3 py-2.5 bg-gray-200 dark:bg-slate-800 hover:bg-gray-300 dark:hover:bg-slate-700 text-gray-700 dark:text-gray-300 font-bold text-xs rounded-xl transition cursor-pointer"
+                      className="px-3 py-2.5 bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold text-xs rounded-xl transition cursor-pointer"
                     >
                       {language === 'ar' ? 'حذف' : 'Effacer'}
                     </button>
@@ -299,7 +300,7 @@ export const RealPhotoExplorer: React.FC = () => {
         </AnimatePresence>
 
         {/* SEARCH BAR PANEL */}
-        <div className="bg-white dark:bg-[#111417] border border-gray-150 dark:border-gray-800 rounded-3xl shadow-xl p-5 sm:p-7 space-y-5">
+        <div className="bg-white border border-[#E2E8F0] rounded-3xl shadow-sm p-5 sm:p-7 space-y-5">
           <form 
             onSubmit={(e) => {
               e.preventDefault();
@@ -308,7 +309,7 @@ export const RealPhotoExplorer: React.FC = () => {
             className="flex flex-col sm:flex-row gap-3"
           >
             <div className="flex-1 relative">
-              <span className="absolute inset-y-0 left-3.5 flex items-center text-gray-400 dark:text-gray-500">
+              <span className="absolute inset-y-0 left-3.5 flex items-center text-[#94A3B8]">
                 <Search size={18} />
               </span>
               <input
@@ -320,14 +321,14 @@ export const RealPhotoExplorer: React.FC = () => {
                 }
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-4 bg-gray-50 dark:bg-[#15191d] border border-gray-200 dark:border-gray-800 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 dark:focus:border-emerald-500 transition-all font-medium text-gray-800 dark:text-gray-200"
+                className="w-full pl-10 pr-4 py-4 bg-[#F8FAFC] border border-[#E2E8F0] rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-[#3B82F6]/25 focus:border-[#3B82F6] transition-all font-medium text-[#334155]"
               />
             </div>
             
             <button
               type="submit"
               disabled={loading}
-              className="px-8 py-4 bg-emerald-600 hover:bg-emerald-700 disabled:bg-emerald-800 text-white font-bold text-sm rounded-2xl transition duration-150 flex items-center justify-center gap-2 shadow-sm hover:shadow-md cursor-pointer shrink-0"
+              className="px-8 py-4 bg-[#3B82F6] hover:bg-[#3B82F6]/90 disabled:bg-[#3B82F6]/50 text-white font-bold text-sm rounded-2xl transition duration-150 flex items-center justify-center gap-2 shadow-sm hover:shadow-md cursor-pointer shrink-0"
             >
               {loading ? (
                 <RefreshCw size={15} className="animate-spin" />
@@ -340,7 +341,7 @@ export const RealPhotoExplorer: React.FC = () => {
 
           {/* Preset Buttons Grid */}
           <div className="space-y-2">
-            <span className="block text-[10px] font-mono uppercase tracking-wider text-gray-400 dark:text-gray-500">
+            <span className="block text-[10px] font-mono uppercase tracking-wider text-[#94A3B8]">
               ⚡ {language === 'ar' ? 'وجهات سريعة نموذجية' : 'Exemples de lieux réels à explorer'}
             </span>
             <div className="flex flex-wrap gap-2">
@@ -353,8 +354,8 @@ export const RealPhotoExplorer: React.FC = () => {
                   }}
                   className={`px-3 py-2 text-xs font-medium rounded-xl border transition-all cursor-pointer ${
                     result?.name === place.name || searchQuery === place.name
-                      ? 'bg-emerald-500/10 border-emerald-500/40 text-emerald-600 dark:text-emerald-450 font-semibold'
-                      : 'bg-gray-50 dark:bg-slate-900 border-gray-200 dark:border-gray-800 text-gray-600 dark:text-gray-450 hover:bg-emerald-500/5 hover:border-emerald-500/20 hover:text-emerald-600'
+                      ? 'bg-[#3B82F6]/10 border-[#3B82F6]/40 text-[#3B82F6] font-semibold'
+                      : 'bg-[#F8FAFC] border border-[#E2E8F0] text-[#334155] hover:bg-[#3B82F6]/5 hover:border-[#3B82F6]/20 hover:text-[#3B82F6]'
                   }`}
                 >
                   {place.label[language] || place.name}
@@ -375,7 +376,7 @@ export const RealPhotoExplorer: React.FC = () => {
         )}
 
         {error && (
-          <div className="bg-red-50 dark:bg-red-950/20 border border-red-200/50 dark:border-red-900/30 text-red-700 dark:text-red-400 p-5 rounded-2xl flex items-start gap-3">
+          <div className="bg-red-50 border border-red-200/50 text-red-700 p-5 rounded-2xl flex items-start gap-3">
             <AlertCircle size={20} className="shrink-0 mt-0.5" />
             <div className="space-y-1">
               <h4 className="text-sm font-bold">{language === 'ar' ? 'فشل جلب البيانات' : 'Erreur de chargement'}</h4>
@@ -389,16 +390,16 @@ export const RealPhotoExplorer: React.FC = () => {
           <div className="space-y-6 animate-fade-in">
             
             {/* Header info about the current place */}
-            <div className="bg-white dark:bg-[#111417] border border-gray-150 dark:border-gray-800 rounded-2xl p-4 sm:p-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div className="bg-white border border-[#E2E8F0] rounded-2xl p-4 sm:p-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
               <div className="space-y-1">
-                <span className="text-[10px] uppercase font-mono font-black tracking-widest text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 dark:bg-emerald-500/20 px-2.5 py-0.5 rounded-md">
+                <span className="text-[10px] uppercase font-mono font-black tracking-widest text-emerald-600 bg-emerald-500/10 px-2.5 py-0.5 rounded-md">
                   Google Verified Place
                 </span>
-                <h2 className="text-xl sm:text-2xl font-black text-gray-900 dark:text-white">
+                <h2 className="text-xl sm:text-2xl font-black text-[#334155]">
                   {result.name}
                 </h2>
                 {result.address && (
-                  <p className="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-1 font-sans">
+                  <p className="text-xs text-[#94A3B8] flex items-center gap-1 font-sans">
                     <MapPin size={13} className="text-emerald-500 shrink-0" />
                     <span>{result.address}</span>
                   </p>
@@ -406,7 +407,7 @@ export const RealPhotoExplorer: React.FC = () => {
               </div>
 
               {hasPhotos && (
-                <div className="text-xs font-mono font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 dark:bg-emerald-500/15 border border-emerald-500/20 px-3 py-1.5 rounded-lg flex items-center gap-1.5">
+                <div className="text-xs font-mono font-bold text-emerald-600 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 rounded-lg flex items-center gap-1.5">
                   <ImageIcon size={14} />
                   <span>{result.photos?.length} {language === 'ar' ? 'صور حقيقية معتمدة' : 'Photos réelles'}</span>
                 </div>
@@ -415,31 +416,30 @@ export const RealPhotoExplorer: React.FC = () => {
 
             {/* GOOGLE MAPS FORMULA / CONSTRUCTED QUERY CARD */}
             {result.computedName && result.computedLink && (
-              <div className="bg-slate-50 dark:bg-[#13171c] border border-slate-200 dark:border-slate-800 rounded-2xl p-5 space-y-4">
+              <div className="bg-[#F8FAFC] border border-[#E2E8F0] rounded-2xl p-5 space-y-4">
                 <div className="flex items-center gap-2">
                   <Sparkles size={16} className="text-emerald-500" />
-                  <span className="text-xs font-black uppercase font-mono tracking-wider text-slate-800 dark:text-slate-200">
+                  <span className="text-xs font-black uppercase font-mono tracking-wider text-[#334155]">
                     {language === 'ar' ? 'رابط خريطة غوغل الدقيقة المصممة' : 'Générateur de Requête Google Maps'}
                   </span>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {/* Nom complet section */}
-                  <div className="bg-white dark:bg-[#181d22] border border-slate-150 dark:border-slate-800 p-4 rounded-xl flex flex-col justify-between gap-2 shadow-xs">
+                  <div className="bg-white border border-[#E2E8F0] p-4 rounded-xl flex flex-col justify-between gap-2 shadow-xs">
                     <div>
-                      <span className="block text-[10px] uppercase font-mono font-bold text-gray-400 dark:text-gray-500 mb-1">
+                      <span className="block text-[10px] uppercase font-mono font-bold text-[#94A3B8] mb-1">
                         1. Nom complet du lieu
                       </span>
-                      <p className="text-sm font-bold font-mono text-slate-900 dark:text-slate-100 break-words">
+                      <p className="text-sm font-bold font-mono text-[#334155] break-words">
                         {result.computedName}
                       </p>
                     </div>
                     <button
                       onClick={() => {
                         navigator.clipboard.writeText(result.computedName || '');
-                        alert(language === 'ar' ? 'تم نسخ الاسم!' : 'Nom copié !');
                       }}
-                      className="self-start text-[10px] font-bold text-emerald-600 dark:text-emerald-400 hover:underline flex items-center gap-1 cursor-pointer"
+                      className="self-start text-[10px] font-bold text-emerald-600 hover:underline flex items-center gap-1 cursor-pointer"
                     >
                       <Check size={12} />
                       <span>{language === 'ar' ? 'نسخ الاسم' : 'Copier le nom'}</span>
@@ -447,16 +447,16 @@ export const RealPhotoExplorer: React.FC = () => {
                   </div>
 
                   {/* Lien cliquable section */}
-                  <div className="bg-white dark:bg-[#181d22] border border-slate-150 dark:border-slate-800 p-4 rounded-xl flex flex-col justify-between gap-2 shadow-xs">
+                  <div className="bg-white border border-[#E2E8F0] p-4 rounded-xl flex flex-col justify-between gap-2 shadow-xs">
                     <div>
-                      <span className="block text-[10px] uppercase font-mono font-bold text-gray-400 dark:text-gray-500 mb-1">
+                      <span className="block text-[10px] uppercase font-mono font-bold text-[#94A3B8] mb-1">
                         2. Lien de recherche Google Maps
                       </span>
                       <a
                         href={result.computedLink}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-xs font-mono font-bold text-blue-600 dark:text-blue-400 hover:underline break-all block"
+                        className="text-xs font-mono font-bold text-blue-600 hover:underline break-all block"
                       >
                         {result.computedLink}
                       </a>
@@ -465,9 +465,8 @@ export const RealPhotoExplorer: React.FC = () => {
                       <button
                         onClick={() => {
                           navigator.clipboard.writeText(result.computedLink || '');
-                          alert(language === 'ar' ? 'تم نسخ الرابط!' : 'Lien copié !');
                         }}
-                        className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 hover:underline flex items-center gap-1 cursor-pointer"
+                        className="text-[10px] font-bold text-emerald-600 hover:underline flex items-center gap-1 cursor-pointer"
                       >
                         <Check size={12} />
                         <span>{language === 'ar' ? 'نسخ الرابط' : 'Copier le lien'}</span>
@@ -476,7 +475,7 @@ export const RealPhotoExplorer: React.FC = () => {
                         href={result.computedLink}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-[10px] font-bold text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1"
+                        className="text-[10px] font-bold text-blue-600 hover:underline flex items-center gap-1"
                       >
                         <span>{language === 'ar' ? 'فتح في غوغل' : 'Ouvrir sur Maps ↗'}</span>
                       </a>
@@ -491,7 +490,7 @@ export const RealPhotoExplorer: React.FC = () => {
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
                 
                 {/* Image Stage View (8 cols) */}
-                <div className="lg:col-span-8 bg-black border border-gray-200 dark:border-gray-800 rounded-3xl overflow-hidden relative shadow-lg flex flex-col justify-center min-h-[450px]">
+                <div className="lg:col-span-8 bg-black border border-[#E2E8F0] rounded-3xl overflow-hidden relative shadow-lg flex flex-col justify-center min-h-[450px]">
                   
                   {/* Photo itself */}
                   <img
@@ -545,12 +544,12 @@ export const RealPhotoExplorer: React.FC = () => {
                 </div>
 
                 {/* Sidebar Thumbnails Panel (4 cols) */}
-                <div className="lg:col-span-4 bg-white dark:bg-[#111417] border border-gray-150 dark:border-gray-800 rounded-3xl p-5 flex flex-col justify-between space-y-4">
+                <div className="lg:col-span-4 bg-white border border-[#E2E8F0] rounded-3xl p-5 flex flex-col justify-between space-y-4">
                   <div className="space-y-3">
-                    <span className="block text-[10px] font-mono font-black uppercase tracking-widest text-emerald-600 dark:text-emerald-400">
+                    <span className="block text-[10px] font-mono font-black uppercase tracking-widest text-[#3B82F6]">
                       📂 {language === 'ar' ? 'معرض صور غوغل' : 'Index de la galerie'}
                     </span>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                    <p className="text-xs text-[#94A3B8]">
                       {language === 'ar'
                         ? 'تصفح قائمة الصور الحقيقية المصنفة لهذا المكان بالتفصيل.'
                         : 'Sélectionnez une miniature pour charger l’image haute définition correspondante.'}
@@ -563,7 +562,7 @@ export const RealPhotoExplorer: React.FC = () => {
                           onClick={() => setActivePhotoIdx(index)}
                           className={`relative h-20 rounded-xl overflow-hidden border-2 transition-all cursor-pointer ${
                             activePhotoIdx === index
-                              ? 'border-emerald-600 scale-[0.98]'
+                              ? 'border-[#3B82F6] scale-[0.98]'
                               : 'border-transparent opacity-70 hover:opacity-100 hover:border-gray-300'
                           }`}
                         >
@@ -583,14 +582,14 @@ export const RealPhotoExplorer: React.FC = () => {
                   </div>
 
                   {/* Safety & Anti-Fake disclaimer block */}
-                  <div className="bg-emerald-50 dark:bg-emerald-950/10 border border-emerald-100 dark:border-emerald-900/30 rounded-2xl p-4 space-y-2">
-                    <div className="flex items-center gap-2 text-emerald-700 dark:text-emerald-400">
+                  <div className="bg-[#3B82F6]/5 border border-[#3B82F6]/10 rounded-2xl p-4 space-y-2">
+                    <div className="flex items-center gap-2 text-[#3B82F6]">
                       <Sparkles size={14} className="shrink-0" />
                       <span className="text-xs font-bold uppercase tracking-wide">
                         {language === 'ar' ? 'ضمان الدقة البصرية' : 'Zéro approximation'}
                       </span>
                     </div>
-                    <p className="text-[11px] text-gray-500 dark:text-gray-400 leading-relaxed font-sans">
+                    <p className="text-[11px] text-[#334155] leading-relaxed font-sans">
                       {language === 'ar'
                         ? 'هذه الصور مأخوذة مباشرة من حسابات المستخدمين الموثقين والزوار الميدانيين على خرائط Google، مما يضمن لك لقطة أصيلة وحقيقية 100٪.'
                         : 'Ces clichés sont capturés par des voyageurs réels sur place et hébergés par Google Maps, vous garantissant une vue 100% authentique sans filtre marketing ni génération artificielle.'}
@@ -601,15 +600,15 @@ export const RealPhotoExplorer: React.FC = () => {
               </div>
             ) : (
               /* NO PHOTOS FOUND CONTAINER */
-              <div className="bg-amber-50 dark:bg-amber-950/15 border border-amber-200/50 dark:border-amber-900/30 rounded-3xl p-8 text-center space-y-4 max-w-xl mx-auto">
-                <div className="w-16 h-16 bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-450 rounded-full flex items-center justify-center mx-auto">
+              <div className="bg-amber-50 border border-amber-200/50 rounded-3xl p-8 text-center space-y-4 max-w-xl mx-auto">
+                <div className="w-16 h-16 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center mx-auto">
                   <ImageIcon size={28} />
                 </div>
                 <div className="space-y-1">
-                  <h3 className="text-lg font-black text-amber-950 dark:text-amber-200">
+                  <h3 className="text-lg font-black text-amber-950">
                     {language === 'ar' ? 'لا توجد صور حقيقية متوفرة' : 'No real images available for this place'}
                   </h3>
-                  <p className="text-xs text-amber-800/80 dark:text-amber-500/80 leading-relaxed font-sans">
+                  <p className="text-xs text-amber-800/80 leading-relaxed font-sans">
                     {language === 'ar'
                       ? 'تم العثور على المكان، ولكن لا توجد صور مرتبطة به في قاعدة بيانات خرائط Google حالياً.'
                       : 'Le lieu a été trouvé, mais aucune photo certifiée n\'est actuellement disponible sur la base Google Maps pour cette fiche.'}

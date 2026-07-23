@@ -867,7 +867,7 @@ export const SafeTravel: React.FC = () => {
                   </div>
 
                   {/* Inside Screen Container */}
-                  <div className="bg-[#fcfbfa] dark:bg-[#0c101b] min-h-[580px] max-h-[720px] overflow-y-auto px-4 py-4 relative scrollbar-none">
+                  <div className="bg-[#fcfbfa] min-h-[580px] max-h-[720px] overflow-y-auto px-4 py-4 relative scrollbar-none">
                     
                     {/* If Payment Portal modal is open */}
                     <AnimatePresence>
@@ -876,38 +876,38 @@ export const SafeTravel: React.FC = () => {
                           initial={{ opacity: 0, y: 150 }}
                           animate={{ opacity: 1, y: 0 }}
                           exit={{ opacity: 0, y: 250 }}
-                          className="absolute inset-0 z-40 bg-[#fcfbfa] dark:bg-[#0c101b] p-5 flex flex-col justify-between overflow-y-auto"
+                          className="absolute inset-0 z-40 bg-[#fcfbfa] p-5 flex flex-col justify-between overflow-y-auto"
                         >
                           <div>
                             {/* Securing badge */}
-                            <div className="flex items-center justify-between border-b border-slate-150 dark:border-slate-800 pb-3 mb-5">
-                              <h3 className="text-sm font-black uppercase text-slate-800 dark:text-white font-mono tracking-wider flex items-center gap-2">
+                            <div className="flex items-center justify-between border-b border-slate-150 pb-3 mb-5">
+                              <h3 className="text-sm font-black uppercase text-slate-800 font-mono tracking-wider flex items-center gap-2">
                                 <Lock size={15} className="text-emerald-500 animate-pulse" />
                                 {currentT('paySecureTitle')}
                               </h3>
                               <button 
                                 onClick={() => setPaymentPortalOpen(false)}
-                                className="text-slate-400 hover:text-slate-600 dark:hover:text-white text-xs font-mono font-bold uppercase transition"
+                                className="text-slate-400 hover:text-slate-600 text-xs font-mono font-bold uppercase transition"
                               >
                                 CLOSE ✕
                               </button>
                             </div>
 
                             {/* Provider Summary */}
-                            <div className="p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 mb-5 flex items-center justify-between">
+                            <div className="p-4 rounded-xl border border-slate-200 bg-[#F8FAFC] mb-5 flex items-center justify-between">
                               <div>
                                 <span className="block text-[8px] font-mono tracking-widest text-[#d4af37] font-black uppercase">
                                   SUBSCRIBING FOR
                                 </span>
-                                <span className="font-extrabold text-slate-800 dark:text-white block text-sm">
+                                <span className="font-extrabold text-[#334155] block text-sm">
                                   {payingProvider.name}
                                 </span>
                               </div>
                               <div className="text-right">
-                                <span className="block text-xs font-mono font-black text-emerald-600 dark:text-emerald-450">
+                                <span className="block text-xs font-mono font-black text-emerald-600">
                                   {payingProvider.pricing[language] || payingProvider.pricing['en']}
                                 </span>
-                                <span className="text-[9px] text-slate-400 block">
+                                <span className="text-[9px] text-[#94A3B8] block">
                                   {duration} Days Covered
                                 </span>
                               </div>
@@ -920,9 +920,9 @@ export const SafeTravel: React.FC = () => {
                                 onClick={() => setPaymentMethod('card')}
                                 className={`py-2 px-3 rounded-xl border text-[11px] font-bold flex items-center justify-center gap-2 cursor-pointer transition-all ${
                                   paymentMethod === 'card'
-                                    ? 'bg-slate-900 border-slate-900 text-white dark:bg-emerald-600 dark:border-emerald-600 shadow-md'
-                                    : 'bg-white border-slate-200 text-slate-600 dark:bg-slate-900 dark:border-slate-800 dark:text-slate-300'
-                                }`}
+                                    ? 'bg-[#3B82F6] border-[#3B82F6] text-white shadow-md'
+                                    : 'bg-white border-slate-200 text-slate-600'
+                                  }`}
                               >
                                 <CreditCard size={13} />
                                 <span>CIB / DAHABIA</span>
@@ -932,8 +932,8 @@ export const SafeTravel: React.FC = () => {
                                 onClick={() => setPaymentMethod('mobile')}
                                 className={`py-2 px-3 rounded-xl border text-[11px] font-bold flex items-center justify-center gap-2 cursor-pointer transition-all ${
                                   paymentMethod === 'mobile'
-                                    ? 'bg-slate-900 border-slate-900 text-white dark:bg-emerald-600 dark:border-emerald-600 shadow-md'
-                                    : 'bg-white border-slate-200 text-slate-600 dark:bg-slate-900 dark:border-slate-800 dark:text-slate-300'
+                                    ? 'bg-[#3B82F6] border-[#3B82F6] text-white shadow-md'
+                                    : 'bg-white border-slate-200 text-[#334155]'
                                 }`}
                               >
                                 <Smartphone size={13} />
@@ -987,7 +987,7 @@ export const SafeTravel: React.FC = () => {
                                     {/* Credit Card inputs */}
                                     <div className="grid grid-cols-1 gap-3">
                                       <div>
-                                        <label className="block text-[9px] font-bold uppercase text-slate-500 mb-1">
+                                        <label className="block text-[9px] font-bold uppercase text-[#94A3B8] mb-1">
                                           {currentT('cardNameHolder')}
                                         </label>
                                         <input
@@ -996,12 +996,12 @@ export const SafeTravel: React.FC = () => {
                                           placeholder="e.g. MOHAMED BENALIA"
                                           value={cardHolder}
                                           onChange={(e) => setCardHolder(e.target.value)}
-                                          className="w-full text-xs p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-white focus:outline-none focus:ring-1 focus:ring-emerald-500"
+                                          className="w-full text-xs p-2.5 rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] text-[#334155] focus:outline-none focus:ring-1 focus:ring-[#3B82F6]"
                                         />
                                       </div>
 
                                       <div>
-                                        <label className="block text-[9px] font-bold uppercase text-slate-500 mb-1">
+                                        <label className="block text-[9px] font-bold uppercase text-[#94A3B8] mb-1">
                                           {currentT('cardNoHolder')}
                                         </label>
                                         <input
@@ -1011,13 +1011,13 @@ export const SafeTravel: React.FC = () => {
                                           maxLength={19}
                                           value={cardNumber}
                                           onChange={(e) => setCardNumber(e.target.value)}
-                                          className="w-full font-mono text-xs p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-white focus:outline-none focus:ring-1 focus:ring-emerald-500"
+                                          className="w-full font-mono text-xs p-2.5 rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] text-[#334155] focus:outline-none focus:ring-1 focus:ring-[#3B82F6]"
                                         />
                                       </div>
 
                                       <div className="grid grid-cols-2 gap-3">
                                         <div>
-                                          <label className="block text-[9px] font-bold uppercase text-slate-500 mb-1">
+                                          <label className="block text-[9px] font-bold uppercase text-[#94A3B8] mb-1">
                                             Expiry (MM/YY)
                                           </label>
                                           <input
@@ -1027,11 +1027,11 @@ export const SafeTravel: React.FC = () => {
                                             placeholder="12/28"
                                             value={expiry}
                                             onChange={(e) => setExpiry(e.target.value)}
-                                            className="w-full text-xs p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-white focus:outline-none focus:ring-1 focus:ring-emerald-500"
+                                            className="w-full text-xs p-2.5 rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] text-[#334155] focus:outline-none focus:ring-1 focus:ring-[#3B82F6]"
                                           />
                                         </div>
                                         <div>
-                                          <label className="block text-[9px] font-bold uppercase text-slate-500 mb-1">
+                                          <label className="block text-[9px] font-bold uppercase text-[#94A3B8] mb-1">
                                             CVV / Code
                                           </label>
                                           <input
@@ -1041,7 +1041,7 @@ export const SafeTravel: React.FC = () => {
                                             placeholder="•••"
                                             value={cvv}
                                             onChange={(e) => setCvv(e.target.value)}
-                                            className="w-full text-xs p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-white focus:outline-none focus:ring-1 focus:ring-emerald-500"
+                                            className="w-full text-xs p-2.5 rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] text-[#334155] focus:outline-none focus:ring-1 focus:ring-[#3B82F6]"
                                           />
                                         </div>
                                       </div>
@@ -1060,19 +1060,19 @@ export const SafeTravel: React.FC = () => {
                                             <span className="block text-[10px] font-extrabold text-[#d4af37]">
                                               BARIDIMOB CHANNELS
                                             </span>
-                                            <span className="text-[9px] text-slate-400 block">
+                                            <span className="text-[9px] text-[#94A3B8] block">
                                               Algérie Poste Gateway
                                             </span>
                                           </div>
                                         </div>
-                                        <span className="text-[10px] font-bold bg-emerald-600/20 text-emerald-400 px-2 py-0.5 rounded-full border border-emerald-500/20">
+                                        <span className="text-[10px] font-bold bg-emerald-600/20 text-emerald-600 px-2 py-0.5 rounded-full border border-emerald-500/20">
                                           Instant
                                         </span>
                                       </div>
 
                                       <div className="space-y-3">
                                         <div>
-                                          <label className="block text-[9px] font-bold uppercase text-slate-500 mb-1">
+                                          <label className="block text-[9px] font-bold uppercase text-[#94A3B8] mb-1">
                                             RIP / CCP Account Number
                                           </label>
                                           <input
@@ -1081,7 +1081,7 @@ export const SafeTravel: React.FC = () => {
                                             placeholder="007999990001234567 89"
                                             value={mobileNumber}
                                             onChange={(e) => setMobileNumber(e.target.value)}
-                                            className="w-full font-mono text-xs p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-white focus:outline-none"
+                                            className="w-full font-mono text-xs p-2.5 rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] text-[#334155] focus:outline-none focus:ring-1 focus:ring-[#3B82F6]"
                                           />
                                         </div>
 
@@ -1092,7 +1092,7 @@ export const SafeTravel: React.FC = () => {
                                             className={`text-[10px] font-extrabold uppercase py-1 px-3 rounded-full border transition cursor-pointer ${
                                               mobileProvider === 'baridimob' 
                                                 ? 'bg-amber-400 border-amber-400 text-slate-950 font-black' 
-                                                : 'bg-transparent text-slate-400 border-slate-800'
+                                                : 'bg-transparent text-[#334155] border-[#E2E8F0] hover:bg-slate-50'
                                             }`}
                                           >
                                             BARIDI MOB
@@ -1103,7 +1103,7 @@ export const SafeTravel: React.FC = () => {
                                             className={`text-[10px] font-extrabold uppercase py-1 px-3 rounded-full border transition cursor-pointer ${
                                               mobileProvider === 'wimpay' 
                                                 ? 'bg-red-500 border-red-500 text-white font-black' 
-                                                : 'bg-transparent text-slate-400 border-slate-800'
+                                                : 'bg-transparent text-[#334155] border-[#E2E8F0] hover:bg-slate-50'
                                             }`}
                                           >
                                             WIMPAY (CPA)
@@ -1111,7 +1111,7 @@ export const SafeTravel: React.FC = () => {
                                         </div>
                                       </div>
                                     </div>
-                                    <div className="text-[10px] text-slate-400 leading-snug">
+                                    <div className="text-[10px] text-[#94A3B8] leading-snug">
                                       * A secure transfer alert request will be sent directly to your registered BaridiMob application. Accept the task pin to finish.
                                     </div>
                                   </>
@@ -1121,7 +1121,7 @@ export const SafeTravel: React.FC = () => {
                                   <button
                                     type="button"
                                     onClick={() => setPaymentPortalOpen(false)}
-                                    className="flex-1 py-3 border border-slate-250 dark:border-slate-800 rounded-xl text-xs font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-900 transition"
+                                    className="flex-1 py-3 border border-[#E2E8F0] rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-50 transition"
                                   >
                                     {currentT('cancelBtn')}
                                   </button>
@@ -1141,15 +1141,15 @@ export const SafeTravel: React.FC = () => {
                                 <div className="relative">
                                   {/* Multi glowing rings */}
                                   <div className="absolute -inset-4 bg-emerald-500/20 rounded-full blur-xl animate-pulse"></div>
-                                  <div className="w-20 h-20 rounded-full border-4 border-slate-200 dark:border-slate-800 border-t-emerald-500 border-r-emerald-500 animate-spin flex items-center justify-center">
+                                  <div className="w-20 h-20 rounded-full border-4 border-slate-200 border-t-emerald-500 border-r-emerald-500 animate-spin flex items-center justify-center">
                                     <Lock size={32} className="text-emerald-500" />
                                   </div>
                                 </div>
                                 <div>
-                                  <h4 className="text-base font-black text-slate-800 dark:text-white font-mono tracking-wider">
+                                  <h4 className="text-base font-black text-[#334155] font-mono tracking-wider">
                                     {currentT('payingTitle')}
                                   </h4>
-                                  <p className="text-xs text-slate-400 max-w-sm mt-3 leading-relaxed">
+                                  <p className="text-xs text-[#94A3B8] max-w-sm mt-3 leading-relaxed">
                                     {currentT('payingDesc')}
                                   </p>
                                 </div>
@@ -1167,33 +1167,33 @@ export const SafeTravel: React.FC = () => {
                                   </div>
                                 </div>
                                 <div className="space-y-2">
-                                  <h4 className="text-xl font-extrabold text-slate-900 dark:text-emerald-450 font-display">
+                                  <h4 className="text-xl font-extrabold text-[#334155] font-display">
                                     {currentT('successTitle')}
                                   </h4>
-                                  <p className="text-xs text-slate-500 dark:text-slate-300 max-w-sm leading-relaxed px-4">
+                                  <p className="text-xs text-[#94A3B8] max-w-sm leading-relaxed px-4">
                                     {currentT('successDesc')}
                                   </p>
                                 </div>
 
                                 {/* Summary details list */}
-                                <div className="w-full bg-slate-50 dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800 text-left space-y-2 font-mono text-[10px]">
-                                  <div className="flex justify-between border-b border-dashed border-slate-200 dark:border-slate-800 pb-1.5">
+                                <div className="w-full bg-[#F8FAFC] p-4 rounded-xl border border-[#E2E8F0] text-left space-y-2 font-mono text-[10px]">
+                                  <div className="flex justify-between border-b border-dashed border-[#E2E8F0] pb-1.5">
                                     <span className="text-slate-400">ORGANIZATION:</span>
-                                    <span className="font-bold text-slate-700 dark:text-slate-200">{payingProvider.name}</span>
+                                    <span className="font-bold text-[#334155]">{payingProvider.name}</span>
                                   </div>
-                                  <div className="flex justify-between border-b border-dashed border-slate-200 dark:border-slate-800 pb-1.5">
+                                  <div className="flex justify-between border-b border-dashed border-[#E2E8F0] pb-1.5">
                                     <span className="text-slate-400">DESTINATION:</span>
-                                    <span className="font-bold text-emerald-600 dark:text-emerald-400">{destination.toUpperCase()}</span>
+                                    <span className="font-bold text-emerald-600">{destination.toUpperCase()}</span>
                                   </div>
-                                  <div className="flex justify-between border-b border-dashed border-slate-200 dark:border-slate-800 pb-1.5">
+                                  <div className="flex justify-between border-b border-dashed border-[#E2E8F0] pb-1.5">
                                     <span className="text-slate-400">DURATION KEY:</span>
-                                    <span className="font-bold text-slate-700 dark:text-slate-200">{duration} DAYS</span>
+                                    <span className="font-bold text-[#334155]">{duration} DAYS</span>
                                   </div>
-                                  <div className="flex justify-between border-b border-dashed border-slate-200 dark:border-slate-800 pb-1.5">
+                                  <div className="flex justify-between border-b border-dashed border-[#E2E8F0] pb-1.5">
                                     <span className="text-slate-400">TRANSACTION REF ID:</span>
                                     <span className="font-bold text-amber-500">DZ-SAFE-781612-A</span>
                                   </div>
-                                  <div className="flex justify-between pt-1 font-bold text-xs text-slate-800 dark:text-slate-100">
+                                  <div className="flex justify-between pt-1 font-bold text-xs text-[#334155]">
                                     <span>TOTAL PRICE VALUE:</span>
                                     <span className="text-emerald-500">{payingProvider.pricing[language] || payingProvider.pricing['en']}</span>
                                   </div>
@@ -1218,7 +1218,7 @@ export const SafeTravel: React.FC = () => {
                     {/* Default Mobile Screen Comparison Flow */}
                     <div>
                       {/* Active Travel Plan banner inside app */}
-                      <div className="bg-gradient-to-tr from-[#131d2f] to-[#0a0f19] rounded-2xl p-4 text-white mb-6 border border-slate-800 shadow-md">
+                      <div className="bg-gradient-to-tr from-[#3B82F6]/5 via-[#22D3EE]/5 to-[#FDBA74]/5 rounded-2xl p-5 text-[#334155] mb-6 border border-[#E2E8F0] shadow-sm">
                         <div className="flex justify-between items-start mb-2">
                           <span className="text-[10px] font-mono tracking-widest text-[#d4af37] font-extrabold uppercase">
                             ACTIVE DETAILED EXPEDITION
@@ -1239,8 +1239,8 @@ export const SafeTravel: React.FC = () => {
                         </div>
 
                         {/* Real-time AI recommendation active card details */}
-                        <div className="mt-4 pt-3 border-t border-white/10 flex items-center justify-between">
-                          <span className="text-[10px] font-sans text-slate-350">
+                        <div className="mt-4 pt-3 border-t border-[#E2E8F0] flex items-center justify-between">
+                          <span className="text-[10px] font-sans text-[#94A3B8]">
                             Preferred Risk Activator:
                           </span>
                           <span className="text-xs uppercase font-mono font-extrabold text-amber-300">
@@ -1271,8 +1271,8 @@ export const SafeTravel: React.FC = () => {
                               whileHover={{ scale: 1.01 }}
                               className={`rounded-2xl p-5 border relative transition-all overflow-hidden ${
                                 isRecommended
-                                  ? 'border-emerald-500 dark:border-emerald-500 bg-white dark:bg-[#121927] shadow-xl ring-2 ring-emerald-500/20'
-                                  : 'border-slate-150 dark:border-slate-800 bg-white dark:bg-[#0f1422] hover:border-slate-350 dark:hover:border-slate-700 shadow'
+                                  ? 'border-emerald-500 bg-white shadow-xl ring-2 ring-emerald-500/20'
+                                  : 'border-[#E2E8F0] bg-white hover:border-[#3B82F6] shadow-sm'
                               }`}
                             >
                               {/* Renders Glowing recommended badge */}
@@ -1283,7 +1283,7 @@ export const SafeTravel: React.FC = () => {
                                     {currentT('recommendedTag')}
                                   </div>
                                   {/* Glowing background aura */}
-                                  <div className="absolute -inset-10 bg-emerald-500/5 dark:bg-emerald-400/5 blur-2xl pointer-events-none rounded-full" />
+                                  <div className="absolute -inset-10 bg-emerald-500/5 blur-2xl pointer-events-none rounded-full" />
                                 </>
                               )}
 
@@ -1295,7 +1295,7 @@ export const SafeTravel: React.FC = () => {
                                     {provider.logoText}
                                   </div>
                                   <div>
-                                    <h4 className="font-extrabold text-[#111111] dark:text-white text-sm">
+                                    <h4 className="font-extrabold text-[#334155] text-sm">
                                       {provider.name}
                                     </h4>
                                     <span className="text-[9px] font-mono font-black tracking-widest text-[#d4af37]">
@@ -1305,24 +1305,24 @@ export const SafeTravel: React.FC = () => {
                                 </div>
 
                                 {/* Price / Nights display */}
-                                <div className="flex justify-between items-center py-2 border-y border-dashed border-slate-150 dark:border-slate-800 my-2">
+                                <div className="flex justify-between items-center py-2 border-y border-dashed border-[#E2E8F0] my-2">
                                   <span className="text-xs text-slate-400 font-sans">
                                     Estimated Safe Premium
                                   </span>
-                                  <span className="text-sm font-mono font-black text-emerald-600 dark:text-emerald-400">
+                                  <span className="text-sm font-mono font-black text-emerald-600">
                                     {provider.pricing[language] || provider.pricing['en']}
                                   </span>
                                 </div>
 
                                 {/* Custom descriptions */}
-                                <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed italic">
+                                <p className="text-xs text-[#334155] leading-relaxed italic">
                                   {provider.description[language] || provider.description['en']}
                                 </p>
 
                                 {/* Bullet points coverage details */}
                                 <div className="space-y-1.5 py-1">
                                   {(provider.coverage[language] || provider.coverage['en']).map((item, idx) => (
-                                    <div key={idx} className="flex items-start gap-2 text-[10px] text-slate-500 dark:text-slate-350 leading-relaxed font-serif">
+                                    <div key={idx} className="flex items-start gap-2 text-[10px] text-slate-500 leading-relaxed font-serif">
                                       <span className="text-emerald-500 font-black mt-0.5">✔</span>
                                       <span>{item}</span>
                                     </div>
@@ -1335,7 +1335,7 @@ export const SafeTravel: React.FC = () => {
                                   <span>{currentT('supportNo')}: </span>
                                   <a 
                                     href={`tel:${provider.phone}`} 
-                                    className="font-extrabold text-slate-700 dark:text-[#d4af37] hover:underline"
+                                    className="font-extrabold text-slate-700 hover:underline"
                                   >
                                     {provider.phone}
                                   </a>
@@ -1348,7 +1348,7 @@ export const SafeTravel: React.FC = () => {
                                     href={provider.link}
                                     target="_blank"
                                     rel="noreferrer"
-                                    className="flex items-center justify-center gap-1.5 py-2 px-3 border border-slate-200 dark:border-slate-800 rounded-xl text-[10px] font-mono font-extrabold uppercase text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-900 transition"
+                                    className="flex items-center justify-center gap-1.5 py-2 px-3 border border-slate-200 rounded-xl text-[10px] font-mono font-extrabold uppercase text-[#334155] hover:bg-slate-50 transition"
                                   >
                                     <span>{currentT('visitWebsite')}</span>
                                     <ExternalLink size={11} />
@@ -1384,7 +1384,7 @@ export const SafeTravel: React.FC = () => {
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0 }}
-                  className="w-full max-w-2xl bg-white dark:bg-[#111622] rounded-3xl overflow-hidden border border-emerald-500/30 shadow-2xl p-6 relative"
+                  className="w-full max-w-2xl bg-white rounded-3xl overflow-hidden border border-emerald-500/30 shadow-2xl p-6 relative"
                   id="final-safetravel-success-certificate"
                 >
                   {/* Decorative background vectors for Sahara confidences */}
@@ -1400,7 +1400,7 @@ export const SafeTravel: React.FC = () => {
                   <div className="relative z-10 flex flex-col items-center justify-center text-center py-6">
                     <div className="relative mb-6">
                       <div className="absolute -inset-8 bg-gradient-to-r from-emerald-600 via-amber-500 to-red-650 rounded-full blur-2xl opacity-60 animate-pulse"></div>
-                      <div className="relative w-28 h-28 rounded-full bg-gradient-to-tr from-emerald-500 via-[#d4af37] to-amber-600 text-white flex items-center justify-center shadow-2xl border-4 border-white dark:border-slate-900">
+                      <div className="relative w-28 h-28 rounded-full bg-gradient-to-tr from-emerald-500 via-[#d4af37] to-amber-600 text-white flex items-center justify-center shadow-2xl border-4 border-white">
                         <ShieldCheck size={56} className="animate-bounce-slow" />
                       </div>
                     </div>

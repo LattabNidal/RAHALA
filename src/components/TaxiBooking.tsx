@@ -55,10 +55,10 @@ export const TaxiBooking: React.FC = () => {
       
       {/* Upper Title block */}
       <div className="text-center max-w-xl mx-auto mb-8 sm:mb-10">
-        <h1 className="text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white">
+        <h1 className="text-3xl font-extrabold tracking-tight text-[#334155]">
           {t('taxiTitle')}
         </h1>
-        <p className="mt-3 text-xs text-gray-500 dark:text-slate-400">
+        <p className="mt-3 text-xs text-[#94A3B8]">
           {t('taxiSubtitle')}
         </p>
       </div>
@@ -66,41 +66,41 @@ export const TaxiBooking: React.FC = () => {
       <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-stretch">
         
         {/* Reservation Dispatcher - 7 Columns */}
-        <div className="md:col-span-7 bg-white dark:bg-[#162231] border border-emerald-50 dark:border-slate-800 rounded-3xl p-6 shadow-xl flex flex-col justify-between">
+        <div className="md:col-span-7 bg-white border border-[#E2E8F0] rounded-3xl p-6 shadow-sm flex flex-col justify-between">
           
           <div>
-            <h3 className="text-base font-bold text-gray-950 dark:text-white mb-6 flex items-center space-x-2 space-x-reverse">
-              <Car className="text-emerald-600" size={18} />
+            <h3 className="text-base font-bold text-[#334155] mb-6 flex items-center space-x-2 space-x-reverse">
+              <Car className="text-[#3B82F6]" size={18} />
               <span>Route directions Dispatcher</span>
             </h3>
 
             <div className="space-y-4 mb-6 relative">
               {/* Connecting line spacer visually decoration */}
-              <div className="absolute top-10 left-3.5 w-0.5 h-12 bg-dashed border-l-2 border-slate-200 dark:border-slate-800"></div>
+              <div className="absolute top-10 left-3.5 w-0.5 h-12 bg-dashed border-l-2 border-[#E2E8F0]"></div>
 
               <div>
-                <label className="block text-[9px] font-mono text-gray-400 uppercase mb-1 flex items-center space-x-1 space-x-reverse">
-                  <MapPin size={10} className="text-emerald-600" />
+                <label className="block text-[9px] font-mono text-[#94A3B8] uppercase mb-1 flex items-center space-x-1 space-x-reverse">
+                  <MapPin size={10} className="text-[#3B82F6]" />
                   <span>Your Pickup Point</span>
                 </label>
                 <input 
                   type="text" 
                   value={pickup}
                   onChange={(e) => setPickup(e.target.value)}
-                  className="w-full text-xs font-semibold border border-gray-150 dark:border-slate-800 dark:bg-slate-900 px-4 py-3 rounded-xl text-gray-700 dark:text-slate-200 focus:outline-emerald-500"
+                  className="w-full text-xs font-semibold border border-[#E2E8F0] px-4 py-3 rounded-xl text-[#334155] focus:outline-[#3B82F6] bg-white"
                   placeholder="Enter starting street or airport name..."
                 />
               </div>
 
               <div>
-                <label className="block text-[9px] font-mono text-gray-400 uppercase mb-1 flex items-center space-x-1 space-x-reverse">
-                  <MapPin size={10} className="text-amber-500" />
+                <label className="block text-[9px] font-mono text-[#94A3B8] uppercase mb-1 flex items-center space-x-1 space-x-reverse">
+                  <MapPin size={10} className="text-[#FDBA74]" />
                   <span>Target Destination Landmark</span>
                 </label>
                 <select
                   value={destination}
                   onChange={(e) => setDestination(e.target.value)}
-                  className="w-full text-xs font-semibold border border-gray-150 dark:border-slate-800 dark:bg-slate-900 px-3 py-3 rounded-xl text-gray-700 dark:text-slate-200 focus:outline-emerald-500"
+                  className="w-full text-xs font-semibold border border-[#E2E8F0] px-3 py-3 rounded-xl text-[#334155] focus:outline-[#3B82F6] bg-white"
                 >
                   {popularDestinations.map((dest, id) => (
                     <option key={id} value={dest.name}>{dest.name} ({dest.price} DZD)</option>
@@ -111,18 +111,18 @@ export const TaxiBooking: React.FC = () => {
             </div>
 
             {/* Price Estimator summary */}
-            <div className="p-4 bg-gray-50 dark:bg-slate-900 rounded-2xl border border-gray-100 dark:border-slate-800/40 text-xs mb-6 space-y-1.5 text-gray-500 dark:text-slate-400">
+            <div className="p-4 bg-[#F8FAFC] rounded-2xl border border-[#E2E8F0] text-xs mb-6 space-y-1.5 text-[#94A3B8]">
               <div className="flex justify-between">
                 <span>Vetted City Transit Grade:</span>
-                <span className="font-bold text-gray-800 dark:text-slate-200">Rihla Premium Companion VIP</span>
+                <span className="font-bold text-[#334155]">Rihla Premium Companion VIP</span>
               </div>
               <div className="flex justify-between">
                 <span>Base Rate cost:</span>
-                <span className="font-bold text-gray-800 dark:text-slate-200">250 DZD</span>
+                <span className="font-bold text-[#334155]">250 DZD</span>
               </div>
-              <div className="flex justify-between border-t border-gray-100 dark:border-slate-800 pt-2 text-sm font-extrabold text-slate-800 dark:text-white">
+              <div className="flex justify-between border-t border-[#E2E8F0] pt-2 text-sm font-extrabold text-[#334155]">
                 <span>Estimated cost DZD:</span>
-                <span className="text-emerald-600">
+                <span className="text-[#3B82F6] font-bold text-base">
                   {popularDestinations.find(p => p.name === destination)?.price || 1500} DZD
                 </span>
               </div>
@@ -133,14 +133,14 @@ export const TaxiBooking: React.FC = () => {
             <button
               onClick={handleCreateOrder}
               disabled={isOrdering}
-              className="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-lg transition disabled:opacity-50"
+              className="w-full py-3 bg-[#3B82F6] hover:bg-[#3B82F6]/90 text-white font-bold text-xs rounded-xl shadow-sm transition disabled:opacity-50 cursor-pointer"
             >
               {isOrdering ? 'Dispatching driver...' : 'Order Rihla Vetted Car Now'}
             </button>
           ) : (
             <button
               onClick={handleCancel}
-              className="w-full py-3 bg-red-50 text-red-650 hover:bg-red-100 rounded-xl text-xs font-bold transition"
+              className="w-full py-3 bg-red-50 text-red-650 hover:bg-red-100 rounded-xl text-xs font-bold transition cursor-pointer border border-red-150"
             >
               Cancel Travel Ride Reservation
             </button>
@@ -149,11 +149,11 @@ export const TaxiBooking: React.FC = () => {
         </div>
 
         {/* Live Tracking Simulator - 5 Columns */}
-        <div className="md:col-span-5 bg-white dark:bg-[#162231] border border-emerald-50 dark:border-slate-800 rounded-3xl p-6 shadow-xl flex flex-col justify-between">
+        <div className="md:col-span-5 bg-white border border-[#E2E8F0] rounded-3xl p-6 shadow-sm flex flex-col justify-between">
           
           <div>
-            <h3 className="text-base font-bold text-gray-950 dark:text-white mb-4 flex items-center space-x-2 space-x-reverse">
-              <Clock className="text-amber-500 animate-pulse" size={18} />
+            <h3 className="text-base font-bold text-[#334155] mb-4 flex items-center space-x-2 space-x-reverse">
+              <Clock className="text-[#FDBA74] animate-pulse" size={18} />
               <span>Dispatcher Center Telemetry</span>
             </h3>
 
@@ -161,15 +161,15 @@ export const TaxiBooking: React.FC = () => {
               <div className="space-y-6">
                 
                 {/* Horizontal status flow indicator */}
-                <div className="bg-gray-50 dark:bg-slate-900 p-4 border border-gray-100 dark:border-slate-800 rounded-2xl">
-                  <span className="block text-[8px] font-mono text-gray-400 uppercase tracking-widest mb-2">Progress log</span>
+                <div className="bg-[#F8FAFC] p-4 border border-[#E2E8F0] rounded-2xl">
+                  <span className="block text-[8px] font-mono text-[#94A3B8] uppercase tracking-widest mb-2">Progress log</span>
                   <div className="flex items-center space-x-2 space-x-reverse">
                     <span className={`w-2.5 h-2.5 rounded-full ${activeTaxiRide.status ? 'bg-emerald-500' : 'bg-gray-300'}`} />
-                    <span className="text-[11px] font-bold text-gray-700 dark:text-slate-200 capitalize">
+                    <span className="text-[11px] font-bold text-[#334155] capitalize">
                       State: {activeTaxiRide.status}
                     </span>
                   </div>
-                  <p className="text-[10px] text-gray-400 mt-1 leading-normal">
+                  <p className="text-[10px] text-[#94A3B8] mt-1 leading-normal">
                     {activeTaxiRide.status === 'searching' && 'Analyzing coordinates for nearest available drivers...'}
                     {activeTaxiRide.status === 'assigned' && 'Driver found! Mohamed Kassimi is heading to pickup point.'}
                     {activeTaxiRide.status === 'ongoing' && 'Transit active. Enjoy safety standards inside Algeria.'}
@@ -179,20 +179,20 @@ export const TaxiBooking: React.FC = () => {
 
                 {/* Driver information */}
                 {activeTaxiRide.driverName && (
-                  <div className="p-4 bg-emerald-50/50 dark:bg-emerald-950/20 rounded-2xl border border-emerald-100/30 text-xs text-emerald-800 dark:text-emerald-300 space-y-2 animate-fade-in">
-                    <p className="font-extrabold text-[10px] text-emerald-900 dark:text-emerald-400 uppercase tracking-widest">vetted local chauffeur</p>
+                  <div className="p-4 bg-[#F8FAFC] rounded-2xl border border-[#E2E8F0] text-xs text-[#334155] space-y-2 animate-fade-in">
+                    <p className="font-extrabold text-[10px] text-[#3B82F6] uppercase tracking-widest">vetted local chauffeur</p>
                     <div className="flex items-center space-x-3 space-x-reverse">
-                      <div className="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-800 font-bold shrink-0">MK</div>
+                      <div className="w-10 h-10 rounded-full bg-[#3B82F6]/10 flex items-center justify-center text-[#3B82F6] font-bold shrink-0">MK</div>
                       <div>
-                        <h4 className="font-bold text-gray-800 dark:text-slate-200 text-xs">{activeTaxiRide.driverName}</h4>
-                        <span className="text-[9.5px] text-gray-400">{activeTaxiRide.driverCar}</span>
+                        <h4 className="font-bold text-[#334155] text-xs">{activeTaxiRide.driverName}</h4>
+                        <span className="text-[9.5px] text-[#94A3B8]">{activeTaxiRide.driverCar}</span>
                       </div>
                     </div>
-                    <div className="border-t border-emerald-100/30 pt-2 mt-2 space-y-1 text-[10.5px]">
-                      <p className="flex justify-between"><span>Contact:</span><strong className="text-gray-700 dark:text-slate-200">{activeTaxiRide.driverPhone}</strong></p>
-                      <p className="flex justify-between"><span>Authority Badge:</span><strong className="text-green-600 dark:text-green-400 flex items-center space-x-1"><ShieldCheck size={12} /><span>Algeria Vetted</span></strong></p>
+                    <div className="border-t border-[#E2E8F0] pt-2 mt-2 space-y-1 text-[10.5px]">
+                      <p className="flex justify-between"><span>Contact:</span><strong className="text-[#334155]">{activeTaxiRide.driverPhone}</strong></p>
+                      <p className="flex justify-between"><span>Authority Badge:</span><strong className="text-emerald-600 flex items-center space-x-1"><ShieldCheck size={12} /><span>Algeria Vetted</span></strong></p>
                       {activeTaxiRide.estimatedMinutes > 0 && (
-                        <p className="text-center font-bold text-emerald-700 dark:text-emerald-400 animate-pulse mt-2 pt-1 border-t border-emerald-100/10">Arriving in approx {activeTaxiRide.estimatedMinutes} mins</p>
+                        <p className="text-center font-bold text-[#3B82F6] animate-pulse mt-2 pt-1 border-t border-[#E2E8F0]/50">Arriving in approx {activeTaxiRide.estimatedMinutes} mins</p>
                       )}
                     </div>
                   </div>
@@ -201,16 +201,16 @@ export const TaxiBooking: React.FC = () => {
               </div>
             ) : (
               <div className="text-center py-10">
-                <div className="w-12 h-12 bg-gray-50 dark:bg-slate-900 rounded-full flex items-center justify-center text-gray-400 mx-auto mb-3">
+                <div className="w-12 h-12 bg-[#F8FAFC] rounded-full flex items-center justify-center text-[#94A3B8] mx-auto mb-3">
                   <Car size={20} />
                 </div>
-                <p className="text-xs text-gray-400 leading-normal max-w-[200px] mx-auto">No dispatched cab routes scheduled. Input coordinates and submit to launch real-time simulation tracking.</p>
+                <p className="text-xs text-[#94A3B8] leading-normal max-w-[200px] mx-auto">No dispatched cab routes scheduled. Input coordinates and submit to launch real-time simulation tracking.</p>
               </div>
             )}
 
           </div>
 
-          <div className="p-4 bg-amber-50/50 dark:bg-[#1a2332] rounded-2xl border border-amber-200/40 text-[10.5px] text-amber-800 dark:text-amber-400 leading-relaxed mt-6">
+          <div className="p-4 bg-amber-50/50 rounded-2xl border border-[#FDBA74]/30 text-[10.5px] text-amber-800 leading-relaxed mt-6">
             <strong>⚠️ Route Notice:</strong> Taxi tracking updates automatically in real-time intervals. You can also monitor your dynamic location marker on the interactive Algeria map component.
           </div>
 

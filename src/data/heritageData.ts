@@ -20,6 +20,12 @@ const defaultTimgadImage = timgadImagesList.find(img => img.includes('1536x864_c
   || timgadImagesList[0] 
   || '/src/assets/images/Timgad Roman Ruins/1536x864_cmsv2_2dc330f0-bb03-5e8b-a79c-6039766aa6d4-6820234.webp';
 
+const djemilaFolderModules = import.meta.glob('/src/assets/images/Amphithéâtre  Arc de Djemila (Cuicul)/*.{webp,jpg,JPG,jpeg,png}', { eager: true, import: 'default' });
+const djemilaImagesList = Array.from(new Set(Object.values(djemilaFolderModules) as string[])).filter(Boolean);
+const defaultDjemilaImage = djemilaImagesList.find(img => img.includes('theatre-djemila') || img.includes('52664290936') || img.includes('site_0191'))
+  || djemilaImagesList[0] 
+  || '/src/assets/images/Amphithéâtre  Arc de Djemila (Cuicul)/theatre-djemila-1024x576.webp';
+
 export interface HeritageItem {
   id: string;
   nom: string;
@@ -77,7 +83,7 @@ export const heritageDb: HeritageItem[] = [
     longitude: 5.7364,
     etat: "Excellent",
     description: "L'une des plus belles ruines romaines de montagne au monde, classée UNESCO. Cuicul s'intègre harmonieusement dans le paysage tourmenté de Kabylie, célèbre pour son Arc de triomphe de Caracalla.",
-    image: "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=800&q=80",
+    image: defaultDjemilaImage,
     source: "Arrêté de classement JO N° 77 du 30 Décembre 2009",
     popularite: "élevée",
     oeuvreAssociee: {

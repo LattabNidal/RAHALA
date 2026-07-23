@@ -32,6 +32,8 @@ import { EnhancedPlaceDetails } from './EnhancedPlaceDetails';
 import { UnescoDocumentModal } from './UnescoDocumentModal';
 import { SantaCruzDocumentModal } from './SantaCruzDocumentModal';
 import { TassiliDocumentModal } from './TassiliDocumentModal';
+import { DjemilaDocumentModal } from './DjemilaDocumentModal';
+import { TimgadDocumentModal } from './TimgadDocumentModal';
 
 import { APIProvider, Map, AdvancedMarker, Pin } from '@vis.gl/react-google-maps';
 
@@ -670,6 +672,8 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({ setActiveView, s
   const [unescoModalOpen, setUnescoModalOpen] = useState(false);
   const [santaCruzModalOpen, setSantaCruzModalOpen] = useState(false);
   const [tassiliModalOpen, setTassiliModalOpen] = useState(false);
+  const [djemilaModalOpen, setDjemilaModalOpen] = useState(false);
+  const [timgadModalOpen, setTimgadModalOpen] = useState(false);
 
   // Map settings
   const [searchQuery, setSearchQuery] = useState('');
@@ -1867,6 +1871,28 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({ setActiveView, s
                     </span>
                     <span className="font-mono text-[10px]">&rarr;</span>
                   </button>
+                ) : selectedHeritage?.nom.toLowerCase().includes('djemila') || selectedHeritage?.id.includes('djemila') || selectedHeritage?.nom.toLowerCase().includes('cuicul') ? (
+                  <button
+                    onClick={() => setDjemilaModalOpen(true)}
+                    className="w-full py-2 px-3 mb-3 bg-amber-500/10 hover:bg-amber-500/20 text-amber-700 dark:text-amber-300 border border-amber-500/30 rounded-xl text-[11px] font-bold transition flex items-center justify-between cursor-pointer"
+                  >
+                    <span className="flex items-center gap-1.5">
+                      <span>📄</span>
+                      <span>Consulter Dossier UNESCO N° 191 (Djémila Cuicul)</span>
+                    </span>
+                    <span className="font-mono text-[10px]">&rarr;</span>
+                  </button>
+                ) : selectedHeritage?.nom.toLowerCase().includes('timgad') || selectedHeritage?.id.includes('timgad') || selectedHeritage?.nom.toLowerCase().includes('thamugadi') ? (
+                  <button
+                    onClick={() => setTimgadModalOpen(true)}
+                    className="w-full py-2 px-3 mb-3 bg-amber-500/10 hover:bg-amber-500/20 text-amber-700 dark:text-amber-300 border border-amber-500/30 rounded-xl text-[11px] font-bold transition flex items-center justify-between cursor-pointer"
+                  >
+                    <span className="flex items-center gap-1.5">
+                      <span>📄</span>
+                      <span>Consulter Rapport Périodique UNESCO N° 194 (Timgad)</span>
+                    </span>
+                    <span className="font-mono text-[10px]">&rarr;</span>
+                  </button>
                 ) : selectedHeritage?.nom.toLowerCase().includes('santa') || selectedHeritage?.id.includes('santa') ? (
                   <button
                     onClick={() => setSantaCruzModalOpen(true)}
@@ -2456,6 +2482,18 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({ setActiveView, s
           isOpen={tassiliModalOpen}
           onClose={() => setTassiliModalOpen(false)}
           siteName={selectedHeritage?.nom || "Parc National du Tassili n'Ajjer (Djanet)"}
+        />
+
+        <DjemilaDocumentModal
+          isOpen={djemilaModalOpen}
+          onClose={() => setDjemilaModalOpen(false)}
+          siteName={selectedHeritage?.nom || "Amphithéâtre & Arc de Djemila (Cuicul)"}
+        />
+
+        <TimgadDocumentModal
+          isOpen={timgadModalOpen}
+          onClose={() => setTimgadModalOpen(false)}
+          siteName={selectedHeritage?.nom || "Timgad (Colonia Marciana Traiana Thamugadi)"}
         />
      </div>
    );
