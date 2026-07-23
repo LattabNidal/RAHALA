@@ -417,11 +417,6 @@ function RihlaApp() {
                 </div>
               </div>
 
-              {/* Cinematic Algerian Promo Video Showcase Deck */}
-              <div className="mt-16 sm:mt-24">
-                <PromoVideo />
-              </div>
-
               {/* Live Real-Time Algerian Weather Widget Pinned and Loaded */}
               <div className="mt-16 sm:mt-24">
                 <WeatherWidget />
