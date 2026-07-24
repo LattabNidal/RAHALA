@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
+import { LazyImage } from './LazyImage';
 import { 
   ChevronRight, 
   Sparkles, 
@@ -200,8 +201,10 @@ const RahalaLanding: React.FC<RahalaLandingProps> = ({ onEnterAuth }) => {
         <div className="absolute inset-0 z-0">
           <img 
             src="https://images.unsplash.com/photo-1539650116574-8efeb43e2750?auto=format&fit=crop&w=2000&q=90" 
-            alt="Algerian Sahara Desert dunes" 
+            alt="Dunes du désert du Sahara algérien" 
             className="w-full h-full object-cover object-center transform scale-102 animate-zoom-slow"
+            loading="eager"
+            decoding="async"
           />
           {/* Gentle white overlay to wash out the image background details, making it bright and highly legible */}
           <div className="absolute inset-0 bg-gradient-to-b from-white/20 via-ivory/75 to-ivory" />
@@ -288,10 +291,10 @@ const RahalaLanding: React.FC<RahalaLandingProps> = ({ onEnterAuth }) => {
               className="group bg-white border border-border hover:border-gold/30 rounded-[20px] overflow-hidden transition-all duration-300 flex flex-col justify-between shadow-xs hover:shadow-md"
             >
               <div className="relative h-56 w-full overflow-hidden shrink-0">
-                <img 
+                <LazyImage 
                   src={spot.image} 
                   alt={spot.name} 
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  className="w-full h-full transition-transform duration-700 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-white/90 via-transparent to-transparent opacity-80" />
                 <span className="absolute top-4 left-4 px-3 py-1 bg-white/90 border border-border text-gold text-[8px] font-mono font-bold uppercase rounded-full tracking-wider shadow-xs">

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { FileText, Download, X, Eye, Award, ZoomIn, ZoomOut, ChevronLeft, ChevronRight, Compass, ShieldCheck, Trees, Layers, MapPin } from 'lucide-react';
+import { LazyImage } from './rahala/LazyImage';
 
 interface TassiliDocumentModalProps {
   isOpen: boolean;
@@ -335,10 +336,10 @@ export const TassiliDocumentModal: React.FC<TassiliDocumentModalProps> = ({
 
                   {/* Main Photo */}
                   <div className="my-4 border border-gray-300 p-2 bg-white rounded shadow-sm">
-                    <img 
+                    <LazyImage 
                       src="/src/assets/images/tassili_erg_dunes_1784674389237.jpg" 
                       alt="Tassili n'Ajjer Djanet Sahara" 
-                      className="w-full h-64 object-cover rounded cursor-pointer hover:opacity-95 transition"
+                      className="w-full h-64 rounded cursor-pointer hover:opacity-95 transition"
                       onClick={() => {
                         setActiveTab('photos');
                         setActiveLightbox(tassiliGalleryPhotos[0]);
@@ -699,30 +700,30 @@ export const TassiliDocumentModal: React.FC<TassiliDocumentModalProps> = ({
                 </h4>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   <div className="space-y-1.5 bg-black/40 p-2 rounded-lg border border-white/5">
-                    <img 
+                    <LazyImage 
                       src="/src/assets/images/tassili_art_dancers_1784674422643.jpg" 
                       alt="Cercle des danseurs" 
-                      className="w-full h-32 object-cover rounded-lg border border-white/10 cursor-pointer hover:opacity-90"
+                      className="w-full h-32 rounded-lg border border-white/10 cursor-pointer hover:opacity-90"
                       onClick={() => setActiveLightbox(tassiliGalleryPhotos[2])}
                     />
                     <p className="text-[11px] font-mono text-amber-300 font-bold">1. Cercle des Danseurs</p>
                     <p className="text-[10px] text-slate-400">Scène de rituel sacré de la Période Bovidienne peinte à l'ocre.</p>
                   </div>
                   <div className="space-y-1.5 bg-black/40 p-2 rounded-lg border border-white/5">
-                    <img 
+                    <LazyImage 
                       src="/src/assets/images/tassili_art_figures_1784674477805.jpg" 
                       alt="Figures rituelles Têtes Rondes" 
-                      className="w-full h-32 object-cover rounded-lg border border-white/10 cursor-pointer hover:opacity-90"
+                      className="w-full h-32 rounded-lg border border-white/10 cursor-pointer hover:opacity-90"
                       onClick={() => setActiveLightbox(tassiliGalleryPhotos[6])}
                     />
                     <p className="text-[11px] font-mono text-amber-300 font-bold">2. Coiffures Cérémoniales</p>
                     <p className="text-[10px] text-slate-400">Figures humaines peintes en blanc et ocre avec parures cérémoniales.</p>
                   </div>
                   <div className="space-y-1.5 bg-black/40 p-2 rounded-lg border border-white/5">
-                    <img 
+                    <LazyImage 
                       src="/src/assets/images/tassili_art_giraffe_1784674491289.jpg" 
                       alt="Girafe de l'ocre" 
-                      className="w-full h-32 object-cover rounded-lg border border-white/10 cursor-pointer hover:opacity-90"
+                      className="w-full h-32 rounded-lg border border-white/10 cursor-pointer hover:opacity-90"
                       onClick={() => setActiveLightbox(tassiliGalleryPhotos[7])}
                     />
                     <p className="text-[11px] font-mono text-amber-300 font-bold">3. Girafe de l'Ocre Rouge</p>
@@ -749,10 +750,10 @@ export const TassiliDocumentModal: React.FC<TassiliDocumentModalProps> = ({
               {/* Endemic Species Cards with Photos */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="bg-[#1e1e1e] p-4 rounded-xl border border-white/10 space-y-3">
-                  <img 
+                  <LazyImage 
                     src="/src/assets/images/tassili_tarout_tree_1784674506915.jpg" 
                     alt="Cyprès du Tassili / Tarout"
-                    className="w-full h-36 object-cover rounded-lg border border-white/10 cursor-pointer hover:opacity-90"
+                    className="w-full h-36 rounded-lg border border-white/10 cursor-pointer hover:opacity-90"
                     onClick={() => setActiveLightbox(tassiliGalleryPhotos[8])}
                   />
                   <div>
@@ -766,10 +767,10 @@ export const TassiliDocumentModal: React.FC<TassiliDocumentModalProps> = ({
                 </div>
 
                 <div className="bg-[#1e1e1e] p-4 rounded-xl border border-white/10 space-y-3">
-                  <img 
+                  <LazyImage 
                     src="/src/assets/images/tassili_oasis_canyon_1784674520880.jpg" 
                     alt="Vallée de Canyon et Palmeraie"
-                    className="w-full h-36 object-cover rounded-lg border border-white/10 cursor-pointer hover:opacity-90"
+                    className="w-full h-36 rounded-lg border border-white/10 cursor-pointer hover:opacity-90"
                     onClick={() => setActiveLightbox(tassiliGalleryPhotos[9])}
                   />
                   <div>
@@ -852,11 +853,10 @@ export const TassiliDocumentModal: React.FC<TassiliDocumentModalProps> = ({
                     className="group bg-[#1e1e1e] rounded-xl border border-white/10 overflow-hidden cursor-pointer hover:border-amber-500/50 transition duration-200 flex flex-col justify-between"
                   >
                     <div className="relative aspect-video overflow-hidden bg-black/60">
-                      <img 
+                      <LazyImage 
                         src={photo.src} 
                         alt={photo.title}
-                        referrerPolicy="no-referrer"
-                        className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
+                        className="w-full h-full group-hover:scale-105 transition duration-300"
                       />
                       <span className="absolute top-2 right-2 text-[9px] font-mono font-bold bg-black/80 text-amber-300 px-2 py-0.5 rounded border border-white/20">
                         {photo.category}
@@ -913,10 +913,9 @@ export const TassiliDocumentModal: React.FC<TassiliDocumentModalProps> = ({
 
                     {/* Lightbox Image */}
                     <div className="flex-1 bg-black overflow-hidden flex items-center justify-center p-2 sm:p-4">
-                      <img 
+                      <LazyImage 
                         src={activeLightbox.src} 
                         alt={activeLightbox.title}
-                        referrerPolicy="no-referrer"
                         className="max-h-[60vh] max-w-full object-contain rounded-lg shadow-2xl"
                       />
                     </div>

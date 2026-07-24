@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { useApp } from '../context/AppContext';
 import { Check, Sparkles, Star, ShieldCheck, Heart } from 'lucide-react';
+import { PriceTag } from './rahala/PriceTag';
 
 export const Subscription: React.FC = () => {
   const { t } = useLanguage();
@@ -84,8 +85,8 @@ export const Subscription: React.FC = () => {
               <span className="text-[9px] font-mono text-gray-400 uppercase tracking-widest font-bold">{t('standardExplorerPass')}</span>
               <h3 className="text-xl font-bold text-gray-800 dark:text-white mt-1">{t('freeTravelTier')}</h3>
               <div className="mt-4 flex items-baseline text-gray-900 dark:text-white">
-                <span className="text-3xl font-extrabold font-mono text-gray-900 dark:text-white">0</span>
-                <span className="text-xs text-gray-400 font-normal ml-1.5 font-sans lowercase">DZD / {billingPeriod === 'monthly' ? 'month' : 'year'}</span>
+                <PriceTag amount={0} showFreeLabel className="text-xl" />
+                <span className="text-xs text-gray-400 font-normal ml-1.5 font-sans lowercase">/ {billingPeriod === 'monthly' ? 'month' : 'year'}</span>
               </div>
             </div>
 
@@ -121,11 +122,8 @@ export const Subscription: React.FC = () => {
               <h3 className="text-xl font-bold text-gray-900 dark:text-white mt-1">
                 {t('rihlaGoldVip')}
               </h3>
-              <div className="mt-4 flex items-baseline text-gray-900 dark:text-white">
-                <span className="text-3xl font-extrabold font-mono text-or-sahara dark:text-or-sahara">
-                  {billingPeriod === 'monthly' ? '1,200' : '9,900'}
-                </span>
-                <span className="text-xs font-bold text-or-sahara dark:text-or-sahara ml-1 leading-none">DZD</span>
+              <div className="mt-4 flex items-baseline text-gray-900 dark:text-white tabular-nums">
+                <PriceTag amount={billingPeriod === 'monthly' ? 1200 : 9900} className="text-3xl text-or-sahara dark:text-or-sahara!" />
                 <span className="text-xs text-gray-500 font-normal ml-1.5 font-sans lowercase">/ {billingPeriod === 'monthly' ? 'month' : 'year'}</span>
               </div>
             </div>

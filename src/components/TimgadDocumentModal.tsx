@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { FileText, Download, X, Award, ZoomIn, ZoomOut, ChevronLeft, ChevronRight, Building2, ShieldCheck, Image as ImageIcon, MapPin, CheckCircle2, Compass } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { StreetView360 } from './StreetView360';
+import { LazyImage } from './rahala/LazyImage';
 
 const timgadFolderModules = import.meta.glob('/src/assets/images/Timgad Roman Ruins/*.{webp,jpg,JPG,jpeg,png,jfif,JFIF}', { eager: true, import: 'default' });
 const timgadImagesList = Array.from(new Set(Object.values(timgadFolderModules) as string[])).filter(Boolean);
@@ -581,10 +582,10 @@ export const TimgadDocumentModal: React.FC<TimgadDocumentModalProps> = ({
 
                   {/* Primary Featured Photo */}
                   <div className="my-4 border border-gray-300 p-2 bg-white rounded shadow-sm">
-                    <img 
+                    <LazyImage 
                       src={primaryTimgadPhoto} 
                       alt="Arc de Trajan et ruines romaines de Timgad" 
-                      className="w-full h-64 object-cover rounded"
+                      className="w-full h-64 rounded"
                     />
                     <p className="text-[10px] font-sans text-gray-500 italic mt-1.5 text-center">
                       UNESCO N° 194 — {t.siteNameVal}
@@ -756,10 +757,10 @@ export const TimgadDocumentModal: React.FC<TimgadDocumentModalProps> = ({
                       className="bg-[#1e1e1e] border border-white/10 rounded-xl overflow-hidden hover:border-amber-500/50 transition duration-200 cursor-pointer group flex flex-col justify-between"
                     >
                       <div className="relative h-48 overflow-hidden bg-black">
-                        <img 
+                        <LazyImage 
                           src={photo.src} 
                           alt={localizedTitle} 
-                          className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
+                          className="w-full h-full group-hover:scale-105 transition duration-300"
                         />
                         <span className="absolute top-2 left-2 bg-black/70 text-amber-400 text-[9px] font-mono px-2 py-0.5 rounded border border-amber-500/30">
                           {photo.category}
@@ -849,7 +850,7 @@ export const TimgadDocumentModal: React.FC<TimgadDocumentModalProps> = ({
                 <X size={18} />
               </button>
             </div>
-            <img 
+            <LazyImage 
               src={activeLightbox.src} 
               alt={activeLightbox.title.fr} 
               className="w-full h-[65vh] object-contain rounded bg-black"

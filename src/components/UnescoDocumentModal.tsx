@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { FileText, Download, X, Eye, CheckCircle2, ShieldAlert, Award, Search, ZoomIn, ZoomOut, Printer, Bookmark, MapPin, Building, ChevronLeft, ChevronRight } from 'lucide-react';
 import { TimgadDocumentModal } from './TimgadDocumentModal';
 import { useLanguage } from '../context/LanguageContext';
+import { LazyImage } from './rahala/LazyImage';
 
 const translations = {
   fr: {
@@ -314,10 +315,10 @@ export const UnescoDocumentModal: React.FC<UnescoDocumentModalProps> = ({
 
                   {/* High Resolution Primary Photo */}
                   <div className="my-4 border border-green-200 p-2 bg-white rounded shadow-sm">
-                    <img 
+                    <LazyImage 
                       src="/src/assets/images/casbah_d_alger/site_0565_0017-1000-1481-20140721144417.webp" 
                       alt="Casbah d'Alger - Vue panoramique officielle" 
-                      className="w-full h-64 object-cover rounded"
+                      className="w-full h-64 rounded"
                     />
                     <p className="text-[10px] font-sans text-green-700 italic mt-1.5 text-center">
                       {t.photoCaption}
@@ -495,7 +496,7 @@ export const UnescoDocumentModal: React.FC<UnescoDocumentModalProps> = ({
                   { src: "/src/assets/images/casbah_d_alger/casbah_vaulted_alley.jpg", label: "Ruelle Voûtée Traditionnelle" }
                 ].map((item, idx) => (
                   <div key={idx} className="bg-white p-2 rounded-xl border border-green-200 space-y-2">
-                    <img src={item.src} alt={item.label} className="w-full h-56 object-cover rounded-lg" />
+                    <LazyImage src={item.src} alt={item.label} className="w-full h-56 rounded-lg" />
                     <p className="text-[11px] text-green-900 font-mono text-center">{item.label}</p>
                   </div>
                 ))}

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Sparkles, Compass, Map, Globe, ArrowRight, Hotel, Car, ArrowLeft, Shield, CheckCircle, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
+import { LazyImage } from './rahala/LazyImage';
 import { Language } from '../types';
 import { SEOHead } from '../SEOHead';
 import androidChrome from '../assets/images/android-chrome-512x512.png';
@@ -168,6 +169,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterAuth }) => {
             src={rahalaLogo} 
             alt="RAHALA Logo" 
             className="w-10 h-10 rounded-full object-cover border border-gray-100 shadow-xs"
+            loading="eager"
+            decoding="async"
             referrerPolicy="no-referrer"
           />
           <div>
@@ -278,11 +281,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterAuth }) => {
                   >
                     {/* Background Image with a premium Left-To-Right red-orange-gold gradient overlay */}
                     <div className="absolute inset-0 z-0">
-                      <img 
+                      <LazyImage 
                         src={slide.image} 
                         alt="RAHALA Premium Hero Banner" 
-                        className="w-full h-full object-cover object-center transform duration-1000 hover:scale-105"
-                        referrerPolicy="no-referrer"
+                        className="w-full h-full transform duration-1000 hover:scale-105"
                       />
                       {/* Premium gradient overlay reminiscent of Djezzy telecom style: deep crimson red transitioning to orange/transparent */}
                       <div className="absolute inset-0 bg-gradient-to-r from-red-800/90 via-red-600/70 to-transparent"></div>
@@ -361,11 +363,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterAuth }) => {
                         {/* Glowing ring */}
                         <div className="absolute -inset-2 bg-gradient-to-tr from-emerald-500 to-[#d4af37] rounded-2xl blur-lg opacity-60 animate-pulse"></div>
                         <div className="relative w-28 h-28 sm:w-36 sm:h-36 md:w-44 md:h-44 rounded-2xl overflow-hidden border-2 border-white/40 shadow-2xl bg-slate-900 p-1.5 flex items-center justify-center">
-                          <img 
+                          <LazyImage 
                             src={slide.image} 
                             alt="RAHALA Centerpiece" 
-                            className="w-full h-full rounded-xl object-contain transform duration-500 group-hover/emblem:scale-105"
-                            referrerPolicy="no-referrer"
+                            className="w-full h-full rounded-xl transform duration-500 group-hover/emblem:scale-105"
                           />
                         </div>
                       </div>
@@ -380,11 +381,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterAuth }) => {
                   >
                     {/* Background image with overlay */}
                     <div className="absolute inset-0 z-0">
-                      <img 
+                      <LazyImage 
                         src={slide.image} 
                         alt={slideTitle}
-                        className="w-full h-full object-cover"
-                        referrerPolicy="no-referrer"
+                        className="w-full h-full"
                       />
                       <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/55 to-transparent"></div>
                     </div>
@@ -576,11 +576,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterAuth }) => {
               >
                 <div>
                   <div className="h-44 overflow-hidden relative">
-                    <img 
+                    <LazyImage 
                       src={dest.image} 
                       alt={dest.name} 
-                      className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500"
-                      referrerPolicy="no-referrer"
+                      className="w-full h-full group-hover:scale-[1.03] transition-transform duration-500"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
                     <span className="absolute bottom-3 left-3 text-white font-extrabold text-lg tracking-wide">{dest.name}</span>

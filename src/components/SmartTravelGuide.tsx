@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { useApp } from '../context/AppContext';
 import { SocialShare } from './SocialShare';
+import { PriceTag } from './rahala/PriceTag';
+import { ScoreTag } from './rahala/ScoreTag';
+import { LazyImage } from './rahala/LazyImage';
 import { 
   Sparkles, Wallet, Compass, Grid, Calendar, Users, 
   ArrowRight, ArrowLeft, RefreshCw, Bookmark, Share2, Download, QrCode,
@@ -1127,12 +1130,11 @@ export const SmartTravelGuide: React.FC = () => {
           
           {/* Main Hero Panel */}
           <div className="relative h-72 sm:h-96 flex flex-col justify-end p-6 sm:p-10 z-0">
-            <img 
+            <LazyImage 
               src={smartGuide.destination.image_url || 'https://images.unsplash.com/photo-1564507004663-b6dfb3c824d5?auto=format&fit=crop&w=1200&q=80'} 
-              alt={smartGuide.destination.name}
-              className="absolute inset-0 w-full h-full object-cover select-none transition-all duration-700 hover:scale-[1.03]"
+              alt={smartGuide.destination.name || 'Destination Hero'}
+              className="absolute inset-0 w-full h-full select-none transition-all duration-700 hover:scale-[1.03]"
               style={{ filter: 'brightness(0.35) contrast(1.05)' }}
-              referrerPolicy="no-referrer"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/35"></div>
             
@@ -1212,11 +1214,10 @@ export const SmartTravelGuide: React.FC = () => {
                 <span>{language === 'ar' ? 'الإقامة الموصى بها مسبقاً' : 'Selected Hotel Accommodation'}</span>
               </h4>
               <div className="relative h-64 sm:h-80 rounded-2xl overflow-hidden border border-zinc-200/30 dark:border-zinc-805 shadow-md group">
-                <img 
+                <LazyImage 
                   src={smartGuide.hotel.image_url || 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80'} 
-                  alt={smartGuide.hotel.name}
-                  className="absolute inset-0 w-full h-full object-cover transition duration-550 group-hover:scale-105"
-                  referrerPolicy="no-referrer"
+                  alt={smartGuide.hotel.name || 'Hotel'}
+                  className="absolute inset-0 w-full h-full transition duration-550 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent"></div>
                 <div className="absolute bottom-6 left-6 right-6 text-white text-left">
@@ -1240,11 +1241,10 @@ export const SmartTravelGuide: React.FC = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pb-2">
                 {smartGuide.places.map((place: any, idx: number) => (
                   <div key={idx} className="relative h-60 rounded-2xl overflow-hidden border border-zinc-200/30 dark:border-zinc-800 shadow-md group">
-                    <img 
+                    <LazyImage 
                       src={place.image_url || 'https://images.unsplash.com/photo-1541963463532-d68292c34b19?auto=format&fit=crop&w=800&q=80'} 
-                      alt={place.name}
-                      className="absolute inset-0 w-full h-full object-cover transition duration-550 group-hover:scale-105"
-                      referrerPolicy="no-referrer"
+                      alt={place.name || `Place ${idx + 1}`}
+                      className="absolute inset-0 w-full h-full transition duration-550 group-hover:scale-105"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-955 via-slate-950/30 to-transparent"></div>
                     <div className="absolute bottom-4 left-4 right-4 text-white text-left">
@@ -1406,12 +1406,11 @@ export const SmartTravelGuide: React.FC = () => {
 
             {/* Hero Banner with overlay gradient */}
             <div className="relative h-64 sm:h-80 flex flex-col justify-end p-6 sm:p-10 z-0">
-              <img 
+              <LazyImage 
                 src={getHeroImg()} 
-                alt={currentTitle}
-                className="absolute inset-0 w-full h-full object-cover select-none"
+                alt={currentTitle || 'Hero Banner'}
+                className="absolute inset-0 w-full h-full select-none"
                 style={{ filter: 'brightness(0.4) contrast(1.05)' }}
-                referrerPolicy="no-referrer"
               />
               {/* Soft gold twilight vignette */}
               <div className="absolute inset-0 bg-gradient-to-t from-[#161616] via-transparent to-black/35"></div>
@@ -1451,8 +1450,16 @@ export const SmartTravelGuide: React.FC = () => {
                     <span className="text-[9px] uppercase tracking-wider text-gray-400 block">
                       {language === 'ar' ? 'الميزانية المقدرة' : 'Estimated Budget'}
                     </span>
-                    <span className="text-sm font-bold text-gray-900 dark:text-white">
-                      {budgetDisplay}
+                    <span className="text-sm font-bold text-gray-900 dark:text-white tabular-nums">
+                      {isMultiPlan && currentPlan.budget_estime_dzd ? (
+                        <span className="flex items-center gap-1">
+                          <PriceTag amount={currentPlan.budget_estime_dzd.min} />
+                          <span>–</span>
+                          <PriceTag amount={currentPlan.budget_estime_dzd.max} />
+                        </span>
+                      ) : (
+                        <PriceTag amount={plan.totalEstimatedCostDzd || 35000} />
+                      )}
                     </span>
                   </div>
                 </div>

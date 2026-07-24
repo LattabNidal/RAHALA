@@ -163,6 +163,8 @@ export const TransportProviders: React.FC = () => {
                     src={provider.logo} 
                     alt={provider.name} 
                     className="max-w-full max-h-full object-contain filter group-hover:scale-105 transition duration-300"
+                    loading="eager"
+                    decoding="async"
                     referrerPolicy="no-referrer"
                     onError={(e) => {
                       (e.target as HTMLImageElement).src = provider.type === 'airline' 

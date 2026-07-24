@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { LazyImage } from './rahala/LazyImage';
 
 interface LightboxProps {
   isOpen: boolean;
@@ -101,11 +102,10 @@ export const Lightbox: React.FC<LightboxProps> = ({
             transition={{ type: 'spring', damping: 25, stiffness: 200 }}
             className="max-w-full max-h-[80vh] flex items-center justify-center"
           >
-            <img
+            <LazyImage
               src={currentImage.url}
               alt={currentImage.label || `Lightbox Image ${currentIndex + 1}`}
               className="max-w-full max-h-[80vh] object-contain rounded-xl shadow-2xl select-none"
-              referrerPolicy="no-referrer"
             />
           </motion.div>
 

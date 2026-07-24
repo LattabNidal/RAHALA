@@ -22,10 +22,14 @@ export const LazyImage: React.FC<LazyImageProps> = ({
   }, [src]);
 
   return (
-    <div className={`relative overflow-hidden bg-ink/5 dark:bg-white/5 ${className}`}>
+    <div className={`relative overflow-hidden bg-border/40 dark:bg-white/5 ${className}`}>
       {/* Skeleton / Shimmer background when not loaded */}
       {!isLoaded && !error && (
-        <div className="absolute inset-0 animate-pulse bg-gradient-to-r from-ink/10 to-ink/5 dark:from-white/10 dark:to-white/5" />
+        <div 
+          className="absolute inset-0 animate-pulse bg-gradient-to-r from-border/60 to-border/20 dark:from-white/10 dark:to-white/5" 
+          role="status" 
+          aria-label="Chargement d'image..."
+        />
       )}
       
       <img

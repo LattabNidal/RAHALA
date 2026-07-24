@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useLanguage } from '../context/LanguageContext';
+import { PriceTag } from './rahala/PriceTag';
 import { 
   ArrowRightLeft, Coins, TrendingUp, AlertCircle, 
   RefreshCw, Check, Info, HelpCircle, Search, ChevronDown
@@ -575,15 +576,21 @@ export const CurrencyConverter: React.FC<CurrencyConverterProps> = ({ onClose })
           </div>
 
           <div className="flex items-baseline space-x-1.5 space-x-reverse">
-            <span className="text-2xl font-black font-mono text-emerald-600 dark:text-emerald-450 tracking-tight">
-              {Number(resultString).toLocaleString(language === 'ar' ? 'ar-DZ' : 'fr-FR', {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-              })}
-            </span>
-            <span className="text-xs font-bold text-gray-500">
-              {isToDzd ? t.dinarLabel : (sourceInfo.name[language] || sourceInfo.name['en'])}
-            </span>
+            {isToDzd ? (
+              <PriceTag amount={resultString} className="text-2xl font-black font-mono text-emerald-600 dark:text-emerald-450 tracking-tight" />
+            ) : (
+              <>
+                <span className="text-2xl font-black font-mono text-emerald-600 dark:text-emerald-450 tracking-tight">
+                  {Number(resultString).toLocaleString(language === 'ar' ? 'ar-DZ' : 'fr-FR', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                  })}
+                </span>
+                <span className="text-xs font-bold text-gray-500">
+                  {sourceInfo.name[language] || sourceInfo.name['en']}
+                </span>
+              </>
+            )}
           </div>
 
           <div className="mt-2.5 pt-2.5 border-t border-gray-200/55 dark:border-gray-800/80 flex items-center justify-between text-[10px]">

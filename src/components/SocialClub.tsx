@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { useApp } from '../context/AppContext';
+import { LazyImage } from './rahala/LazyImage';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   Heart, 
@@ -647,6 +648,8 @@ export const SocialClub: React.FC = () => {
                             src={post.authorAvatar} 
                             alt={post.authorName}
                             className="w-9 h-9 rounded-full object-cover border-2 border-[#d4af37]/30"
+                            loading="eager"
+                            decoding="async"
                           />
                           <div>
                             <p className="text-xs font-extrabold text-slate-900 dark:text-white leading-tight">
@@ -673,10 +676,9 @@ export const SocialClub: React.FC = () => {
                         onClick={() => setLightboxPost(post)}
                         className="relative pt-[75%] bg-black overflow-hidden cursor-zoom-in"
                       >
-                        <img 
+                        <LazyImage 
                           src={post.image || 'https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=400&q=80'} 
-                          alt="Sublime voyage d'Algérie" 
-                          referrerPolicy="no-referrer"
+                          alt={`Exploration à ${post.location || 'Algérie'}`} 
                           className="absolute inset-0 w-full h-full object-cover select-none group-hover:scale-104 transition duration-700"
                           style={{ filter: filterString }}
                         />
@@ -1182,6 +1184,8 @@ export const SocialClub: React.FC = () => {
                     src={currentUser?.avatar || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80"}
                     alt="Auteur"
                     className="w-5 h-5 rounded-full object-cover"
+                    loading="eager"
+                    decoding="async"
                   />
                   <span className="text-[10px] text-zinc-500 font-medium">Posté avec : <b>{currentUser?.name || "Voyageur"}</b></span>
                 </div>
@@ -1261,6 +1265,8 @@ export const SocialClub: React.FC = () => {
                           src={r.author_avatar || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80"}
                           alt="Avatar"
                           className="w-10 h-10 rounded-full object-cover border border-[#d4af37]/20 shrink-0"
+                          loading="eager"
+                          decoding="async"
                         />
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center justify-between gap-2">
@@ -1343,10 +1349,9 @@ export const SocialClub: React.FC = () => {
 
               {/* Photo Area */}
               <div className="md:w-3/5 bg-black flex items-center justify-center relative min-h-[300px] sm:min-h-[400px]">
-                <img 
+                <LazyImage 
                   src={lightboxPost.image} 
-                  alt="Agrandissement" 
-                  referrerPolicy="no-referrer"
+                  alt={lightboxPost.location || "Agrandissement"} 
                   className="max-h-[500px] w-full object-contain"
                   style={{ 
                     filter: lightboxPost.filters 
@@ -1364,6 +1369,8 @@ export const SocialClub: React.FC = () => {
                       src={lightboxPost.authorAvatar} 
                       alt="Avatar" 
                       className="w-10 h-10 rounded-full object-cover border border-[#d4af37]"
+                      loading="eager"
+                      decoding="async"
                     />
                     <div>
                       <p className="text-sm font-extrabold text-white leading-tight">{lightboxPost.authorName}</p>
@@ -1499,11 +1506,11 @@ export const SocialClub: React.FC = () => {
 
               {/* Miniature Post Preview Card */}
               <div className="flex items-center gap-3 bg-slate-50 dark:bg-zinc-900/60 p-3 rounded-2xl border border-slate-200/35 dark:border-white/5 mb-6 text-left">
-                <div className="w-16 h-16 rounded-xl overflow-hidden shrink-0 border border-slate-200/40 dark:border-zinc-800 animate-pulse">
-                  <img
+                <div className="w-16 h-16 rounded-xl overflow-hidden shrink-0 border border-slate-200/40 dark:border-zinc-800">
+                  <LazyImage
                     src={sharingPost.image}
-                    alt={sharingPost.location}
-                    className="w-full h-full object-cover"
+                    alt={sharingPost.location || 'Aperçu du post'}
+                    className="w-full h-full"
                     style={{
                       filter: sharingPost.filters
                         ? `brightness(${sharingPost.filters.brightness}%) contrast(${sharingPost.filters.contrast}%) grayscale(${sharingPost.filters.grayscale}%) saturate(${sharingPost.filters.saturate}%) sepia(${sharingPost.filters.sepia}%)`

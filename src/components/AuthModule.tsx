@@ -403,6 +403,8 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
                 src={rahalaLogo} 
                 alt="RAHALA Logo" 
                 className="w-full h-full rounded-full object-cover"
+                loading="eager"
+                decoding="async"
                 referrerPolicy="no-referrer"
               />
             </div>

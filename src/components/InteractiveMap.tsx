@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { useApp } from '../context/AppContext';
+import { LazyImage } from './rahala/LazyImage';
 import { 
   MapPin, 
   Navigation, 
@@ -1284,10 +1285,10 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({ setActiveView, s
                                       : 'border-slate-100 dark:border-slate-850 hover:bg-slate-50 dark:hover:bg-slate-900/60'
                                   }`}
                                 >
-                                  <img
+                                  <LazyImage
                                     src={item.image}
                                     alt={item.nom}
-                                    className="w-12 h-12 rounded-lg object-cover flex-shrink-0"
+                                    className="w-12 h-12 rounded-lg flex-shrink-0"
                                   />
                                   <div className="flex-1 min-w-0">
                                     <div className="flex items-center justify-between gap-1 leading-none mb-0.5">
@@ -1337,10 +1338,10 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({ setActiveView, s
                               : 'border-slate-100 dark:border-slate-850 hover:bg-slate-50 dark:hover:bg-slate-900/60'
                           }`}
                         >
-                          <img
+                          <LazyImage
                             src={item.image}
                             alt={item.nom}
-                            className="w-14 h-14 rounded-lg object-cover flex-shrink-0"
+                            className="w-14 h-14 rounded-lg flex-shrink-0"
                           />
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center justify-between gap-1 leading-none mb-1">
@@ -1413,10 +1414,10 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({ setActiveView, s
                               : 'border-slate-100 dark:border-slate-850 hover:bg-slate-50 dark:hover:bg-slate-900/60'
                           }`}
                         >
-                          <img
+                          <LazyImage
                             src={place.image}
                             alt={place.name}
-                            className="w-14 h-14 rounded-lg object-cover flex-shrink-0"
+                            className="w-14 h-14 rounded-lg flex-shrink-0"
                           />
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center justify-between gap-1 leading-none mb-1">
@@ -1836,10 +1837,10 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({ setActiveView, s
                   <span className="text-[9px] font-mono font-bold text-slate-400">Région {selectedHeritage.region}</span>
                 </div>
 
-                <img
+                <LazyImage
                   src={selectedHeritage.image}
                   alt={selectedHeritage.nom}
-                  className="w-full h-32 object-cover rounded-xl mb-3 shadow-md border border-slate-100 dark:border-slate-800"
+                  className="w-full h-32 rounded-xl mb-3 shadow-md border border-slate-100 dark:border-slate-800"
                 />
 
                 <h3 className="text-sm font-black text-slate-900 dark:text-white leading-tight">
@@ -1991,10 +1992,10 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({ setActiveView, s
                   <span className="text-[9px] font-mono text-gray-400">ID: {selectedPlace.id}</span>
                 </div>
 
-                <img
+                <LazyImage
                   src={selectedPlace.image}
                   alt={selectedPlace.name}
-                  className="w-full h-28 object-cover rounded-xl mb-3.5 shadow-xs"
+                  className="w-full h-28 rounded-xl mb-3.5 shadow-xs"
                 />
 
                 <h3 className="text-base font-black text-slate-900 dark:text-white leading-tight">

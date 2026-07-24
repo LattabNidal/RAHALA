@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { FileText, Download, X, Eye, Award, ZoomIn, ZoomOut, ChevronLeft, ChevronRight, BookOpen, ShieldCheck } from 'lucide-react';
+import { LazyImage } from './rahala/LazyImage';
 
 const santaCruzFolderModules = import.meta.glob('/src/assets/images/Santa Cruz Fort & Chapelle Notre-Dame du Salut/*.{webp,jpg,JPG,jpeg,png}', { eager: true, import: 'default' });
 const santaCruzImagesList = Object.values(santaCruzFolderModules) as string[];
@@ -202,10 +203,10 @@ export const SantaCruzDocumentModal: React.FC<SantaCruzDocumentModalProps> = ({
 
                   {/* Primary Photo */}
                   <div className="my-4 border border-gray-300 p-2 bg-white rounded shadow-sm">
-                    <img 
+                    <LazyImage 
                       src={primarySantaCruzPhoto} 
                       alt="Chapelle de Santa-Cruz et Fort sur le mont Murdjadjo à Oran" 
-                      className="w-full h-64 object-cover rounded"
+                      className="w-full h-64 rounded"
                     />
                     <p className="text-[10px] font-sans text-gray-500 italic mt-1.5 text-center">
                       Vue sur la chapelle Notre-Dame du Salut, la tour monumentale et le fort de Santa-Cruz sur le mont Murdjadjo.
@@ -378,7 +379,7 @@ export const SantaCruzDocumentModal: React.FC<SantaCruzDocumentModalProps> = ({
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {santaCruzGalleryItems.map((item, idx) => (
                   <div key={idx} className="bg-[#1e1e1e] p-2 rounded-xl border border-white/10 space-y-2">
-                    <img src={item.src} alt={item.label} className="w-full h-56 object-cover rounded-lg" />
+                    <LazyImage src={item.src} alt={item.label} className="w-full h-56 rounded-lg" />
                     <p className="text-[11px] text-slate-300 font-mono text-center">{item.label}</p>
                   </div>
                 ))}

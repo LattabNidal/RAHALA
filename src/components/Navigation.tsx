@@ -166,6 +166,8 @@ export const Navigation: React.FC<NavigationProps> = ({ activeView, setActiveVie
                     <img 
                       src={rahalaLogo} 
                       alt="RAHALA Logo badge" 
+                      loading="eager"
+                      decoding="async"
                       className="w-full h-full rounded-full object-cover"
                     />
                   </div>
@@ -363,6 +365,8 @@ export const Navigation: React.FC<NavigationProps> = ({ activeView, setActiveVie
                       <img
                         src={currentUser.avatar || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80'}
                         alt="avatar profile user"
+                        loading="eager"
+                        decoding="async"
                         className="w-7 h-7 object-cover rounded-full border border-[#E2E8F0]"
                       />
                     </button>
@@ -452,6 +456,8 @@ export const Navigation: React.FC<NavigationProps> = ({ activeView, setActiveVie
                     <img 
                       src={rahalaLogo} 
                       alt="Mini brand logo navigation deck slider" 
+                      loading="eager"
+                      decoding="async"
                       className="w-full h-full rounded-full object-cover"
                     />
                   </div>
@@ -516,6 +522,8 @@ export const Navigation: React.FC<NavigationProps> = ({ activeView, setActiveVie
                   <img
                     src={currentUser?.avatar || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80'}
                     alt="user profile avatar miniature file"
+                    loading="eager"
+                    decoding="async"
                     className="w-10 h-10 object-cover rounded-full border border-[#E2E8F0] shrink-0"
                   />
                   <div className="min-w-0 flex-1">

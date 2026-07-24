@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { useApp } from '../context/AppContext';
 import { mockLandmarks, mockHotels } from '../data/mockData';
+import { PriceTag } from './rahala/PriceTag';
+import { LazyImage } from './rahala/LazyImage';
 import { 
   ShieldAlert, 
   Users, 
@@ -338,8 +340,8 @@ export const AdminDashboard: React.FC = () => {
                 </div>
               </div>
               <div>
-                <h3 className="text-3xl font-black text-emerald-600 dark:text-emerald-400 font-mono leading-none mb-1">
-                  {estimatedRevenueDZD.toLocaleString()} DZD
+                <h3 className="text-3xl font-black font-mono leading-none mb-1 tabular-nums">
+                  <PriceTag amount={estimatedRevenueDZD} className="text-emerald-600 dark:text-emerald-400 text-3xl!" />
                 </h3>
                 <p className="text-[10px] text-gray-400 font-serif font-semibold mt-1">Transactions et réservations hôtelières directes</p>
               </div>
@@ -453,7 +455,7 @@ export const AdminDashboard: React.FC = () => {
                           </div>
                         </td>
                         <td className="py-3 px-3 font-mono">{log.date}</td>
-                        <td className="py-3 px-3 font-mono font-extrabold text-emerald-600">{log.totalPriceDZD?.toLocaleString() || '0'} DZD</td>
+                        <td className="py-3 px-3 font-mono font-extrabold"><PriceTag amount={log.totalPriceDZD || 0} className="text-emerald-600!" /></td>
                         <td className="py-3 px-3"><span className="px-2 py-0.5 bg-emerald-500/15 text-emerald-600 rounded-full text-[8px] font-bold uppercase tracking-wider">Réussi</span></td>
                       </tr>
                     ))}
@@ -510,6 +512,8 @@ export const AdminDashboard: React.FC = () => {
                                 src={userObj.avatar || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80'}
                                 alt="avatar"
                                 className="w-8 h-8 rounded-full border border-slate-205 object-cover"
+                                loading="eager"
+                                decoding="async"
                               />
                               <div>
                                 <p className="font-extrabold text-slate-800 dark:text-slate-100 leading-snug">{userObj.name}</p>
@@ -659,10 +663,10 @@ export const AdminDashboard: React.FC = () => {
                     >
                       <div className="flex items-center gap-4">
                         <div className="w-12 h-12 rounded-xl overflow-hidden bg-slate-100 relative max-h-[48px] border border-slate-200/30 flex-shrink-0">
-                          <img 
+                          <LazyImage 
                             src={landmark.image3d || "https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=150&q=80"} 
                             alt={landmark.name} 
-                            className="w-full h-full object-cover"
+                            className="w-full h-full"
                           />
                         </div>
                         <div>

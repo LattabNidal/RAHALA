@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { useApp } from '../context/AppContext';
+import { PriceTag } from './rahala/PriceTag';
 import { 
   Send, 
   MapPin, 
@@ -1184,8 +1185,8 @@ export const AIGuide: React.FC = () => {
                     <h4 className="text-xs font-bold font-serif text-[#1a1a1a] dark:text-white">
                       💡 {getLabel('economyTitle')}
                     </h4>
-                    <span className="text-[10px] font-mono text-[#d4af37] font-semibold">
-                      ~5,000 DZD / {language === 'ar' ? 'يوم' : 'day'}
+                    <span className="text-[10px] font-mono text-[#d4af37] font-semibold flex items-center gap-1">
+                      ~<PriceTag amount={5000} className="text-[#d4af37]!" /> / {language === 'ar' ? 'يوم' : 'day'}
                     </span>
                   </div>
                   <p className="text-[10.5px] text-gray-550 dark:text-gray-400 leading-relaxed font-sans mt-1">
@@ -1205,8 +1206,8 @@ export const AIGuide: React.FC = () => {
                     <h4 className="text-xs font-bold font-serif text-[#1a1a1a] dark:text-white">
                       🛡️ {getLabel('moderateTitle')}
                     </h4>
-                    <span className="text-[10px] font-mono text-[#d4af37] font-semibold">
-                      ~12,500 DZD / {language === 'ar' ? 'يوم' : 'day'}
+                    <span className="text-[10px] font-mono text-[#d4af37] font-semibold flex items-center gap-1">
+                      ~<PriceTag amount={12500} className="text-[#d4af37]!" /> / {language === 'ar' ? 'يوم' : 'day'}
                     </span>
                   </div>
                   <p className="text-[10.5px] text-gray-550 dark:text-gray-400 leading-relaxed font-sans mt-1">
@@ -1226,8 +1227,8 @@ export const AIGuide: React.FC = () => {
                     <h4 className="text-xs font-bold font-serif text-[#1a1a1a] dark:text-white">
                       👑 {getLabel('luxuryTitle')}
                     </h4>
-                    <span className="text-[10px] font-mono text-[#d4af37] font-semibold">
-                      ~28,000 DZD / {language === 'ar' ? 'يوم' : 'day'}
+                    <span className="text-[10px] font-mono text-[#d4af37] font-semibold flex items-center gap-1">
+                      ~<PriceTag amount={28000} className="text-[#d4af37]!" /> / {language === 'ar' ? 'يوم' : 'day'}
                     </span>
                   </div>
                   <p className="text-[10.5px] text-gray-550 dark:text-gray-400 leading-relaxed font-sans mt-1">
@@ -1358,8 +1359,8 @@ export const AIGuide: React.FC = () => {
                     <Info size={13} className="text-[#d4af37]" />
                     <span>{getLabel('totalBudget')}</span>
                   </span>
-                  <span className="text-lg font-mono font-bold tracking-tight text-[#d4af37] print:text-black">
-                    {itineraryResult.totalEstimatedCostDzd ? itineraryResult.totalEstimatedCostDzd.toLocaleString() : '---'} DZD
+                  <span className="text-lg font-mono font-bold tracking-tight text-[#d4af37] print:text-black tabular-nums">
+                    <PriceTag amount={itineraryResult.totalEstimatedCostDzd || 0} />
                   </span>
                 </div>
 
@@ -1568,8 +1569,8 @@ export const AIGuide: React.FC = () => {
 
                       {/* Day estimation cost flag */}
                       <div className="mt-3 text-right">
-                        <span className="text-[9px] font-mono text-gray-400 tracking-wider">
-                          Est. Daily Cost: <strong className="text-gray-600 dark:text-gray-200">{day.estimatedCostDzd?.toLocaleString()} DZD</strong>
+                        <span className="text-[9px] font-mono text-gray-400 tracking-wider flex items-center gap-1 justify-end">
+                          <span>Est. Daily Cost:</span> <PriceTag amount={day.estimatedCostDzd || 0} />
                         </span>
                       </div>
 

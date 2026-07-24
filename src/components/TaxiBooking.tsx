@@ -4,6 +4,7 @@ import { useApp } from '../context/AppContext';
 import { MapPin, Navigation, Car, Phone, ShieldCheck, DollarSign, Clock, Check, ArrowRight, Star } from 'lucide-react';
 import { FlightBooking } from './FlightBooking';
 import { TransportProviders } from './TransportProviders';
+import { PriceTag } from './rahala/PriceTag';
 
 export const TaxiBooking: React.FC = () => {
   const { t } = useLanguage();
@@ -116,15 +117,13 @@ export const TaxiBooking: React.FC = () => {
                 <span>Vetted City Transit Grade:</span>
                 <span className="font-bold text-[#334155]">Rihla Premium Companion VIP</span>
               </div>
-              <div className="flex justify-between">
+              <div className="flex justify-between items-center">
                 <span>Base Rate cost:</span>
-                <span className="font-bold text-[#334155]">250 DZD</span>
+                <PriceTag amount={250} className="text-[#334155]!" />
               </div>
-              <div className="flex justify-between border-t border-[#E2E8F0] pt-2 text-sm font-extrabold text-[#334155]">
+              <div className="flex justify-between items-center border-t border-[#E2E8F0] pt-2 text-sm font-extrabold text-[#334155] tabular-nums">
                 <span>Estimated cost DZD:</span>
-                <span className="text-[#3B82F6] font-bold text-base">
-                  {popularDestinations.find(p => p.name === destination)?.price || 1500} DZD
-                </span>
+                <PriceTag amount={popularDestinations.find(p => p.name === destination)?.price || 1500} className="text-[#3B82F6] font-bold text-base" />
               </div>
             </div>
           </div>

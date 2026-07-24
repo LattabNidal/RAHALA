@@ -17,6 +17,7 @@ import { TassiliDocumentModal } from './TassiliDocumentModal';
 import { DjemilaDocumentModal } from './DjemilaDocumentModal';
 import { TimgadDocumentModal } from './TimgadDocumentModal';
 import { PanoramaViewer } from './PanoramaViewer';
+import { LazyImage } from './rahala/LazyImage';
 
 const timgadFolderModules = import.meta.glob('/src/assets/images/Timgad Roman Ruins/*.{webp,jpg,JPG,jpeg,png,jfif,JFIF}', { eager: true, import: 'default' });
 const timgadImagesRaw = Array.from(new Set(Object.values(timgadFolderModules) as string[])).filter(Boolean);
@@ -1430,11 +1431,10 @@ export const DigitalTwin: React.FC = () => {
                       className="relative h-14 rounded-lg overflow-hidden border border-gray-200 hover:scale-105 active:scale-95 transition-all cursor-pointer bg-[#F8FAFC] group"
                       title={photo.author || `${activeSpot.name} - Cliché ${idx + 1}`}
                     >
-                      <img
+                      <LazyImage
                         src={photo.url}
-                        alt={`${activeSpot.name} authentic photo ${idx + 1}`}
-                        className="w-full h-full object-cover group-hover:brightness-110 transition-all"
-                        referrerPolicy="no-referrer"
+                        alt={`${activeSpot.name} photo ${idx + 1}`}
+                        className="w-full h-full group-hover:brightness-110 transition-all"
                       />
                     </button>
                   ))}
@@ -1468,6 +1468,8 @@ export const DigitalTwin: React.FC = () => {
                             src={rev.author_avatar || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80"}
                             alt={rev.author_name}
                             className="w-4.5 h-4.5 rounded-full object-cover"
+                            loading="eager"
+                            decoding="async"
                           />
                           <span className="font-bold text-ink">
                             {rev.author_name || "Voyageur"}

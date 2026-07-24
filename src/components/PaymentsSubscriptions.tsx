@@ -7,6 +7,7 @@ import {
   ArrowRight, ShieldAlert, AlertCircle, RefreshCw, Send, CheckSquare, UploadCloud,
   X, Printer, Award, Tag
 } from 'lucide-react';
+import { PriceTag } from './rahala/PriceTag';
 
 export const PaymentsSubscriptions: React.FC = () => {
   const { t, language, isRtl } = useLanguage();
@@ -415,17 +416,17 @@ export const PaymentsSubscriptions: React.FC = () => {
                       <div className="mt-2.5">
                         {promoDiscountPct > 0 ? (
                           <div className="flex flex-col">
-                            <span className="text-xs text-gray-400 line-through font-mono">1,200 DZD</span>
-                            <span className="text-xl font-bold font-mono text-emerald-500">
-                              {(Math.round(1200 * (1 - promoDiscountPct / 100))).toLocaleString()}
-                              <span className="text-[10px] font-mono text-slate-500 ml-1">DZD / mois</span>
+                            <span className="text-xs text-gray-400 line-through"><PriceTag amount={1200} className="text-gray-400!" /></span>
+                            <span className="text-xl font-bold font-mono text-emerald-500 flex items-center gap-1">
+                              <PriceTag amount={Math.round(1200 * (1 - promoDiscountPct / 100))} className="text-emerald-500!" />
+                              <span className="text-[10px] font-mono text-slate-500 ml-1">/ mois</span>
                             </span>
                           </div>
                         ) : (
-                          <>
-                            <span className="text-xl font-bold font-mono text-slate-900 dark:text-slate-100">1,200</span>
-                            <span className="text-[10px] font-mono text-slate-500 ml-1">DZD / mois</span>
-                          </>
+                          <div className="flex items-center gap-1">
+                            <PriceTag amount={1200} className="text-slate-900 dark:text-slate-100 text-xl font-bold" />
+                            <span className="text-[10px] font-mono text-slate-500 ml-1">/ mois</span>
+                          </div>
                         )}
                       </div>
                     </button>
@@ -450,17 +451,17 @@ export const PaymentsSubscriptions: React.FC = () => {
                       <div className="mt-2.5">
                         {promoDiscountPct > 0 ? (
                           <div className="flex flex-col">
-                            <span className="text-xs text-gray-400 line-through font-mono">9,900 DZD</span>
-                            <span className="text-xl font-bold font-mono text-emerald-500">
-                              {(Math.round(9900 * (1 - promoDiscountPct / 100))).toLocaleString()}
-                              <span className="text-[10px] font-mono text-[#d4af37] ml-1">DZD / an</span>
+                            <span className="text-xs text-gray-400 line-through"><PriceTag amount={9900} className="text-gray-400!" /></span>
+                            <span className="text-xl font-bold font-mono text-emerald-500 flex items-center gap-1">
+                              <PriceTag amount={Math.round(9900 * (1 - promoDiscountPct / 100))} className="text-emerald-500!" />
+                              <span className="text-[10px] font-mono text-[#d4af37] ml-1">/ an</span>
                             </span>
                           </div>
                         ) : (
-                          <>
-                            <span className="text-xl font-bold font-mono text-[#d4af37]">9,900</span>
-                            <span className="text-[10px] font-mono text-slate-500 ml-1">DZD / an</span>
-                          </>
+                          <div className="flex items-center gap-1">
+                            <PriceTag amount={9900} className="text-[#d4af37] text-xl font-bold" />
+                            <span className="text-[10px] font-mono text-slate-500 ml-1">/ an</span>
+                          </div>
                         )}
                       </div>
                     </button>
@@ -989,8 +990,8 @@ export const PaymentsSubscriptions: React.FC = () => {
                               {inv.method}
                             </span>
                           </td>
-                          <td className="py-4 font-mono font-extrabold text-slate-900 dark:text-slate-100">
-                            {inv.amount.toLocaleString()} DZD
+                          <td className="py-4 font-mono font-extrabold text-slate-900 dark:text-slate-100 tabular-nums">
+                            <PriceTag amount={inv.amount} />
                           </td>
                           <td className="py-4 text-center">
                             <span className="inline-block px-2.5 py-1 text-[9px] font-mono leading-none tracking-wider uppercase font-extrabold rounded-full bg-emerald-500/10 text-emerald-500 border border-emerald-500/20">
@@ -1030,7 +1031,7 @@ export const PaymentsSubscriptions: React.FC = () => {
                               </span>
                             </td>
                             <td className="py-4 font-mono font-extrabold text-slate-900 dark:text-slate-100">
-                              {totalCost.toLocaleString()} DZD
+                              <PriceTag amount={totalCost} />
                             </td>
                             <td className="py-4 text-center">
                               <span className="inline-block px-2.5 py-1 text-[9px] font-mono leading-none tracking-wider uppercase font-extrabold rounded-full bg-emerald-500/10 text-emerald-500 border border-emerald-500/20">
@@ -1072,10 +1073,12 @@ export const PaymentsSubscriptions: React.FC = () => {
               <div className="text-slate-500 text-center sm:text-start mb-4 sm:mb-0">
                 <span>{language === 'ar' ? 'إجمالي المدفوعات المسجلة :' : 'TOTAL DE VOS TRANSACTIONS RÉUSSIES :'}</span>
                 <span className="font-extrabold text-slate-850 dark:text-white block sm:inline sm:ml-2 text-sm">
-                  {(
-                    customInvoices.reduce((a, b) => a + b.amount, 0) + 
-                    bookings.reduce((a, b) => a + (Number(b.totalCost) || 15000), 0)
-                  ).toLocaleString()} DZD
+                  <PriceTag 
+                    amount={
+                      customInvoices.reduce((a, b) => a + b.amount, 0) + 
+                      bookings.reduce((a, b) => a + (Number(b.totalCost) || 15000), 0)
+                    } 
+                  />
                 </span>
               </div>
               <div className="text-gray-400 text-[10px] text-center sm:text-end uppercase">
@@ -1349,7 +1352,7 @@ export const PaymentsSubscriptions: React.FC = () => {
                       <div className="space-y-4">
                         <div className="p-3 bg-amber-500/10 rounded-xl border border-amber-500/15 text-center mt-2">
                           <span className="text-[10px] font-mono text-amber-400 font-bold uppercase tracking-wider block">Solde Disponible</span>
-                          <span className="text-lg font-mono font-black text-white">48,930.00 DZD</span>
+                          <PriceTag amount={48930} className="text-lg font-mono font-black text-white!" />
                         </div>
                         
                         <div className="space-y-2">
@@ -1634,8 +1637,8 @@ export const PaymentsSubscriptions: React.FC = () => {
                             <span className="text-[9px] text-gray-400 font-mono">Pack premium accès complet exclusif + guide vocal de voyage</span>
                           </td>
                           <td className="py-3 text-center font-mono">1</td>
-                          <td className="py-3 text-end font-mono">{(Math.round(selectedInvoice.amount * 0.81)).toLocaleString()} DZD</td>
-                          <td className="py-3 text-end font-mono font-bold text-slate-900">{selectedInvoice?.amount?.toLocaleString() || '0'} DZD</td>
+                          <td className="py-3 text-end font-mono"><PriceTag amount={Math.round(selectedInvoice.amount * 0.81)} /></td>
+                          <td className="py-3 text-end font-mono font-bold text-slate-900"><PriceTag amount={selectedInvoice?.amount || 0} /></td>
                         </tr>
                       </tbody>
                     </table>
@@ -1647,15 +1650,15 @@ export const PaymentsSubscriptions: React.FC = () => {
                   <div className="w-64 font-mono text-[10px] space-y-1.5">
                     <div className="flex justify-between">
                       <span className="text-gray-400">Total Hors Taxes (H.T) :</span>
-                      <span>{(Math.round(selectedInvoice.amount * 0.81)).toLocaleString()} DZD</span>
+                      <PriceTag amount={Math.round(selectedInvoice.amount * 0.81)} />
                     </div>
                     <div className="flex justify-between border-b border-slate-100 pb-1.5">
                       <span className="text-gray-400">TVA Algérie (19%) :</span>
-                      <span>{(Math.round(selectedInvoice.amount * 0.19)).toLocaleString()} DZD</span>
+                      <PriceTag amount={Math.round(selectedInvoice.amount * 0.19)} />
                     </div>
                     <div className="flex justify-between text-xs font-bold pt-1">
                       <span className="text-slate-900 uppercase">Net à Payer (T.T.C) :</span>
-                      <span className="text-emerald-600 text-sm font-black">{selectedInvoice?.amount?.toLocaleString() || '0'} DZD</span>
+                      <PriceTag amount={selectedInvoice?.amount || 0} className="text-emerald-600 text-sm font-black!" />
                     </div>
                   </div>
                 </div>

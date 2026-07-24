@@ -3,6 +3,7 @@ import { APIProvider, Map, AdvancedMarker, Pin } from '@vis.gl/react-google-maps
 import { Hotel } from '../types';
 import { Sparkles, MapPin, Search, Star, HelpCircle } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
+import { PriceTag } from './rahala/PriceTag';
 
 interface HotelInteractiveMapProps {
   hotels: Hotel[];
@@ -173,7 +174,7 @@ export const HotelInteractiveMap: React.FC<HotelInteractiveMapProps> = ({
                       <span className="text-[10px]">🏨</span>
                       <div>
                         <span className="font-extrabold block leading-tight text-[11px]">{h.name.replace('Hotel ', '')}</span>
-                        <span className="text-[9px] opacity-75 font-mono">{h.pricePerNight.toLocaleString()} DZD</span>
+                        <PriceTag amount={h.pricePerNight} className="text-[9px] opacity-75 font-mono" />
                       </div>
                     </div>
                   </button>
@@ -196,7 +197,7 @@ export const HotelInteractiveMap: React.FC<HotelInteractiveMapProps> = ({
                 <Star size={9} className="fill-amber-400 text-amber-400" />
                 {focusHotel.rating}
               </span>
-              <span className="font-mono text-emerald-300 font-bold">{focusHotel.pricePerNight.toLocaleString()} DZD</span>
+              <PriceTag amount={focusHotel.pricePerNight} className="text-emerald-300 font-bold tabular-nums" />
             </div>
           </div>
         )}

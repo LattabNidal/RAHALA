@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { useApp } from '../context/AppContext';
+import { PriceTag } from './rahala/PriceTag';
+import { LazyImage } from './rahala/LazyImage';
 import { 
   Shield, 
   ShieldCheck, 
@@ -1309,8 +1311,9 @@ export const SafeTravel: React.FC = () => {
                                   <span className="text-xs text-slate-400 font-sans">
                                     Estimated Safe Premium
                                   </span>
-                                  <span className="text-sm font-mono font-black text-emerald-600">
-                                    {provider.pricing[language] || provider.pricing['en']}
+                                  <span className="text-sm font-mono font-black text-emerald-600 flex items-center gap-1 tabular-nums">
+                                    <PriceTag amount={(provider.pricing[language] || provider.pricing['en']).replace(/[^0-9]/g, '')} />
+                                    <span className="text-xs font-normal text-slate-500">/ Séjour</span>
                                   </span>
                                 </div>
 
@@ -1389,10 +1392,11 @@ export const SafeTravel: React.FC = () => {
                 >
                   {/* Decorative background vectors for Sahara confidences */}
                   <div className="absolute inset-0 opacity-10 select-none pointer-events-none">
-                    <img 
+                    <LazyImage 
                       src="https://images.unsplash.com/photo-1545231027-63b3f16260cd?auto=format&fit=crop&w=1200&q=80" 
-                      alt="Sahara desert silhouettes dunes"
-                      className="w-full h-full object-cover"
+                      alt=""
+                      aria-hidden="true"
+                      className="w-full h-full"
                     />
                   </div>
                   

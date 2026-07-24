@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { LazyImage } from './rahala/LazyImage';
 import { 
   ExternalLink, 
   Image as ImageIcon, 
@@ -320,11 +321,10 @@ export const EnhancedPlaceDetails: React.FC<EnhancedPlaceDetailsProps> = ({
         ) : images.length > 0 ? (
           <div className="space-y-2">
             <div className="relative h-28 rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-950 border border-slate-100 dark:border-slate-800">
-              <img
+              <LazyImage
                 src={images[activeImageIdx]}
                 alt={`${name} dynamic`}
-                className="w-full h-full object-cover transition-all duration-500"
-                loading="lazy"
+                className="w-full h-full transition-all duration-500"
               />
               <div className="absolute bottom-1 right-1 bg-black/60 backdrop-blur-xs px-1.5 py-0.5 rounded text-[8px] text-white font-mono">
                 {activeImageIdx + 1} / {images.length}
@@ -341,7 +341,7 @@ export const EnhancedPlaceDetails: React.FC<EnhancedPlaceDetailsProps> = ({
                       activeImageIdx === i ? 'border-emerald-500 scale-105' : 'border-transparent opacity-70 hover:opacity-100'
                     }`}
                   >
-                    <img src={img} alt="Thumbnail" className="w-full h-full object-cover" />
+                    <LazyImage src={img} alt={`Miniature ${i + 1} de ${name}`} className="w-full h-full" />
                   </button>
                 ))}
               </div>

@@ -155,8 +155,10 @@ export const SocialShare: React.FC<SocialShareProps> = ({
             <div className="p-1.5 bg-white rounded-lg border border-[#d4af37]/30 shrink-0">
               <img 
                 src={`https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=${encodeURIComponent(url)}`}
-                alt="Itinerary QR"
+                alt="Code QR pour partager l'itinéraire"
                 className="w-16 h-16 object-contain"
+                loading="eager"
+                decoding="async"
                 referrerPolicy="no-referrer"
               />
             </div>

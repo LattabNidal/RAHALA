@@ -86,8 +86,10 @@ export const UserDashboard: React.FC<UserDashboardProps> = ({ setActiveView }) =
                 <div className="absolute -inset-1 bg-gradient-to-r from-[#3B82F6] to-[#22D3EE] rounded-2xl blur opacity-20 group-hover:opacity-40 transition-opacity duration-500" />
                 <img 
                   src={currentUser?.avatar || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80'} 
-                  alt="Profile Avatar"
+                  alt={currentUser?.name ? `Avatar de ${currentUser.name}` : "Avatar de l'utilisateur"}
                   className="relative w-24 h-24 rounded-2xl object-cover ring-2 ring-[#E2E8F0]"
+                  loading="eager"
+                  decoding="async"
                 />
               </div>
               <h3 className="text-lg font-serif font-bold text-[#334155] leading-none mb-2">
@@ -337,7 +339,7 @@ export const UserDashboard: React.FC<UserDashboardProps> = ({ setActiveView }) =
                       </div>
 
                       <div className="flex items-center gap-4 w-full sm:w-auto justify-between sm:justify-end border-t border-[#E2E8F0] pt-3 sm:pt-0 sm:border-none">
-                        <div className="text-left sm:text-right">
+                        <div className="text-left sm:text-right tabular-nums">
                           <span className="block text-[7px] font-mono text-ink/60 uppercase tracking-wider">Paid Amount</span>
                           <PriceTag amount={bkg.totalPriceDZD || 0} />
                         </div>

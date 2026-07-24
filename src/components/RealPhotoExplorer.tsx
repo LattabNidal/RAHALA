@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../context/LanguageContext';
+import { LazyImage } from './rahala/LazyImage';
 import { 
   Search, 
   Sparkles, 
@@ -493,11 +494,10 @@ export const RealPhotoExplorer: React.FC = () => {
                 <div className="lg:col-span-8 bg-black border border-[#E2E8F0] rounded-3xl overflow-hidden relative shadow-lg flex flex-col justify-center min-h-[450px]">
                   
                   {/* Photo itself */}
-                  <img
+                  <LazyImage
                     src={currentPhoto!.url}
                     alt={`${result.name} photo ${activePhotoIdx + 1}`}
-                    className="w-full h-full max-h-[550px] object-contain mx-auto cursor-pointer hover:scale-[1.01] hover:brightness-110 transition-all duration-300"
-                    referrerPolicy="no-referrer"
+                    className="w-full h-full max-h-[550px] mx-auto cursor-pointer hover:scale-[1.01] hover:brightness-110 transition-all duration-300"
                     onClick={() => setIsLightboxOpen(true)}
                   />
 
@@ -566,11 +566,10 @@ export const RealPhotoExplorer: React.FC = () => {
                               : 'border-transparent opacity-70 hover:opacity-100 hover:border-gray-300'
                           }`}
                         >
-                          <img
+                          <LazyImage
                             src={photo.url}
                             alt={`${result.name} thumb ${index + 1}`}
-                            className="w-full h-full object-cover"
-                            referrerPolicy="no-referrer"
+                            className="w-full h-full"
                           />
                           <div className="absolute inset-0 bg-black/10"></div>
                           <span className="absolute bottom-1 right-1 bg-black/60 text-white font-mono text-[8px] px-1 rounded">

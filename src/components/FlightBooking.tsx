@@ -505,7 +505,7 @@ export const FlightBooking: React.FC = () => {
                     </div>
 
                     <div className="flex items-center justify-between pt-3 border-t border-[#E2E8F0]">
-                      <div>
+                      <div className="tabular-nums">
                         <span className="text-[8px] font-mono text-ink/60 uppercase tracking-wider block">{isRtl ? 'السعر المقدر' : 'Estimated Price'}</span>
                         <PriceTag amount={flight.estimatedPriceDZD} />
                       </div>

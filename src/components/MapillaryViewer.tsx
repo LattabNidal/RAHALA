@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Camera, MapPin } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
+import { LazyImage } from './rahala/LazyImage';
 
 interface MapillaryViewerProps {
   lat: number;
@@ -31,7 +32,7 @@ export const MapillaryViewer: React.FC<MapillaryViewerProps> = ({ lat, lng }) =>
           <span>{language === 'ar' ? 'بانوراما المجتمع (Mapillary)' : 'Community Panorama (Mapillary)'}</span>
         </h4>
         {imageUrl ? (
-            <img src={imageUrl} alt="Community 360" className="w-full h-40 object-cover rounded-xl" />
+            <LazyImage src={imageUrl} alt="Vue panoramique communautaire Mapillary" className="w-full h-40 rounded-xl" />
         ) : (
             <div className="h-40 flex items-center justify-center text-encre/40 text-xs">
                 {language === 'ar' ? 'جار التحميل...' : 'Loading...'}
