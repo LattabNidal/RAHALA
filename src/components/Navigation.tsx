@@ -151,7 +151,7 @@ export const Navigation: React.FC<NavigationProps> = ({ activeView, setActiveVie
               <button
                 id="drawer-toggle-button"
                 onClick={() => setMenuOpen(true)}
-                className="p-2 sm:p-2.5 text-[#334155] hover:text-[#3B82F6] bg-[#F8FAFC] hover:bg-[#E2E8F0] rounded-xl transition duration-200 cursor-pointer flex items-center justify-center border border-[#E2E8F0]"
+                className="p-2 sm:p-2.5 text-ink hover:text-gold bg-[#F8FAFC] hover:bg-[#E2E8F0] rounded-xl transition duration-200 cursor-pointer flex items-center justify-center border border-[#E2E8F0]"
                 title="Consulter le menu"
               >
                 <Menu size={18} />
@@ -161,7 +161,7 @@ export const Navigation: React.FC<NavigationProps> = ({ activeView, setActiveVie
                 onClick={() => setActiveView('explore')} 
                 className="flex items-center space-x-2.5 space-x-reverse group focus:outline-none p-1 rounded-xl cursor-pointer"
               >
-                <div className="relative p-0.5 rounded-full bg-gradient-to-tr from-[#3B82F6] via-[#22D3EE] to-[#FDBA74] shadow-sm group-hover:scale-105 transition duration-300">
+                <div className="relative p-0.5 rounded-full bg-gradient-to-tr from-gold to-[#B8860B] shadow-sm group-hover:scale-105 transition duration-300">
                   <div className="w-8 h-8 rounded-full overflow-hidden bg-white p-0.5">
                     <img 
                       src={rahalaLogo} 
@@ -169,14 +169,14 @@ export const Navigation: React.FC<NavigationProps> = ({ activeView, setActiveVie
                       className="w-full h-full rounded-full object-cover"
                     />
                   </div>
-                  <div className="absolute bottom-0 -right-0.5 w-2.5 h-2.5 bg-[#3B82F6] border-2 border-white rounded-full flex items-center justify-center animate-ping-slow" />
+                  <div className="absolute bottom-0 -right-0.5 w-2.5 h-2.5 bg-gold border-2 border-white rounded-full flex items-center justify-center animate-ping-slow" />
                 </div>
                 
                 <div className="flex flex-col text-right">
-                  <span className="text-lg sm:text-xl font-serif font-black tracking-wider bg-gradient-to-r from-[#3B82F6] to-[#22D3EE] bg-clip-text text-transparent uppercase select-none">
+                  <span className="text-lg sm:text-xl font-serif font-black tracking-wider bg-gradient-to-r from-gold to-[#B8860B] bg-clip-text text-transparent uppercase select-none">
                     RAHALA
                   </span>
-                  <span className="text-[7.5px] tracking-widest font-mono text-[#94A3B8] font-bold uppercase select-none leading-none">
+                  <span className="text-[7.5px] tracking-widest font-mono text-ink/60 font-bold uppercase select-none leading-none">
                     L’Algérie Autrement
                   </span>
                 </div>
@@ -189,10 +189,10 @@ export const Navigation: React.FC<NavigationProps> = ({ activeView, setActiveVie
                 <div className="flex items-center">
                   <span className={`flex items-center gap-1.5 px-3 py-1.5 text-[9px] font-mono font-bold uppercase rounded-xl leading-none border select-none ${
                     supabaseDbService.isUsingCloud()
-                      ? 'bg-[#3B82F6]/10 text-[#3B82F6] border-[#3B82F6]/20'
-                      : 'bg-[#F8FAFC] text-[#94A3B8] border-[#E2E8F0]'
+                      ? 'bg-gold/10 text-gold border-gold/20'
+                      : 'bg-[#F8FAFC] text-ink/60 border-[#E2E8F0]'
                   }`}>
-                    <span className={`w-1.5 h-1.5 rounded-full ${supabaseDbService.isUsingCloud() ? 'bg-[#3B82F6] animate-pulse' : 'bg-[#94A3B8]'}`} />
+                    <span className={`w-1.5 h-1.5 rounded-full ${supabaseDbService.isUsingCloud() ? 'bg-gold animate-pulse' : 'bg-ink/60'}`} />
                     <span>{supabaseDbService.isUsingCloud() ? 'Cloud Sync Sync' : 'Local Sandbox Offline'}</span>
                   </span>
                 </div>
@@ -204,8 +204,8 @@ export const Navigation: React.FC<NavigationProps> = ({ activeView, setActiveVie
                     onClick={togglePremium}
                     className={`px-3 py-1.5 text-[9px] font-mono rounded-lg transition select-none cursor-pointer ${
                       currentUser.isPremium 
-                        ? 'bg-[#3B82F6] text-white border border-[#3B82F6] shadow-sm font-black' 
-                        : 'border border-dashed border-[#E2E8F0] text-[#94A3B8] hover:bg-[#3B82F6]/10 hover:text-[#3B82F6]'
+                        ? 'bg-gold text-ink border border-gold shadow-sm font-black' 
+                        : 'border border-dashed border-[#E2E8F0] text-ink/60 hover:bg-gold/10 hover:text-gold'
                     }`}
                     title="Toggle Premium subscription simulated flow"
                   >
@@ -218,7 +218,7 @@ export const Navigation: React.FC<NavigationProps> = ({ activeView, setActiveVie
               <button
                 id="darkmode-switcher"
                 onClick={() => setDarkMode(false)}
-                className="p-2 sm:p-2.5 text-[#334155] hover:text-[#3B82F6] hover:bg-[#F8FAFC] rounded-xl transition cursor-pointer flex items-center justify-center"
+                className="p-2 sm:p-2.5 text-ink hover:text-gold hover:bg-[#F8FAFC] rounded-xl transition cursor-pointer flex items-center justify-center"
                 title="Thème Premium (Clair)"
               >
                 <Sun size={15} />
@@ -236,15 +236,15 @@ export const Navigation: React.FC<NavigationProps> = ({ activeView, setActiveVie
                   }}
                   className={`flex items-center space-x-1.5 space-x-reverse p-2 text-xs font-bold uppercase rounded-xl transition duration-200 cursor-pointer relative ${
                     converterOpen 
-                      ? 'text-[#3B82F6] bg-[#3B82F6]/10' 
-                      : 'text-[#334155] hover:text-[#3B82F6] hover:bg-[#F8FAFC]'
+                      ? 'text-gold bg-gold/10' 
+                      : 'text-ink hover:text-gold hover:bg-[#F8FAFC]'
                   }`}
                 >
-                  <Coins size={15} className="text-[#3B82F6]" />
+                  <Coins size={15} className="text-gold" />
                   <span className="hidden md:inline">
                     {language === 'ar' ? 'تحويل' : language === 'fr' ? 'Convertir' : 'Convert'}
                   </span>
-                  <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-[#3B82F6] animate-pulse border border-white" />
+                  <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-gold animate-pulse border border-white" />
                 </button>
                 
                 {converterOpen && (
@@ -264,7 +264,7 @@ export const Navigation: React.FC<NavigationProps> = ({ activeView, setActiveVie
                     setProfileDropdownOpen(false);
                     setConverterOpen(false);
                   }}
-                  className="flex items-center space-x-1 space-x-reverse p-2 text-[#334155] hover:text-[#3B82F6] hover:bg-[#F8FAFC] rounded-xl transition cursor-pointer"
+                  className="flex items-center space-x-1 space-x-reverse p-2 text-ink hover:text-gold hover:bg-[#F8FAFC] rounded-xl transition cursor-pointer"
                 >
                   <Globe size={15} />
                   <span className="hidden sm:inline text-xs font-bold uppercase">
@@ -282,13 +282,13 @@ export const Navigation: React.FC<NavigationProps> = ({ activeView, setActiveVie
                            onClick={() => handleLangSelect(lang.code)}
                            className={`flex items-center justify-between w-full text-start px-4 py-2 text-xs font-bold uppercase tracking-wider transition-all cursor-pointer ${
                              isActive 
-                               ? 'text-[#3B82F6] bg-[#3B82F6]/10 border-l-4 border-[#3B82F6] font-black'
-                               : 'text-[#334155] hover:text-[#3B82F6] hover:bg-[#F8FAFC]'
+                               ? 'text-gold bg-gold/10 border-l-4 border-gold font-black'
+                               : 'text-ink hover:text-gold hover:bg-[#F8FAFC]'
                            }`}
                         >
                           <span className="flex items-center space-x-1.5 space-x-reverse">
                             <span>{lang.label}</span>
-                            {isActive && <span className="text-[10px] text-[#3B82F6]">✓</span>}
+                            {isActive && <span className="text-[10px] text-gold">✓</span>}
                           </span>
                           <span className="text-sm">{lang.flag}</span>
                         </button>
@@ -308,21 +308,21 @@ export const Navigation: React.FC<NavigationProps> = ({ activeView, setActiveVie
                     setProfileDropdownOpen(false);
                     setConverterOpen(false);
                   }}
-                  className="p-2 sm:p-2.5 text-[#334155] hover:text-[#3B82F6] hover:bg-[#F8FAFC] rounded-xl transition relative cursor-pointer"
+                  className="p-2 sm:p-2.5 text-ink hover:text-gold hover:bg-[#F8FAFC] rounded-xl transition relative cursor-pointer"
                 >
                   <Bell size={15} />
                   {unreadCount > 0 && (
-                    <span className="absolute top-1.5 right-1.5 w-2.5 h-2.5 rounded-full bg-[#3B82F6] border-2 border-white animate-pulse" />
+                    <span className="absolute top-1.5 right-1.5 w-2.5 h-2.5 rounded-full bg-gold border-2 border-white animate-pulse" />
                   )}
                 </button>
                 {notifDropdownOpen && (
                   <div className={`absolute ${isRtl ? 'left-0' : 'right-0'} mt-2 w-72 rounded-xl bg-white border border-[#E2E8F0] shadow-xl z-50 animate-fade-in overflow-hidden`}>
                     <div className="px-4 py-3 border-b border-[#E2E8F0] flex justify-between items-center bg-[#F8FAFC] rounded-t-xl">
-                      <span className="text-xs font-black uppercase tracking-wider text-[#334155]">Notifications</span>
+                      <span className="text-xs font-black uppercase tracking-wider text-ink">Notifications</span>
                       {unreadCount > 0 && (
                         <button
                           onClick={clearNotifications}
-                          className="text-[10px] font-bold uppercase tracking-wider text-[#3B82F6] hover:underline cursor-pointer"
+                          className="text-[10px] font-bold uppercase tracking-wider text-gold hover:underline cursor-pointer"
                         >
                           Clear All
                         </button>
@@ -330,14 +330,14 @@ export const Navigation: React.FC<NavigationProps> = ({ activeView, setActiveVie
                     </div>
                     <div className="max-h-60 overflow-y-auto py-1.5">
                       {notifications.length === 0 ? (
-                        <div className="px-4 py-6 text-center text-xs text-[#94A3B8] font-serif italic">
+                        <div className="px-4 py-6 text-center text-xs text-ink/60 font-serif italic">
                           Pas de messages aujourd'hui
                         </div>
                       ) : (
                         notifications.map((notif) => (
                            <div key={notif.id} className="px-4 py-3 border-b border-[#E2E8F0] last:border-none hover:bg-[#F8FAFC] transition text-left">
-                             <p className="text-xs text-[#334155] leading-relaxed font-sans">{notif.message}</p>
-                             <span className="text-[9px] text-[#94A3B8] font-mono mt-1 block">{notif.date}</span>
+                             <p className="text-xs text-ink leading-relaxed font-sans">{notif.message}</p>
+                             <span className="text-[9px] text-ink/60 font-mono mt-1 block">{notif.date}</span>
                            </div>
                         ))
                       )}
@@ -369,14 +369,14 @@ export const Navigation: React.FC<NavigationProps> = ({ activeView, setActiveVie
                     {profileDropdownOpen && (
                       <div className={`absolute ${isRtl ? 'left-0' : 'right-0'} mt-2 w-56 rounded-xl bg-white border border-[#E2E8F0] shadow-xl py-1.5 z-50 animate-fade-in`}>
                         <div className="px-4 py-3 border-b border-[#E2E8F0] bg-[#F8FAFC] rounded-t-lg text-left">
-                          <p className="text-xs font-black text-[#3B82F6] truncate mb-1 font-serif italic">{currentUser.name}</p>
-                          <p className="text-[10px] text-[#94A3B8] font-mono truncate">{currentUser.email}</p>
+                          <p className="text-xs font-black text-gold truncate mb-1 font-serif italic">{currentUser.name}</p>
+                          <p className="text-[10px] text-ink/60 font-mono truncate">{currentUser.email}</p>
                           <div className="mt-2.5 flex space-x-1.5 space-x-reverse">
-                            <span className="px-2 py-0.5 text-[8px] font-mono font-black uppercase border border-[#E2E8F0] text-[#334155] rounded bg-[#F8FAFC]">
+                            <span className="px-2 py-0.5 text-[8px] font-mono font-black uppercase border border-[#E2E8F0] text-ink rounded bg-[#F8FAFC]">
                               {currentUser.role}
                             </span>
                             {currentUser.isPremium && (
-                              <span className="px-2 py-0.5 text-[8px] font-mono font-black uppercase bg-[#3B82F6]/10 text-[#3B82F6] border border-[#3B82F6]/20 rounded">
+                              <span className="px-2 py-0.5 text-[8px] font-mono font-black uppercase bg-gold/10 text-gold border border-gold/20 rounded">
                                 VIP
                               </span>
                             )}
@@ -388,7 +388,7 @@ export const Navigation: React.FC<NavigationProps> = ({ activeView, setActiveVie
                             setProfileDropdownOpen(false);
                             setMenuOpen(false);
                           }}
-                          className="flex w-full px-4 py-2.5 text-xs text-[#334155] hover:text-[#3B82F6] hover:bg-[#F8FAFC] items-center space-x-2 space-x-reverse transition uppercase tracking-wider font-extrabold cursor-pointer"
+                          className="flex w-full px-4 py-2.5 text-xs text-ink hover:text-gold hover:bg-[#F8FAFC] items-center space-x-2 space-x-reverse transition uppercase tracking-wider font-extrabold cursor-pointer"
                         >
                           <UserIcon size={12} />
                           <span>{t('navDashboard')}</span>
@@ -448,7 +448,7 @@ export const Navigation: React.FC<NavigationProps> = ({ activeView, setActiveVie
               
               <div className="p-5 border-b border-[#E2E8F0] flex justify-between items-center bg-[#F8FAFC]">
                 <div className="flex items-center space-x-2 space-x-reverse">
-                  <div className="w-8 h-8 rounded-full overflow-hidden bg-[#3B82F6]/10 p-0.5 border border-[#3B82F6]/20">
+                  <div className="w-8 h-8 rounded-full overflow-hidden bg-gold/10 p-0.5 border border-gold/20">
                     <img 
                       src={rahalaLogo} 
                       alt="Mini brand logo navigation deck slider" 
@@ -456,10 +456,10 @@ export const Navigation: React.FC<NavigationProps> = ({ activeView, setActiveVie
                     />
                   </div>
                   <div>
-                    <span className="text-base font-serif font-black tracking-widest text-[#334155] uppercase leading-none block">
+                    <span className="text-base font-serif font-black tracking-widest text-ink uppercase leading-none block">
                       RAHALA
                     </span>
-                    <span className="text-[7.5px] font-mono text-[#94A3B8] font-bold block uppercase mt-0.5">
+                    <span className="text-[7.5px] font-mono text-ink/60 font-bold block uppercase mt-0.5">
                       Algerian Smart Companion
                     </span>
                   </div>
@@ -467,14 +467,14 @@ export const Navigation: React.FC<NavigationProps> = ({ activeView, setActiveVie
                 
                 <button
                   onClick={() => setMenuOpen(false)}
-                  className="p-1.5 rounded-lg bg-white hover:bg-[#E2E8F0] border border-[#E2E8F0] text-[#334155] transition cursor-pointer"
+                  className="p-1.5 rounded-lg bg-white hover:bg-[#E2E8F0] border border-[#E2E8F0] text-ink transition cursor-pointer"
                 >
                   <X size={15} />
                 </button>
               </div>
 
               <div className="flex-1 overflow-y-auto px-4 py-6 space-y-2">
-                <p className="px-3 text-[9px] font-mono uppercase tracking-[0.2em] text-[#94A3B8] font-black mb-3">
+                <p className="px-3 text-[9px] font-mono uppercase tracking-[0.2em] text-ink/60 font-black mb-3">
                   {language === 'ar' ? 'البوابة الذكية لقسنطينة والجزائر' : 'Smart Gateway Portals'}
                 </p>
 
@@ -490,22 +490,22 @@ export const Navigation: React.FC<NavigationProps> = ({ activeView, setActiveVie
                       }}
                       className={`w-full flex items-center p-3 rounded-2xl transition-all duration-200 text-right font-sans cursor-pointer ${
                         isActive 
-                          ? 'bg-[#3B82F6]/10 text-[#3B82F6] font-bold border-l-4 border-[#3B82F6] pl-2 shadow-sm'
-                          : 'text-[#334155] hover:bg-[#F8FAFC] hover:text-[#3B82F6]'
+                          ? 'bg-gold/10 text-gold font-bold border-l-4 border-gold pl-2 shadow-sm'
+                          : 'text-ink hover:bg-[#F8FAFC] hover:text-gold'
                       }`}
                     >
-                      <div className={`p-2 rounded-xl shrink-0 ${isActive ? 'bg-[#3B82F6] text-white' : 'bg-[#F8FAFC] text-[#94A3B8] border border-[#E2E8F0]'} ml-3`}>
+                      <div className={`p-2 rounded-xl shrink-0 ${isActive ? 'bg-gold text-ink' : 'bg-[#F8FAFC] text-ink/60 border border-[#E2E8F0]'} ml-3`}>
                         <Icon size={16} />
                       </div>
                       
                       <div className="min-w-0 flex-1 text-left">
                         <span className="block text-xs font-black uppercase tracking-wider">{item.label}</span>
-                        <span className={`block text-[8px] truncate leading-none mt-0.5 ${isActive ? 'text-[#3B82F6]' : 'text-[#94A3B8]'}`}>
+                        <span className={`block text-[8px] truncate leading-none mt-0.5 ${isActive ? 'text-gold' : 'text-ink/60'}`}>
                           {getSubtitle(item.id)}
                         </span>
                       </div>
                       
-                      <ChevronRight size={12} className={`opacity-40 shrink-0 ${isActive ? 'text-[#3B82F6]' : 'text-[#94A3B8]'}`} />
+                      <ChevronRight size={12} className={`shrink-0 ${isActive ? 'text-gold' : 'text-ink/60'}`} />
                     </button>
                   );
                 })}
@@ -519,19 +519,19 @@ export const Navigation: React.FC<NavigationProps> = ({ activeView, setActiveVie
                     className="w-10 h-10 object-cover rounded-full border border-[#E2E8F0] shrink-0"
                   />
                   <div className="min-w-0 flex-1">
-                    <p className="text-xs font-black truncate text-[#334155] leading-tight font-serif italic">
+                    <p className="text-xs font-black truncate text-ink leading-tight font-serif italic">
                       {currentUser?.name || (language === 'fr' ? 'Visiteur' : language === 'ar' ? 'زائر' : 'Guest Traveler')}
                     </p>
-                    <p className="text-[10px] font-mono truncate text-[#94A3B8] mt-0.5 leading-none">
+                    <p className="text-[10px] font-mono truncate text-ink/60 mt-0.5 leading-none">
                       {currentUser?.email || 'guest@rahala-dz.com'}
                     </p>
                     
                     <div className="mt-2 flex flex-wrap gap-1 leading-none">
-                      <span className="inline-block px-2.5 py-0.5 text-[8px] font-mono font-black uppercase bg-[#3B82F6]/10 text-[#3B82F6] rounded-full border border-[#3B82F6]/20">
+                      <span className="inline-block px-2.5 py-0.5 text-[8px] font-mono font-black uppercase bg-gold/10 text-gold rounded-full border border-gold/20">
                         Rôle: {currentUser?.role?.toUpperCase() || 'GUEST'}
                       </span>
                       {currentUser?.isPremium && (
-                        <span className="inline-block px-2 py-0.5 text-[8px] font-mono font-bold uppercase bg-[#FDBA74]/20 text-[#3B82F6] border border-[#FDBA74]/30 rounded-full animate-pulse">
+                        <span className="inline-block px-2 py-0.5 text-[8px] font-mono font-bold uppercase bg-gold/20 text-gold border border-gold/30 rounded-full animate-pulse">
                           ★ VIP Gold
                         </span>
                       )}
@@ -543,7 +543,7 @@ export const Navigation: React.FC<NavigationProps> = ({ activeView, setActiveVie
                   <div className="mt-3 grid grid-cols-2 gap-1.5 leading-none">
                     <button
                       onClick={toggleUserRole}
-                      className="px-2 py-1.5 text-[8px] font-mono font-extrabold text-[#334155] bg-white border border-[#E2E8F0] rounded-lg text-center cursor-pointer hover:border-[#3B82F6]/25 select-none"
+                      className="px-2 py-1.5 text-[8px] font-mono font-extrabold text-ink bg-white border border-[#E2E8F0] rounded-lg text-center cursor-pointer hover:border-gold/25 select-none"
                     >
                       🔄 Test Rôle
                     </button>
@@ -551,8 +551,8 @@ export const Navigation: React.FC<NavigationProps> = ({ activeView, setActiveVie
                       onClick={togglePremium}
                       className={`px-2 py-1.5 text-[8px] font-mono font-extrabold border rounded-lg text-center cursor-pointer transition select-none ${
                         currentUser.isPremium
-                          ? 'bg-[#3B82F6]/10 text-[#3B82F6] border-[#3B82F6]/35'
-                          : 'bg-white text-[#94A3B8] border-[#E2E8F0]'
+                          ? 'bg-gold/10 text-gold border-gold/35'
+                          : 'bg-white text-ink/60 border-[#E2E8F0]'
                       }`}
                     >
                       ★ Test VIP Play
@@ -578,7 +578,7 @@ export const Navigation: React.FC<NavigationProps> = ({ activeView, setActiveVie
                       window.location.hash = '#/login';
                       setMenuOpen(false);
                     }}
-                    className="w-full mt-3.5 py-2.5 bg-[#3B82F6] hover:bg-[#3B82F6]/90 text-white rounded-xl transition font-mono font-bold text-[10px] uppercase tracking-widest flex items-center justify-center gap-2 cursor-pointer shadow-sm hover:-translate-y-0.5 active:translate-y-0 duration-300"
+                    className="w-full mt-3.5 py-2.5 bg-gold hover:bg-[#C29B2E] text-ink rounded-xl transition font-mono font-bold text-[10px] uppercase tracking-widest flex items-center justify-center gap-2 cursor-pointer shadow-sm hover:-translate-y-0.5 active:translate-y-0 duration-300"
                   >
                     <UserIcon size={11} />
                     Se connecter

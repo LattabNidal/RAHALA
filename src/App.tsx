@@ -28,6 +28,8 @@ import { PromoVideo } from './components/PromoVideo';
 import { SocialClub } from './components/SocialClub';
 import { MobileBottomNav } from './components/MobileBottomNav';
 import { mockLandmarks } from './data/mockData';
+import { PriceTag } from './components/rahala/PriceTag';
+import { LazyImage } from './components/rahala/LazyImage';
 import { Sparkles, Heart, Compass, Star, ChevronLeft, ChevronRight, BookOpen, Hotel, Moon, Sun, ShieldCheck } from 'lucide-react';
 
 function RihlaApp() {
@@ -212,21 +214,21 @@ function RihlaApp() {
   // Loading Screen (Bonus)
   if (isSessionVerifying) {
     return (
-      <div className="min-h-screen bg-[#F8FAFC] flex flex-col items-center justify-center text-center p-6 animate-fade-in" id="global-verifier-loader">
+      <div className="min-h-screen bg-ivory flex flex-col items-center justify-center text-center p-6 animate-fade-in" id="global-verifier-loader">
         <div className="space-y-6 relative max-w-sm">
           {/* Animated Gold/Blue Compass Icon */}
-          <div className="w-20 h-20 bg-white border border-[#E2E8F0] text-[#3B82F6] rounded-full flex items-center justify-center mx-auto shadow-sm animate-spin-slow">
+          <div className="w-20 h-20 bg-white border border-border text-gold rounded-full flex items-center justify-center mx-auto shadow-sm animate-spin-slow">
             <Compass size={40} className="animate-pulse" />
           </div>
           <div className="space-y-2">
-            <h1 className="text-2xl font-serif font-black tracking-widest text-[#334155]">
+            <h1 className="text-2xl font-serif font-black tracking-widest text-ink">
               RAHALA 🇩🇿
             </h1>
-            <p className="text-xs font-mono font-bold tracking-widest text-[#3B82F6] uppercase">
+            <p className="text-xs font-mono font-bold tracking-widest text-gold uppercase">
               Vérification de la session...
             </p>
           </div>
-          <p className="text-[10px] text-[#94A3B8] font-serif leading-relaxed italic">
+          <p className="text-[10px] text-ink/60 font-serif leading-relaxed italic">
             "Le voyageur va là où son cœur se pose." - Voyagez l’Algérie autrement
           </p>
         </div>
@@ -269,7 +271,7 @@ function RihlaApp() {
   }
 
   return (
-    <div className="bg-[#F8FAFC] text-[#334155] min-h-screen flex flex-col justify-between transition-colors duration-300 font-sans relative">
+    <div className="bg-ivory text-ink min-h-screen flex flex-col justify-between transition-colors duration-300 font-sans relative">
       
       {/* React 19 SEO Metadata Injection */}
       <SEOHead 
@@ -292,28 +294,27 @@ function RihlaApp() {
         
         {/* VIEW 1: EXPLORE LANDING HERO */}
         {activeView === 'explore' && (
-          <div className="animate-fade-in bg-[#F8FAFC]">
+          <div className="animate-fade-in bg-ivory">
             {/* Clean Trivago-Style Hero Section with background image */}
-            <div className="relative py-16 sm:py-24 bg-[#F8FAFC] border-b border-[#E2E8F0] transition-colors overflow-hidden">
+            <div className="relative py-16 sm:py-24 bg-ivory border-b border-border transition-colors overflow-hidden">
               {/* Hero background image integration */}
               <div className="absolute inset-0 z-0">
-                <img 
+                <LazyImage 
                   src={rahalaHeroBanner} 
                   alt="RAHALA Premium Hero Banner" 
                   className="w-full h-full object-cover object-center transform scale-100 duration-1000"
-                  referrerPolicy="no-referrer"
                 />
                 {/* Modern soft white-to-light gradient overlay to wash out details for perfect readability */}
-                <div className="absolute inset-0 bg-gradient-to-b from-white/30 via-[#F8FAFC]/80 to-[#F8FAFC]"></div>
+                <div className="absolute inset-0 bg-gradient-to-b from-white/30 via-ivory/80 to-ivory"></div>
               </div>
 
               <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 flex flex-col items-center">
                 
                 {/* Floating Glassmorphic Content Card - Showcases the image fully around it while keeping UI interactive and readable */}
-                <div className="bg-white/95 backdrop-blur-md border border-[#E2E8F0] p-6 sm:p-10 rounded-[24px] shadow-lg shadow-blue-500/5 max-w-3xl w-full flex flex-col items-center text-center">
+                <div className="bg-white/95 backdrop-blur-md border border-border p-6 sm:p-10 rounded-[24px] shadow-lg shadow-gold/5 max-w-3xl w-full flex flex-col items-center text-center">
                   {/* Clean Simplified Brand Identifier */}
                   <div className="relative mb-6">
-                    <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full overflow-hidden border border-[#E2E8F0] shadow-md bg-white p-1">
+                    <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full overflow-hidden border border-border shadow-md bg-white p-1">
                       <img 
                         src={rahalaLogo} 
                         alt="RAHALA Logo Centered" 
@@ -323,22 +324,22 @@ function RihlaApp() {
                     </div>
                     
                     {/* Standard small flat badges */}
-                    <div className="absolute -bottom-1 -left-1 bg-[#3B82F6] text-white text-[9px] font-mono font-bold px-2 py-0.5 rounded-full uppercase tracking-wider select-none shadow-sm">
+                    <div className="absolute -bottom-1 -left-1 bg-gold text-ink text-[9px] font-mono font-bold px-2 py-0.5 rounded-full uppercase tracking-wider select-none shadow-sm">
                       Algérie 🇩🇿
                     </div>
                   </div>
 
                   {/* Slogan title styled with highly readable gorgeous fonts */}
-                  <h1 className="text-4xl sm:text-5xl font-black tracking-tight leading-none text-[#334155] mb-3 uppercase font-serif">
+                  <h1 className="text-4xl sm:text-5xl font-black tracking-tight leading-none text-ink mb-3 uppercase font-serif">
                     {t('appName')}
                   </h1>
                   
                   {/* Beautiful clean slogan display */}
-                  <h2 className="text-lg sm:text-xl font-serif font-bold italic text-[#3B82F6] mb-4">
+                  <h2 className="text-lg sm:text-xl font-serif font-bold italic text-gold mb-4">
                     Découvrez l’Algérie autrement
                   </h2>
                   
-                  <p className="text-xs sm:text-sm text-[#94A3B8] max-w-2xl mx-auto leading-relaxed mb-6 font-sans">
+                  <p className="text-xs sm:text-sm text-ink/60 max-w-2xl mx-auto leading-relaxed mb-6 font-sans">
                     {t('welcomeSubtitle')}
                   </p>
 
@@ -361,70 +362,70 @@ function RihlaApp() {
             </div>
 
             {/* Core Bento Highlights of premium modules */}
-            <div className="max-w-7xl mx-auto px-4 py-16 sm:py-24 bg-[#F8FAFC]">
+            <div className="max-w-7xl mx-auto px-4 py-16 sm:py-24 bg-ivory">
               
               <div className="text-center max-w-xl mx-auto mb-16">
-                <h2 className="text-3xl sm:text-4xl font-serif font-black tracking-tight text-[#334155]">
+                <h2 className="text-3xl sm:text-4xl font-serif font-black tracking-tight text-ink">
                   Core Pillars of Algeria Stays
                 </h2>
-                <p className="text-[10px] uppercase font-mono font-bold text-[#3B82F6] tracking-widest mt-2">
+                <p className="text-[10px] uppercase font-mono font-bold text-gold tracking-widest mt-2">
                   Immersive engineering from Casbah to Sahara oasis
                 </p>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 {/* Card 1: 3D Twin - Soft Blue Theme */}
-                <div className="bg-white border border-[#E2E8F0] rounded-[20px] p-8 flex flex-col justify-between hover:border-[#3B82F6] hover:shadow-md transition duration-300">
+                <div className="bg-white border border-border rounded-[20px] p-8 flex flex-col justify-between hover:border-gold hover:shadow-md transition duration-300">
                   <div>
-                    <div className="w-12 h-12 bg-[#3B82F6]/10 text-[#3B82F6] border border-[#3B82F6]/25 rounded-xl flex items-center justify-center mb-6">
+                    <div className="w-12 h-12 bg-gold/10 text-gold border border-gold/25 rounded-xl flex items-center justify-center mb-6">
                       <Compass size={22} className="animate-spin-slow" />
                     </div>
-                    <h3 className="text-xl font-serif font-black text-[#334155] mb-3">3D Digital Twin Gaze</h3>
-                    <p className="text-xs text-[#94A3B8] leading-relaxed font-sans font-medium">
+                    <h3 className="text-xl font-serif font-black text-ink mb-3">3D Digital Twin Gaze</h3>
+                    <p className="text-xs text-ink/60 leading-relaxed font-sans font-medium">
                       Immerse yourself inside high fidelity simulated 3D panoramas of Algiers Casbah, Trajan roman arches of Timgad, and Constantine cliff edges.
                     </p>
                   </div>
                   <button 
                     onClick={() => setActiveView('digital-twin')} 
-                    className="mt-8 text-xs font-mono uppercase tracking-wider font-extrabold text-[#3B82F6] hover:text-[#22D3EE] self-start cursor-pointer focus:outline-none"
+                    className="mt-8 text-xs font-mono uppercase tracking-wider font-extrabold text-gold hover:text-gold/80 self-start cursor-pointer focus:outline-none"
                   >
                     Go Virtual Twin &rarr;
                   </button>
                 </div>
 
                 {/* Card 2: AI Guide - Soft Orange Theme */}
-                <div className="bg-white border border-[#E2E8F0] rounded-[20px] p-8 flex flex-col justify-between hover:border-[#FDBA74] hover:shadow-md transition duration-300">
+                <div className="bg-white border border-border rounded-[20px] p-8 flex flex-col justify-between hover:border-gold/50 hover:shadow-md transition duration-300">
                   <div>
-                    <div className="w-12 h-12 bg-[#FDBA74]/15 text-[#3B82F6] border border-[#FDBA74]/25 rounded-xl flex items-center justify-center mb-6">
-                      <Sparkles size={22} className="text-[#3B82F6]" />
+                    <div className="w-12 h-12 bg-gold/15 text-gold border border-gold/25 rounded-xl flex items-center justify-center mb-6">
+                      <Sparkles size={22} className="text-gold" />
                     </div>
-                    <h3 className="text-xl font-serif font-black text-[#334155] mb-3">Gemini AI Local Guide</h3>
-                    <p className="text-xs text-[#94A3B8] leading-relaxed font-sans font-medium">
+                    <h3 className="text-xl font-serif font-black text-ink mb-3">Gemini AI Local Guide</h3>
+                    <p className="text-xs text-ink/60 leading-relaxed font-sans font-medium">
                       Query our live generative companion, structured on top of Gemini 3.5, holding wisdom of local languages, transport prices, and recipes.
                     </p>
                   </div>
                   <button 
                     onClick={() => setActiveView('ai-guide')} 
-                    className="mt-8 text-xs font-mono uppercase tracking-wider font-extrabold text-[#3B82F6] hover:text-[#22D3EE] self-start cursor-pointer focus:outline-none"
+                    className="mt-8 text-xs font-mono uppercase tracking-wider font-extrabold text-gold hover:text-gold/80 self-start cursor-pointer focus:outline-none"
                   >
                     Consult guide &rarr;
                   </button>
                 </div>
 
                 {/* Card 3: Booking hub - Light Cyan Theme */}
-                <div className="bg-white border border-[#E2E8F0] rounded-[20px] p-8 flex flex-col justify-between hover:border-[#22D3EE] hover:shadow-md transition duration-300">
+                <div className="bg-white border border-border rounded-[20px] p-8 flex flex-col justify-between hover:border-gold hover:shadow-md transition duration-300">
                   <div>
-                    <div className="w-12 h-12 bg-[#22D3EE]/10 text-[#3B82F6] border border-[#22D3EE]/25 rounded-xl flex items-center justify-center mb-6">
-                      <Hotel size={22} className="text-[#3B82F6]" />
+                    <div className="w-12 h-12 bg-gold/10 text-gold border border-gold/25 rounded-xl flex items-center justify-center mb-6">
+                      <Hotel size={22} className="text-gold" />
                     </div>
-                    <h3 className="text-xl font-serif font-black text-[#334155] mb-3">Transit & Stays Hub</h3>
-                    <p className="text-xs text-[#94A3B8] leading-relaxed font-sans font-medium">
+                    <h3 className="text-xl font-serif font-black text-ink mb-3">Transit & Stays Hub</h3>
+                    <p className="text-xs text-ink/60 leading-relaxed font-sans font-medium">
                       Secure room retreats in top Algeria luxury hotels in Algiers/Oran, estimate regional taxi fares, and map corridors in DZD.
                     </p>
                   </div>
                   <button 
                     onClick={() => setActiveView('hotels')} 
-                    className="mt-8 text-xs font-mono uppercase tracking-wider font-extrabold text-[#3B82F6] hover:text-[#22D3EE] self-start cursor-pointer focus:outline-none"
+                    className="mt-8 text-xs font-mono uppercase tracking-wider font-extrabold text-gold hover:text-gold/80 self-start cursor-pointer focus:outline-none"
                   >
                     Book hotelstay &rarr;
                   </button>
@@ -436,45 +437,45 @@ function RihlaApp() {
                 <WeatherWidget />
               </div>
 
-              <div className="mt-16 sm:mt-24 pt-12 border-t border-[#E2E8F0]">
+              <div className="mt-16 sm:mt-24 pt-12 border-t border-border">
                 <Subscription />
               </div>
 
               {/* 🟢 NEW SECTION 1: Explore Top Cities (Sliding City Carousel) */}
-              <div className="mt-16 sm:mt-24 pt-12 border-t border-[#E2E8F0]">
+              <div className="mt-16 sm:mt-24 pt-12 border-t border-border">
                 <div className="flex flex-col md:flex-row md:items-end justify-between mb-8">
                   <div>
                     <div className="flex items-center gap-2 mb-2">
-                      <span className="w-2 h-2 rounded-full bg-[#3B82F6] animate-pulse"></span>
-                      <p className="text-[10px] uppercase font-mono font-black text-[#3B82F6] tracking-widest flex items-center gap-1">
-                        <Sparkles size={11} className="text-[#3B82F6]" /> Recommandé par Rahala AI
+                      <span className="w-2 h-2 rounded-full bg-gold animate-pulse"></span>
+                      <p className="text-[10px] uppercase font-mono font-black text-gold tracking-widest flex items-center gap-1">
+                        <Sparkles size={11} className="text-gold" /> Recommandé par Rahala AI
                       </p>
                     </div>
-                    <h2 className="text-2xl sm:text-3xl font-serif font-black text-[#334155]">
+                    <h2 className="text-2xl sm:text-3xl font-serif font-black text-ink">
                       Explore Top Cities
                     </h2>
-                    <p className="text-xs text-[#94A3B8] mt-1 max-w-xl">
+                    <p className="text-xs text-ink/60 mt-1 max-w-xl">
                       Immersez-vous dans les joyaux les plus recherchés d'Algérie, personnalisés selon vos habitudes de voyage. Glissez pour explorer toutes les villes.
                     </p>
                   </div>
 
                   {/* Sliding controls & AI tag */}
                   <div className="mt-4 md:mt-0 flex gap-3 items-center">
-                    <span className="hidden sm:inline-block px-2.5 py-1 rounded-full bg-[#3B82F6]/10 text-[#3B82F6] text-[10px] font-mono font-black uppercase tracking-widest border border-[#3B82F6]/20">
+                    <span className="hidden sm:inline-block px-2.5 py-1 rounded-full bg-gold/10 text-gold text-[10px] font-mono font-black uppercase tracking-widest border border-gold/20">
                       Powered by AI
                     </span>
                     <div className="flex gap-2">
                       <button
                         onClick={() => scrollCities('left')}
                         aria-label="Glisser vers la gauche"
-                        className="w-9 h-9 rounded-full bg-white hover:bg-slate-50 border border-[#E2E8F0] text-[#334155] flex items-center justify-center transition shadow-sm active:scale-95 cursor-pointer"
+                        className="w-9 h-9 rounded-full bg-white hover:bg-slate-50 border border-border text-ink flex items-center justify-center transition shadow-sm active:scale-95 cursor-pointer"
                       >
                         <ChevronLeft size={18} />
                       </button>
                       <button
                         onClick={() => scrollCities('right')}
                         aria-label="Glisser vers la droite"
-                        className="w-9 h-9 rounded-full bg-[#3B82F6] hover:bg-[#3B82F6]/90 text-white flex items-center justify-center transition shadow-sm active:scale-95 cursor-pointer"
+                        className="w-9 h-9 rounded-full bg-gold hover:bg-[#C29B2E] text-ink flex items-center justify-center transition shadow-sm active:scale-95 cursor-pointer"
                       >
                         <ChevronRight size={18} />
                       </button>
@@ -485,7 +486,7 @@ function RihlaApp() {
                 {/* Horizontal scrollable carousel */}
                 <div 
                   ref={citiesScrollRef}
-                  className="flex gap-6 overflow-x-auto pb-6 scrollbar-thin scrollbar-thumb-blue-200 snap-x scroll-smooth"
+                  className="flex gap-6 overflow-x-auto pb-6 scrollbar-thin scrollbar-thumb-gold/20 snap-x scroll-smooth"
                 >
                   {[
                     {
@@ -493,7 +494,7 @@ function RihlaApp() {
                       subtitle: "Capital of Algeria & Ottoman Casbah",
                       image: "https://images.unsplash.com/photo-1543872084-c7bd3822856f?auto=format&fit=crop&w=800&q=80",
                       badge: "★ Capital & UNESCO",
-                      badgeBg: "bg-[#3B82F6] text-white",
+                      badgeBg: "bg-gold text-ink",
                       match: "98.7%",
                       topTag: "High-Match IA"
                     },
@@ -502,7 +503,7 @@ function RihlaApp() {
                       subtitle: "Coastal Energy & Santa Cruz Fort",
                       image: "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?auto=format&fit=crop&w=800&q=80",
                       badge: "🔥 Coastal Energy",
-                      badgeBg: "bg-[#22D3EE] text-[#334155]",
+                      badgeBg: "bg-gold text-ink",
                       match: "99.4%",
                       topTag: "Best Choice"
                     },
@@ -511,7 +512,7 @@ function RihlaApp() {
                       subtitle: "City of Suspended Bridges & Rhumel Canyon",
                       image: "https://images.unsplash.com/photo-1578898835028-267b093df022?auto=format&fit=crop&w=800&q=80",
                       badge: "🌉 Bridges & Heritage",
-                      badgeBg: "bg-amber-500 text-white",
+                      badgeBg: "bg-gold text-ink",
                       match: "97.8%",
                       topTag: "Historic Wonder"
                     },
@@ -520,7 +521,7 @@ function RihlaApp() {
                       subtitle: "Oasis Golden Dunes & M'zab Valley",
                       image: "https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=800&q=80",
                       badge: "🏜️ Sahara Magic",
-                      badgeBg: "bg-orange-500 text-white",
+                      badgeBg: "bg-gold text-ink",
                       match: "96.5%",
                       topTag: "Oasis Experience"
                     },
@@ -538,7 +539,7 @@ function RihlaApp() {
                       subtitle: "Saint Augustine Basilica & Turquoise Coast",
                       image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80",
                       badge: "🌊 Turquoise Coast",
-                      badgeBg: "bg-sky-500 text-white",
+                      badgeBg: "bg-gold text-ink",
                       match: "96.2%",
                       topTag: "Mediterranean"
                     },
@@ -547,7 +548,7 @@ function RihlaApp() {
                       subtitle: "Tassili n'Ajjer Rock Art & Starry Desert",
                       image: "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=800&q=80",
                       badge: "🌌 UNESCO Plateau",
-                      badgeBg: "bg-indigo-600 text-white",
+                      badgeBg: "bg-gold text-ink",
                       match: "98.1%",
                       topTag: "Bucket List"
                     },
@@ -556,22 +557,21 @@ function RihlaApp() {
                       subtitle: "Cap Carbon & Gouraya National Park",
                       image: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=800&q=80",
                       badge: "⛰️ Gouraya & Gulf",
-                      badgeBg: "bg-teal-600 text-white",
+                      badgeBg: "bg-gold text-ink",
                       match: "97.3%",
                       topTag: "Nature Escapes"
                     }
                   ].map((city, idx) => (
                     <div 
                       key={idx}
-                      className="relative group min-w-[280px] sm:min-w-[340px] h-[400px] rounded-[24px] overflow-hidden shadow-sm hover:shadow-md transition-all duration-500 ease-out snap-start flex flex-col justify-end p-6 border border-[#E2E8F0] hover:scale-[1.02] shrink-0"
+                      className="relative group min-w-[280px] sm:min-w-[340px] h-[400px] rounded-[24px] overflow-hidden shadow-sm hover:shadow-md transition-all duration-500 ease-out snap-start flex flex-col justify-end p-6 border border-border hover:scale-[1.02] shrink-0"
                     >
                       {/* Background photo */}
                       <div className="absolute inset-0 z-0">
-                        <img 
+                        <LazyImage 
                           src={city.image} 
                           alt={city.name}
                           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                          referrerPolicy="no-referrer"
                         />
                         {/* Soft bright gradient overlay */}
                         <div className="absolute inset-0 bg-gradient-to-t from-white via-white/20 to-transparent"></div>
@@ -586,27 +586,27 @@ function RihlaApp() {
 
                       {/* Personalisation details inside top-right corner */}
                       <div className="absolute top-4 right-4 z-10">
-                        <span className="inline-flex items-center gap-1 bg-white/90 text-[9px] text-[#334155] font-mono font-bold px-2.5 py-0.5 rounded-full border border-[#E2E8F0] backdrop-blur-md">
+                        <span className="inline-flex items-center gap-1 bg-white/90 text-[9px] text-ink font-mono font-bold px-2.5 py-0.5 rounded-full border border-border backdrop-blur-md">
                           <span>✨</span> {city.topTag}
                         </span>
                       </div>
 
                       {/* Card Content body */}
-                      <div className="relative z-10 bg-white/95 backdrop-blur-md border border-[#E2E8F0] p-4 rounded-2xl shadow-sm">
-                        <h3 className="text-xl sm:text-2xl font-serif font-black text-[#334155] leading-tight mb-1">
+                      <div className="relative z-10 bg-white/95 backdrop-blur-md border border-border p-4 rounded-2xl shadow-sm">
+                        <h3 className="text-xl sm:text-2xl font-serif font-black text-ink leading-tight mb-1">
                           {city.name}
                         </h3>
-                        <p className="text-[11px] text-[#94A3B8] mb-4 font-sans font-medium line-clamp-1">
+                        <p className="text-[11px] text-ink/60 mb-4 font-sans font-medium line-clamp-1">
                           {city.subtitle}
                         </p>
                         
                         <div className="flex items-center justify-between">
-                          <span className="text-[9px] font-mono text-[#3B82F6] tracking-wider uppercase font-extrabold flex items-center gap-1">
+                          <span className="text-[9px] font-mono text-gold tracking-wider uppercase font-extrabold flex items-center gap-1">
                             <Sparkles size={10} /> Match Score: {city.match}
                           </span>
                           <button
                             onClick={() => setActiveView('map')}
-                            className="px-4 py-2 bg-[#3B82F6] hover:bg-[#3B82F6]/95 text-white text-xs font-black rounded-full transition shadow-sm active:scale-95 cursor-pointer"
+                            className="px-4 py-2 bg-gold hover:bg-[#C29B2E] text-ink text-xs font-black rounded-full transition shadow-sm active:scale-95 cursor-pointer"
                           >
                             Explore
                           </button>
@@ -618,78 +618,78 @@ function RihlaApp() {
               </div>
 
               {/* 🟡 NEW SECTION 2: Special Promotions */}
-              <div className="mt-16 sm:mt-24 pt-12 border-t border-[#E2E8F0] mb-12">
+              <div className="mt-16 sm:mt-24 pt-12 border-t border-border mb-12">
                 <div className="flex flex-col md:flex-row md:items-end justify-between mb-8">
                   <div>
                     <div className="flex items-center gap-2 mb-2">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#3B82F6] animate-pulse"></span>
-                      <p className="text-[10px] uppercase font-mono font-black text-[#3B82F6] tracking-widest flex items-center gap-1">
+                      <span className="w-1.5 h-1.5 rounded-full bg-gold animate-pulse"></span>
+                      <p className="text-[10px] uppercase font-mono font-black text-gold tracking-widest flex items-center gap-1">
                         🔥 Offres exclusives de saison
                       </p>
                     </div>
-                    <h2 className="text-2xl sm:text-3xl font-serif font-black text-[#334155]">
+                    <h2 className="text-2xl sm:text-3xl font-serif font-black text-ink">
                       Special Promotions
                     </h2>
-                    <p className="text-xs text-[#94A3B8] mt-1 max-w-xl">
+                    <p className="text-xs text-ink/60 mt-1 max-w-xl">
                       Saisissez des expériences inoubliables à des tarifs optimisés par notre moteur d'IA. Réservez maintenant pour sécuriser vos places.
                     </p>
                   </div>
                   <div>
-                    <span className="inline-flex items-center gap-1 text-[9px] sm:text-[10px] font-mono font-extrabold bg-[#3B82F6]/10 text-[#3B82F6] px-3 py-1.5 rounded-full border border-[#3B82F6]/20">
+                    <span className="inline-flex items-center gap-1 text-[9px] sm:text-[10px] font-mono font-extrabold bg-gold/10 text-gold px-3 py-1.5 rounded-full border border-gold/20">
                       💡 Powered by AI Personalization Engine
                     </span>
                   </div>
                 </div>
 
                 {/* Promotional Horizontal Carousel */}
-                <div className="flex gap-6 overflow-x-auto pb-6 scrollbar-thin scrollbar-thumb-blue-200 snap-x">
+                <div className="flex gap-6 overflow-x-auto pb-6 scrollbar-thin scrollbar-thumb-gold/20 snap-x">
                   
                   {/* Promo Card 1: Sahara Adventure */}
-                  <div className="relative group min-w-[260px] sm:min-w-[300px] h-[340px] rounded-[24px] overflow-hidden shadow-sm hover:shadow-md transition-all duration-500 ease-out snap-start flex flex-col justify-end p-5 border border-[#E2E8F0] hover:scale-[1.01]">
+                  <div className="relative group min-w-[260px] sm:min-w-[300px] h-[340px] rounded-[24px] overflow-hidden shadow-sm hover:shadow-md transition-all duration-500 ease-out snap-start flex flex-col justify-end p-5 border border-border hover:scale-[1.01]">
                     {/* Background photo */}
                     <div className="absolute inset-0 z-0">
-                      <img 
+                      <LazyImage 
                         src="https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=800&q=80" 
                         alt="Sahara desert experience"
                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                        referrerPolicy="no-referrer"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-white via-white/20 to-transparent"></div>
                     </div>
 
                     {/* Discount Badge */}
                     <div className="absolute top-4 left-4 z-10">
-                      <span className="inline-flex items-center bg-[#3B82F6] text-white font-mono font-black text-[10px] px-2.5 py-1 rounded-lg tracking-wider shadow-sm">
+                      <span className="inline-flex items-center bg-gold text-ink font-mono font-black text-[10px] px-2.5 py-1 rounded-lg tracking-wider shadow-sm">
                         -20% OFF
                       </span>
                     </div>
 
                     {/* Special label */}
                     <div className="absolute top-4 right-4 z-10">
-                      <span className="bg-[#22D3EE] text-[#334155] font-mono font-black text-[8px] uppercase px-2 py-0.5 rounded shadow-sm border border-[#22D3EE]/30">
+                      <span className="bg-gold text-ink font-mono font-black text-[8px] uppercase px-2 py-0.5 rounded shadow-sm border border-gold/30">
                         ★ Best Value
                       </span>
                     </div>
 
                     {/* Card Body */}
-                    <div className="relative z-10 bg-white/95 backdrop-blur-md border border-[#E2E8F0] p-4 rounded-xl shadow-sm">
-                      <h3 className="text-lg sm:text-xl font-serif font-black text-[#334155] leading-tight mb-1">
+                    <div className="relative z-10 bg-white/95 backdrop-blur-md border border-border p-4 rounded-xl shadow-sm">
+                      <h3 className="text-lg sm:text-xl font-serif font-black text-ink leading-tight mb-1">
                         Sahara Adventure
                       </h3>
-                      <p className="text-[11px] text-[#3B82F6] font-serif leading-snug mb-3">
+                      <p className="text-[11px] text-gold font-serif leading-snug mb-3">
                         عيش تجربة الصحراء الفريدة
                       </p>
                       
-                      <div className="flex items-end justify-between border-t border-[#E2E8F0] pt-3">
+                      <div className="flex items-end justify-between border-t border-border pt-3">
                         <div>
-                          <p className="text-[8px] uppercase font-mono text-[#94A3B8]">Prix exclusif</p>
-                          <p className="text-[#334155] text-xs font-mono font-black">
-                            <span className="line-through text-[#94A3B8] text-[10px] mr-1">24,500 DZD</span> 19,600 DZD
+                          <p className="text-[8px] uppercase font-mono text-ink/60">Prix exclusif</p>
+                          <p className="text-ink text-xs font-mono font-black flex items-center gap-1.5 flex-wrap">
+                            <span className="line-through text-ink/60 text-[10px]"><PriceTag amount={24500} className="text-ink/60!" /></span>
+                            <PriceTag amount={19600} />
                           </p>
                         </div>
                         <button
                           onClick={() => setActiveView('hotels')}
-                          className="px-4 py-1.5 bg-[#3B82F6] hover:bg-[#3B82F6]/90 text-white text-[10px] font-bold rounded-lg transition shadow-sm cursor-pointer"
+                          className="px-4 py-1.5 bg-gold hover:bg-[#C29B2E] text-ink text-[10px] font-bold rounded-lg transition shadow-sm cursor-pointer"
                         >
                           Book Now
                         </button>
@@ -698,44 +698,44 @@ function RihlaApp() {
                   </div>
 
                   {/* Promo Card 2: Oran Beach Escape */}
-                  <div className="relative group min-w-[260px] sm:min-w-[300px] h-[340px] rounded-[24px] overflow-hidden shadow-sm hover:shadow-md transition-all duration-500 ease-out snap-start flex flex-col justify-end p-5 border border-[#E2E8F0] hover:scale-[1.01]">
+                  <div className="relative group min-w-[260px] sm:min-w-[300px] h-[340px] rounded-[24px] overflow-hidden shadow-sm hover:shadow-md transition-all duration-500 ease-out snap-start flex flex-col justify-end p-5 border border-border hover:scale-[1.01]">
                     {/* Background photo */}
                     <div className="absolute inset-0 z-0">
-                      <img 
+                      <LazyImage 
                         src="https://images.unsplash.com/photo-1534080564583-6be75777b70a?auto=format&fit=crop&w=800&q=80" 
                         alt="Oran beach escape"
                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                        referrerPolicy="no-referrer"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-white via-white/20 to-transparent"></div>
                     </div>
 
                     {/* Discount Badge */}
                     <div className="absolute top-4 left-4 z-10">
-                      <span className="inline-flex items-center bg-or-sahara text-encre font-mono font-black text-[10px] px-2.5 py-1 rounded-lg tracking-wider shadow-sm">
+                      <span className="inline-flex items-center bg-gold text-ink font-mono font-black text-[10px] px-2.5 py-1 rounded-lg tracking-wider shadow-sm">
                         -15% OFF
                       </span>
                     </div>
 
                     {/* Card Body */}
                     <div className="relative z-10 bg-white/95 backdrop-blur-md border border-border p-4 rounded-xl shadow-sm">
-                      <h3 className="text-lg sm:text-xl font-serif font-black text-encre leading-tight mb-1">
+                      <h3 className="text-lg sm:text-xl font-serif font-black text-ink leading-tight mb-1">
                         Oran Beach Escape
                       </h3>
-                      <p className="text-[11px] text-or-sahara font-serif leading-snug mb-3">
+                      <p className="text-[11px] text-gold font-serif leading-snug mb-3">
                         Relax by the Mediterranean الساحل
                       </p>
                       
                       <div className="flex items-end justify-between border-t border-border pt-3">
                         <div>
-                          <p className="text-[8px] uppercase font-mono text-encre-soft">Prix exclusif</p>
-                          <p className="text-encre text-xs font-mono font-black">
-                            <span className="line-through text-encre-soft text-[10px] mr-1">16,500 DZD</span> 14,025 DZD
+                          <p className="text-[8px] uppercase font-mono text-ink/60">Prix exclusif</p>
+                          <p className="text-ink text-xs font-mono font-black flex items-center gap-1.5 flex-wrap">
+                            <span className="line-through text-ink/60 text-[10px]"><PriceTag amount={16500} className="text-ink/60!" /></span>
+                            <PriceTag amount={14025} />
                           </p>
                         </div>
                         <button
                           onClick={() => setActiveView('hotels')}
-                          className="px-4 py-1.5 bg-or-sahara hover:bg-or-sahara-hover text-encre text-[10px] font-bold rounded-lg transition shadow-sm cursor-pointer"
+                          className="px-4 py-1.5 bg-gold hover:bg-[#C29B2E] text-ink text-[10px] font-bold rounded-lg transition shadow-sm cursor-pointer"
                         >
                           Book Now
                         </button>
@@ -747,7 +747,7 @@ function RihlaApp() {
                   <div className="relative group min-w-[260px] sm:min-w-[300px] h-[340px] rounded-[24px] overflow-hidden shadow-sm hover:shadow-md transition-all duration-500 ease-out snap-start flex flex-col justify-end p-5 border border-border hover:scale-[1.01]">
                     {/* Background photo */}
                     <div className="absolute inset-0 z-0">
-                      <img 
+                      <LazyImage 
                         src="/src/assets/images/casbah_d_alger/site_0565_0017-1000-1481-20140721144417.webp" 
                         alt="Algiers casbah cultural escape"
                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
@@ -757,30 +757,31 @@ function RihlaApp() {
 
                     {/* Discount Badge */}
                     <div className="absolute top-4 left-4 z-10">
-                      <span className="inline-flex items-center bg-or-sahara text-encre font-mono font-black text-[10px] px-2.5 py-1 rounded-lg tracking-wider shadow-sm">
+                      <span className="inline-flex items-center bg-gold text-ink font-mono font-black text-[10px] px-2.5 py-1 rounded-lg tracking-wider shadow-sm">
                         -15% OFF
                       </span>
                     </div>
 
                     {/* Card Body */}
                     <div className="relative z-10 bg-white/95 backdrop-blur-md border border-border p-4 rounded-xl shadow-sm">
-                      <h3 className="text-lg sm:text-xl font-serif font-black text-encre leading-tight mb-1">
+                      <h3 className="text-lg sm:text-xl font-serif font-black text-ink leading-tight mb-1">
                         Algiers Cultural Tour
                       </h3>
-                      <p className="text-[11px] text-or-sahara font-serif leading-snug mb-3">
+                      <p className="text-[11px] text-gold font-serif leading-snug mb-3">
                         Exploration de la Casbah historique
                       </p>
                       
                       <div className="flex items-end justify-between border-t border-border pt-3">
                         <div>
-                          <p className="text-[8px] uppercase font-mono text-encre-soft">Prix exclusif</p>
-                          <p className="text-encre text-xs font-mono font-black">
-                            <span className="line-through text-encre-soft text-[10px] mr-1">11,500 DZD</span> 9,775 DZD
+                          <p className="text-[8px] uppercase font-mono text-ink/60">Prix exclusif</p>
+                          <p className="text-ink text-xs font-mono font-black flex items-center gap-1.5 flex-wrap">
+                            <span className="line-through text-ink/60 text-[10px]"><PriceTag amount={11500} className="text-ink/60!" /></span>
+                            <PriceTag amount={9775} />
                           </p>
                         </div>
                         <button
                           onClick={() => setActiveView('hotels')}
-                          className="px-4 py-1.5 bg-or-sahara hover:bg-or-sahara-hover text-encre text-[10px] font-bold rounded-lg transition shadow-sm cursor-pointer"
+                          className="px-4 py-1.5 bg-gold hover:bg-[#C29B2E] text-ink text-[10px] font-bold rounded-lg transition shadow-sm cursor-pointer"
                         >
                           Book Now
                         </button>
@@ -834,9 +835,9 @@ function RihlaApp() {
       </main>
 
       {/* Structured footer layout */}
-      <footer className="bg-[#eae7e1]/80 dark:bg-[#121212]/80 border-t border-[#1a1a1a]/15 dark:border-white/10 py-10 pb-20 md:pb-10 transition-colors duration-300">
-        <div className="max-w-7xl mx-auto px-4 text-center text-[10px] uppercase tracking-widest text-[#1a1a1a]/60 dark:text-[#f5f2ed]/60 font-mono">
-          <p className="mb-2 font-bold text-[#d4af37]">© 2026 Rihla DZ — Independent Algeria Chronicles</p>
+      <footer className="bg-ivory/80 dark:bg-[#121212]/80 border-t border-border dark:border-white/10 py-10 pb-20 md:pb-10 transition-colors duration-300">
+        <div className="max-w-7xl mx-auto px-4 text-center text-[10px] uppercase tracking-widest text-ink/60 dark:text-[#f5f2ed]/60 font-mono">
+          <p className="mb-2 font-bold text-gold">© 2026 Rihla DZ — Independent Algeria Chronicles</p>
           <p className="lowercase font-sans text-xs tracking-normal font-semibold text-gray-500">Secured with luxury standards and powered by state-of-the-art Gemini local intelligence.</p>
         </div>
       </footer>

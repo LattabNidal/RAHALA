@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { useApp } from '../context/AppContext';
+import { PriceTag } from './rahala/PriceTag';
+import { LazyImage } from './rahala/LazyImage';
 import { Plane, Calendar, MapPin, Search, ArrowRight, Sparkles, Check, Download, ShieldCheck, HelpCircle, ExternalLink, RefreshCw } from 'lucide-react';
 
 interface FlightOption {
@@ -260,23 +262,23 @@ export const FlightBooking: React.FC = () => {
       <div className="flex flex-col md:flex-row md:items-end justify-between mb-8">
         <div>
           <div className="flex items-center gap-2 mb-2">
-            <span className="w-2.5 h-2.5 rounded-full bg-[#3B82F6] animate-pulse"></span>
-            <p className="text-[10px] uppercase font-mono font-black text-[#3B82F6] tracking-widest flex items-center gap-1">
-              <Plane size={11} className="text-[#3B82F6]" /> {isRtl ? 'خدمة حجز الطيران الجديدة' : 'RIHLA NEW AIRLINE DESK'}
+            <span className="w-2.5 h-2.5 rounded-full bg-gold animate-pulse"></span>
+            <p className="text-[10px] uppercase font-mono font-black text-gold tracking-widest flex items-center gap-1">
+              <Plane size={11} className="text-gold" /> {isRtl ? 'خدمة حجز الطيران الجديدة' : 'RIHLA NEW AIRLINE DESK'}
             </p>
           </div>
-          <h2 className="text-2xl sm:text-3xl font-black text-[#334155] flex items-center gap-2">
+          <h2 className="text-2xl sm:text-3xl font-black text-ink flex items-center gap-2">
             <span>✈️</span>
             <span>{isRtl ? 'احجز رحلة طيران' : 'Book a Flight'}</span>
           </h2>
-          <p className="text-xs text-[#94A3B8] mt-2 max-w-xl text-left">
+          <p className="text-xs text-ink/60 mt-2 max-w-xl text-left">
             {isRtl 
               ? 'تصفح واحجز رحلات الطيران الداخلية في الجزائر بأسعار مناسبة وبدعم من محرك الذكاء الاصطناعي.' 
               : 'Search and coordinate secure flights between major Algerian cities. Powered directly by trusted airline partnerships.'}
           </p>
         </div>
         <div className="mt-4 md:mt-0 flex shrink-0">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#3B82F6]/10 text-[#3B82F6] text-[10px] font-mono uppercase tracking-widest font-black border border-[#3B82F6]/20">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gold/10 text-gold text-[10px] font-mono uppercase tracking-widest font-black border border-gold/20">
             <Sparkles size={11} className="animate-pulse" /> {isRtl ? 'أسعار ذكية محسنة' : 'SMART DZD SKYWAYS'}
           </span>
         </div>
@@ -288,24 +290,24 @@ export const FlightBooking: React.FC = () => {
         <div className="md:col-span-7 bg-white border border-[#E2E8F0] rounded-3xl p-6 shadow-sm flex flex-col justify-between">
           <form onSubmit={handleSearch} className="space-y-5">
             <div className="flex items-center justify-between border-b border-[#E2E8F0] pb-3">
-              <h3 className="text-sm font-black text-[#334155] flex items-center gap-2 uppercase tracking-wide">
-                <Plane className="text-[#3B82F6] rotate-45" size={16} />
+              <h3 className="text-sm font-black text-ink flex items-center gap-2 uppercase tracking-wide">
+                <Plane className="text-gold rotate-45" size={16} />
                 <span>{isRtl ? 'تفاصيل السفر الجوي' : 'Configure Flight Parameters'}</span>
               </h3>
-              <span className="text-[10px] text-[#94A3B8] font-mono">Air Algérie Official Connect</span>
+              <span className="text-[10px] text-ink/60 font-mono">Air Algérie Official Connect</span>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {/* Departure Dropdown */}
               <div>
-                <label className="block text-[9px] font-mono text-[#94A3B8] uppercase mb-1 flex items-center gap-1">
-                  <MapPin size={10} className="text-[#3B82F6]" />
+                <label className="block text-[9px] font-mono text-ink/60 uppercase mb-1 flex items-center gap-1">
+                  <MapPin size={10} className="text-gold" />
                   <span>{isRtl ? 'ولاية المغادرة' : 'Departure Province'}</span>
                 </label>
                 <select 
                   value={fromCity} 
                   onChange={(e) => setFromCity(e.target.value)}
-                  className="w-full text-xs font-semibold border border-[#E2E8F0] px-3 py-3 rounded-xl text-[#334155] focus:outline-[#3B82F6] bg-white transition cursor-pointer"
+                  className="w-full text-xs font-semibold border border-[#E2E8F0] px-3 py-3 rounded-xl text-ink focus:outline-none focus:border-gold bg-white transition cursor-pointer"
                 >
                   {cityList.map((c) => (
                     <option key={c.name} value={c.name}>
@@ -317,14 +319,14 @@ export const FlightBooking: React.FC = () => {
 
               {/* Destination Dropdown */}
               <div>
-                <label className="block text-[9px] font-mono text-[#94A3B8] uppercase mb-1 flex items-center gap-1">
-                  <MapPin size={10} className="text-[#FDBA74]" />
+                <label className="block text-[9px] font-mono text-ink/60 uppercase mb-1 flex items-center gap-1">
+                  <MapPin size={10} className="text-gold" />
                   <span>{isRtl ? 'وجهة السفر والمدينة' : 'Destination Province'}</span>
                 </label>
                 <select 
                   value={toCity} 
                   onChange={(e) => setToCity(e.target.value)}
-                  className="w-full text-xs font-semibold border border-[#E2E8F0] px-3 py-3 rounded-xl text-[#334155] focus:outline-[#3B82F6] bg-white transition cursor-pointer"
+                  className="w-full text-xs font-semibold border border-[#E2E8F0] px-3 py-3 rounded-xl text-ink focus:outline-none focus:border-gold bg-white transition cursor-pointer"
                 >
                   {cityList.map((c) => (
                     <option key={c.name} value={c.name}>
@@ -338,8 +340,8 @@ export const FlightBooking: React.FC = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {/* Departure Date */}
               <div>
-                <label className="block text-[9px] font-mono text-[#94A3B8] uppercase mb-1 flex items-center gap-1">
-                  <Calendar size={10} className="text-[#3B82F6]" />
+                <label className="block text-[9px] font-mono text-ink/60 uppercase mb-1 flex items-center gap-1">
+                  <Calendar size={10} className="text-gold" />
                   <span>{isRtl ? 'תاريخ الذهاب' : 'Departure date'}</span>
                 </label>
                 <input 
@@ -347,30 +349,30 @@ export const FlightBooking: React.FC = () => {
                   value={departureDate}
                   onChange={(e) => setDepartureDate(e.target.value)}
                   required
-                  className="w-full text-xs font-semibold border border-[#E2E8F0] px-3 py-2.5 rounded-xl text-[#334155] bg-white focus:outline-[#3B82F6]"
+                  className="w-full text-xs font-semibold border border-[#E2E8F0] px-3 py-2.5 rounded-xl text-ink bg-white focus:outline-none focus:border-gold"
                 />
               </div>
 
               {/* Return Date (Optional) */}
               <div>
-                <label className="block text-[9px] font-mono text-[#94A3B8] uppercase mb-1 flex items-center gap-1">
-                  <Calendar size={10} className="text-[#94A3B8]" />
+                <label className="block text-[9px] font-mono text-ink/60 uppercase mb-1 flex items-center gap-1">
+                  <Calendar size={10} className="text-ink/40" />
                   <span>{isRtl ? 'تاريخ العودة (اختياري)' : 'Return date (Optional)'}</span>
                 </label>
                 <input 
                   type="date" 
                   value={returnDate}
                   onChange={(e) => setReturnDate(e.target.value)}
-                  className="w-full text-xs font-semibold border border-[#E2E8F0] px-3 py-2.5 rounded-xl text-[#334155] bg-white focus:outline-[#3B82F6]"
+                  className="w-full text-xs font-semibold border border-[#E2E8F0] px-3 py-2.5 rounded-xl text-ink bg-white focus:outline-none focus:border-gold"
                 />
               </div>
             </div>
 
-            <div className="p-4 bg-[#F8FAFC] rounded-2xl border border-[#E2E8F0] text-xs text-[#94A3B8] space-y-1 mt-2 text-left">
-              <span className="text-[8px] uppercase tracking-widest font-mono font-bold text-[#3B82F6] block mb-1">
+            <div className="p-4 bg-[#F8FAFC] rounded-2xl border border-[#E2E8F0] text-xs text-ink/60 space-y-1 mt-2 text-left">
+              <span className="text-[8px] uppercase tracking-widest font-mono font-bold text-gold block mb-1">
                 {isRtl ? 'إشعار فني مباشر' : 'Rihla AI Core Logistics Routing'}
               </span>
-              <p className="text-[11px] leading-relaxed text-[#334155]">
+              <p className="text-[11px] leading-relaxed text-ink">
                 {isRtl 
                   ? 'يقوم النظام بحساب المسار الجغرافي المعاير من خلال محرك التوجيه الجوي لخطوط الكارغو والركاب.'
                   : `Route planning synchronized: ${fromCity} (${airportCodes[fromCity] || 'ALG'}) to ${toCity} (${airportCodes[toCity] || 'ORN'}) on ${departureDate}.`}
@@ -381,11 +383,11 @@ export const FlightBooking: React.FC = () => {
               <button
                 type="submit"
                 disabled={isSearching}
-                className="flex-1 py-3 bg-[#3B82F6] hover:bg-[#3B82F6]/90 text-white font-bold text-xs rounded-xl shadow-sm transition active:scale-97 disabled:opacity-50 cursor-pointer"
+                className="flex-1 py-3 bg-gold hover:bg-[#C29B2E] text-ink font-bold text-xs rounded-xl shadow-sm transition active:scale-97 disabled:opacity-50 cursor-pointer"
               >
                 {isSearching ? (
                   <span className="flex items-center justify-center gap-2">
-                    <span className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                    <span className="w-3.5 h-3.5 border-2 border-ink border-t-transparent rounded-full animate-spin"></span>
                     <span>{isRtl ? 'جاري فحص مسارات الطيران...' : 'Searching Flight Corridors...'}</span>
                   </span>
                 ) : (
@@ -400,7 +402,7 @@ export const FlightBooking: React.FC = () => {
                 href="https://airalgeriecargo.dz/demande-dune-reservation/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="py-3 px-5 border border-[#3B82F6]/30 text-[#3B82F6] font-mono text-xs uppercase tracking-widest font-extrabold hover:bg-[#3B82F6]/5 rounded-xl transition flex items-center justify-center gap-1.5 cursor-pointer"
+                className="py-3 px-5 border border-gold/30 text-gold font-mono text-xs uppercase tracking-widest font-extrabold hover:bg-gold/5 rounded-xl transition flex items-center justify-center gap-1.5 cursor-pointer"
               >
                 <span>{isRtl ? 'حجز مباشر عبر الخطوط الجزائرية' : 'Book via Air Algérie'}</span>
                 <ExternalLink size={12} />
@@ -411,10 +413,10 @@ export const FlightBooking: React.FC = () => {
           {/* AI generated JSON structure diagnostic representation requested by rules */}
           {apiPayload && (
             <div className="mt-6 pt-5 border-t border-[#E2E8F0] text-left">
-              <p className="text-[9px] font-mono text-[#3B82F6] font-black uppercase tracking-wider mb-2 flex items-center gap-1">
-                <Sparkles size={11} className="text-[#3B82F6]" /> {isRtl ? 'بنية مخرجات الذكاء الاصطناعي (API STAMP)' : 'AI Connected API Query (Structured JSON Data)'}
+              <p className="text-[9px] font-mono text-gold font-black uppercase tracking-wider mb-2 flex items-center gap-1">
+                <Sparkles size={11} className="text-gold" /> {isRtl ? 'بنية مخرجات الذكاء الاصطناعي (API STAMP)' : 'AI Connected API Query (Structured JSON Data)'}
               </p>
-              <pre className="p-3.5 rounded-xl bg-[#F8FAFC] text-[#334155] font-mono text-[10.5px] overflow-x-auto border border-[#E2E8F0] leading-relaxed shadow-inner">
+              <pre className="p-3.5 rounded-xl bg-[#F8FAFC] text-ink font-mono text-[10.5px] overflow-x-auto border border-[#E2E8F0] leading-relaxed shadow-inner">
                 {JSON.stringify(apiPayload, null, 2)}
               </pre>
             </div>
@@ -425,21 +427,21 @@ export const FlightBooking: React.FC = () => {
         <div className="md:col-span-5 bg-white border border-[#E2E8F0] rounded-3xl p-6 shadow-sm flex flex-col justify-between" id="flight-live-analytics-box">
           
           <div>
-            <h3 className="text-sm font-black text-[#334155] mb-4 flex items-center gap-2 uppercase tracking-wide border-b border-[#E2E8F0] pb-3">
-              <Search className="text-[#FDBA74] animate-pulse" size={16} />
+            <h3 className="text-sm font-black text-ink mb-4 flex items-center gap-2 uppercase tracking-wide border-b border-[#E2E8F0] pb-3">
+              <Search className="text-gold animate-pulse" size={16} />
               <span>{isRtl ? 'نتائج العروض والرحلات' : 'Flight Match Dashboard'}</span>
             </h3>
 
             {isSearching && (
               <div className="py-12 flex flex-col items-center justify-center text-center space-y-4 animate-pulse">
-                <div className="w-14 h-14 rounded-full bg-[#3B82F6]/10 flex items-center justify-center border border-[#3B82F6]/20">
-                  <Plane size={24} className="text-[#3B82F6] animate-bounce" />
+                <div className="w-14 h-14 rounded-full bg-gold/10 flex items-center justify-center border border-gold/20">
+                  <Plane size={24} className="text-gold animate-bounce" />
                 </div>
                 <div>
-                  <h4 className="text-xs font-bold text-[#334155] mb-1">
+                  <h4 className="text-xs font-bold text-ink mb-1">
                     {isRtl ? 'فحص السيرفرات في مطار هواري بومدين...' : 'Contacting Air Algérie Dispatch APIs...'}
                   </h4>
-                  <p className="text-[10px] text-[#94A3B8] max-w-[220px] mx-auto">
+                  <p className="text-[10px] text-ink/60 max-w-[220px] mx-auto">
                     {isRtl 
                       ? 'يتم فحص الجداول الزمنية ومقارنة أرخص الأسعار بالدينار الجزائري...' 
                       : 'Filtering morning and evening regional schedules, adjusting for dynamic fuel fares...'}
@@ -450,13 +452,13 @@ export const FlightBooking: React.FC = () => {
 
             {!isSearching && !hasSearched && !bookingFinished && (
               <div className="py-12 text-center flex flex-col items-center justify-center">
-                <div className="w-12 h-12 bg-[#F8FAFC] rounded-full flex items-center justify-center text-[#94A3B8] mb-3 border border-[#E2E8F0]">
-                  <Plane size={22} className="rotate-45" />
+                <div className="w-12 h-12 bg-[#F8FAFC] rounded-full flex items-center justify-center text-ink/60 mb-3 border border-[#E2E8F0]">
+                  <Plane size={22} className="rotate-45 text-gold" />
                 </div>
-                <h4 className="text-xs font-bold text-[#334155]">
+                <h4 className="text-xs font-bold text-ink">
                   {isRtl ? 'لا توجد رحلات تم البحث عنها بعد' : 'No flight routes requested'}
                 </h4>
-                <p className="text-[10px] text-[#94A3B8] leading-normal max-w-[220px] mx-auto mt-1">
+                <p className="text-[10px] text-ink/60 leading-normal max-w-[220px] mx-auto mt-1">
                   {isRtl 
                     ? 'أدخل تفاصيل التوجيه واضغط على زر البحث لاستخراج عروض حية من محاكي الطيران الجزائري.' 
                     : 'Input your departure and destination cities and tap "Search Flights" to initiate live connection simulation logs.'}
@@ -466,20 +468,20 @@ export const FlightBooking: React.FC = () => {
 
             {!isSearching && hasSearched && !bookingFinished && (
               <div className="space-y-4 animate-fade-in text-left">
-                <div className="flex items-center justify-between text-[11px] text-[#94A3B8] uppercase font-mono pb-1">
+                <div className="flex items-center justify-between text-[11px] text-ink/60 uppercase font-mono pb-1">
                   <span>{isRtl ? 'الرحلة المقترحة' : 'Route'}: {airportCodes[fromCity]} &rarr; {airportCodes[toCity]}</span>
-                  <span className="text-[#3B82F6] font-bold">{simulatedFlightsList.length} {isRtl ? 'عروض' : 'Available'}</span>
+                  <span className="text-gold font-bold">{simulatedFlightsList.length} {isRtl ? 'عروض' : 'Available'}</span>
                 </div>
 
                 {simulatedFlightsList.map((flight) => (
                   <div 
                     key={flight.id} 
-                    className="p-4 bg-[#F8FAFC] rounded-2xl border border-[#E2E8F0] flex flex-col justify-between hover:border-[#3B82F6]/50 transition duration-300 shadow-sm relative overflow-hidden group"
+                    className="p-4 bg-[#F8FAFC] rounded-2xl border border-[#E2E8F0] flex flex-col justify-between hover:border-gold/50 transition duration-300 shadow-sm relative overflow-hidden group"
                   >
                     {/* Badge */}
                     {flight.badge && (
-                      <div className="absolute top-0 right-0">
-                        <span className="bg-[#3B82F6] text-white font-mono text-[8px] font-black uppercase px-2.5 py-1 rounded-bl-xl shadow-sm tracking-wider">
+                       <div className="absolute top-0 right-0">
+                        <span className="bg-gold text-ink font-mono text-[8px] font-black uppercase px-2.5 py-1 rounded-bl-xl shadow-sm tracking-wider">
                           ★ {flight.badge}
                         </span>
                       </div>
@@ -487,32 +489,30 @@ export const FlightBooking: React.FC = () => {
 
                     <div className="flex items-center justify-between mb-3">
                       <div>
-                        <span className="text-[10px] uppercase tracking-wider font-mono font-black text-[#3B82F6] block">
+                        <span className="text-[10px] uppercase tracking-wider font-mono font-black text-gold block">
                           {flight.airline}
                         </span>
                         <div className="flex items-center gap-1.5 mt-1">
-                          <span className="text-sm font-extrabold text-[#334155]">{flight.departureTime}</span>
-                          <ArrowRight size={11} className="text-[#94A3B8]" />
-                          <span className="text-sm font-extrabold text-[#334155]">{flight.arrivalTime}</span>
+                          <span className="text-sm font-extrabold text-ink">{flight.departureTime}</span>
+                          <ArrowRight size={11} className="text-ink/60" />
+                          <span className="text-sm font-extrabold text-ink">{flight.arrivalTime}</span>
                         </div>
                       </div>
                       <div className="text-right pr-2">
-                        <span className="text-[8px] font-mono text-[#94A3B8] uppercase block">{flight.classType}</span>
-                        <span className="text-[10px] text-[#94A3B8] font-mono italic block">{flight.duration}</span>
+                        <span className="text-[8px] font-mono text-ink/60 uppercase block">{flight.classType}</span>
+                        <span className="text-[10px] text-ink/60 font-mono italic block">{flight.duration}</span>
                       </div>
                     </div>
 
                     <div className="flex items-center justify-between pt-3 border-t border-[#E2E8F0]">
                       <div>
-                        <span className="text-[8px] font-mono text-[#94A3B8] uppercase tracking-wider block">{isRtl ? 'السعر المقدر' : 'Estimated Price'}</span>
-                        <strong className="text-sm font-mono text-[#3B82F6] font-black">
-                          {flight.estimatedPriceDZD.toLocaleString()} DZD
-                        </strong>
+                        <span className="text-[8px] font-mono text-ink/60 uppercase tracking-wider block">{isRtl ? 'السعر المقدر' : 'Estimated Price'}</span>
+                        <PriceTag amount={flight.estimatedPriceDZD} />
                       </div>
                       
                       <button
                         onClick={() => handleBookSubmit(flight)}
-                        className="px-4 py-2 bg-[#3B82F6] hover:bg-[#3B82F6]/90 text-white rounded-xl text-xs font-bold shadow-sm transition transform active:scale-95 cursor-pointer"
+                        className="px-4 py-2 bg-gold hover:bg-[#C29B2E] text-ink font-bold rounded-xl text-xs shadow-sm transition transform active:scale-95 cursor-pointer"
                       >
                         {isRtl ? 'احجز الآن' : 'Book Now'}
                       </button>
@@ -521,7 +521,7 @@ export const FlightBooking: React.FC = () => {
                     <div className="mt-3 pt-3 border-t border-dashed border-[#E2E8F0]">
                       <button
                         onClick={() => handleDownloadTicket(flight)}
-                        className="w-full py-2.5 bg-[#3B82F6] hover:bg-[#3B82F6]/90 text-white rounded-xl text-xs font-bold transition transform active:scale-95 cursor-pointer flex items-center justify-center gap-1.5 shadow-sm font-mono uppercase tracking-wider"
+                        className="w-full py-2.5 bg-ink hover:bg-ink/90 text-white rounded-xl text-xs font-bold transition transform active:scale-95 cursor-pointer flex items-center justify-center gap-1.5 shadow-sm font-mono uppercase tracking-wider"
                         title={isRtl ? 'تحميل التذكرة والبرنامج' : 'Download Ticket & Itinerary'}
                       >
                         <span className="text-sm">🎫</span>
@@ -535,38 +535,38 @@ export const FlightBooking: React.FC = () => {
 
             {bookingFinished && (
               <div className="text-center py-6 animate-scale-up text-left">
-                <div className="w-12 h-12 rounded-full bg-[#3B82F6]/10 text-[#3B82F6] flex items-center justify-center mx-auto mb-4 border border-[#3B82F6]/20">
+                <div className="w-12 h-12 rounded-full bg-gold/10 text-gold flex items-center justify-center mx-auto mb-4 border border-gold/20">
                   <Check size={24} />
                 </div>
-                <h3 className="text-base font-black text-[#334155] text-center">
+                <h3 className="text-base font-black text-ink text-center">
                   {isRtl ? 'تم تأكيد حجز الطيران!' : 'Flight Ticket Confirmed!'}
                 </h3>
-                <p className="text-[9px] text-[#94A3B8] font-mono text-center mt-1">
+                <p className="text-[9px] text-ink/60 font-mono text-center mt-1">
                   Certificate Ref No: {bookingFinished.invoiceNo}
                 </p>
 
                 <div className="bg-[#F8FAFC] rounded-2xl p-4 text-[11px] max-w-sm mx-auto border border-[#E2E8F0] space-y-2 mt-5">
-                  <p className="font-extrabold text-[9px] text-[#94A3B8] uppercase tracking-widest border-b border-[#E2E8F0] pb-2">
+                  <p className="font-extrabold text-[9px] text-ink/60 uppercase tracking-widest border-b border-[#E2E8F0] pb-2">
                     {isRtl ? 'بيانات التذكرة المعتمدة' : 'Official Certificated Receipt Breakout'}
                   </p>
                   
                   <div className="flex justify-between">
-                    <span className="text-[#94A3B8]">{isRtl ? 'الخطوط الجوية' : 'Carrier'}:</span>
-                    <strong className="text-[#334155]">Air Algérie</strong>
+                    <span className="text-ink/60">{isRtl ? 'الخطوط الجوية' : 'Carrier'}:</span>
+                    <strong className="text-ink">Air Algérie</strong>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-[#94A3B8]">{isRtl ? 'المسار الجوي' : 'Route'}:</span>
-                    <strong className="text-[#334155]">
+                    <span className="text-ink/60">{isRtl ? 'المسار الجوي' : 'Route'}:</span>
+                    <strong className="text-ink">
                       {fromCity} &rarr; {toCity}
                     </strong>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-[#94A3B8]">{isRtl ? 'موعد الرحلة' : 'Schedule'}:</span>
-                    <strong className="text-[#334155]">{departureDate}</strong>
+                    <span className="text-ink/60">{isRtl ? 'موعد الرحلة' : 'Schedule'}:</span>
+                    <strong className="text-ink">{departureDate}</strong>
                   </div>
                   <div className="flex justify-between border-t border-[#E2E8F0] pt-2 text-xs font-black">
-                    <span className="text-[#94A3B8]">{isRtl ? 'المبلغ المدفوع بالكامل' : 'Paid amount DZD'}:</span>
-                    <span className="text-[#3B82F6]">{bookingFinished?.totalPriceDZD?.toLocaleString() || '0'} DZD</span>
+                    <span className="text-ink/60">{isRtl ? 'المبلغ المدفوع بالكامل' : 'Paid amount DZD'}:</span>
+                    <PriceTag amount={bookingFinished?.totalPriceDZD || 0} />
                   </div>
                 </div>
 
@@ -580,16 +580,16 @@ export const FlightBooking: React.FC = () => {
                             <head>
                               <title>Rihla DZ Flight Ticket - ${bookingFinished.invoiceNo}</title>
                               <style>
-                                body { font-family: sans-serif; padding: 40px; color: #334155; background: #f8fafc; }
-                                .ticket-box { border: 2px dashed #3b82f6; border-radius: 12px; padding: 30px; background: white; max-width: 600px; margin: auto; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
-                                .header { text-align: center; border-bottom: 2px solid #3b82f6; padding-bottom: 15px; margin-bottom: 20px; }
-                                .logo-stamp { font-size: 26px; font-weight: 900; color: #3b82f6; text-transform: uppercase; letter-spacing: 2px; }
-                                .subtitle { font-size: 11px; color: #64748b; margin-top: 5px; text-transform: uppercase; }
+                                body { font-family: sans-serif; padding: 40px; color: #1e293b; background: #fdfbf7; }
+                                .ticket-box { border: 2px dashed #d4af37; border-radius: 12px; padding: 30px; background: white; max-width: 600px; margin: auto; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+                                .header { text-align: center; border-bottom: 2px solid #d4af37; padding-bottom: 15px; margin-bottom: 20px; }
+                                .logo-stamp { font-size: 26px; font-weight: 900; color: #d4af37; text-transform: uppercase; letter-spacing: 2px; }
+                                .subtitle { font-size: 11px; color: #1e293b; margin-top: 5px; text-transform: uppercase; }
                                 .meta-info { display: flex; justify-content: space-between; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
                                 .col-box { display: flex; flex-direction: column; }
-                                .label { font-size: 9px; color: #94a3b8; text-transform: uppercase; }
-                                .val { font-size: 14px; font-weight: bold; color: #334155; }
-                                .banner-trust { text-align: center; margin-top: 30px; font-size: 11px; color: #64748b; font-style: italic; border-top: 1px solid #eee; padding-top: 15px; }
+                                .label { font-size: 9px; color: #1e293b; text-transform: uppercase; }
+                                .val { font-size: 14px; font-weight: bold; color: #1e293b; }
+                                .banner-trust { text-align: center; margin-top: 30px; font-size: 11px; color: #1e293b; font-style: italic; border-top: 1px solid #eee; padding-top: 15px; }
                               </style>
                             </head>
                             <body>
@@ -605,7 +605,7 @@ export const FlightBooking: React.FC = () => {
                                   </div>
                                   <div class="col-box" style="text-align: right;">
                                     <span class="label">Booking Status</span>
-                                    <span class="val" style="color: #3b82f6;">PAID IN FULL</span>
+                                    <span class="val" style="color: #d4af37;">PAID IN FULL</span>
                                   </div>
                                 </div>
                                 <div class="meta-info">
@@ -628,7 +628,7 @@ export const FlightBooking: React.FC = () => {
                                     <span class="val">Air Algérie</span>
                                   </div>
                                 </div>
-                                <div style="font-size: 16px; font-weight: bold; text-align: center; color: #3b82f6; margin: 20px 0;">
+                                <div style="font-size: 16px; font-weight: bold; text-align: center; color: #d4af37; margin: 20px 0;">
                                   Total Paid: ${bookingFinished.totalPriceDZD.toLocaleString()} DZD
                                 </div>
                                 <div class="banner-trust">
@@ -641,7 +641,7 @@ export const FlightBooking: React.FC = () => {
                         printWindow.document.close();
                       }
                     }}
-                    className="flex-1 py-2 bg-[#3B82F6] hover:bg-[#3B82F6]/90 text-white rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer"
+                    className="flex-1 py-2 bg-ink hover:bg-ink/90 text-white rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer"
                   >
                     <Download size={13} />
                     <span>{isRtl ? 'تحميل التذكرة' : 'Download Ticket'}</span>
@@ -649,7 +649,7 @@ export const FlightBooking: React.FC = () => {
                   
                   <button
                     onClick={handleReset}
-                    className="flex-1 py-1.5 bg-[#3B82F6]/10 hover:bg-[#3B82F6]/25 text-[#3B82F6] rounded-xl text-xs font-bold transition cursor-pointer"
+                    className="flex-1 py-1.5 bg-gold/10 hover:bg-gold/20 text-gold rounded-xl text-xs font-bold transition cursor-pointer"
                   >
                     {isRtl ? 'بحث جديد' : 'Plan other flights'}
                   </button>
@@ -661,7 +661,7 @@ export const FlightBooking: React.FC = () => {
 
           {/* Trust element note */}
           <div className="mt-6 pt-4 border-t border-[#E2E8F0] text-center">
-            <p className="text-[10.5px] italic text-[#94A3B8] flex items-center justify-center gap-1">
+            <p className="text-[10.5px] italic text-ink/60 flex items-center justify-center gap-1">
               <ShieldCheck size={12} className="text-emerald-500" />
               <span>{isRtl ? 'الرحلات مدعومة رسمياً من شركاء الطيران المعتمدين بالجزائر' : 'Flights powered by trusted Algerian airline partners'}</span>
             </p>
@@ -673,17 +673,17 @@ export const FlightBooking: React.FC = () => {
 
       {/* Styled Stripe checkout modal overlay */}
       {stripeFormOpen && selectedFlight && (
-        <div className="fixed inset-0 bg-black/40 backdrop-blur-xs flex items-center justify-center p-4 z-100 animate-fade-in">
+        <div className="fixed inset-0 bg-ink/40 backdrop-blur-xs flex items-center justify-center p-4 z-100 animate-fade-in">
           <div className="bg-white w-full max-w-sm rounded-3xl p-6 shadow-2xl relative border border-[#E2E8F0] animate-scale-up text-left">
             
             <div className="flex justify-between items-center border-b border-[#E2E8F0] pb-3 mb-4">
-              <span className="text-xs font-extrabold uppercase tracking-wider text-[#334155] flex items-center gap-1">
+              <span className="text-xs font-extrabold uppercase tracking-wider text-ink flex items-center gap-1">
                 <ShieldCheck size={14} className="text-emerald-600" />
                 <span>Secure Flight Checkout</span>
               </span>
               <button 
                 onClick={() => setStripeFormOpen(false)}
-                className="text-xs text-[#94A3B8] hover:text-[#334155] font-bold px-2 py-1 cursor-pointer"
+                className="text-xs text-ink/60 hover:text-ink font-bold px-2 py-1 cursor-pointer"
               >
                 {isRtl ? 'إلغاء' : 'Cancel'}
               </button>
@@ -691,49 +691,49 @@ export const FlightBooking: React.FC = () => {
 
             <div className="space-y-4 text-xs">
               <div>
-                <span className="text-[9px] font-mono text-[#94A3B8] block uppercase font-bold">Carrier & Itinerary</span>
-                <span className="text-xs font-extrabold text-[#334155]">
+                <span className="text-[9px] font-mono text-ink/60 block uppercase font-bold">Carrier & Itinerary</span>
+                <span className="text-xs font-extrabold text-ink">
                   Air Algérie ({selectedFlight.fromCode} &rarr; {selectedFlight.toCode})
                 </span>
               </div>
 
               <div>
-                <label className="block text-[9px] font-mono text-[#94A3B8] mb-1 font-bold">CREDIT/DEBIT CARD NUMBER</label>
+                <label className="block text-[9px] font-mono text-ink/60 mb-1 font-bold">CREDIT/DEBIT CARD NUMBER</label>
                 <input 
                   type="text" 
                   value={cardNumber}
                   onChange={(e) => setCardNumber(e.target.value)}
-                  className="w-full text-xs font-semibold border border-[#E2E8F0] px-3 py-2 text-[#334155] bg-white rounded-xl focus:outline-[#3B82F6]"
+                  className="w-full text-xs font-semibold border border-[#E2E8F0] px-3 py-2 text-ink bg-white rounded-xl focus:outline-none focus:border-gold"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-[9px] font-mono text-[#94A3B8] mb-1 font-bold">EXPIRY DATE (MM / YY)</label>
+                  <label className="block text-[9px] font-mono text-ink/60 mb-1 font-bold">EXPIRY DATE (MM / YY)</label>
                   <input 
                     type="text" 
                     placeholder="12 / 29"
-                    className="w-full text-xs font-semibold border border-[#E2E8F0] px-3 py-2 text-[#334155] bg-white rounded-xl focus:outline-[#3B82F6]"
+                    className="w-full text-xs font-semibold border border-[#E2E8F0] px-3 py-2 text-ink bg-white rounded-xl focus:outline-none focus:border-gold"
                   />
                 </div>
                 <div>
-                  <label className="block text-[9px] font-mono text-[#94A3B8] mb-1 font-bold">CVV CODE</label>
+                  <label className="block text-[9px] font-mono text-ink/60 mb-1 font-bold">CVV CODE</label>
                   <input 
                     type="text" 
                     placeholder="391"
-                    className="w-full text-xs font-semibold border border-[#E2E8F0] px-3 py-2 text-[#334155] bg-white rounded-xl focus:outline-[#3B82F6]"
+                    className="w-full text-xs font-semibold border border-[#E2E8F0] px-3 py-2 text-ink bg-white rounded-xl focus:outline-none focus:border-gold"
                   />
                 </div>
               </div>
 
-              <div className="p-3 bg-[#3B82F6]/5 border border-[#3B82F6]/15 rounded-xl text-[#3B82F6]">
-                <span className="block font-bold">Safe SSL encrypted channel</span>
-                Amount scheduled: {selectedFlight.estimatedPriceDZD.toLocaleString()} DZD
+              <div className="p-3 bg-gold/5 border border-gold/15 rounded-xl text-ink font-medium leading-relaxed">
+                <span className="block font-bold text-gold">Safe SSL encrypted channel</span>
+                Amount scheduled: <PriceTag amount={selectedFlight.estimatedPriceDZD} />
               </div>
 
               <button
                 onClick={handlePayConfirm}
-                className="w-full py-2.5 bg-[#3B82F6] hover:bg-[#3B82F6]/90 text-white font-bold text-xs rounded-xl shadow-sm transition duration-200 cursor-pointer"
+                className="w-full py-2.5 bg-gold hover:bg-[#C29B2E] text-ink font-bold text-xs rounded-xl shadow-sm transition duration-200 cursor-pointer"
               >
                 {isRtl ? 'تأكيد ودفع قيمة التذكرة' : 'Confirm & Authorize Flight Payment'}
               </button>

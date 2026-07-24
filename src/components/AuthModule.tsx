@@ -348,9 +348,9 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
           <button
             type="button"
             onClick={() => setLangOpen(!langOpen)}
-            className="flex items-center gap-2 px-4 py-2 bg-white hover:bg-[#F8FAFC] text-[#334155] border border-[#E2E8F0] rounded-full text-[10px] font-bold tracking-widest uppercase transition-all shadow-sm cursor-pointer"
+            className="flex items-center gap-2 px-4 py-2 bg-white hover:bg-[#F8FAFC] text-ink border border-[#E2E8F0] rounded-full text-[10px] font-bold tracking-widest uppercase transition-all shadow-sm cursor-pointer"
           >
-            <Globe size={13} className="text-[#3B82F6]" />
+            <Globe size={13} className="text-gold" />
             <span>{languagesList.find(l => l.code === language)?.label}</span>
             <span className="text-sm">{languagesList.find(l => l.code === language)?.flag}</span>
           </button>
@@ -369,8 +369,8 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
                     }}
                     className={`flex items-center justify-between w-full px-4 py-2 text-xs font-semibold uppercase tracking-wider transition-all text-start ${
                       isActive 
-                        ? 'text-[#3B82F6] bg-[#3B82F6]/5 font-bold border-l-2 border-[#3B82F6] rtl:border-l-0 rtl:border-r-2'
-                        : 'text-[#334155] hover:text-[#3B82F6] hover:bg-[#F8FAFC]'
+                        ? 'text-gold bg-gold/5 font-bold border-l-2 border-gold'
+                        : 'text-ink hover:text-gold hover:bg-[#F8FAFC]'
                     }`}
                   >
                     <span>{lang.label}</span>
@@ -383,21 +383,21 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
         </div>
       </div>
 
-      {/* Decorative premium ambient glows with bright pastel blue and cyan colors */}
-      <div className="absolute top-0 left-1/4 w-[400px] h-[400px] bg-[#3B82F6]/5 rounded-full blur-[100px] pointer-events-none" />
-      <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-[#22D3EE]/5 rounded-full blur-[100px] pointer-events-none" />
-      <div className="absolute inset-0 opacity-[0.02] bg-[radial-gradient(#3B82F6_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none" />
+      {/* Decorative premium ambient glows with bright brand colors */}
+      <div className="absolute top-0 left-1/4 w-[400px] h-[400px] bg-gold/5 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-gold/5 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute inset-0 opacity-[0.02] bg-[radial-gradient(#D4AF37_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none" />
 
       {/* Standalone clean white card container */}
       <div className="bg-white w-full max-w-md border border-[#E2E8F0] rounded-[32px] p-6 sm:p-10 shadow-sm relative overflow-hidden transition-all duration-300">
         
         {/* Accent strip */}
-        <div className="absolute top-0 left-0 right-0 h-[4px] bg-gradient-to-r from-[#3B82F6] to-[#22D3EE]"></div>
+        <div className="absolute top-0 left-0 right-0 h-[4px] bg-gradient-to-r from-gold to-[#B8860B]"></div>
         
         {/* Top Branding Header */}
         <div className="text-center mb-8 flex flex-col items-center">
           <div className="relative mb-4 group">
-            <div className="absolute -inset-1 bg-gradient-to-r from-[#3B82F6] to-[#22D3EE] rounded-full blur opacity-20"></div>
+            <div className="absolute -inset-1 bg-gradient-to-r from-gold to-[#B8860B] rounded-full blur opacity-20"></div>
             <div className="relative w-20 h-20 rounded-full overflow-hidden border border-[#E2E8F0] shadow-sm bg-[#F8FAFC] p-0.5">
               <img 
                 src={rahalaLogo} 
@@ -407,8 +407,8 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
               />
             </div>
           </div>
-          <h2 className="text-3xl font-serif tracking-tight text-[#334155] font-black leading-none uppercase">RAHALA</h2>
-          <p className="text-[9px] font-mono tracking-[0.2em] font-black text-[#3B82F6] uppercase mt-2 leading-none">
+          <h2 className="text-3xl font-serif tracking-tight text-ink font-black leading-none uppercase">RAHALA</h2>
+          <p className="text-[9px] font-mono tracking-[0.2em] font-black text-gold uppercase mt-2 leading-none">
             {t('assistantSub')}
           </p>
         </div>
@@ -416,8 +416,8 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
         {/* Loading Overlay */}
         {isLoadingAuth && (
           <div className="absolute inset-0 bg-white/95 backdrop-blur-md z-50 flex flex-col items-center justify-center space-y-4">
-            <div className="w-10 h-10 border-2 border-[#3B82F6] border-t-transparent rounded-full animate-spin"></div>
-            <p className="text-[10px] font-mono font-bold tracking-[0.2em] text-[#3B82F6] uppercase">{t('verifying')}</p>
+            <div className="w-10 h-10 border-2 border-gold border-t-transparent rounded-full animate-spin"></div>
+            <p className="text-[10px] font-mono font-bold tracking-[0.2em] text-gold uppercase">{t('verifying')}</p>
           </div>
         )}
 
@@ -428,8 +428,8 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
             onClick={() => { setPhase('login'); setErrorMessage(''); setSuccessMessage(''); }}
             className={`flex-1 py-2.5 text-[10px] font-mono font-bold uppercase tracking-widest rounded-xl transition-all flex items-center justify-center gap-2 cursor-pointer ${
               phase === 'login' 
-                ? 'bg-[#3B82F6] text-white shadow-sm font-extrabold' 
-                : 'text-[#94A3B8] hover:text-[#3B82F6]'
+                ? 'bg-gold text-ink shadow-sm font-extrabold' 
+                : 'text-ink/60 hover:text-gold'
             }`}
           >
             <LogIn size={12} /> {t('loginTab')}
@@ -439,8 +439,8 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
             onClick={() => { setPhase('register'); setErrorMessage(''); setSuccessMessage(''); }}
             className={`flex-1 py-2.5 text-[10px] font-mono font-bold uppercase tracking-widest rounded-xl transition-all flex items-center justify-center gap-2 cursor-pointer ${
               phase === 'register' 
-                ? 'bg-[#3B82F6] text-white shadow-sm font-extrabold' 
-                : 'text-[#94A3B8] hover:text-[#3B82F6]'
+                ? 'bg-gold text-ink shadow-sm font-extrabold' 
+                : 'text-ink/60 hover:text-gold'
             }`}
           >
             <UserPlus size={12} /> {t('registerTab')}
@@ -454,17 +454,17 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
               <button
                 type="button"
                 onClick={() => window.location.hash = '#/landing'}
-                className="flex items-center gap-1.5 text-xs text-[#94A3B8] hover:text-[#3B82F6] font-sans font-bold transition-all focus:outline-none"
+                className="flex items-center gap-1.5 text-xs text-ink/60 hover:text-gold font-sans font-bold transition-all focus:outline-none"
               >
                 <ArrowLeft size={13} />
                 {t('mainMenu')}
               </button>
-              <span className="text-[10px] font-mono font-black text-[#3B82F6] uppercase tracking-widest">{t('secureAccess')}</span>
+              <span className="text-[10px] font-mono font-black text-gold uppercase tracking-widest">{t('secureAccess')}</span>
             </div>
 
             {/* QUICK CONNEXION SELECTION */}
             <div className="bg-[#F8FAFC] p-3 border border-[#E2E8F0] rounded-2xl flex items-center justify-between gap-2.5">
-              <span className="text-[10px] font-mono font-bold text-[#94A3B8] uppercase tracking-wider pl-1">{t('quickSelection')}</span>
+              <span className="text-[10px] font-mono font-bold text-ink/60 uppercase tracking-wider pl-1">{t('quickSelection')}</span>
               <div className="flex gap-2">
                 <button
                   type="button"
@@ -472,7 +472,7 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
                     setEmail('user@rahla.dz');
                     setPassword('password');
                   }}
-                  className="px-2.5 py-1 text-[10px] font-mono font-bold uppercase rounded-lg bg-[#3B82F6]/10 text-[#3B82F6] border border-[#3B82F6]/20 hover:bg-[#3B82F6]/20 transition-all cursor-pointer"
+                  className="px-2.5 py-1 text-[10px] font-mono font-bold uppercase rounded-lg bg-gold/10 text-gold border border-gold/20 hover:bg-gold/20 transition-all cursor-pointer"
                 >
                   {t('travelerRole')}
                 </button>
@@ -482,7 +482,7 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
                     setEmail('admin@rahala.com');
                     setPassword('1234');
                   }}
-                  className="px-2.5 py-1 text-[10px] font-mono font-black uppercase rounded-lg bg-[#22D3EE]/10 text-[#334155] border border-[#22D3EE]/20 hover:bg-[#22D3EE]/20 transition-all cursor-pointer"
+                  className="px-2.5 py-1 text-[10px] font-mono font-black uppercase rounded-lg bg-gold/10 text-gold border border-gold/20 hover:bg-gold/20 transition-all cursor-pointer"
                 >
                   {t('adminRole')}
                 </button>
@@ -504,36 +504,36 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
             )}
 
             <div>
-              <label className="block text-[9px] font-mono uppercase tracking-widest text-[#94A3B8] mb-1.5">{t('adresseMail')}</label>
+              <label className="block text-[9px] font-mono uppercase tracking-widest text-ink/60 mb-1.5">{t('adresseMail')}</label>
               <div className="relative">
-                <Mail className="absolute left-3.5 top-3.5 text-[#94A3B8]" size={14} />
+                <Mail className="absolute left-3.5 top-3.5 text-ink/60" size={14} />
                 <input 
                   type="email" 
                   value={email}
                   placeholder={t('emailPlaceholder')}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full text-xs font-semibold pl-10 pr-3.5 py-3 bg-white border border-[#E2E8F0] rounded-xl text-[#334155] placeholder-[#94A3B8] focus:outline-none focus:border-[#3B82F6] transition-all"
+                  className="w-full text-xs font-semibold pl-10 pr-3.5 py-3 bg-white border border-[#E2E8F0] rounded-xl text-ink placeholder-ink/40 focus:outline-none focus:border-gold transition-all"
                   required
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-[9px] font-mono uppercase tracking-widest text-[#94A3B8] mb-1.5">{t('motDePasse')}</label>
+              <label className="block text-[9px] font-mono uppercase tracking-widest text-ink/60 mb-1.5">{t('motDePasse')}</label>
               <div className="relative">
-                <Lock className="absolute left-3.5 top-3.5 text-[#94A3B8]" size={14} />
+                <Lock className="absolute left-3.5 top-3.5 text-ink/60" size={14} />
                 <input 
                   type={showPassword ? 'text' : 'password'} 
                   value={password}
                   placeholder={t('passwordPlaceholder')}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full text-xs font-semibold pl-10 pr-10 py-3 bg-white border border-[#E2E8F0] rounded-xl text-[#334155] placeholder-[#94A3B8] focus:outline-none focus:border-[#3B82F6] transition-all"
+                  className="w-full text-xs font-semibold pl-10 pr-10 py-3 bg-white border border-[#E2E8F0] rounded-xl text-ink placeholder-ink/40 focus:outline-none focus:border-gold transition-all"
                   required
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3.5 top-3.5 text-[#94A3B8] hover:text-[#334155] transition-colors"
+                  className="absolute right-3.5 top-3.5 text-ink/60 hover:text-ink transition-colors"
                 >
                   {showPassword ? <EyeOff size={14} /> : <Eye size={14} />}
                 </button>
@@ -542,7 +542,7 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
 
             <button
               type="submit"
-              className="w-full mt-2 py-3.5 bg-[#3B82F6] hover:bg-[#3B82F6]/90 text-white font-mono font-bold text-xs uppercase tracking-widest rounded-xl hover:shadow-sm cursor-pointer transition-all flex items-center justify-center gap-2 border border-[#3B82F6]/10"
+              className="w-full mt-2 py-3.5 bg-gold hover:bg-[#C29B2E] text-ink font-mono font-bold text-xs uppercase tracking-widest rounded-xl hover:shadow-sm cursor-pointer transition-all flex items-center justify-center gap-2 border border-gold/10"
             >
               <LogIn size={14} />
               {t('loginBtn')}
@@ -550,7 +550,7 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
 
             {/* Switch link */}
             <div className="text-center pt-2">
-              <span className="text-xs text-[#94A3B8] font-sans">{t('noAccount')} </span>
+              <span className="text-xs text-ink/60 font-sans">{t('noAccount')} </span>
               <button
                 type="button"
                 onClick={() => {
@@ -558,7 +558,7 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
                   setSuccessMessage('');
                   setErrorMessage('');
                 }}
-                className="text-xs font-bold text-[#3B82F6] hover:underline"
+                className="text-xs font-bold text-gold hover:underline"
               >
                 {t('signupBtn')}
               </button>
@@ -566,11 +566,11 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
 
             {/* Quick Guest login option */}
             <div className="text-center pt-3 border-t border-[#E2E8F0] space-y-2">
-              <p className="text-[10px] text-[#94A3B8]">{t('demoAccountsHint')}</p>
+              <p className="text-[10px] text-ink/60">{t('demoAccountsHint')}</p>
               <button
                 type="button"
                 onClick={handleGuestLogin}
-                className="text-xs font-bold text-[#3B82F6] hover:underline"
+                className="text-xs font-bold text-gold hover:underline"
               >
                 {t('guestModeBtn')}
               </button>
@@ -585,12 +585,12 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
               <button
                 type="button"
                 onClick={() => window.location.hash = '#/landing'}
-                className="flex items-center gap-1.5 text-xs text-[#94A3B8] hover:text-[#3B82F6] font-sans font-bold transition-all focus:outline-none"
+                className="flex items-center gap-1.5 text-xs text-ink/60 hover:text-gold font-sans font-bold transition-all focus:outline-none"
               >
                 <ArrowLeft size={13} />
                 {t('mainMenu')}
               </button>
-              <span className="text-[10px] font-mono font-black text-[#3B82F6] uppercase tracking-wider">{t('creerCompte')}</span>
+              <span className="text-[10px] font-mono font-black text-gold uppercase tracking-wider">{t('creerCompte')}</span>
             </div>
 
             {errorMessage && (
@@ -608,64 +608,64 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
             )}
 
             <div>
-              <label className="block text-[9px] font-mono uppercase tracking-widest text-[#94A3B8] mb-1.5">{t('fullNameLabel')}</label>
+              <label className="block text-[9px] font-mono uppercase tracking-widest text-ink/60 mb-1.5">{t('fullNameLabel')}</label>
               <input 
                 type="text" 
                 value={name}
                 placeholder={t('fullNamePlaceholder')}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full text-xs font-semibold px-3.5 py-3 bg-white border border-[#E2E8F0] rounded-xl text-[#334155] placeholder-[#94A3B8] focus:outline-none focus:border-[#3B82F6]"
+                className="w-full text-xs font-semibold px-3.5 py-3 bg-white border border-[#E2E8F0] rounded-xl text-ink placeholder-ink/40 focus:outline-none focus:border-gold"
                 required
               />
             </div>
 
             <div>
-              <label className="block text-[9px] font-mono uppercase tracking-widest text-[#94A3B8] mb-1.5">{t('emailLabel')}</label>
+              <label className="block text-[9px] font-mono uppercase tracking-widest text-ink/60 mb-1.5">{t('emailLabel')}</label>
               <input 
                 type="email" 
                 value={email}
                 placeholder={t('emailRegPlaceholder')}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full text-xs font-semibold px-3.5 py-3 bg-white border border-[#E2E8F0] rounded-xl text-[#334155] placeholder-[#94A3B8] focus:outline-none focus:border-[#3B82F6]"
+                className="w-full text-xs font-semibold px-3.5 py-3 bg-white border border-[#E2E8F0] rounded-xl text-ink placeholder-ink/40 focus:outline-none focus:border-gold"
                 required
               />
             </div>
 
             <div>
-              <label className="block text-[9px] font-mono uppercase tracking-widest text-[#94A3B8] mb-1.5">{t('passwordLabel')}</label>
+              <label className="block text-[9px] font-mono uppercase tracking-widest text-ink/60 mb-1.5">{t('passwordLabel')}</label>
               <input 
                 type="password" 
                 value={password}
                 placeholder={t('passwordRegPlaceholder')}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full text-xs font-semibold px-3.5 py-3 bg-white border border-[#E2E8F0] rounded-xl text-[#334155] placeholder-[#94A3B8] focus:outline-none focus:border-[#3B82F6]"
+                className="w-full text-xs font-semibold px-3.5 py-3 bg-white border border-[#E2E8F0] rounded-xl text-ink placeholder-ink/40 focus:outline-none focus:border-gold"
                 required
               />
             </div>
 
             <div>
-              <label className="block text-[9px] font-mono uppercase tracking-widest text-[#94A3B8] mb-1.5">{t('confirmPasswordLabel')}</label>
+              <label className="block text-[9px] font-mono uppercase tracking-widest text-ink/60 mb-1.5">{t('confirmPasswordLabel')}</label>
               <input 
                 type="password" 
                 value={confirmPassword}
                 placeholder={t('confirmPasswordPlaceholder')}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                className="w-full text-xs font-semibold px-3.5 py-3 bg-white border border-[#E2E8F0] rounded-xl text-[#334155] placeholder-[#94A3B8] focus:outline-none focus:border-[#3B82F6]"
+                className="w-full text-xs font-semibold px-3.5 py-3 bg-white border border-[#E2E8F0] rounded-xl text-ink placeholder-ink/40 focus:outline-none focus:border-gold"
                 required
               />
             </div>
 
             <div className="grid grid-cols-2 gap-3">
               <div className="col-span-2">
-                <label className="block text-[9px] font-mono uppercase tracking-widest text-[#94A3B8] mb-1.5">{t('accountTypeLabel')}</label>
+                <label className="block text-[9px] font-mono uppercase tracking-widest text-ink/60 mb-1.5">{t('accountTypeLabel')}</label>
                 <div className="flex gap-2">
                   <button
                     type="button"
                     onClick={() => setRole('user')}
                     className={`flex-1 py-2.5 text-xs font-bold border rounded-xl flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
                       role === 'user' 
-                        ? 'bg-[#3B82F6]/10 text-[#3B82F6] border-[#3B82F6]' 
-                        : 'border-[#E2E8F0] text-[#94A3B8] hover:bg-[#F8FAFC]'
+                        ? 'bg-gold/10 text-gold border-gold' 
+                        : 'border-[#E2E8F0] text-ink/60 hover:bg-[#F8FAFC]'
                     }`}
                   >
                     <UserIcon size={12} />
@@ -676,8 +676,8 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
                     onClick={() => setRole('admin')}
                     className={`flex-1 py-2.5 text-xs font-bold border rounded-xl flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
                       role === 'admin' 
-                        ? 'bg-[#22D3EE]/10 text-[#334155] border-[#22D3EE]' 
-                        : 'border-[#E2E8F0] text-[#94A3B8] hover:bg-[#F8FAFC]'
+                        ? 'bg-gold/10 text-gold border-gold' 
+                        : 'border-[#E2E8F0] text-ink/60 hover:bg-[#F8FAFC]'
                     }`}
                   >
                     <ShieldCheck size={12} />
@@ -690,7 +690,7 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
             {/* Admin safety verification code field */}
             {role === 'admin' && (
               <div className="p-3 bg-[#F8FAFC] border border-[#E2E8F0] rounded-2xl animate-fade-in">
-                <label className="block text-[10px] font-mono font-extrabold uppercase tracking-widest text-[#334155] mb-1.5 flex items-center gap-1">
+                <label className="block text-[10px] font-mono font-extrabold uppercase tracking-widest text-ink mb-1.5 flex items-center gap-1">
                   <Key size={11} /> {t('adminCodeLabel')}
                 </label>
                 <input 
@@ -698,7 +698,7 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
                   value={adminCode}
                   placeholder={t('adminCodePlaceholder')}
                   onChange={(e) => setAdminCode(e.target.value)}
-                  className="w-full text-xs font-mono px-3 py-2 bg-white border border-[#E2E8F0] rounded-lg text-[#334155] placeholder-[#94A3B8] focus:outline-none"
+                  className="w-full text-xs font-mono px-3 py-2 bg-white border border-[#E2E8F0] rounded-lg text-ink placeholder-ink/40 focus:outline-none"
                   required={role === 'admin'}
                 />
               </div>
@@ -706,7 +706,7 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
 
             <button
               type="submit"
-              className="w-full mt-2 py-3.5 bg-[#3B82F6] hover:bg-[#3B82F6]/90 text-white font-mono font-black text-xs uppercase tracking-widest rounded-xl hover:shadow-sm cursor-pointer transition-all flex items-center justify-center gap-2"
+              className="w-full mt-2 py-3.5 bg-gold hover:bg-[#C29B2E] text-ink font-mono font-black text-xs uppercase tracking-widest rounded-xl hover:shadow-sm cursor-pointer transition-all flex items-center justify-center gap-2"
             >
               <UserCheck size={14} />
               {t('createAccountBtn')}
@@ -714,7 +714,7 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
 
             {/* Toggle link */}
             <div className="text-center pt-2">
-              <span className="text-xs text-[#94A3B8] font-sans">{t('alreadyHaveAccount')}</span>
+              <span className="text-xs text-ink/60 font-sans">{t('alreadyHaveAccount')}</span>
               <button
                 type="button"
                 onClick={() => {
@@ -722,7 +722,7 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
                   setSuccessMessage('');
                   setErrorMessage('');
                 }}
-                className="text-xs font-bold text-[#3B82F6] hover:underline"
+                className="text-xs font-bold text-gold hover:underline"
               >
                 {t('loginBtn')}
               </button>
@@ -734,25 +734,25 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
         <div className="mt-6 pt-5 border-t border-[#E2E8F0] flex flex-col items-center">
           <button
             onClick={() => setShowTestAccounts(!showTestAccounts)}
-            className="text-[10px] font-mono font-bold tracking-widest uppercase text-[#94A3B8] hover:text-[#3B82F6] transition-colors"
+            className="text-[10px] font-mono font-bold tracking-widest uppercase text-ink/60 hover:text-gold transition-colors"
           >
             {showTestAccounts ? t('hideTestAccountsBtn') : t('showTestAccountsBtn')}
           </button>
           
           {showTestAccounts && (
-            <div className="mt-3 w-full bg-[#F8FAFC] rounded-2xl p-4 border border-[#E2E8F0] text-[10px] space-y-2 text-[#334155] select-text animate-slide-down">
-              <p className="font-mono text-[9px] font-bold text-[#3B82F6] uppercase">{t('demoCredentialsTitle')}</p>
+            <div className="mt-3 w-full bg-[#F8FAFC] rounded-2xl p-4 border border-[#E2E8F0] text-[10px] space-y-2 text-ink select-text animate-slide-down">
+              <p className="font-mono text-[9px] font-bold text-gold uppercase">{t('demoCredentialsTitle')}</p>
               
               <div className="border-t border-[#E2E8F0] pt-2 flex justify-between items-center">
                 <div>
-                  <p className="font-extrabold text-[#3B82F6]">{t('demoAdminTitle')}</p>
-                  <p className="font-mono text-[#94A3B8]">Email: <span className="text-[#3B82F6] font-bold">admin@rahala.com</span></p>
-                  <p className="font-mono text-[#94A3B8]">Mot de passe: <span className="font-bold text-[#334155]">1234</span></p>
+                  <p className="font-extrabold text-gold">{t('demoAdminTitle')}</p>
+                  <p className="font-mono text-ink/60">Email: <span className="text-gold font-bold">admin@rahala.com</span></p>
+                  <p className="font-mono text-ink/60">Mot de passe: <span className="font-bold text-ink">1234</span></p>
                 </div>
                 <button
                   type="button"
                   onClick={() => handleApplyTestCredentials('admin@rahala.com', '1234')}
-                  className="px-2.5 py-1 bg-[#3B82F6] text-white font-mono rounded cursor-pointer text-[8px]"
+                  className="px-2.5 py-1 bg-gold text-ink font-mono font-bold rounded cursor-pointer text-[8px]"
                 >
                   {t('fillBtn')}
                 </button>
@@ -760,14 +760,14 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
 
               <div className="border-t border-[#E2E8F0] pt-2 flex justify-between items-center">
                 <div>
-                  <p className="font-extrabold text-[#334155]">{t('demoUserTitle')}</p>
-                  <p className="font-mono text-[#94A3B8]">Email: <span className="text-[#3B82F6] font-bold">user@rahla.dz</span></p>
-                  <p className="font-mono text-[#94A3B8]">Mot de passe: <span className="font-bold text-[#334155]">password</span></p>
+                  <p className="font-extrabold text-ink">{t('demoUserTitle')}</p>
+                  <p className="font-mono text-ink/60">Email: <span className="text-gold font-bold">user@rahla.dz</span></p>
+                  <p className="font-mono text-ink/60">Mot de passe: <span className="font-bold text-ink">password</span></p>
                 </div>
                 <button
                   type="button"
                   onClick={() => handleApplyTestCredentials('user@rahla.dz', 'password')}
-                  className="px-2.5 py-1 bg-[#3B82F6] text-white font-mono rounded cursor-pointer text-[8px]"
+                  className="px-2.5 py-1 bg-gold text-ink font-mono font-bold rounded cursor-pointer text-[8px]"
                 >
                   {t('fillBtn')}
                 </button>
@@ -775,21 +775,21 @@ export const AuthModule: React.FC<AuthModuleProps> = ({ onSuccess }) => {
 
               <div className="border-t border-[#E2E8F0] pt-2 flex justify-between items-center">
                 <div>
-                  <p className="font-extrabold text-[#334155]">{t('demoPremiumUserTitle')}</p>
-                  <p className="font-mono text-[#94A3B8]">Email: <span className="text-[#3B82F6] font-bold">lattab.nidal@gmail.com</span></p>
-                  <p className="font-mono text-[#94A3B8]">Mot de passe: <span className="font-bold text-[#334155]">lattab.nidal@gmail.com</span></p>
+                  <p className="font-extrabold text-ink">{t('demoPremiumUserTitle')}</p>
+                  <p className="font-mono text-ink/60">Email: <span className="text-gold font-bold">lattab.nidal@gmail.com</span></p>
+                  <p className="font-mono text-ink/60">Mot de passe: <span className="font-bold text-ink">lattab.nidal@gmail.com</span></p>
                 </div>
                 <button
                   type="button"
                   onClick={() => handleApplyTestCredentials('lattab.nidal@gmail.com', 'lattab.nidal@gmail.com')}
-                  className="px-2.5 py-1 bg-[#3B82F6] text-white font-mono rounded cursor-pointer text-[8px]"
+                  className="px-2.5 py-1 bg-gold text-ink font-mono font-bold rounded cursor-pointer text-[8px]"
                 >
                   {t('fillBtn')}
                 </button>
               </div>
 
-              <p className="border-t border-[#E2E8F0] pt-2 text-[8px] font-sans text-[#3B82F6] flex items-center gap-1 italic font-medium">
-                {t('adminCreationHint')} <span className="font-bold font-mono text-[#334155] bg-white border border-[#E2E8F0] px-1 rounded">RAHLA2025</span>.
+              <p className="border-t border-[#E2E8F0] pt-2 text-[8px] font-sans text-gold flex items-center gap-1 italic font-medium">
+                {t('adminCreationHint')} <span className="font-bold font-mono text-ink bg-white border border-[#E2E8F0] px-1 rounded">RAHLA2025</span>.
               </p>
             </div>
           )}

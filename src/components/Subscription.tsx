@@ -51,7 +51,7 @@ export const Subscription: React.FC = () => {
       
       {/* Title block */}
       <div className="text-center max-w-xl mx-auto mb-8 sm:mb-12">
-        <h1 className="text-3xl sm:text-4xl font-serif font-bold italic tracking-tight text-[#1a1a1a] dark:text-[#f5f2ed]">
+        <h1 className="text-3xl sm:text-4xl font-serif font-bold italic tracking-tight text-ink dark:text-[#f5f2ed]">
           {t('subTitle')}
         </h1>
         <p className="mt-3 text-xs uppercase tracking-widest font-mono text-gray-500 dark:text-gray-400">
@@ -61,10 +61,10 @@ export const Subscription: React.FC = () => {
 
       {/* billing toggle */}
       <div className="flex justify-center items-center space-x-3 space-x-reverse mb-12">
-        <span className={`text-xs uppercase tracking-wider font-semibold ${billingPeriod === 'monthly' ? 'text-[#1a1a1a] dark:text-[#f5f2ed]' : 'text-gray-450'}`}>{t('billingMonthly')}</span>
+        <span className={`text-xs uppercase tracking-wider font-semibold ${billingPeriod === 'monthly' ? 'text-ink dark:text-[#f5f2ed]' : 'text-gray-450'}`}>{t('billingMonthly')}</span>
         <button
           onClick={() => setBillingPeriod(billingPeriod === 'monthly' ? 'yearly' : 'monthly')}
-          className="w-12 h-6 bg-[#1a1a1a] dark:bg-[#eae7e1] p-0.5 relative transition border border-[#d4af37] cursor-pointer"
+          className="w-12 h-6 bg-ink dark:bg-[#eae7e1] p-0.5 relative transition border border-[#d4af37] cursor-pointer"
         >
           <div className={`w-4 h-[18px] bg-[#d4af37] transition-all ${billingPeriod === 'yearly' ? 'translate-x-6' : 'translate-x-0'}`} />
         </button>

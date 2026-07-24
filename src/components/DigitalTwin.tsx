@@ -1018,10 +1018,10 @@ export const DigitalTwin: React.FC = () => {
       
       {/* Overview Block */}
       <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-12">
-        <h1 className="text-3xl font-serif font-bold italic tracking-tight text-[#334155] sm:text-4xl text-center">
+        <h1 className="text-3xl font-serif font-bold italic tracking-tight text-ink sm:text-4xl text-center">
           {t('twinTitle')}
         </h1>
-        <p className="mt-4 text-xs tracking-widest uppercase font-mono text-[#3B82F6]">
+        <p className="mt-4 text-xs tracking-widest uppercase font-mono text-gold">
           {t('twinSubtitle')}
         </p>
       </div>
@@ -1039,14 +1039,14 @@ export const DigitalTwin: React.FC = () => {
             }}
             className={`px-4 py-2.5 text-xs font-mono uppercase tracking-wider transition-all duration-300 rounded-none border ${
               activeSpot.id === landmark.id
-                ? 'bg-[#3B82F6] text-white border-[#3B82F6] font-bold shadow-sm'
-                : 'bg-transparent text-[#334155] border-[#E2E8F0] hover:border-[#3B82F6]'
+                ? 'bg-gold text-ink border-gold font-bold shadow-sm'
+                : 'bg-transparent text-ink border-[#E2E8F0] hover:border-gold'
             }`}
           >
             <span className="flex items-center space-x-1.5 space-x-reverse justify-center">
               <span>{landmark.name}</span>
-              <span className="text-[#3B82F6] font-sans font-bold flex items-center space-x-0.5 shrink-0 bg-[#3B82F6]/5 px-1.5 py-0.5 rounded border border-[#3B82F6]/10 text-[10px]">
-                <Star size={9} className="fill-[#3B82F6] text-[#3B82F6]" />
+              <span className="text-gold font-sans font-bold flex items-center space-x-0.5 shrink-0 bg-gold/5 px-1.5 py-0.5 rounded border border-gold/10 text-[10px]">
+                <Star size={9} className="fill-gold text-gold" />
                 <span>{getAverageRating(landmark.id)}</span>
               </span>
             </span>
@@ -1062,7 +1062,7 @@ export const DigitalTwin: React.FC = () => {
           
           {/* Real-time solid 3D mode vs 360 photo screen mode toggle */}
           <div className="flex bg-[#F8FAFC] p-1 border border-[#E2E8F0] justify-between items-center rounded-xl">
-            <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-[#334155] pl-3">
+            <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-ink pl-3">
               🖥️ Viewing module mode selection:
             </span>
             <div className="flex space-x-1 space-x-reverse">
@@ -1073,11 +1073,11 @@ export const DigitalTwin: React.FC = () => {
                 }}
                 className={`flex items-center space-x-1.5 px-3 py-1.5 font-mono text-[9px] uppercase tracking-widest cursor-pointer border rounded-lg ${
                   viewMode === 'exact3d'
-                    ? 'bg-[#3B82F6] text-white border-[#3B82F6] font-bold shadow-sm'
-                    : 'bg-transparent text-[#334155] border-transparent'
+                    ? 'bg-gold text-ink border-gold font-bold shadow-sm'
+                    : 'bg-transparent text-ink border-transparent'
                 }`}
               >
-                <Layers size={11} className="text-[#3B82F6]" />
+                <Layers size={11} className="text-gold" />
                 <span>Exact 3D Solid Mesh</span>
               </button>
               <button
@@ -1087,17 +1087,17 @@ export const DigitalTwin: React.FC = () => {
                 }}
                 className={`flex items-center space-x-1.5 px-3 py-1.5 font-mono text-[9px] uppercase tracking-widest cursor-pointer border rounded-lg ${
                   viewMode === 'panorama'
-                    ? 'bg-[#3B82F6] text-white border-[#3B82F6] font-bold shadow-sm'
-                    : 'bg-transparent text-[#334155] border-transparent'
+                    ? 'bg-gold text-ink border-gold font-bold shadow-sm'
+                    : 'bg-transparent text-ink border-transparent'
                 }`}
               >
-                <Compass size={11} className="text-[#3B82F6]" />
+                <Compass size={11} className="text-gold" />
                 <span>360° Photo Panorama</span>
               </button>
             </div>
           </div>
 
-          <div className="bg-[#0b0f19] rounded-none overflow-hidden relative border border-[#1a1a1a]/20 dark:border-white/15 shadow-2xl h-[480px] group flex flex-col justify-between">
+          <div className="bg-[#0b0f19] rounded-none overflow-hidden relative border border-ink/20 dark:border-white/15 shadow-2xl h-[480px] group flex flex-col justify-between">
             
             {viewMode === 'exact3d' ? (
               /* REAL-TIME WEBGL THREE.JS CANVAS */
@@ -1128,7 +1128,7 @@ export const DigitalTwin: React.FC = () => {
               
               {/* Dynamic light preset controller triggers */}
               <div className="flex items-center space-x-2 space-x-reverse">
-                <span className="text-[10px] font-mono uppercase tracking-widest text-[#94A3B8] font-bold">
+                <span className="text-[10px] font-mono uppercase tracking-widest text-ink/65 font-bold">
                   ☀️ Solar Gaze Ambient:
                 </span>
                 <div className="flex border border-[#E2E8F0] rounded-lg overflow-hidden">
@@ -1136,8 +1136,8 @@ export const DigitalTwin: React.FC = () => {
                     onClick={() => setLightPreset('day')}
                     className={`px-3 py-1 text-[9px] font-mono uppercase tracking-widest cursor-pointer ${
                       lightPreset === 'day' 
-                        ? 'bg-[#3B82F6] text-white font-bold' 
-                        : 'bg-transparent text-[#94A3B8] hover:text-[#3B82F6]'
+                        ? 'bg-gold text-ink font-bold' 
+                        : 'bg-transparent text-ink/65 hover:text-gold'
                     }`}
                   >
                     Day Oasis
@@ -1146,8 +1146,8 @@ export const DigitalTwin: React.FC = () => {
                     onClick={() => setLightPreset('sunset')}
                     className={`px-3 py-1 text-[9px] font-mono uppercase tracking-widest cursor-pointer ${
                       lightPreset === 'sunset' 
-                        ? 'bg-[#3B82F6] text-white font-bold' 
-                        : 'bg-transparent text-[#94A3B8] hover:text-[#3B82F6]'
+                        ? 'bg-gold text-ink font-bold' 
+                        : 'bg-transparent text-ink/65 hover:text-gold'
                     }`}
                   >
                     Sunset Warm
@@ -1156,8 +1156,8 @@ export const DigitalTwin: React.FC = () => {
                     onClick={() => setLightPreset('midnight')}
                     className={`px-3 py-1 text-[9px] font-mono uppercase tracking-widest cursor-pointer ${
                       lightPreset === 'midnight' 
-                        ? 'bg-[#3B82F6] text-white font-bold' 
-                        : 'bg-transparent text-[#94A3B8] hover:text-[#3B82F6]'
+                        ? 'bg-gold text-ink font-bold' 
+                        : 'bg-transparent text-ink/65 hover:text-gold'
                     }`}
                   >
                     Desert Void
@@ -1167,15 +1167,15 @@ export const DigitalTwin: React.FC = () => {
 
               {/* Wireframe solid polygons toggle */}
               <div className="flex items-center space-x-2 space-x-reverse">
-                <span className="text-[10px] font-mono uppercase tracking-widest text-[#94A3B8] font-bold">
+                <span className="text-[10px] font-mono uppercase tracking-widest text-ink/65 font-bold">
                   📐 Digital Twin Blueprint:
                 </span>
                 <button
                   onClick={() => setShowWireframe(!showWireframe)}
                   className={`px-3 py-1 border font-mono text-[9px] uppercase tracking-widest transition-all cursor-pointer rounded-lg ${
                     showWireframe 
-                      ? 'bg-[#3B82F6] text-white border-[#3B82F6] font-bold' 
-                      : 'border-[#E2E8F0] text-[#334155]'
+                      ? 'bg-gold text-ink border-gold font-bold' 
+                      : 'border-[#E2E8F0] text-ink'
                   }`}
                 >
                   {showWireframe ? 'View Solid Architectural Model' : 'View Polygon Wireframes'}
@@ -1187,13 +1187,13 @@ export const DigitalTwin: React.FC = () => {
 
           {/* Audio voice simulation bar */}
           {audioFeedbackOn && viewMode === 'panorama' && (
-            <div className="p-4 bg-[#F8FAFC] border border-[#E2E8F0] text-xs text-[#334155] animate-fade-in rounded-xl mt-4">
+            <div className="p-4 bg-[#F8FAFC] border border-[#E2E8F0] text-xs text-ink animate-fade-in rounded-xl mt-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-2.5 space-x-reverse">
-                  <Volume2 className="text-[#3B82F6] animate-bounce" size={16} />
+                  <Volume2 className="text-gold animate-bounce" size={16} />
                   <span className="font-semibold">Playing: Simulated Historic Echo acoustics for {activeSpot.name} ...</span>
                 </div>
-                <span className="font-mono text-[10px] text-[#94A3B8]">Sample: 44.1kHz</span>
+                <span className="font-mono text-[10px] text-ink/65">Sample: 44.1kHz</span>
               </div>
             </div>
           )}
@@ -1206,10 +1206,10 @@ export const DigitalTwin: React.FC = () => {
           <div>
             {/* Landmark Title block with rating */}
             <div className="mb-5 border-b border-[#E2E8F0] pb-4">
-              <span className="text-[10px] uppercase font-mono tracking-widest text-[#3B82F6] block mb-0.5">
+              <span className="text-[10px] uppercase font-mono tracking-widest text-gold block mb-0.5">
                 📍 {activeSpot.location}
               </span>
-              <h2 className="text-xl font-serif font-black text-[#334155] leading-tight">
+              <h2 className="text-xl font-serif font-black text-ink leading-tight">
                 {activeSpot.name}
               </h2>
               {/* Average Rating Block */}
@@ -1346,10 +1346,10 @@ export const DigitalTwin: React.FC = () => {
             <div className="space-y-4 mb-6">
               {(activeSpot.facts[language] || activeSpot.facts['en']).map((fact, id) => (
                 <div key={id} className="flex items-start space-x-3 space-x-reverse">
-                  <div className="w-5 h-5 bg-[#3B82F6] text-white flex items-center justify-center text-[9px] font-mono font-bold shrink-0 mt-0.5 rounded-full">
+                  <div className="w-5 h-5 bg-gold text-ink flex items-center justify-center text-[9px] font-mono font-bold shrink-0 mt-0.5 rounded-full">
                     {id + 1}
                   </div>
-                  <p className="text-xs text-[#334155] leading-relaxed font-sans">
+                  <p className="text-xs text-ink leading-relaxed font-sans">
                     {fact}
                   </p>
                 </div>
@@ -1359,7 +1359,7 @@ export const DigitalTwin: React.FC = () => {
             {/* 3D Model specific hotspot facts catalog trigger */}
             {viewMode === 'exact3d' && (
               <div className="border-t border-[#E2E8F0] pt-5 mt-5">
-                <h4 className="text-[10px] font-bold uppercase tracking-wider text-[#3B82F6] mb-3 flex items-center space-x-1">
+                <h4 className="text-[10px] font-bold uppercase tracking-wider text-gold mb-3 flex items-center space-x-1">
                   <Sparkles size={11} />
                   <span>3D Key Structural Hotspots (Exact)</span>
                 </h4>
@@ -1374,13 +1374,13 @@ export const DigitalTwin: React.FC = () => {
                       }}
                       className={`text-right w-full text-start px-3 py-2 text-xs transition-all border rounded-xl cursor-pointer ${
                         selectedHotspot?.name === spot.name
-                          ? 'bg-[#3B82F6]/5 text-[#3B82F6] border-[#3B82F6] font-bold'
-                          : 'bg-[#F8FAFC] hover:bg-[#F8FAFC]/80 text-[#334155] border-transparent'
+                          ? 'bg-gold/5 text-gold border-gold font-bold'
+                          : 'bg-[#F8FAFC] hover:bg-[#F8FAFC]/80 text-ink border-transparent'
                       }`}
                     >
                       <span className="flex items-center justify-between">
                         <span className="font-semibold text-[11px] truncate">{spot.name}</span>
-                        <span className="text-[9px] text-[#3B82F6] font-bold">Zoom &rarr;</span>
+                        <span className="text-[9px] text-gold font-bold">Zoom &rarr;</span>
                       </span>
                     </button>
                   ))}
@@ -1388,11 +1388,11 @@ export const DigitalTwin: React.FC = () => {
 
                 {/* Hotspot details bubble inline if selected */}
                 {selectedHotspot && (
-                  <div className="mt-4 p-3.5 border border-[#3B82F6]/25 bg-[#3B82F6]/5 rounded-xl text-xs animate-fade-in font-sans leading-relaxed">
-                    <strong className="block text-[#3B82F6] mb-1 text-[11px] font-bold uppercase border-b border-[#3B82F6]/10 pb-1">
+                  <div className="mt-4 p-3.5 border border-gold/25 bg-gold/5 rounded-xl text-xs animate-fade-in font-sans leading-relaxed">
+                    <strong className="block text-gold mb-1 text-[11px] font-bold uppercase border-b border-gold/10 pb-1">
                       🔍 {selectedHotspot.name}
                     </strong>
-                    <p className="text-[#334155] text-[11px]">
+                    <p className="text-ink text-[11px]">
                       {selectedHotspot.info}
                     </p>
                   </div>
@@ -1403,8 +1403,8 @@ export const DigitalTwin: React.FC = () => {
             {/* Real Photos & Gallery of the Site */}
             <div className="border-t border-[#E2E8F0] pt-5 mt-5">
               <div className="flex items-center justify-between mb-3">
-                <h4 className="text-[10px] font-bold uppercase tracking-wider text-[#3B82F6] flex items-center space-x-1.5 space-x-reverse">
-                  <ImageIcon size={11} className="text-[#3B82F6]" />
+                <h4 className="text-[10px] font-bold uppercase tracking-wider text-gold flex items-center space-x-1.5 space-x-reverse">
+                  <ImageIcon size={11} className="text-gold" />
                   <span>{language === 'ar' ? 'Photothèque Officielle du Site' : 'Photothèque Officielle & Clichés Authentiques'}</span>
                 </h4>
                 {realPhotos.length > 0 && (
@@ -1448,8 +1448,8 @@ export const DigitalTwin: React.FC = () => {
 
             {/* Reviews & Feedback Section */}
             <div className="border-t border-[#E2E8F0] pt-5 mt-5">
-              <h4 className="text-[10px] font-bold uppercase tracking-wider text-[#3B82F6] mb-3 flex items-center space-x-1.5 space-x-reverse">
-                <MessageSquare size={11} className="text-[#3B82F6]" />
+              <h4 className="text-[10px] font-bold uppercase tracking-wider text-gold mb-3 flex items-center space-x-1.5 space-x-reverse">
+                <MessageSquare size={11} className="text-gold" />
                 <span>{language === 'ar' ? 'آراء الزوار والتقييمات' : 'Visitor Reviews & Feedback'}</span>
               </h4>
 
@@ -1469,7 +1469,7 @@ export const DigitalTwin: React.FC = () => {
                             alt={rev.author_name}
                             className="w-4.5 h-4.5 rounded-full object-cover"
                           />
-                          <span className="font-bold text-[#334155]">
+                          <span className="font-bold text-ink">
                             {rev.author_name || "Voyageur"}
                           </span>
                         </div>
@@ -1483,10 +1483,10 @@ export const DigitalTwin: React.FC = () => {
                           ))}
                         </div>
                       </div>
-                      <p className="text-[#334155] leading-normal text-[10.5px]">
+                      <p className="text-ink leading-normal text-[10.5px]">
                         {rev.comment}
                       </p>
-                      <span className="block text-[9px] text-[#94A3B8] mt-1 font-mono">
+                      <span className="block text-[9px] text-ink/65 mt-1 font-mono">
                         {new Date(rev.created_at || rev.date).toLocaleDateString()}
                       </span>
                     </div>
@@ -1502,7 +1502,7 @@ export const DigitalTwin: React.FC = () => {
               {currentUser ? (
                 <form onSubmit={handlePostReview} className="space-y-3 bg-[#F8FAFC] p-3 border border-[#E2E8F0] rounded-xl">
                   <div className="flex items-center justify-between">
-                    <span className="text-[10px] font-mono font-bold text-[#94A3B8]">
+                    <span className="text-[10px] font-mono font-bold text-ink/65">
                       {language === 'ar' ? 'تقييمك بالنجوم:' : 'Your Star Rating:'}
                     </span>
                     <div className="flex space-x-1 space-x-reverse">
@@ -1528,7 +1528,7 @@ export const DigitalTwin: React.FC = () => {
                       onChange={(e) => setNewComment(e.target.value)}
                       placeholder={language === 'ar' ? 'اكتب تعليقاً قصيراً هنا...' : 'Write a short comment here...'}
                       rows={2}
-                      className="w-full text-[11px] p-2 border border-[#E2E8F0] rounded-lg focus:outline-none focus:border-[#3B82F6] bg-white text-[#334155] placeholder-gray-400"
+                      className="w-full text-[11px] p-2 border border-[#E2E8F0] rounded-lg focus:outline-none focus:border-gold bg-white text-ink placeholder-gray-400"
                     />
                   </div>
 
@@ -1540,21 +1540,21 @@ export const DigitalTwin: React.FC = () => {
 
                   <button
                     type="submit"
-                    className="w-full py-1.5 bg-[#3B82F6] hover:bg-[#3B82F6]/90 text-white font-mono text-[10px] uppercase font-bold tracking-wider rounded-lg transition-all cursor-pointer shadow-sm"
+                    className="w-full py-1.5 bg-gold hover:bg-[#C29B2E] text-ink font-mono text-[10px] uppercase font-bold tracking-wider rounded-lg transition-all cursor-pointer shadow-sm"
                   >
                     {language === 'ar' ? 'إرسال التقييم' : 'Submit Review'}
                   </button>
                 </form>
               ) : (
                 <div className="p-3 bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl text-center">
-                  <p className="text-[10px] text-[#94A3B8] mb-2 font-sans">
+                  <p className="text-[10px] text-ink/65 mb-2 font-sans">
                     {language === 'ar' ? 'يجب تسجيل الدخول لنشر تقييمك.' : 'You must be logged in to post a review.'}
                   </p>
                   <button
                     onClick={() => {
                       window.location.hash = '#/auth';
                     }}
-                    className="text-[9.5px] font-bold uppercase tracking-wider text-[#3B82F6] underline hover:text-[#3B82F6]/80 cursor-pointer"
+                    className="text-[9.5px] font-bold uppercase tracking-wider text-gold underline hover:text-gold/80 cursor-pointer"
                   >
                     {language === 'ar' ? 'تسجيل الدخول الآن &rarr;' : 'Log In Now &rarr;'}
                   </button>
@@ -1567,20 +1567,20 @@ export const DigitalTwin: React.FC = () => {
           {/* Premium access overlay if applicable */}
           <div className="mt-8 pt-6 border-t border-[#E2E8F0]">
             <div className="bg-[#F8FAFC] p-4 border border-[#E2E8F0] rounded-xl">
-              <h4 className="text-xs font-bold uppercase tracking-wider text-[#3B82F6] mb-2.5 flex items-center space-x-1.5 space-x-reverse">
-                <Sparkles size={13} className="text-[#3B82F6]" />
+              <h4 className="text-xs font-bold uppercase tracking-wider text-gold mb-2.5 flex items-center space-x-1.5 space-x-reverse">
+                <Sparkles size={13} className="text-gold" />
                 <span>Rihla Gold VIP 3D rendering Privilege</span>
               </h4>
-              <p className="text-[10px] text-[#94A3B8] leading-relaxed mb-3">
+              <p className="text-[10px] text-ink/65 leading-relaxed mb-3">
                 Access higher precision textures, automated vector alignment, and immersive acoustic parameters.
               </p>
               {currentUser?.isPremium ? (
-                <span className="inline-flex items-center space-x-1 border border-[#3B82F6]/20 py-1 px-2.5 bg-[#3B82F6]/5 text-[#3B82F6] text-[9px] font-bold uppercase tracking-wider rounded-lg">
+                <span className="inline-flex items-center space-x-1 border border-gold/20 py-1 px-2.5 bg-gold/5 text-gold text-[9px] font-bold uppercase tracking-wider rounded-lg">
                   <span>✓ Authorized VIP Level Access</span>
                 </span>
               ) : (
                 <button 
-                  className="text-[9px] font-bold uppercase tracking-wider text-[#3B82F6] underline hover:text-[#3B82F6]/80 cursor-pointer"
+                  className="text-[9px] font-bold uppercase tracking-wider text-gold underline hover:text-gold/80 cursor-pointer"
                   onClick={() => {
                     const el = document.getElementById('dashboard-premium-pricing');
                     if(el) el.scrollIntoView({ behavior: 'smooth' });

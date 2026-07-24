@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { useApp } from '../context/AppContext';
+import { PriceTag } from './rahala/PriceTag';
+import { LazyImage } from './rahala/LazyImage';
 import { 
   Star, Check, DollarSign, Calendar, Users, Eye, 
   Coffee, Landmark, ArrowLeft, Download, MapPin, 
@@ -75,17 +77,17 @@ export const BookingModule: React.FC<BookingModuleProps> = ({ setActiveView }) =
   };
 
   return (
-    <div className="py-6 sm:py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 font-sans text-[#334155] bg-[#F8FAFC]" id="booking-module-room">
+    <div className="py-6 sm:py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 font-sans text-ink bg-[#F8FAFC]" id="booking-module-room">
       
       {/* Upper header */}
       <div className="text-center max-w-xl mx-auto mb-10 sm:mb-12">
-        <span className="text-[10px] font-mono font-black text-[#3B82F6] tracking-[0.2em] uppercase block mb-2">
+        <span className="text-[10px] font-mono font-black text-gold tracking-[0.2em] uppercase block mb-2">
           {isRtl ? 'إقامات جزائرية معتمدة' : 'PREMIUM LODGING INDEX'}
         </span>
-        <h1 className="text-3xl sm:text-4xl font-serif font-black tracking-tight text-[#334155]">
+        <h1 className="text-3xl sm:text-4xl font-serif font-black tracking-tight text-ink">
           {t('hotelTitle')}
         </h1>
-        <p className="mt-3 text-xs text-[#94A3B8] leading-relaxed max-w-md mx-auto">
+        <p className="mt-3 text-xs text-ink/60 leading-relaxed max-w-md mx-auto">
           {t('hotelSubtitle')}
         </p>
       </div>
@@ -93,19 +95,19 @@ export const BookingModule: React.FC<BookingModuleProps> = ({ setActiveView }) =
       {!selectedHotel ? (
         <>
           {/* --- TRIVAGO-STYLE CENTRAL SEARCH WIDGET --- */}
-          <div className="bg-white border border-[#E2E8F0] rounded-[24px] p-5 sm:p-6 shadow-md shadow-[#3B82F6]/5 max-w-5xl mx-auto mb-12" id="trivago-search-bar-panel">
+          <div className="bg-white border border-[#E2E8F0] rounded-[24px] p-5 sm:p-6 shadow-md shadow-gold/5 max-w-5xl mx-auto mb-12" id="trivago-search-bar-panel">
             <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
               
               {/* Destination Dropdown Selector */}
               <div className="md:col-span-4 relative text-left">
-                <label className="block text-[8px] font-mono uppercase tracking-wider text-[#94A3B8] mb-1">
+                <label className="block text-[8px] font-mono uppercase tracking-wider text-ink/60 mb-1">
                   {isRtl ? 'الوجهة السياحية' : 'DESTINATION'}
                 </label>
                 <div className="relative">
                   <select
                     value={selectedCity}
                     onChange={(e) => setSelectedCity(e.target.value)}
-                    className="w-full text-xs font-black bg-[#F8FAFC] border border-[#E2E8F0] px-4 py-3 rounded-xl text-[#334155] focus:outline-none focus:border-[#3B82F6] appearance-none cursor-pointer"
+                    className="w-full text-xs font-black bg-[#F8FAFC] border border-[#E2E8F0] px-4 py-3 rounded-xl text-ink focus:outline-none focus:border-gold appearance-none cursor-pointer"
                   >
                     {citiesList.map((city) => (
                       <option key={city.value} value={city.value}>
@@ -113,49 +115,49 @@ export const BookingModule: React.FC<BookingModuleProps> = ({ setActiveView }) =
                       </option>
                     ))}
                   </select>
-                  <ChevronDown size={14} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#94A3B8] pointer-events-none" />
+                  <ChevronDown size={14} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-ink/60 pointer-events-none" />
                 </div>
               </div>
 
               {/* Check-In Date */}
               <div className="md:col-span-3 text-left">
-                <label className="block text-[8px] font-mono uppercase tracking-wider text-[#94A3B8] mb-1 flex items-center gap-1">
-                  <Calendar size={10} className="text-[#3B82F6]" />
+                <label className="block text-[8px] font-mono uppercase tracking-wider text-ink/60 mb-1 flex items-center gap-1">
+                  <Calendar size={10} className="text-gold" />
                   <span>{isRtl ? 'تاريخ الدخول' : 'CHECK-IN'}</span>
                 </label>
                 <input 
                   type="date" 
                   value={startDate}
                   onChange={(e) => setStartDate(e.target.value)}
-                  className="w-full text-xs font-black bg-[#F8FAFC] border border-[#E2E8F0] px-4 py-3 rounded-xl text-[#334155] focus:outline-none focus:border-[#3B82F6] cursor-pointer"
+                  className="w-full text-xs font-black bg-[#F8FAFC] border border-[#E2E8F0] px-4 py-3 rounded-xl text-ink focus:outline-none focus:border-gold cursor-pointer"
                 />
               </div>
 
               {/* Check-Out Date */}
               <div className="md:col-span-3 text-left">
-                <label className="block text-[8px] font-mono uppercase tracking-wider text-[#94A3B8] mb-1 flex items-center gap-1">
-                  <Calendar size={10} className="text-[#3B82F6]" />
+                <label className="block text-[8px] font-mono uppercase tracking-wider text-ink/60 mb-1 flex items-center gap-1">
+                  <Calendar size={10} className="text-gold" />
                   <span>{isRtl ? 'تاريخ الخروج' : 'CHECK-OUT'}</span>
                 </label>
                 <input 
                   type="date" 
                   value={endDate}
                   onChange={(e) => setEndDate(e.target.value)}
-                  className="w-full text-xs font-black bg-[#F8FAFC] border border-[#E2E8F0] px-4 py-3 rounded-xl text-[#334155] focus:outline-none focus:border-[#3B82F6] cursor-pointer"
+                  className="w-full text-xs font-black bg-[#F8FAFC] border border-[#E2E8F0] px-4 py-3 rounded-xl text-ink focus:outline-none focus:border-gold cursor-pointer"
                 />
               </div>
 
               {/* Guest Count Dropdown */}
               <div className="md:col-span-2 text-left">
-                <label className="block text-[8px] font-mono uppercase tracking-wider text-[#94A3B8] mb-1 flex items-center gap-1">
-                  <Users size={10} className="text-[#3B82F6]" />
+                <label className="block text-[8px] font-mono uppercase tracking-wider text-ink/60 mb-1 flex items-center gap-1">
+                  <Users size={10} className="text-gold" />
                   <span>{isRtl ? 'عدد النزلاء' : 'GUESTS'}</span>
                 </label>
                 <div className="relative">
                   <select
                     value={guestCount}
                     onChange={(e) => setGuestCount(Number(e.target.value))}
-                    className="w-full text-xs font-black bg-[#F8FAFC] border border-[#E2E8F0] px-4 py-3 rounded-xl text-[#334155] focus:outline-none focus:border-[#3B82F6] appearance-none cursor-pointer"
+                    className="w-full text-xs font-black bg-[#F8FAFC] border border-[#E2E8F0] px-4 py-3 rounded-xl text-ink focus:outline-none focus:border-gold appearance-none cursor-pointer"
                   >
                     {[1, 2, 3, 4, 5].map((num) => (
                       <option key={num} value={num}>
@@ -163,19 +165,19 @@ export const BookingModule: React.FC<BookingModuleProps> = ({ setActiveView }) =
                       </option>
                     ))}
                   </select>
-                  <ChevronDown size={14} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#94A3B8] pointer-events-none" />
+                  <ChevronDown size={14} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-ink/60 pointer-events-none" />
                 </div>
               </div>
 
             </div>
 
             {/* Simulated search status badge */}
-            <div className="mt-4 pt-4 border-t border-[#E2E8F0] flex items-center justify-between text-[10px] text-[#94A3B8] font-mono">
+            <div className="mt-4 pt-4 border-t border-[#E2E8F0] flex items-center justify-between text-[10px] text-ink/60 font-mono">
               <span className="flex items-center gap-1.5">
-                <Sparkles size={11} className="text-[#3B82F6] animate-pulse" />
+                <Sparkles size={11} className="text-gold animate-pulse" />
                 <span>{isRtl ? 'البحث التلقائي الذكي مفعل' : 'Auto-filtering matches instantly'}</span>
               </span>
-              <span className="font-bold text-[#3B82F6]">
+              <span className="font-bold text-gold">
                 {filteredHotels.length} {isRtl ? 'فنادق مطابقة' : 'stays found'}
               </span>
             </div>
@@ -187,10 +189,10 @@ export const BookingModule: React.FC<BookingModuleProps> = ({ setActiveView }) =
             {/* Left stays card listing panel (7 cols) */}
             <div className="lg:col-span-7 xl:col-span-7 flex flex-col space-y-6">
               <div className="flex items-center justify-between border-b border-[#E2E8F0] pb-3">
-                <h2 className="text-xs font-black uppercase text-[#334155] tracking-wider">
+                <h2 className="text-xs font-black uppercase text-ink tracking-wider">
                   {isRtl ? 'الفنادق المتاحة للحجز' : 'Luxury retreats matching search'} ({filteredHotels.length})
                 </h2>
-                <span className="px-2.5 py-1 bg-[#3B82F6]/5 text-[#3B82F6] rounded-full text-[9px] font-mono font-bold uppercase tracking-wider border border-[#3B82F6]/10">
+                <span className="px-2.5 py-1 bg-gold/10 text-gold rounded-full text-[9px] font-mono font-bold uppercase tracking-wider border border-gold/20">
                   {selectedCity === 'all' ? (isRtl ? 'كل الولايات' : 'Algeria') : selectedCity}
                 </span>
               </div>
@@ -205,35 +207,35 @@ export const BookingModule: React.FC<BookingModuleProps> = ({ setActiveView }) =
                       onMouseLeave={() => setHoveredHotelId(null)}
                       className={`bg-white border rounded-[20px] overflow-hidden shadow-xs hover:shadow-md transition-all duration-300 flex flex-col justify-between transform ${
                         isHovered 
-                          ? 'border-[#3B82F6]/50 scale-[1.01]' 
+                          ? 'border-gold/50 scale-[1.01]' 
                           : 'border-[#E2E8F0]'
                       }`}
                     >
                       <div className="relative h-44 overflow-hidden">
-                        <img 
+                        <LazyImage 
                           src={hotel.image} 
                           alt={hotel.name}
-                          className="w-full h-full object-cover transition-transform duration-700 hover:scale-103"
+                          className="w-full h-full object-cover"
                         />
-                        <div className="absolute top-3 right-3 bg-white/95 border border-[#E2E8F0] text-[#334155] rounded-xl px-2 py-1 text-[10px] font-bold flex items-center space-x-1 space-x-reverse shadow-xs">
-                          <Star size={10} className="fill-[#FDBA74] text-[#FDBA74]" />
+                        <div className="absolute top-3 right-3 bg-white/95 border border-[#E2E8F0] text-ink rounded-xl px-2 py-1 text-[10px] font-bold flex items-center space-x-1 space-x-reverse shadow-xs">
+                          <Star size={10} className="fill-gold text-gold" />
                           <span>{hotel.rating}</span>
                         </div>
-                        <div className="absolute bottom-3 left-3 bg-white/90 border border-[#E2E8F0] text-[#334155] rounded-xl px-2 py-1 text-[9px] font-bold flex items-center gap-1 shadow-xs">
-                          <MapPin size={9} className="text-[#3B82F6]" />
+                        <div className="absolute bottom-3 left-3 bg-white/90 border border-[#E2E8F0] text-ink rounded-xl px-2 py-1 text-[9px] font-bold flex items-center gap-1 shadow-xs">
+                          <MapPin size={9} className="text-gold" />
                           <span>{hotel.location}</span>
                         </div>
                       </div>
 
                       <div className="p-5 flex-1 flex flex-col justify-between">
                         <div>
-                          <h3 className="text-sm font-black text-[#334155] leading-tight mb-2 truncate hover:text-[#3B82F6] transition-colors">
+                          <h3 className="text-sm font-black text-ink leading-tight mb-2 truncate hover:text-gold transition-colors">
                             {hotel.name}
                           </h3>
-                          <p className="text-[10px] text-[#94A3B8] font-semibold mb-3">
+                          <p className="text-[10px] text-ink/60 font-semibold mb-3">
                             {hotel.location}, Algeria
                           </p>
-                          <p className="text-[11px] text-[#94A3B8] leading-relaxed line-clamp-3 mb-5">
+                          <p className="text-[11px] text-ink/70 leading-relaxed line-clamp-3 mb-5">
                             {hotel.description[isRtl ? 'ar' : 'en']}
                           </p>
                         </div>
@@ -242,14 +244,12 @@ export const BookingModule: React.FC<BookingModuleProps> = ({ setActiveView }) =
                           {/* Price and Action row */}
                           <div className="flex items-center justify-between border-t border-[#E2E8F0] pt-4 mt-2">
                             <div>
-                              <span className="block text-[8px] font-mono text-[#94A3B8] uppercase tracking-wider">Starting at</span>
-                              <span className="text-sm font-black text-[#3B82F6] font-mono">
-                                {hotel.pricePerNight.toLocaleString()} DZD <span className="text-[9px] font-normal text-[#94A3B8]">/night</span>
-                              </span>
+                              <span className="block text-[8px] font-mono text-ink/60 uppercase tracking-wider">Starting at</span>
+                              <PriceTag amount={hotel.pricePerNight} />
                             </div>
                             <button
                               onClick={() => setSelectedHotel(hotel)}
-                              className="px-4 py-2.5 bg-[#3B82F6] hover:bg-[#3B82F6]/90 text-white rounded-xl text-xs font-bold transition shadow-xs cursor-pointer focus:outline-none"
+                              className="px-4 py-2.5 bg-gold hover:bg-[#C29B2E] text-ink rounded-xl text-xs font-bold transition shadow-xs cursor-pointer focus:outline-none"
                             >
                               {isRtl ? 'احجز الآن' : 'Book stay'}
                             </button>
@@ -265,8 +265,8 @@ export const BookingModule: React.FC<BookingModuleProps> = ({ setActiveView }) =
             {/* Right Map workspace panel (5 cols) */}
             <div className="lg:col-span-5 xl:col-span-5 lg:sticky lg:top-24 border border-[#E2E8F0] rounded-[24px] overflow-hidden bg-white shadow-xs p-1">
               <div className="bg-[#F8FAFC] py-2 px-4 border-b border-[#E2E8F0] flex items-center justify-between">
-                <span className="text-[10px] font-mono font-bold uppercase text-[#334155] tracking-wider">Interactive Stays Map</span>
-                <span className="w-2 h-2 rounded-full bg-[#3B82F6] animate-pulse" />
+                <span className="text-[10px] font-mono font-bold uppercase text-ink tracking-wider">Interactive Stays Map</span>
+                <span className="w-2 h-2 rounded-full bg-gold animate-pulse" />
               </div>
               <HotelInteractiveMap
                 hotels={filteredHotels}
@@ -288,7 +288,7 @@ export const BookingModule: React.FC<BookingModuleProps> = ({ setActiveView }) =
               setSelectedHotel(null);
               setBookingFinished(null);
             }}
-            className="absolute top-6 right-6 p-2 bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl hover:bg-[#E2E8F0] text-[#334155] transition cursor-pointer"
+            className="absolute top-6 right-6 p-2 bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl hover:bg-[#E2E8F0] text-ink transition cursor-pointer"
           >
             <ArrowLeft size={16} />
           </button>
@@ -296,53 +296,53 @@ export const BookingModule: React.FC<BookingModuleProps> = ({ setActiveView }) =
           {!bookingFinished ? (
             <>
               <div className="flex items-center space-x-4 space-x-reverse mb-6">
-                <img 
+                <LazyImage 
                   src={selectedHotel.image} 
                   alt={selectedHotel.name}
                   className="w-20 h-20 rounded-xl object-cover border border-[#E2E8F0]"
                 />
                 <div className="text-left">
-                  <span className="px-2.5 py-0.5 bg-[#3B82F6]/5 text-[#3B82F6] border border-[#3B82F6]/10 text-[9px] rounded-lg font-bold font-mono uppercase tracking-wider">SELECTED STAY</span>
-                  <h3 className="text-lg font-serif font-black text-[#334155] mt-1.5 leading-none">{selectedHotel.name}</h3>
-                  <p className="text-[10px] text-[#94A3B8] mt-1 font-semibold">{selectedHotel.location}, Algeria</p>
+                  <span className="px-2.5 py-0.5 bg-gold/10 text-gold border border-gold/20 text-[9px] rounded-lg font-bold font-mono uppercase tracking-wider">SELECTED STAY</span>
+                  <h3 className="text-lg font-serif font-black text-ink mt-1.5 leading-none">{selectedHotel.name}</h3>
+                  <p className="text-[10px] text-ink/60 mt-1 font-semibold">{selectedHotel.location}, Algeria</p>
                 </div>
               </div>
 
               {/* Form elements selection */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6 pt-4 border-t border-[#E2E8F0]">
                 <div className="text-left">
-                  <label className="block text-[9px] font-mono text-[#94A3B8] uppercase mb-1.5 flex items-center gap-1">
-                    <Calendar size={10} className="text-[#3B82F6]" />
+                  <label className="block text-[9px] font-mono text-ink/60 uppercase mb-1.5 flex items-center gap-1">
+                    <Calendar size={10} className="text-gold" />
                     <span>Check-In Date</span>
                   </label>
                   <input 
                     type="date" 
                     value={startDate}
                     onChange={(e) => setStartDate(e.target.value)}
-                    className="w-full text-xs font-bold border border-[#E2E8F0] bg-[#F8FAFC] px-3 py-2.5 rounded-xl text-[#334155] focus:outline-none focus:border-[#3B82F6]"
+                    className="w-full text-xs font-bold border border-[#E2E8F0] bg-[#F8FAFC] px-3 py-2.5 rounded-xl text-ink focus:outline-none focus:border-gold"
                   />
                 </div>
                 <div className="text-left">
-                  <label className="block text-[9px] font-mono text-[#94A3B8] uppercase mb-1.5 flex items-center gap-1">
-                    <Calendar size={10} className="text-[#3B82F6]" />
+                  <label className="block text-[9px] font-mono text-ink/60 uppercase mb-1.5 flex items-center gap-1">
+                    <Calendar size={10} className="text-gold" />
                     <span>Check-Out Date</span>
                   </label>
                   <input 
                     type="date" 
                     value={endDate}
                     onChange={(e) => setEndDate(e.target.value)}
-                    className="w-full text-xs font-bold border border-[#E2E8F0] bg-[#F8FAFC] px-3 py-2.5 rounded-xl text-[#334155] focus:outline-none focus:border-[#3B82F6]"
+                    className="w-full text-xs font-bold border border-[#E2E8F0] bg-[#F8FAFC] px-3 py-2.5 rounded-xl text-ink focus:outline-none focus:border-gold"
                   />
                 </div>
                 <div className="text-left">
-                  <label className="block text-[9px] font-mono text-[#94A3B8] uppercase mb-1.5 flex items-center gap-1">
-                    <Users size={10} className="text-[#3B82F6]" />
+                  <label className="block text-[9px] font-mono text-ink/60 uppercase mb-1.5 flex items-center gap-1">
+                    <Users size={10} className="text-gold" />
                     <span>Guests count</span>
                   </label>
                   <select 
                     value={guestCount}
                     onChange={(e) => setGuestCount(Number(e.target.value))}
-                    className="w-full text-xs font-bold border border-[#E2E8F0] bg-[#F8FAFC] px-3 py-2.5 rounded-xl text-[#334155] focus:outline-none focus:border-[#3B82F6] cursor-pointer"
+                    className="w-full text-xs font-bold border border-[#E2E8F0] bg-[#F8FAFC] px-3 py-2.5 rounded-xl text-ink focus:outline-none focus:border-gold cursor-pointer"
                   >
                     {[1, 2, 3, 4, 5].map((n) => (
                       <option key={n} value={n}>{n} guest{n > 1 ? 's' : ''}</option>
@@ -352,43 +352,43 @@ export const BookingModule: React.FC<BookingModuleProps> = ({ setActiveView }) =
               </div>
 
               {/* Calculation panel */}
-              <div className="p-4 bg-[#F8FAFC] rounded-xl border border-[#E2E8F0] text-xs text-[#334155] space-y-2.5 mb-6">
+              <div className="p-4 bg-[#F8FAFC] rounded-xl border border-[#E2E8F0] text-xs text-ink space-y-2.5 mb-6">
                 <div className="flex justify-between">
-                  <span className="text-[#94A3B8] font-medium">Room price per night:</span>
-                  <span className="font-bold">{selectedHotel.pricePerNight.toLocaleString()} DZD</span>
+                  <span className="text-ink/60 font-medium">Room price per night:</span>
+                  <PriceTag amount={selectedHotel.pricePerNight} />
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-[#94A3B8] font-medium">Total duration of stays:</span>
-                  <span className="font-bold">{getDaysCount()} night{getDaysCount() > 1 ? 's' : ''}</span>
+                  <span className="text-ink/60 font-medium">Total duration of stays:</span>
+                  <span className="font-mono tabular-nums font-bold">{getDaysCount()} night{getDaysCount() > 1 ? 's' : ''}</span>
                 </div>
                 <div className="flex justify-between border-t border-[#E2E8F0] pt-2 text-sm font-black">
-                  <span className="text-[#334155]">Estimated Total (DZD):</span>
-                  <span className="text-[#3B82F6]">{(selectedHotel.pricePerNight * getDaysCount()).toLocaleString()} DZD</span>
+                  <span className="text-ink">Estimated Total:</span>
+                  <PriceTag amount={selectedHotel.pricePerNight * getDaysCount()} />
                 </div>
               </div>
 
               {/* RAHALA Safe Travel Insurance Banner */}
               {setActiveView && (
-                <div className="mb-6 p-4 rounded-xl border border-[#3B82F6]/20 bg-[#3B82F6]/5 flex items-start gap-3 relative overflow-hidden text-left">
-                  <div className="w-9 h-9 rounded-full bg-[#3B82F6] text-white flex items-center justify-center shrink-0">
+                <div className="mb-6 p-4 rounded-xl border border-gold/20 bg-gold/5 flex items-start gap-3 relative overflow-hidden text-left">
+                  <div className="w-9 h-9 rounded-full bg-gold text-ink flex items-center justify-center shrink-0">
                     <Shield size={16} />
                   </div>
                   <div className="flex-1">
                     <div className="flex items-center gap-1.5 leading-none">
-                      <span className="font-black text-[8px] text-[#FDBA74] font-mono tracking-widest uppercase">
+                      <span className="font-black text-[8px] text-gold font-mono tracking-widest uppercase">
                         AI SAFE RECOMMENDATION
                       </span>
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#3B82F6] animate-ping" />
+                      <span className="w-1.5 h-1.5 rounded-full bg-gold animate-ping" />
                     </div>
-                    <h4 className="text-xs font-bold text-[#334155] mt-1">
+                    <h4 className="text-xs font-bold text-ink mt-1">
                       Protect your journey to {selectedHotel.location}!
                     </h4>
-                    <p className="text-[10px] text-[#94A3B8] leading-relaxed mt-1">
+                    <p className="text-[10px] text-ink/60 leading-relaxed mt-1">
                       Our system recommends securing your stay with local licensed insurance partners (BNA, AXA, Cardif, CPA).
                     </p>
                     <button
                       onClick={() => setActiveView('safe-travel')}
-                      className="mt-2 text-[9px] font-mono font-black uppercase text-[#3B82F6] hover:text-[#22D3EE] flex items-center gap-1 cursor-pointer focus:outline-none"
+                      className="mt-2 text-[9px] font-mono font-black uppercase text-gold hover:text-[#C29B2E] flex items-center gap-1 cursor-pointer focus:outline-none"
                     >
                       Compare Insurance Plans &rarr;
                     </button>
@@ -398,7 +398,7 @@ export const BookingModule: React.FC<BookingModuleProps> = ({ setActiveView }) =
 
               <button
                 onClick={handleBookSubmit}
-                className="w-full py-3 bg-[#3B82F6] hover:bg-[#3B82F6]/90 text-white font-bold text-xs rounded-xl shadow-xs transition cursor-pointer focus:outline-none"
+                className="w-full py-3 bg-gold hover:bg-[#C29B2E] text-ink font-bold text-xs rounded-xl shadow-xs transition cursor-pointer focus:outline-none"
               >
                 Proceed to Secure Payment Checkout
               </button>
@@ -406,29 +406,29 @@ export const BookingModule: React.FC<BookingModuleProps> = ({ setActiveView }) =
           ) : (
             /* Post Booking Complete & Invoice panel */
             <div className="text-center py-6 animate-scale-up">
-              <div className="w-12 h-12 rounded-full bg-[#3B82F6]/10 text-[#3B82F6] flex items-center justify-center mx-auto mb-4 border border-[#3B82F6]/25">
+              <div className="w-12 h-12 rounded-full bg-gold/10 text-gold flex items-center justify-center mx-auto mb-4 border border-gold/25">
                 <Check size={24} />
               </div>
-              <h3 className="text-xl font-serif font-black text-[#334155] mb-2">Room Booking Completed!</h3>
-              <p className="text-xs text-[#94A3B8] font-mono mb-6">Invoice Certificate No: {bookingFinished.invoiceNo}</p>
+              <h3 className="text-xl font-serif font-black text-ink mb-2">Room Booking Completed!</h3>
+              <p className="text-xs text-ink/60 font-mono mb-6">Invoice Certificate No: {bookingFinished.invoiceNo}</p>
 
               <div className="bg-[#F8FAFC] rounded-2xl p-5 text-xs text-left max-w-sm mx-auto border border-[#E2E8F0] space-y-2.5 mb-6">
-                <p className="font-bold text-[9px] text-[#94A3B8] uppercase tracking-widest border-b border-[#E2E8F0] pb-2">Receipt invoice breaksheet</p>
+                <p className="font-bold text-[9px] text-ink/60 uppercase tracking-widest border-b border-[#E2E8F0] pb-2">Receipt invoice breaksheet</p>
                 <div className="flex justify-between">
-                  <span className="text-[#94A3B8]">Hotel Spot:</span>
-                  <span className="font-bold text-[#334155]">{selectedHotel.name}</span>
+                  <span className="text-ink/60">Hotel Spot:</span>
+                  <span className="font-bold text-ink">{selectedHotel.name}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-[#94A3B8]">Check-In:</span>
-                  <span className="font-bold text-[#334155]">{startDate}</span>
+                  <span className="text-ink/60">Check-In:</span>
+                  <span className="font-bold text-ink">{startDate}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-[#94A3B8]">Total days:</span>
-                  <span className="font-bold text-[#334155]">{getDaysCount()} nights</span>
+                  <span className="text-ink/60">Total days:</span>
+                  <span className="font-bold text-ink">{getDaysCount()} nights</span>
                 </div>
                 <div className="flex justify-between border-t border-[#E2E8F0] pt-2 text-sm font-black">
-                  <span className="text-[#334155]">Amount Paid:</span>
-                  <span className="text-[#3B82F6]">{(selectedHotel.pricePerNight * getDaysCount()).toLocaleString()} DZD</span>
+                  <span className="text-ink">Amount Paid:</span>
+                  <PriceTag amount={selectedHotel.pricePerNight * getDaysCount()} />
                 </div>
               </div>
 
@@ -442,13 +442,13 @@ export const BookingModule: React.FC<BookingModuleProps> = ({ setActiveView }) =
                           <head>
                             <title>Rihla DZ Travel Invoice - ${bookingFinished.invoiceNo}</title>
                             <style>
-                              body { font-family: sans-serif; padding: 40px; color: #334155; background: #F8FAFC; }
-                              .header { text-align: center; border-bottom: 2px solid #3B82F6; padding-bottom: 20px; }
-                              .title { font-size: 24px; font-weight: bold; color: #3B82F6; }
+                              body { font-family: sans-serif; padding: 40px; color: #1E293B; background: #FDFBF7; }
+                              .header { text-align: center; border-bottom: 2px solid #D4AF37; padding-bottom: 20px; }
+                              .title { font-size: 24px; font-weight: bold; color: #D4AF37; }
                               .details { margin: 30px 0; }
                               .row { display: flex; justify-content: space-between; margin-bottom: 10px; border-bottom: 1px solid #E2E8F0; padding-bottom: 5px; }
-                              .total { font-size: 18px; font-weight: bold; margin-top: 20px; text-align: right; color: #3B82F6; }
-                              .footer { text-align: center; margin-top: 50px; font-size: 11px; color: #94A3B8; }
+                              .total { font-size: 18px; font-weight: bold; margin-top: 20px; text-align: right; color: #D4AF37; }
+                              .footer { text-align: center; margin-top: 50px; font-size: 11px; color: #1E293B; }
                             </style>
                           </head>
                           <body>
@@ -474,7 +474,7 @@ export const BookingModule: React.FC<BookingModuleProps> = ({ setActiveView }) =
                       printWindow.document.close();
                     }
                   }}
-                  className="flex-1 py-2.5 bg-[#334155] hover:bg-[#334155]/90 text-white rounded-xl text-xs font-bold transition flex items-center justify-center space-x-2 space-x-reverse cursor-pointer"
+                  className="flex-1 py-2.5 bg-ink hover:bg-ink/90 text-white rounded-xl text-xs font-bold transition flex items-center justify-center space-x-2 space-x-reverse cursor-pointer"
                 >
                   <Download size={13} />
                   <span>{t('invoiceBtn')}</span>
@@ -484,7 +484,7 @@ export const BookingModule: React.FC<BookingModuleProps> = ({ setActiveView }) =
                     setSelectedHotel(null);
                     setBookingFinished(null);
                   }}
-                  className="flex-1 py-2.5 bg-[#3B82F6]/10 text-[#3B82F6] hover:bg-[#3B82F6]/20 rounded-xl text-xs font-bold transition cursor-pointer"
+                  className="flex-1 py-2.5 bg-gold/10 text-gold hover:bg-gold/20 rounded-xl text-xs font-bold transition cursor-pointer"
                 >
                   Book other stays
                 </button>
@@ -497,13 +497,13 @@ export const BookingModule: React.FC<BookingModuleProps> = ({ setActiveView }) =
 
       {/* Stripe payment sheet modal */}
       {stripeFormOpen && (
-        <div className="fixed inset-0 bg-[#334155]/40 backdrop-blur-xs flex items-center justify-center p-4 z-50 animate-fade-in">
+        <div className="fixed inset-0 bg-ink/40 backdrop-blur-xs flex items-center justify-center p-4 z-50 animate-fade-in">
           <div className="bg-white w-full max-w-sm rounded-[24px] p-6 shadow-xl relative border border-[#E2E8F0] animate-scale-up text-left">
             <div className="flex justify-between items-center border-b border-[#E2E8F0] pb-3 mb-4">
-              <span className="text-xs font-black uppercase tracking-wider text-[#334155]">Secure Checkout (Stripe powered)</span>
+              <span className="text-xs font-black uppercase tracking-wider text-ink">Secure Checkout (Stripe powered)</span>
               <button 
                 onClick={() => setStripeFormOpen(false)}
-                className="text-xs text-[#94A3B8] hover:text-[#334155] font-bold"
+                className="text-xs text-ink/60 hover:text-ink font-bold"
               >
                 Cancel
               </button>
@@ -511,42 +511,42 @@ export const BookingModule: React.FC<BookingModuleProps> = ({ setActiveView }) =
 
             <div className="space-y-4 text-xs">
               <div>
-                <label className="block text-[8px] font-mono text-[#94A3B8] mb-1">CREDIT/DEBIT CARD NUMBER</label>
+                <label className="block text-[8px] font-mono text-ink/60 mb-1">CREDIT/DEBIT CARD NUMBER</label>
                 <input 
                   type="text" 
                   value={cardNumber}
                   onChange={(e) => setCardNumber(e.target.value)}
-                  className="w-full text-xs font-black border border-[#E2E8F0] bg-[#F8FAFC] px-3 py-2 text-[#334155] rounded-xl focus:outline-none focus:border-[#3B82F6]"
+                  className="w-full text-xs font-black border border-[#E2E8F0] bg-[#F8FAFC] px-3 py-2 text-ink rounded-xl focus:outline-none focus:border-gold"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-[8px] font-mono text-[#94A3B8] mb-1">EXPIRY DATE (MM / YY)</label>
+                  <label className="block text-[8px] font-mono text-ink/60 mb-1">EXPIRY DATE (MM / YY)</label>
                   <input 
                     type="text" 
                     placeholder="12 / 29"
-                    className="w-full text-xs font-black border border-[#E2E8F0] bg-[#F8FAFC] px-3 py-2 text-[#334155] rounded-xl focus:outline-none focus:border-[#3B82F6]"
+                    className="w-full text-xs font-black border border-[#E2E8F0] bg-[#F8FAFC] px-3 py-2 text-ink rounded-xl focus:outline-none focus:border-gold"
                   />
                 </div>
                 <div>
-                  <label className="block text-[8px] font-mono text-[#94A3B8] mb-1">CVV CODE</label>
+                  <label className="block text-[8px] font-mono text-ink/60 mb-1">CVV CODE</label>
                   <input 
                     type="text" 
                     placeholder="391"
-                    className="w-full text-xs font-black border border-[#E2E8F0] bg-[#F8FAFC] px-3 py-2 text-[#334155] rounded-xl focus:outline-none focus:border-[#3B82F6]"
+                    className="w-full text-xs font-black border border-[#E2E8F0] bg-[#F8FAFC] px-3 py-2 text-ink rounded-xl focus:outline-none focus:border-gold"
                   />
                 </div>
               </div>
 
-              <div className="p-3 bg-[#3B82F6]/5 border border-[#3B82F6]/15 rounded-xl text-[#3B82F6] font-medium leading-relaxed">
-                <span className="block font-black text-xs mb-1">Safe SSL encrypted channel</span>
-                Amount scheduled: {selectedHotel ? (selectedHotel.pricePerNight * getDaysCount()).toLocaleString() : 0} DZD
+              <div className="p-3 bg-gold/5 border border-gold/15 rounded-xl text-ink font-medium leading-relaxed">
+                <span className="block font-black text-xs mb-1 text-gold">Safe SSL encrypted channel</span>
+                Amount scheduled: <PriceTag amount={selectedHotel ? (selectedHotel.pricePerNight * getDaysCount()) : 0} />
               </div>
 
               <button
                 onClick={handlePayConfirm}
-                className="w-full py-2.5 bg-[#3B82F6] hover:bg-[#3B82F6]/90 text-white font-bold text-xs rounded-xl shadow-xs transition cursor-pointer focus:outline-none"
+                className="w-full py-2.5 bg-gold hover:bg-[#C29B2E] text-ink font-bold text-xs rounded-xl shadow-xs transition cursor-pointer focus:outline-none"
               >
                 Confirm Payment & Authorize
               </button>
