@@ -16,6 +16,7 @@ import { SantaCruzDocumentModal } from './SantaCruzDocumentModal';
 import { TassiliDocumentModal } from './TassiliDocumentModal';
 import { DjemilaDocumentModal } from './DjemilaDocumentModal';
 import { TimgadDocumentModal } from './TimgadDocumentModal';
+import { PanoramaViewer } from './PanoramaViewer';
 
 const timgadFolderModules = import.meta.glob('/src/assets/images/Timgad Roman Ruins/*.{webp,jpg,JPG,jpeg,png,jfif,JFIF}', { eager: true, import: 'default' });
 const timgadImagesRaw = Array.from(new Set(Object.values(timgadFolderModules) as string[])).filter(Boolean);
@@ -1110,118 +1111,13 @@ export const DigitalTwin: React.FC = () => {
                 showWireframe={showWireframe}
               />
             ) : (
-              /* ORIGINAL 2D PHOTO PANORAMA SIMULATOR VIEW */
-              <>
-                {/* 3D Panorama Frame (Simulated Image perspective & dynamic rotational styling) */}
-                <div className="absolute inset-0 z-0 overflow-hidden">
-                  <img
-                    src={(activeSpot.id === 'timgad' || activeSpot.name.toLowerCase().includes('timgad'))
-                      ? (timgadImagesList[activeStep % timgadImagesList.length] || activeSpot.image)
-                      : (activeSpot.panoramas[activeStep] || activeSpot.image)}
-                    alt={activeSpot.name}
-                    className="w-full h-full object-cover transition-transform duration-700 ease-out brightness-80"
-                    style={{
-                      transform: `scale(1.15) rotate(${rotationAngle}deg)`,
-                      filter: 'contrast(1.05) brightness(0.85)'
-                    }}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent"></div>
-                </div>
-
-                {/* Dashboard telemetry bars */}
-                <div className="relative z-10 p-4 sm:p-6 flex justify-between items-start pointer-events-none w-full">
-                  <div className="bg-black/75 backdrop-blur-md border border-white/15 px-3 py-1.5 rounded-none flex items-center space-x-2 space-x-reverse text-white pointer-events-auto">
-                    <Compass className="text-[#d4af37] animate-spin-slow" size={14} />
-                    <span className="text-[9px] uppercase font-mono tracking-widest font-bold">
-                      Panorama {activeStep + 1} / {((activeSpot.id === 'timgad' || activeSpot.name.toLowerCase().includes('timgad')) && timgadImagesList.length > 0 ? timgadImagesList : activeSpot.panoramas).length}
-                    </span>
-                  </div>
-
-                  <div className="flex space-x-2 space-x-reverse pointer-events-auto">
-                    {/* Audio guide trigger */}
-                    <button
-                      onClick={() => setAudioFeedbackOn(!audioFeedbackOn)}
-                      className={`p-2.5 border transition-all cursor-pointer rounded-none ${
-                        audioFeedbackOn 
-                          ? 'bg-[#d4af37] text-black border-black' 
-                          : 'bg-black/75 text-slate-300 border-white/15 hover:bg-black/90'
-                      }`}
-                      title="Play Simulated Atmospheric Ambient sound"
-                    >
-                      <Volume2 size={13} />
-                    </button>
-
-                    <button
-                      onClick={() => toggleFavorite(activeSpot.id)}
-                      className={`p-2.5 border transition-all cursor-pointer rounded-none ${
-                        isFavorited 
-                          ? 'bg-[#d4af37] text-black border-black font-bold' 
-                          : 'bg-black/75 text-slate-300 border-white/15 hover:bg-black/90'
-                      }`}
-                    >
-                      <Bookmark size={13} className={isFavorited ? 'fill-black' : ''} />
-                    </button>
-                  </div>
-                </div>
-
-                {/* Simulated interactive hotspots layered on top */}
-                <div className="absolute inset-0 z-10 pointer-events-none">
-                  {currentHotspots.map((hotspot, idx) => (
-                    <div
-                      key={idx}
-                      className="absolute pointer-events-auto"
-                      style={{ top: hotspot.top, left: hotspot.left }}
-                    >
-                      <button
-                        onClick={() => setSelectedHotspot(selectedHotspot?.name === hotspot.name ? null : { name: hotspot.name, info: hotspot.info })}
-                        className="relative flex items-center justify-center w-8 h-8 rounded-full bg-[#d4af37] text-black hover:bg-amber-600 focus:outline-none shadow-lg animate-pulse cursor-pointer"
-                        title={hotspot.name}
-                      >
-                        <Eye size={12} />
-                        <span className="absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75 animate-ping"></span>
-                      </button>
-
-                      {/* Hotspot details bubble */}
-                      {selectedHotspot?.name === hotspot.name && (
-                        <div className="absolute top-10 left-1/2 -translate-x-1/2 w-48 bg-[#f5f2ed] text-black border border-[#d4af37] p-3 shadow-2xl z-50 text-[10px] animate-fade-in leading-relaxed font-sans font-semibold">
-                          <h4 className="font-serif italic font-bold text-[#1a1a1a] mb-1 leading-none">{hotspot.name}</h4>
-                          <p>{hotspot.info}</p>
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                </div>
-
-                {/* Bottom HUD dashboard for virtual control */}
-                <div className="relative z-10 p-6 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 pointer-events-auto">
-                  
-                  {/* Perspective steps indicators */}
-                  <div className="flex space-x-1 px-2.5 py-1.5 bg-black/60 backdrop-blur-md border border-white/10 rounded-none space-x-reverse justify-center">
-                    {((activeSpot.id === 'timgad' || activeSpot.name.toLowerCase().includes('timgad')) && timgadImagesList.length > 0 ? timgadImagesList : activeSpot.panoramas).map((_, index) => (
-                      <button
-                        key={index}
-                        onClick={() => handleStepSelect(index)}
-                        className={`h-2 transition-all duration-300 cursor-pointer ${
-                          activeStep === index ? 'w-8 bg-[#d4af37]' : 'w-2 bg-gray-600 hover:bg-gray-400'
-                        }`}
-                        title={`Go to view viewpoint ${index + 1}`}
-                      />
-                    ))}
-                  </div>
-
-                  {/* Rotational controls */}
-                  <div className="flex space-x-2 space-x-reverse justify-center">
-                    <button
-                      onClick={handleRotation}
-                      className="px-4 py-2 bg-black/75 backdrop-blur-md border border-[#d4af37]/30 hover:bg-black text-[#d4af37] text-[10px] font-mono uppercase tracking-widest flex items-center space-x-1.5 space-x-reverse shadow-lg cursor-pointer"
-                    >
-                      <RotateCw size={12} />
-                      <span>Rotate Photo View</span>
-                    </button>
-                  </div>
-
-                </div>
-              </>
+              /* INTERACTIVE REACT THREE FIBER 360 PANORAMA VIEWER */
+              <PanoramaViewer 
+                imagePath="/panorama/Street View 360.jpg" 
+                title="Ancient Theater - Street View 360"
+                subtitle={`${activeSpot.name} • Visite Virtuelle Immersive 360°`}
+                className="w-full h-full"
+              />
             )}
 
           </div>

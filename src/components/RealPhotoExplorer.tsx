@@ -214,7 +214,7 @@ export const RealPhotoExplorer: React.FC = () => {
         {/* Section Header */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-gray-200 dark:border-gray-800 pb-6">
           <div className="space-y-1">
-            <div className="inline-flex items-center gap-2 bg-emerald-500/10 dark:bg-emerald-500/15 text-emerald-600 dark:text-emerald-450 text-[10px] uppercase font-mono font-black tracking-widest px-3 py-1 rounded-full">
+            <div className="inline-flex items-center gap-2 bg-or-sahara/10 dark:bg-or-sahara/15 text-or-sahara dark:text-or-sahara text-[10px] uppercase font-mono font-black tracking-widest px-3 py-1 rounded-full">
               <Camera size={12} className="animate-pulse" />
               {language === 'ar' ? 'التحقق البصري المباشر' : 'Vérification Visuelle Live'}
             </div>
@@ -233,8 +233,8 @@ export const RealPhotoExplorer: React.FC = () => {
             onClick={() => setShowKeyConfig(!showKeyConfig)}
             className={`flex items-center gap-2 text-xs font-bold px-4 py-2.5 rounded-xl border transition cursor-pointer ${
               serverKeyLoaded || customKey 
-                ? 'bg-emerald-500/5 hover:bg-emerald-500/10 border-emerald-500/30 text-emerald-600 dark:text-emerald-400' 
-                : 'bg-amber-500/5 hover:bg-amber-500/10 border-amber-500/30 text-amber-600 dark:text-amber-400'
+                ? 'bg-or-sahara/10 hover:bg-or-sahara/20 border-or-sahara/30 text-or-sahara dark:text-or-sahara' 
+                : 'bg-encre-soft/10 hover:bg-encre-soft/20 border-encre-soft/30 text-encre-soft dark:text-encre-soft'
             }`}
           >
             <Key size={14} />

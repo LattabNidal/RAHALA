@@ -413,7 +413,7 @@ export const Navigation: React.FC<NavigationProps> = ({ activeView, setActiveVie
                       window.location.hash = '#/login';
                       setActiveView('auth');
                     }}
-                    className="px-3.5 py-1.5 bg-[#3B82F6] hover:bg-[#3B82F6]/90 text-white text-[11px] font-mono font-extrabold uppercase tracking-widest rounded-xl transition-all cursor-pointer shadow-sm active:scale-95 border border-[#3B82F6]/10"
+                    className="px-3.5 py-1.5 bg-or-sahara hover:bg-or-sahara-hover text-encre text-[11px] font-mono font-extrabold uppercase tracking-widest rounded-xl transition-all cursor-pointer shadow-sm active:scale-95 border border-or-sahara/10"
                   >
                     {language === 'ar' ? 'تسجيل الدخول' : language === 'fr' ? 'Connexion' : 'Login'}
                   </button>

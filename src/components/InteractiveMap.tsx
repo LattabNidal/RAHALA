@@ -2494,6 +2494,7 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({ setActiveView, s
           isOpen={timgadModalOpen}
           onClose={() => setTimgadModalOpen(false)}
           siteName={selectedHeritage?.nom || "Timgad (Colonia Marciana Traiana Thamugadi)"}
+          mapsApiKey={mapsApiKey}
         />
      </div>
    );

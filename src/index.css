@@ -1,79 +1,76 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Lora:ital,wght@0,400..700;1,400..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Space Grotesk", sans-serif;
-  --font-serif: "Playfair Display", "Lora", Georgia, serif;
+  /* Palette bicolore stricte RAHLA */
+  --color-encre: #1E293B;      /* Encre Profonde — structure/textes */
+  --color-or-sahara: #D4AF37;  /* Or Sahara — CTA / badges / IA */
+  --color-ivoire: #FDFBF7;     /* Blanc ivoire — fond light */
+  --color-noir-chaud: #16140F; /* Noir chaud — fond dark */
+  --color-border: #E2E8F0;     /* Bordures */
+
+  /* Standardized English keys as requested by Phase 0 */
+  --color-ink: #1E293B;
+  --color-gold: #D4AF37;
+  --color-ivory: #FDFBF7;
+  --color-onyx: #16140F;
+
+  /* Nuances dérivées pour hover/disabled */
+  --color-or-sahara-hover: #C29B2E;
+  --color-encre-soft: #334155;
+  --color-noir-chaud-soft: #211E17;
+
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Playfair Display", Georgia, serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
 }
 
+@layer base {
+  html { color-scheme: light; }
+  html.dark { color-scheme: dark; }
+
+  body {
+    @apply bg-ivoire text-encre dark:bg-noir-chaud dark:text-ivoire;
+    transition: background-color 300ms, color 300ms;
+  }
+
+  h1, h2 {
+    @apply font-serif;
+    letter-spacing: -0.02em;
+  }
+
+  /* Prix DZD et scores IA : alignement tabulaire obligatoire */
+  .price-dzd, .ai-score {
+    @apply font-mono tabular-nums;
+  }
+}
+
 @layer utilities {
-  .animate-spin-slow {
-    animation: spin 15s linear infinite;
-  }
-  
-  .animate-ping-slow {
-    animation: ping 3s cubic-bezier(0, 0, 0.2, 1) infinite;
-  }
+  .animate-spin-slow { animation: spin 15s linear infinite; }
+  .animate-ping-slow { animation: ping 3s cubic-bezier(0, 0, 0.2, 1) infinite; }
+  .animate-zoom-slow { animation: zoomSlow 40s ease-in-out infinite alternate; }
+  .animate-fade-in { animation: fadeIn 0.45s ease-out forwards; }
+  .animate-scale-up { animation: scaleUp 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+  .animate-slide-down { animation: slideDown 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+}
 
-  .animate-zoom-slow {
-    animation: zoomSlow 40s ease-in-out infinite alternate;
-  }
+@keyframes zoomSlow { 0% { transform: scale(1.02); } 50% { transform: scale(1.08); } 100% { transform: scale(1.02); } }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes scaleUp { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+@keyframes slideDown { from { transform: translateY(-10px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
-  /* Fade transitions and keyframe rules */
-  .animate-fade-in {
-    animation: fadeIn 0.45s ease-out forwards;
-  }
-
-  .animate-scale-up {
-    animation: scaleUp 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-  }
-
-  .animate-slide-down {
-    animation: slideDown 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }
 
-@keyframes zoomSlow {
-  0% { transform: scale(1.02); }
-  50% { transform: scale(1.08); }
-  100% { transform: scale(1.02); }
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(4px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes scaleUp {
-  from { opacity: 0; transform: scale(0.95); }
-  to { opacity: 1; transform: scale(1); }
-}
-
-@keyframes slideDown {
-  from { transform: translateY(-10px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
-}
-
-/* Base custom input layout focus standards in Algerian Golden & Slate theme scale */
-body {
-  transition: background-color 300ms, color 300ms;
-}
-
-/* Custom scrollbar configurations */
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
-  border-radius: 99px;
-}
-.dark ::-webkit-scrollbar-thumb {
-  background: #334155;
-}
-
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 99px; }
+.dark ::-webkit-scrollbar-thumb { background: var(--color-encre-soft); }

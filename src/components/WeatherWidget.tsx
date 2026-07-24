@@ -383,7 +383,7 @@ export const WeatherWidget: React.FC = () => {
       {/* Header section of the weather widget */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 border-b border-gray-100 dark:border-gray-800 pb-4">
         <div className="flex items-start space-x-3 space-x-reverse text-left">
-          <div className="bg-emerald-600 dark:bg-emerald-500 text-white p-2.5 rounded-lg shadow-sm">
+          <div className="bg-blue-600 dark:bg-blue-500 text-white p-2.5 rounded-lg shadow-sm">
             <Compass className="animate-spin-slow text-white" size={24} />
           </div>
           <div>
@@ -398,7 +398,7 @@ export const WeatherWidget: React.FC = () => {
 
         {/* Live Refresh and Indicator Indicator */}
         <div className="flex items-center gap-3 justify-end">
-          <span className="text-[10px] font-mono tracking-wider font-extrabold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 dark:bg-emerald-400/5 px-2.5 py-1 rounded-sm border border-emerald-555/15">
+          <span className="text-[10px] font-mono tracking-wider font-extrabold text-blue-600 dark:text-blue-400 bg-blue-500/10 dark:bg-blue-400/5 px-2.5 py-1 rounded-sm border border-blue-500/15">
             ● PUBLIC WEATHER INGEST
           </span>
           <button 
@@ -476,7 +476,7 @@ export const WeatherWidget: React.FC = () => {
                           <span className="text-sm font-mono font-bold text-gray-900 dark:text-white block">
                             {data.currentTemp}°C
                           </span>
-                          <span className="text-[8px] font-mono text-emerald-600 dark:text-emerald-400 uppercase tracking-widest font-black block">
+                          <span className="text-[8px] font-mono text-blue-600 dark:text-blue-400 uppercase tracking-widest font-black block">
                             {meta.label[language as keyof typeof meta.label] || meta.label.en}
                           </span>
                         </div>
@@ -496,13 +496,13 @@ export const WeatherWidget: React.FC = () => {
           {/* RIGHT COLUMN: Active Destination Elaborated Weather Panel */}
           {activeWeather && (
             <div className="lg:col-span-7 bg-white dark:bg-[#151515] border border-[#1a1a1a]/10 dark:border-white/5 rounded-2xl p-5 flex flex-col justify-between shadow-xs relative">
-              <div className="absolute top-0 right-0 w-24 h-24 bg-radial from-emerald-500/10 to-transparent pointer-events-none rounded-tr-2xl"></div>
+              <div className="absolute top-0 right-0 w-24 h-24 bg-radial from-blue-500/10 to-transparent pointer-events-none rounded-tr-2xl"></div>
 
               <div>
                 {/* Visual Title Header of Active Destination */}
                 <div className="flex items-center justify-between border-b border-[#1a1a1a]/5 dark:border-white/5 pb-3 mb-4">
                   <div className="flex items-center space-x-1.5 space-x-reverse">
-                    <MapPin size={14} className="text-emerald-600" />
+                    <MapPin size={14} className="text-blue-600" />
                     <span className="text-xs font-mono font-black uppercase tracking-widest text-[#1a1a1a] dark:text-[#f5f2ed]">
                       {activeDest.name[language as keyof typeof activeDest.name] || activeDest.name.en} FORECAST
                     </span>
@@ -587,10 +587,10 @@ export const WeatherWidget: React.FC = () => {
               </div>
 
               {/* Travel Advice Context Block based on weather criteria */}
-              <div className="mt-4 pt-3.5 border-t border-[#1a1a1a]/10 dark:border-white/10 flex items-start space-x-2.5 space-x-reverse bg-emerald-500/5 dark:bg-emerald-400/5 p-3 rounded-lg border border-emerald-500/10">
+              <div className="mt-4 pt-3.5 border-t border-[#1a1a1a]/10 dark:border-white/10 flex items-start space-x-2.5 space-x-reverse bg-blue-500/5 dark:bg-blue-400/5 p-3 rounded-lg border border-blue-500/10">
                 <Sparkles size={16} className="text-yellow-600 dark:text-yellow-400 shrink-0 mt-0.5 animate-pulse" />
                 <div>
-                  <h6 className="text-[10px] font-mono uppercase tracking-wider font-extrabold text-emerald-800 dark:text-emerald-400">
+                  <h6 className="text-[10px] font-mono uppercase tracking-wider font-extrabold text-blue-800 dark:text-blue-400">
                     ✦ {uiLabels.adviceTitle[language as keyof typeof uiLabels.adviceTitle] || uiLabels.adviceTitle.en} ✦
                   </h6>
                   <p className="text-[10.5px] leading-relaxed font-sans text-gray-700 dark:text-gray-300 mt-1 italic">

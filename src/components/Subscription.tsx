@@ -92,7 +92,7 @@ export const Subscription: React.FC = () => {
             <ul className="space-y-4 mb-8">
               {perksFree.map((perk, id) => (
                 <li key={id} className="flex items-start space-x-2.5 space-x-reverse text-xs text-gray-650 dark:text-gray-400 font-sans">
-                  <Check className="text-emerald-600 shrink-0 mt-0.5" size={12} />
+                  <Check className="text-or-sahara shrink-0 mt-0.5" size={12} />
                   <span>{perk}</span>
                 </li>
               ))}
@@ -108,24 +108,24 @@ export const Subscription: React.FC = () => {
         </div>
 
         {/* PREMIUM GOLD PLAN CARD */}
-        <div className="bg-white dark:bg-[#161a23] border-2 border-emerald-600 dark:border-emerald-500 rounded-2xl p-6 sm:p-8 flex flex-col justify-between relative shadow-md overflow-hidden">
+        <div className="bg-white dark:bg-[#161a23] border-2 border-or-sahara dark:border-or-sahara rounded-2xl p-6 sm:p-8 flex flex-col justify-between relative shadow-md overflow-hidden">
           
-          <div className="absolute top-4 right-4 bg-emerald-600 text-white font-mono px-2.5 py-1 text-[8px] font-bold uppercase tracking-widest flex items-center space-x-1 rounded-md">
+          <div className="absolute top-4 right-4 bg-or-sahara text-encre font-mono px-2.5 py-1 text-[8px] font-bold uppercase tracking-widest flex items-center space-x-1 rounded-md">
             <Star size={8} className="fill-white" />
             <span>{t('vipElite')}</span>
           </div>
 
           <div>
             <div className="border-b border-gray-100 dark:border-gray-800 pb-4 mb-6">
-              <span className="text-[9px] font-mono text-emerald-600 dark:text-emerald-400 uppercase tracking-widest font-bold">{t('eliteSeries')}</span>
+              <span className="text-[9px] font-mono text-or-sahara dark:text-or-sahara uppercase tracking-widest font-bold">{t('eliteSeries')}</span>
               <h3 className="text-xl font-bold text-gray-900 dark:text-white mt-1">
                 {t('rihlaGoldVip')}
               </h3>
               <div className="mt-4 flex items-baseline text-gray-900 dark:text-white">
-                <span className="text-3xl font-extrabold font-mono text-emerald-600 dark:text-emerald-400">
+                <span className="text-3xl font-extrabold font-mono text-or-sahara dark:text-or-sahara">
                   {billingPeriod === 'monthly' ? '1,200' : '9,900'}
                 </span>
-                <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400 ml-1 leading-none">DZD</span>
+                <span className="text-xs font-bold text-or-sahara dark:text-or-sahara ml-1 leading-none">DZD</span>
                 <span className="text-xs text-gray-500 font-normal ml-1.5 font-sans lowercase">/ {billingPeriod === 'monthly' ? 'month' : 'year'}</span>
               </div>
             </div>
@@ -133,7 +133,7 @@ export const Subscription: React.FC = () => {
             <ul className="space-y-4 mb-8">
               {perksPremium.map((perk, id) => (
                 <li key={id} className="flex items-start space-x-2.5 space-x-reverse text-xs text-gray-750 dark:text-gray-300 font-sans">
-                  <Sparkles className="text-emerald-600 shrink-0 mt-0.5" size={11} />
+                  <Sparkles className="text-or-sahara shrink-0 mt-0.5" size={11} />
                   <span className="font-semibold">{perk}</span>
                 </li>
               ))}
@@ -143,12 +143,12 @@ export const Subscription: React.FC = () => {
           {!currentUser?.isPremium ? (
             <button
               onClick={handleUpgradeTrigger}
-              className="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs uppercase tracking-wider rounded-xl transition-all cursor-pointer"
+              className="w-full py-3 bg-or-sahara hover:bg-or-sahara-hover text-encre font-bold text-xs uppercase tracking-wider rounded-xl transition-all cursor-pointer"
             >
               {t('grabPremiumPass')}
             </button>
           ) : (
-            <div className="p-3 border border-emerald-600 dark:border-emerald-500 bg-emerald-50 dark:bg-emerald-950/20 rounded-xl text-center text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
+            <div className="p-3 border border-or-sahara dark:border-or-sahara bg-or-sahara/10 dark:bg-or-sahara/10 rounded-xl text-center text-xs font-bold uppercase tracking-wider text-or-sahara dark:text-or-sahara">
               {t('lifetimeVipHolder')}
             </div>
           )}        </div>
@@ -170,7 +170,7 @@ export const Subscription: React.FC = () => {
             </div>
 
             <div className="space-y-5 text-xs">
-              <div className="bg-gray-50 text-gray-800 dark:bg-gray-900/50 dark:text-gray-200 p-4 rounded-xl border-l-4 border-emerald-600">
+              <div className="bg-gray-50 text-gray-800 dark:bg-gray-900/50 dark:text-gray-200 p-4 rounded-xl border-l-4 border-or-sahara">
                 <strong className="font-serif italic text-sm block">{t('rihlaGoldVip')}</strong>
                 <p className="mt-1 font-mono text-[10px]">{language === 'ar' ? `المبلغ المجدول: ${selectedPlanCost.toLocaleString()} دج (${billingPeriod === 'monthly' ? 'دفع شهري' : 'جواز سنوي'})` : `Scheduled Payment: ${selectedPlanCost.toLocaleString()} DZD (${billingPeriod === 'monthly' ? 'Monthly Access' : 'Yearly Access'})`}</p>
               </div>
@@ -187,7 +187,7 @@ export const Subscription: React.FC = () => {
 
               <button
                 onClick={handleStripeSuccess}
-                className="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs uppercase tracking-wider rounded-xl transition-all cursor-pointer"
+                className="w-full py-3 bg-or-sahara hover:bg-or-sahara-hover text-encre font-bold text-xs uppercase tracking-wider rounded-xl transition-all cursor-pointer"
               >
                 {language === 'ar' ? 'تأكيد الترقية وتفعيل الـ VIP' : 'Confirm Upgrade & Unlock VIP'}
               </button>

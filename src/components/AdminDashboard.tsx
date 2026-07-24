@@ -453,7 +453,7 @@ export const AdminDashboard: React.FC = () => {
                           </div>
                         </td>
                         <td className="py-3 px-3 font-mono">{log.date}</td>
-                        <td className="py-3 px-3 font-mono font-extrabold text-emerald-600">{log.totalPriceDZD.toLocaleString()} DZD</td>
+                        <td className="py-3 px-3 font-mono font-extrabold text-emerald-600">{log.totalPriceDZD?.toLocaleString() || '0'} DZD</td>
                         <td className="py-3 px-3"><span className="px-2 py-0.5 bg-emerald-500/15 text-emerald-600 rounded-full text-[8px] font-bold uppercase tracking-wider">Réussi</span></td>
                       </tr>
                     ))}

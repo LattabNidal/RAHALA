@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useDarkMode } from './hooks/useDarkMode';
 import { LanguageProvider, useLanguage } from './context/LanguageContext';
 import { AppProvider, useApp } from './context/AppContext';
 import androidChrome from './assets/images/android-chrome-512x512.png';
@@ -34,7 +35,7 @@ function RihlaApp() {
   const { currentUser } = useApp();
   
   const [activeView, setActiveView] = useState('landing');
-  const [darkMode, setDarkMode] = useState(false);
+  const [darkMode, setDarkMode] = useDarkMode();
   const [activeHeroSlide, setActiveHeroSlide] = useState(0);
   const [isSessionVerifying, setIsSessionVerifying] = useState(true);
 
@@ -344,13 +345,13 @@ function RihlaApp() {
                   <div className="flex flex-col sm:flex-row items-center justify-center gap-3 w-full sm:w-auto mt-4">
                     <button
                       onClick={() => setActiveView('digital-twin')}
-                      className="w-full sm:w-auto px-6 py-3 bg-[#3B82F6] hover:bg-[#3B82F6]/90 text-white font-bold text-xs uppercase tracking-wider transition-all rounded-xl shadow-sm cursor-pointer hover:scale-103 active:scale-95 duration-200"
+                      className="w-full sm:w-auto px-6 py-3 bg-or-sahara hover:bg-or-sahara-hover text-encre font-bold text-xs uppercase tracking-wider transition-all rounded-xl shadow-sm cursor-pointer hover:scale-103 active:scale-95 duration-200"
                     >
                       🚀 Lancer l'expérience 3D
                     </button>
                     <button
                       onClick={() => setActiveView('map')}
-                      className="w-full sm:w-auto px-6 py-3 bg-[#22D3EE] hover:bg-[#22D3EE]/90 text-[#334155] font-bold text-xs uppercase tracking-wider transition-all rounded-xl shadow-sm cursor-pointer hover:scale-103 active:scale-95 duration-200"
+                      className="w-full sm:w-auto px-6 py-3 bg-encre hover:bg-encre-soft text-ivoire font-bold text-xs uppercase tracking-wider transition-all rounded-xl shadow-sm cursor-pointer hover:scale-103 active:scale-95 duration-200"
                     >
                       🗺️ Ouvrir la carte interactive
                     </button>
@@ -528,7 +529,7 @@ function RihlaApp() {
                       subtitle: "Pearl of Maghreb & El Mechouar Palace",
                       image: "https://images.unsplash.com/photo-1518684079-3c830dcef090?auto=format&fit=crop&w=800&q=80",
                       badge: "🏛️ Royal Heritage",
-                      badgeBg: "bg-emerald-600 text-white",
+                      badgeBg: "bg-or-sahara text-encre",
                       match: "95.9%",
                       topTag: "Cultural Gem"
                     },
@@ -711,30 +712,30 @@ function RihlaApp() {
 
                     {/* Discount Badge */}
                     <div className="absolute top-4 left-4 z-10">
-                      <span className="inline-flex items-center bg-[#3B82F6] text-white font-mono font-black text-[10px] px-2.5 py-1 rounded-lg tracking-wider shadow-sm">
+                      <span className="inline-flex items-center bg-or-sahara text-encre font-mono font-black text-[10px] px-2.5 py-1 rounded-lg tracking-wider shadow-sm">
                         -15% OFF
                       </span>
                     </div>
 
                     {/* Card Body */}
-                    <div className="relative z-10 bg-white/95 backdrop-blur-md border border-[#E2E8F0] p-4 rounded-xl shadow-sm">
-                      <h3 className="text-lg sm:text-xl font-serif font-black text-[#334155] leading-tight mb-1">
+                    <div className="relative z-10 bg-white/95 backdrop-blur-md border border-border p-4 rounded-xl shadow-sm">
+                      <h3 className="text-lg sm:text-xl font-serif font-black text-encre leading-tight mb-1">
                         Oran Beach Escape
                       </h3>
-                      <p className="text-[11px] text-[#3B82F6] font-serif leading-snug mb-3">
+                      <p className="text-[11px] text-or-sahara font-serif leading-snug mb-3">
                         Relax by the Mediterranean الساحل
                       </p>
                       
-                      <div className="flex items-end justify-between border-t border-[#E2E8F0] pt-3">
+                      <div className="flex items-end justify-between border-t border-border pt-3">
                         <div>
-                          <p className="text-[8px] uppercase font-mono text-[#94A3B8]">Prix exclusif</p>
-                          <p className="text-[#334155] text-xs font-mono font-black">
-                            <span className="line-through text-[#94A3B8] text-[10px] mr-1">16,500 DZD</span> 14,025 DZD
+                          <p className="text-[8px] uppercase font-mono text-encre-soft">Prix exclusif</p>
+                          <p className="text-encre text-xs font-mono font-black">
+                            <span className="line-through text-encre-soft text-[10px] mr-1">16,500 DZD</span> 14,025 DZD
                           </p>
                         </div>
                         <button
                           onClick={() => setActiveView('hotels')}
-                          className="px-4 py-1.5 bg-[#3B82F6] hover:bg-[#3B82F6]/90 text-white text-[10px] font-bold rounded-lg transition shadow-sm cursor-pointer"
+                          className="px-4 py-1.5 bg-or-sahara hover:bg-or-sahara-hover text-encre text-[10px] font-bold rounded-lg transition shadow-sm cursor-pointer"
                         >
                           Book Now
                         </button>
@@ -743,7 +744,7 @@ function RihlaApp() {
                   </div>
 
                   {/* Promo Card 3: Algiers Cultural Tour */}
-                  <div className="relative group min-w-[260px] sm:min-w-[300px] h-[340px] rounded-[24px] overflow-hidden shadow-sm hover:shadow-md transition-all duration-500 ease-out snap-start flex flex-col justify-end p-5 border border-[#E2E8F0] hover:scale-[1.01]">
+                  <div className="relative group min-w-[260px] sm:min-w-[300px] h-[340px] rounded-[24px] overflow-hidden shadow-sm hover:shadow-md transition-all duration-500 ease-out snap-start flex flex-col justify-end p-5 border border-border hover:scale-[1.01]">
                     {/* Background photo */}
                     <div className="absolute inset-0 z-0">
                       <img 
@@ -756,30 +757,30 @@ function RihlaApp() {
 
                     {/* Discount Badge */}
                     <div className="absolute top-4 left-4 z-10">
-                      <span className="inline-flex items-center bg-[#3B82F6] text-white font-mono font-black text-[10px] px-2.5 py-1 rounded-lg tracking-wider shadow-sm">
+                      <span className="inline-flex items-center bg-or-sahara text-encre font-mono font-black text-[10px] px-2.5 py-1 rounded-lg tracking-wider shadow-sm">
                         -15% OFF
                       </span>
                     </div>
 
                     {/* Card Body */}
-                    <div className="relative z-10 bg-white/95 backdrop-blur-md border border-[#E2E8F0] p-4 rounded-xl shadow-sm">
-                      <h3 className="text-lg sm:text-xl font-serif font-black text-[#334155] leading-tight mb-1">
+                    <div className="relative z-10 bg-white/95 backdrop-blur-md border border-border p-4 rounded-xl shadow-sm">
+                      <h3 className="text-lg sm:text-xl font-serif font-black text-encre leading-tight mb-1">
                         Algiers Cultural Tour
                       </h3>
-                      <p className="text-[11px] text-[#3B82F6] font-serif leading-snug mb-3">
+                      <p className="text-[11px] text-or-sahara font-serif leading-snug mb-3">
                         Exploration de la Casbah historique
                       </p>
                       
-                      <div className="flex items-end justify-between border-t border-[#E2E8F0] pt-3">
+                      <div className="flex items-end justify-between border-t border-border pt-3">
                         <div>
-                          <p className="text-[8px] uppercase font-mono text-[#94A3B8]">Prix exclusif</p>
-                          <p className="text-[#334155] text-xs font-mono font-black">
-                            <span className="line-through text-[#94A3B8] text-[10px] mr-1">11,500 DZD</span> 9,775 DZD
+                          <p className="text-[8px] uppercase font-mono text-encre-soft">Prix exclusif</p>
+                          <p className="text-encre text-xs font-mono font-black">
+                            <span className="line-through text-encre-soft text-[10px] mr-1">11,500 DZD</span> 9,775 DZD
                           </p>
                         </div>
                         <button
                           onClick={() => setActiveView('hotels')}
-                          className="px-4 py-1.5 bg-[#3B82F6] hover:bg-[#3B82F6]/90 text-white text-[10px] font-bold rounded-lg transition shadow-sm cursor-pointer"
+                          className="px-4 py-1.5 bg-or-sahara hover:bg-or-sahara-hover text-encre text-[10px] font-bold rounded-lg transition shadow-sm cursor-pointer"
                         >
                           Book Now
                         </button>

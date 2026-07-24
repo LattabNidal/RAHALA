@@ -17,6 +17,10 @@ export interface Landmark {
   rating: number;
   image: string;
   panoramas: string[]; // 360-degree virtual tour step images
+  panoId?: string;
+  streetViewHeading?: number;
+  streetViewPitch?: number;
+  streetViewFov?: number;
   description: {
     en: string;
     fr: string;

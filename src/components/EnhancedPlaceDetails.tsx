@@ -11,6 +11,8 @@ import {
   Copy,
   Check
 } from 'lucide-react';
+import { StreetView360Viewer } from './StreetView360Viewer';
+import { MapillaryViewer } from './MapillaryViewer';
 
 const santaCruzFolderModules = import.meta.glob('/src/assets/images/Santa Cruz Fort & Chapelle Notre-Dame du Salut/*.{webp,jpg,JPG,jpeg,png}', { eager: true, import: 'default' });
 const santaCruzImagesList = Object.values(santaCruzFolderModules) as string[];
@@ -296,14 +298,24 @@ export const EnhancedPlaceDetails: React.FC<EnhancedPlaceDetailsProps> = ({
       
       {/* 1. Dynamic Gallery section */}
       <div>
-        <h4 className="text-[10px] font-mono font-black tracking-widest uppercase text-emerald-600 dark:text-[#d4af37] mb-2 flex items-center gap-1.5">
+        <h4 className="text-[10px] font-mono font-black tracking-widest uppercase text-or-sahara mb-2 flex items-center gap-1.5">
           <ImageIcon size={12} />
           <span>{galleryTitle}</span>
         </h4>
+        
+        {/* StreetView360Viewer Integration */}
+        <div className="mb-4">
+          <StreetView360Viewer poiId={name} lat={lat} lng={lng} />
+        </div>
+
+        {/* Mapillary Integration */}
+        <div className="mb-4">
+          <MapillaryViewer lat={lat} lng={lng} />
+        </div>
 
         {imagesLoading ? (
-          <div className="h-28 flex items-center justify-center bg-slate-50 dark:bg-slate-900/40 rounded-xl border border-slate-100 dark:border-slate-850">
-            <RefreshCw size={14} className="animate-spin text-slate-400" />
+          <div className="h-28 flex items-center justify-center bg-white rounded-xl border border-encre/10">
+            <RefreshCw size={14} className="animate-spin text-encre/40" />
           </div>
         ) : images.length > 0 ? (
           <div className="space-y-2">

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { FileText, Download, X, Award, ZoomIn, ZoomOut, ChevronLeft, ChevronRight, Building2, ShieldCheck, Image as ImageIcon, MapPin, CheckCircle2 } from 'lucide-react';
+import { FileText, Download, X, Award, ZoomIn, ZoomOut, ChevronLeft, ChevronRight, Building2, ShieldCheck, Image as ImageIcon, MapPin, CheckCircle2, Compass } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
+import { StreetView360 } from './StreetView360';
 
 const timgadFolderModules = import.meta.glob('/src/assets/images/Timgad Roman Ruins/*.{webp,jpg,JPG,jpeg,png,jfif,JFIF}', { eager: true, import: 'default' });
 const timgadImagesList = Array.from(new Set(Object.values(timgadFolderModules) as string[])).filter(Boolean);
@@ -329,17 +330,19 @@ interface TimgadDocumentModalProps {
   isOpen: boolean;
   onClose: () => void;
   siteName?: string;
+  mapsApiKey: string;
 }
 
 export const TimgadDocumentModal: React.FC<TimgadDocumentModalProps> = ({
   isOpen,
   onClose,
-  siteName = "Timgad (Colonia Marciana Traiana Thamugadi)"
+  siteName = "Timgad (Colonia Marciana Traiana Thamugadi)",
+  mapsApiKey
 }) => {
   const { language, setLanguage, isRtl } = useLanguage();
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [zoomLevel, setZoomLevel] = useState<number>(100);
-  const [activeTab, setActiveTab] = useState<'document' | 'photos' | 'technical'>('document');
+  const [activeTab, setActiveTab] = useState<'document' | 'photos' | 'technical' | '360'>('document');
   const [activeLightbox, setActiveLightbox] = useState<typeof timgadGalleryPhotos[0] | null>(null);
 
   if (!isOpen) return null;
@@ -505,10 +508,36 @@ export const TimgadDocumentModal: React.FC<TimgadDocumentModalProps> = ({
             <Building2 size={13} />
             <span>{t.tabTech}</span>
           </button>
+
+          <button
+            onClick={() => setActiveTab('360')}
+            className={`px-3 py-1 rounded-md transition cursor-pointer flex items-center space-x-1.5 space-x-reverse whitespace-nowrap ${
+              activeTab === '360' ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40 font-bold' : 'text-slate-400 hover:text-white'
+            }`}
+          >
+            <Compass size={13} />
+            <span>{language === 'ar' ? 'عرض 360°' : '360° View'}</span>
+          </button>
         </div>
 
         {/* Modal View Body */}
         <div className="flex-1 overflow-y-auto p-4 sm:p-8 bg-[#121212] flex justify-center">
+
+          {/* TAB 360 VIEW */}
+          {activeTab === '360' && (
+            <div className="w-full max-w-4xl animate-fade-in">
+              <StreetView360
+                title="Timgad - Arc de Trajan"
+                panoId="CIHM0ogKEICAgMCYiufAoQE"
+                lat={35.4873375}
+                lng={6.4677031}
+                heading={110.5}
+                pitch={-41.5}
+                fov={75}
+                apiKey={mapsApiKey}
+              />
+            </div>
+          )}
           
           {/* TAB 1: PDF DOCUMENT REPORT */}
           {activeTab === 'document' && (

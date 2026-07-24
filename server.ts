@@ -33,46 +33,203 @@ function getAiClient(): GoogleGenAI {
   return aiClient;
 }
 
-// Fullstack API: Server side proxy endpoint for Gemini AI Tourism Companion
+// Fullstack API: Server side proxy endpoint for Multi-Chatbot Tourism Companion
 app.post('/api/chat', async (req, res) => {
   try {
-    const { prompt, language = 'en', isPremium = false } = req.body;
+    const { prompt, language = 'fr', provider = 'gemini', persona = 'guide', apiKey: customKey } = req.body;
     
     if (!prompt || typeof prompt !== 'string') {
       res.status(400).json({ error: 'Prompt field is required' });
       return;
     }
 
-    // Step 1: Ensure Gemini client is instantiated lazy and key exists
-    const aiInstance = getAiClient();
-
-    // Step 2: System Instructions depending on user language
     const languageLabel = language === 'ar' ? 'Arabic' : language === 'fr' ? 'French' : language === 'es' ? 'Spanish' : 'English';
-    const systemIns = `You are a legendary, poetic, and highly knowledgeable native Algerian Tour Guide named "Rihla DZ Guide" who loves sharing the magnificent culture, gastronomy, history, and secrets of Algeria.
-      Answer questions warmly and accurately in first-person as a guide, strictly matching the requested output language constraints.
-      Topics include Algiers Casbah, Oran Santa Cruz, Constantine suspension bridges, Roman ruins of Timgad, Tassili n'Ajjer deep Sahara desert, Algerian cuisines (couscous, shakhshoukha, Mint tea, Mechoui), traditional music, and transit dynamics.
-      Keep replies informative, structured, and very helpful. The user's requested language is: ${languageLabel}.`;
 
-    // Step 3: Call gemini-3.5-flash text content generation
-    const response = await aiInstance.models.generateContent({
-      model: 'gemini-3.5-flash',
-      contents: prompt,
-      config: {
-        systemInstruction: systemIns,
-        temperature: 0.8
+    // Persona System Instructions
+    let personaName = "Rihla DZ Guide";
+    let systemIns = "";
+
+    if (persona === 'sahara') {
+      personaName = "Hakim Sahraui";
+      systemIns = `Tu es "Hakim Sahraui", un guide nomade expert du grand Sahara algérien (Tassili n'Ajjer, Djanet, Taghit, Ghardaïa, Timimoun). Tu parles avec la sagesse du désert, partages les rituels du thé saharien, la beauté des oasis, l'art rupestre et la logistique des bivouacs. Réponds chaleureusement en ${languageLabel}.`;
+    } else if (persona === 'chef') {
+      personaName = "Chef Lalla";
+      systemIns = `Tu es "Chef Lalla", maître de la haute gastronomie et cuisine traditionnelle algérienne (Couscous, Rechta, Chakhchoukha, Tajines, Bourek, Baklawa, Makrout, thés aux pignons). Tu partages recettes, secrets d'épices et meilleures adresses culinaires. Réponds de façon gourmande et chaleureuse en ${languageLabel}.`;
+    } else if (persona === 'mourchid') {
+      personaName = "El-Mourchid";
+      systemIns = `Tu es "El-Mourchid", un éminent historien et archéologue spécialiste du patrimoine architectural algérien (Ruines romaines de Timgad & Tipasa, Casbah d'Alger, Ponts de Constantine, Ksours du M'zab). Tu donnes des détails historiques captivants. Réponds en ${languageLabel}.`;
+    } else {
+      personaName = "Rihla DZ Guide";
+      systemIns = `Tu es "Rihla DZ Guide", le guide touristique IA officiel pour l'Algérie. Tu es chaleureux, très cultivé et passionné par l'Algérie (culture, histoire, transports, conseils pratiques, monuments, cuisine). Réponds en ${languageLabel}.`;
+    }
+
+    // Provider 1: Gemini (Default / Free via Google AI Studio)
+    if (provider === 'gemini') {
+      try {
+        const aiInstance = getAiClient();
+        const response = await aiInstance.models.generateContent({
+          model: 'gemini-3.5-flash',
+          contents: prompt,
+          config: {
+            systemInstruction: systemIns,
+            temperature: 0.8
+          }
+        });
+
+        const replyText = response.text || `${personaName} prépare sa réponse...`;
+        res.json({ reply: replyText, provider: 'gemini', persona: personaName });
+        return;
+      } catch (geminiError: any) {
+        console.warn('Gemini chat failed, falling back to local persona engine:', geminiError?.message);
+        // Fallthrough to local responder
       }
-    });
+    }
 
-    const replyText = response.text || 'Guide is gathering coordinates...';
-    res.json({ reply: replyText });
+    // Provider 2: Mistral AI / Pollinations Free Open AI (100% Free, No Key Required)
+    if (provider === 'mistral') {
+      const mistralKey = customKey || process.env.MISTRAL_API_KEY;
+      if (mistralKey) {
+        try {
+          const mistralRes = await fetch('https://api.mistral.ai/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${mistralKey}`
+            },
+            body: JSON.stringify({
+              model: 'mistral-small-latest',
+              messages: [
+                { role: 'system', content: systemIns },
+                { role: 'user', content: prompt }
+              ]
+            })
+          });
+          const mistralData: any = await mistralRes.json();
+          if (mistralData?.choices?.[0]?.message?.content) {
+            res.json({ reply: mistralData.choices[0].message.content, provider: 'mistral', persona: personaName });
+            return;
+          }
+        } catch (e) {
+          console.warn('Mistral API error:', e);
+        }
+      }
+
+      // Free fallback for Mistral/Llama using Pollinations AI free open endpoint (No API Key required!)
+      try {
+        const pollRes = await fetch('https://text.pollinations.ai/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            messages: [
+              { role: 'system', content: systemIns },
+              { role: 'user', content: prompt }
+            ],
+            model: 'mistral'
+          })
+        });
+        const pollText = await pollRes.text();
+        if (pollText && pollText.trim()) {
+          res.json({ reply: pollText, provider: 'mistral-free', persona: personaName });
+          return;
+        }
+      } catch (e) {
+        console.warn('Pollinations AI free endpoint error:', e);
+      }
+    }
+
+    // Provider 3: OpenAI / ChatGPT (if custom API key provided or process.env.OPENAI_API_KEY)
+    if (provider === 'openai') {
+      const openAiKey = customKey || process.env.OPENAI_API_KEY;
+      if (openAiKey) {
+        try {
+          const openAiRes = await fetch('https://api.openai.com/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${openAiKey}`
+            },
+            body: JSON.stringify({
+              model: 'gpt-4o-mini',
+              messages: [
+                { role: 'system', content: systemIns },
+                { role: 'user', content: prompt }
+              ]
+            })
+          });
+          const openAiData: any = await openAiRes.json();
+          if (openAiData?.choices?.[0]?.message?.content) {
+            res.json({ reply: openAiData.choices[0].message.content, provider: 'openai', persona: personaName });
+            return;
+          }
+        } catch (e) {
+          console.warn('OpenAI API error:', e);
+        }
+      }
+    }
+
+    // Provider 3: Local Offline Algerian AI Engine (100% Free & Always Available)
+    const lowerPrompt = prompt.toLowerCase();
+    let localReply = "";
+
+    if (persona === 'chef' || lowerPrompt.includes('manger') || lowerPrompt.includes('food') || lowerPrompt.includes('plat') || lowerPrompt.includes('couscous') || lowerPrompt.includes('أكل')) {
+      localReply = language === 'ar'
+        ? `[${personaName} - المطبخ الجزائري الأصيل 🍲]\nالمطبخ الجزائري غني بالنكهات! ننصحك بتذوق الكسكسي باللحم والمكسرات، أو الشخشوخة البسكرية الحارة، أو الرشتة العاصمية بالدجاج ولفت الحليب. في وهران جرب الكارانطيطا، وفي الصحراء الشواء والتاي الجمر!`
+        : language === 'fr'
+        ? `[${personaName} - Saveurs d'Algérie 🍲]\nLa gastronomie algérienne est un trésor ! Ne manquez pas le Couscous royal, la Rechta algéroise au poulet, la Chakhchoukha de Biskra épicée, ou la Karantika populaire d'Oran. Terminez toujours par un thé à la menthe pignonné !`
+        : `[${personaName} - Algerian Cuisine 🍲]\nAlgerian gastronomy is legendary! Be sure to try Royal Couscous, Algiers Rechta with chicken, spicy Biskra Chakhchoukha, or Oran Karantika. Always finish with fresh mint tea!`;
+    } else if (persona === 'sahara' || lowerPrompt.includes('sahara') || lowerPrompt.includes('désert') || lowerPrompt.includes('taghit') || lowerPrompt.includes('صحراء')) {
+      localReply = language === 'ar'
+        ? `[${personaName} - روح الصحراء 🐪]\nالصحراء الجزائرية ساحرة! من واحات تغيت ورمالها الذهبية، إلى قصور غرداية العريقة وطاسلي ناجر بجانت مع الرسوم الصخرية القديمة. أهم نصيحة: استمتع بكأس الشاي الصحراوي واحترم التقاليد المحلية.`
+        : language === 'fr'
+        ? `[${personaName} - L'Esprit du Sahara 🐪]\nLe Sahara algérien est grandiose ! Des dunes d'or de Taghit aux gravures rupestres du Tassili n'Ajjer à Djanet, en passant par l'architecture sacrée du M'zab à Ghardaïa. Conseil nomade : savourez les 3 verres de thé traditionnels !`
+        : `[${personaName} - Saharan Nomad Spirit 🐪]\nThe Algerian Sahara is breathtaking! From the golden dunes of Taghit to Tassili n'Ajjer prehistoric rock art in Djanet and M'zab historic architecture in Ghardaia. Desert rule: enjoy the 3 traditional glasses of mint tea!`;
+    } else if (persona === 'mourchid' || lowerPrompt.includes('histoire') || lowerPrompt.includes('casbah') || lowerPrompt.includes('timgad') || lowerPrompt.includes('تاريخ')) {
+      localReply = language === 'ar'
+        ? `[${personaName} - التاريخ والتراث 🏛️]\nتزخر الجزائر بتاريخ ضارب في القدم! من القصبة العثمانية العريقة بالجزائر العاصمة، إلى مدينة تيمقاد الرومانية الأثرية، وجسور قسنطينة المعلقة فوق وادي الرمال. كل حجر يحكي أسطورة حضارة.`
+        : language === 'fr'
+        ? `[${personaName} - Histoire & Architecture 🏛️]\nL'Algérie possède des millénaires d'histoire ! Découvrez la Casbah d'Alger inscrite à l'UNESCO, les ruines romaines impressionnantes de Timgad et Tipasa, et la cité suspendue de Constantine. Chaque pierre vous conte une légende.`
+        : `[${personaName} - History & Monuments 🏛️]\nAlgeria holds thousands of years of history! Explore UNESCO Casbah of Algiers, Roman ruins of Timgad and Tipasa, and the cliff-hanging bridges of Constantine. Every stone tells a story.`;
+    } else {
+      localReply = language === 'ar'
+        ? `[${personaName} - المرشد السياحي 📍]\nمرحباً بك في الجزائر! يسعدني جداً إرشادك. يمكنك سؤالي عن الفنادق، المعالم التاريخية، وسائل التنقل (القطارات والترامواي)، أو تنظيم برنامج رحلة مخصص لك في أية ولاية!`
+        : language === 'fr'
+        ? `[${personaName} - Guide RAHLA 📍]\nBienvenue en Algérie ! Je suis ravi de vous guider. N'hésitez pas à me poser vos questions sur les visites, les transports (trains, métros, taxis), les hôtels ou la planification d'un séjour sur mesure.`
+        : `[${personaName} - RAHLA Tourist Guide 📍]\nWelcome to Algeria! I am delighted to guide you. Feel free to ask about attractions, transit (trains, trams), hotels, or customized trip planning for any region.`;
+    }
+
+    res.json({ reply: localReply, provider: provider || 'local', persona: personaName });
 
   } catch (error: any) {
-    // Graceful error propagation to React client
-    console.warn('Gemini chat request failed:', error?.message || error);
+    console.warn('Multi-chatbot request failed:', error?.message || error);
     res.status(500).json({ 
-      error: 'Gemini service offline or key missing.',
-      details: error?.message || 'Server-side key check failed.'
+      error: 'Chatbot service error',
+      details: error?.message || 'Server error'
     });
+  }
+});
+
+// Fullstack API: 100% Free Live Weather API via Open-Meteo (No Key Needed)
+app.get('/api/weather', async (req, res) => {
+  try {
+    const lat = req.query.lat || '36.7528'; // Default Algiers
+    const lon = req.query.lon || '3.0420';
+    const weatherRes = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&daily=temperature_2m_max,temperature_2m_min,weathercode&timezone=auto`);
+    const data = await weatherRes.json();
+    res.json(data);
+  } catch (err: any) {
+    res.status(500).json({ error: 'Weather API unavailable', details: err?.message });
+  }
+});
+
+// Fullstack API: 100% Free Live Currency Converter API via Frankfurter (No Key Needed)
+app.get('/api/currency', async (req, res) => {
+  try {
+    const from = req.query.from || 'EUR';
+    const currRes = await fetch(`https://api.frankfurter.app/latest?from=${from}`);
+    const data = await currRes.json();
+    res.json(data);
+  } catch (err: any) {
+    res.status(500).json({ error: 'Currency API unavailable', details: err?.message });
   }
 });
 

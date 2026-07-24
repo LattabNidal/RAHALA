@@ -164,7 +164,7 @@ export const TaxiBooking: React.FC = () => {
                 <div className="bg-[#F8FAFC] p-4 border border-[#E2E8F0] rounded-2xl">
                   <span className="block text-[8px] font-mono text-[#94A3B8] uppercase tracking-widest mb-2">Progress log</span>
                   <div className="flex items-center space-x-2 space-x-reverse">
-                    <span className={`w-2.5 h-2.5 rounded-full ${activeTaxiRide.status ? 'bg-emerald-500' : 'bg-gray-300'}`} />
+                    <span className={`w-2.5 h-2.5 rounded-full ${activeTaxiRide.status ? 'bg-blue-500' : 'bg-gray-300'}`} />
                     <span className="text-[11px] font-bold text-[#334155] capitalize">
                       State: {activeTaxiRide.status}
                     </span>
@@ -190,7 +190,7 @@ export const TaxiBooking: React.FC = () => {
                     </div>
                     <div className="border-t border-[#E2E8F0] pt-2 mt-2 space-y-1 text-[10.5px]">
                       <p className="flex justify-between"><span>Contact:</span><strong className="text-[#334155]">{activeTaxiRide.driverPhone}</strong></p>
-                      <p className="flex justify-between"><span>Authority Badge:</span><strong className="text-emerald-600 flex items-center space-x-1"><ShieldCheck size={12} /><span>Algeria Vetted</span></strong></p>
+                      <p className="flex justify-between"><span>Authority Badge:</span><strong className="text-blue-600 flex items-center space-x-1"><ShieldCheck size={12} /><span>Algeria Vetted</span></strong></p>
                       {activeTaxiRide.estimatedMinutes > 0 && (
                         <p className="text-center font-bold text-[#3B82F6] animate-pulse mt-2 pt-1 border-t border-[#E2E8F0]/50">Arriving in approx {activeTaxiRide.estimatedMinutes} mins</p>
                       )}

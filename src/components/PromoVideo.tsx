@@ -280,7 +280,7 @@ export const PromoVideo: React.FC = () => {
     <div className="bg-slate-900/60 dark:bg-[#111111]/80 border border-[#d4af37]/35 dark:border-white/10 rounded-3xl p-6 sm:p-10 mb-16 shadow-2xl backdrop-blur-md relative overflow-hidden" id="rahala-cinema-promo-deck">
       
       {/* Absolute Algerian gradient glow in corner */}
-      <div className="absolute top-0 right-0 w-80 h-80 bg-emerald-600/10 rounded-full filter blur-[100px] pointer-events-none"></div>
+      <div className="absolute top-0 right-0 w-80 h-80 bg-blue-600/10 rounded-full filter blur-[100px] pointer-events-none"></div>
       <div className="absolute bottom-0 left-0 w-80 h-80 bg-red-600/5 rounded-full filter blur-[100px] pointer-events-none"></div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
@@ -304,7 +304,7 @@ export const PromoVideo: React.FC = () => {
           </div>
 
           {/* Interactive features summary */}
-          <div className="bg-emerald-950/20 border border-emerald-500/15 rounded-2xl p-4 space-y-3 text-xs leading-relaxed text-slate-200">
+          <div className="bg-blue-950/20 border border-blue-500/15 rounded-2xl p-4 space-y-3 text-xs leading-relaxed text-slate-200">
             <div className="flex items-start gap-2.5">
               <Sparkles size={16} className="text-[#d4af37] mt-0.5 flex-shrink-0" />
               <div>
@@ -324,7 +324,7 @@ export const PromoVideo: React.FC = () => {
               onClick={() => fileInputRef.current?.click()}
               className={`border-2 border-dashed rounded-2xl p-5 text-center transition-all cursor-pointer flex flex-col items-center justify-center gap-2.5 group ${
                 dragActive 
-                  ? "border-emerald-500 bg-emerald-500/10" 
+                  ? "border-blue-500 bg-blue-500/10" 
                   : "border-slate-700 hover:border-emerald-500/50 bg-slate-950/40 hover:bg-slate-950/60"
               }`}
             >

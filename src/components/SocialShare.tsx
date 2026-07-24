@@ -97,7 +97,7 @@ export const SocialShare: React.FC<SocialShareProps> = ({
                 className="flex items-center justify-center p-2 rounded-xl bg-[#1a1a1a] dark:bg-[#f5f2ed] text-white dark:text-[#1a1a1a] hover:bg-[#d4af37] dark:hover:bg-[#d4af37] hover:text-black dark:hover:text-black transition cursor-pointer shrink-0"
                 title={t('shareLinkLabel')}
               >
-                {copied ? <CheckCircle2 size={14} className="text-emerald-500" /> : <Copy size={14} />}
+                {copied ? <CheckCircle2 size={14} className="text-blue-500" /> : <Copy size={14} />}
               </button>
             </div>
  
@@ -109,7 +109,7 @@ export const SocialShare: React.FC<SocialShareProps> = ({
                   href={`https://api.whatsapp.com/send?text=${encodeURIComponent(fullTextAndUrl)}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-1.5 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600 transition"
+                  className="p-1.5 rounded-lg bg-blue-500/10 hover:bg-blue-500/20 text-blue-600 transition"
                   title="WhatsApp"
                 >
                   <Send size={12} />
@@ -194,7 +194,7 @@ export const SocialShare: React.FC<SocialShareProps> = ({
               <span>{t('downloadPdfBtn')}</span>
             </button>
             <div className="flex items-center justify-center gap-1 mt-2">
-              <span className="text-[9px] font-mono text-emerald-500 font-extrabold uppercase animate-pulse">●</span>
+              <span className="text-[9px] font-mono text-blue-500 font-extrabold uppercase animate-pulse">●</span>
               <span className="text-[9px] font-mono text-gray-400 dark:text-gray-500 uppercase">
                 {t('withIntegratedToken')}
               </span>

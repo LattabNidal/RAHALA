@@ -1635,7 +1635,7 @@ export const PaymentsSubscriptions: React.FC = () => {
                           </td>
                           <td className="py-3 text-center font-mono">1</td>
                           <td className="py-3 text-end font-mono">{(Math.round(selectedInvoice.amount * 0.81)).toLocaleString()} DZD</td>
-                          <td className="py-3 text-end font-mono font-bold text-slate-900">{selectedInvoice.amount.toLocaleString()} DZD</td>
+                          <td className="py-3 text-end font-mono font-bold text-slate-900">{selectedInvoice?.amount?.toLocaleString() || '0'} DZD</td>
                         </tr>
                       </tbody>
                     </table>
@@ -1655,7 +1655,7 @@ export const PaymentsSubscriptions: React.FC = () => {
                     </div>
                     <div className="flex justify-between text-xs font-bold pt-1">
                       <span className="text-slate-900 uppercase">Net à Payer (T.T.C) :</span>
-                      <span className="text-emerald-600 text-sm font-black">{selectedInvoice.amount.toLocaleString()} DZD</span>
+                      <span className="text-emerald-600 text-sm font-black">{selectedInvoice?.amount?.toLocaleString() || '0'} DZD</span>
                     </div>
                   </div>
                 </div>

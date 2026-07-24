@@ -566,7 +566,7 @@ export const FlightBooking: React.FC = () => {
                   </div>
                   <div className="flex justify-between border-t border-[#E2E8F0] pt-2 text-xs font-black">
                     <span className="text-[#94A3B8]">{isRtl ? 'المبلغ المدفوع بالكامل' : 'Paid amount DZD'}:</span>
-                    <span className="text-[#3B82F6]">{bookingFinished.totalPriceDZD.toLocaleString()} DZD</span>
+                    <span className="text-[#3B82F6]">{bookingFinished?.totalPriceDZD?.toLocaleString() || '0'} DZD</span>
                   </div>
                 </div>
 

@@ -1000,10 +1000,10 @@ export const SmartTravelGuide: React.FC = () => {
               <Sparkles size={11} className="text-[#d4af37]" /> MULTIMODAL ASSISTANT
             </span>
           </div>
-          <h2 className="text-2xl sm:text-3xl font-serif font-black text-gray-900 dark:text-white flex items-center gap-2">
+          <h2 className="text-2xl sm:text-3xl font-serif font-black text-encre dark:text-ivoire flex items-center gap-2">
             <span>Smart Travel Guide</span>
-            <span className="text-gray-300 dark:text-gray-700 font-normal">/</span>
-            <span className="font-serif font-bold text-xl sm:text-2xl text-emerald-800 dark:text-emerald-400">مرشد الرحلة الذكي</span>
+            <span className="text-encre-soft dark:text-gray-700 font-normal">/</span>
+            <span className="font-serif font-bold text-xl sm:text-2xl text-or-sahara dark:text-or-sahara">مرشد الرحلة الذكي</span>
           </h2>
           <p className="text-xs text-gray-500 dark:text-gray-400 mt-2 max-w-xl text-left">
             {language === 'ar' 
@@ -1019,7 +1019,7 @@ export const SmartTravelGuide: React.FC = () => {
       </div>
 
       {/* Tab Switcher */}
-      <div className="flex gap-2 p-1 bg-slate-100 dark:bg-zinc-900 rounded-xl max-w-md mb-8 border border-zinc-200/20">
+      <div className="flex gap-2 p-1 bg-ivoire dark:bg-noir-chaud rounded-xl max-w-md mb-8 border border-border">
         <button
           onClick={() => {
             setGuideType('premium');
@@ -1027,8 +1027,8 @@ export const SmartTravelGuide: React.FC = () => {
           }}
           className={`flex-1 py-2.5 px-3 rounded-lg font-mono text-[10px] font-black tracking-wider transition uppercase flex items-center justify-center gap-2 cursor-pointer ${
             guideType === 'premium'
-              ? 'bg-emerald-600 text-white shadow-sm'
-              : 'text-gray-500 hover:text-gray-950 dark:hover:text-white'
+              ? 'bg-or-sahara text-encre shadow-sm'
+              : 'text-encre-soft hover:text-encre dark:text-gray-400 dark:hover:text-ivoire'
           }`}
         >
           <Sparkles size={12} className={guideType === 'premium' ? 'animate-pulse' : ''} />
@@ -1041,8 +1041,8 @@ export const SmartTravelGuide: React.FC = () => {
           }}
           className={`flex-1 py-2.5 px-3 rounded-lg font-mono text-[10px] font-black tracking-wider transition uppercase flex items-center justify-center gap-2 cursor-pointer ${
             guideType === 'classic'
-              ? 'bg-emerald-600 text-white shadow-sm'
-              : 'text-gray-500 hover:text-gray-950 dark:hover:text-white'
+              ? 'bg-or-sahara text-encre shadow-sm'
+              : 'text-encre-soft hover:text-encre dark:text-gray-400 dark:hover:text-ivoire'
           }`}
         >
           <Compass size={12} />

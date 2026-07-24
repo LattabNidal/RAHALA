@@ -337,7 +337,7 @@ export const UserDashboard: React.FC<UserDashboardProps> = ({ setActiveView }) =
                       <div className="flex items-center gap-4 w-full sm:w-auto justify-between sm:justify-end border-t border-[#E2E8F0] pt-3 sm:pt-0 sm:border-none">
                         <div className="text-left sm:text-right">
                           <span className="block text-[7px] font-mono text-[#94A3B8] uppercase tracking-wider">Paid Amount</span>
-                          <span className="font-bold text-[#3B82F6] text-xs font-mono">{bkg.totalPriceDZD.toLocaleString()} DZD</span>
+                          <span className="font-bold text-[#3B82F6] text-xs font-mono">{bkg.totalPriceDZD?.toLocaleString() || '0'} DZD</span>
                         </div>
                         <button
                           onClick={() => cancelBooking(bkg.id)}

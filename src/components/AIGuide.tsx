@@ -620,6 +620,10 @@ export const AIGuide: React.FC = () => {
     ];
   });
 
+  // Chatbot Multi-Provider & Persona states
+  const [selectedProvider, setSelectedProvider] = useState<'gemini' | 'mistral' | 'openai' | 'local'>('gemini');
+  const [selectedPersona, setSelectedPersona] = useState<'guide' | 'sahara' | 'chef' | 'mourchid'>('guide');
+
   const [inputVal, setInputVal] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -672,13 +676,15 @@ export const AIGuide: React.FC = () => {
     setErrorMessage(null);
 
     try {
-      // Call server-side API proxy for Gemini Chat Grounding
+      // Call server-side API proxy for Multi-Chatbot Grounding
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           prompt: textToSend,
           language: language,
+          provider: selectedProvider,
+          persona: selectedPersona,
           isPremium: currentUser?.isPremium || false
         })
       });
@@ -911,8 +917,72 @@ export const AIGuide: React.FC = () => {
 
       {/* RENDER CHAT MODULE */}
       {activeTab === 'chat' && (
-        <div className="bg-[#eae7e1]/20 dark:bg-[#161616]/45 border border-[#1a1a1a]/15 dark:border-white/10 rounded-none shadow-2xl flex flex-col h-[525px] overflow-hidden relative print:hidden">
+        <div className="bg-[#eae7e1]/20 dark:bg-[#161616]/45 border border-[#1a1a1a]/15 dark:border-white/10 rounded-none shadow-2xl flex flex-col h-[580px] overflow-hidden relative print:hidden">
           <div className="absolute top-0 right-0 w-32 h-32 bg-[#d4af37]/5 rounded-full blur-xl pointer-events-none"></div>
+
+          {/* Multi-Chatbot Model & Persona Configuration Header */}
+          <div className="p-3 bg-black/80 backdrop-blur-md border-b border-[#d4af37]/30 text-white flex flex-col sm:flex-row items-center justify-between gap-2.5 z-10 text-[11px] font-mono">
+            {/* Provider selection */}
+            <div className="flex items-center space-x-2 space-x-reverse w-full sm:w-auto overflow-x-auto scrollbar-none">
+              <span className="text-[#d4af37] font-bold uppercase tracking-wider shrink-0 flex items-center gap-1">
+                <Sparkles size={13} />
+                Chatbot:
+              </span>
+              <div className="flex bg-white/10 p-0.5 rounded border border-white/15">
+                <button
+                  onClick={() => setSelectedProvider('gemini')}
+                  className={`px-2.5 py-1 text-[10px] uppercase transition-all cursor-pointer ${
+                    selectedProvider === 'gemini' ? 'bg-[#d4af37] text-black font-bold' : 'text-white/80 hover:text-white'
+                  }`}
+                  title="Google Gemini 3.5 Flash (Gratuit & Ultra Rapide)"
+                >
+                  Gemini 3.5
+                </button>
+                <button
+                  onClick={() => setSelectedProvider('mistral')}
+                  className={`px-2.5 py-1 text-[10px] uppercase transition-all cursor-pointer ${
+                    selectedProvider === 'mistral' ? 'bg-[#d4af37] text-black font-bold' : 'text-white/80 hover:text-white'
+                  }`}
+                  title="Mistral AI / HuggingFace"
+                >
+                  Mistral
+                </button>
+                <button
+                  onClick={() => setSelectedProvider('openai')}
+                  className={`px-2.5 py-1 text-[10px] uppercase transition-all cursor-pointer ${
+                    selectedProvider === 'openai' ? 'bg-[#d4af37] text-black font-bold' : 'text-white/80 hover:text-white'
+                  }`}
+                  title="OpenAI ChatGPT (GPT-4o Mini)"
+                >
+                  ChatGPT
+                </button>
+                <button
+                  onClick={() => setSelectedProvider('local')}
+                  className={`px-2.5 py-1 text-[10px] uppercase transition-all cursor-pointer ${
+                    selectedProvider === 'local' ? 'bg-[#d4af37] text-black font-bold' : 'text-white/80 hover:text-white'
+                  }`}
+                  title="Moteur IA Algérien Local (Gratuit & Off-line)"
+                >
+                  Local DZ
+                </button>
+              </div>
+            </div>
+
+            {/* Persona selection */}
+            <div className="flex items-center space-x-2 space-x-reverse w-full sm:w-auto justify-end">
+              <span className="text-white/60 shrink-0">IA Persona:</span>
+              <select
+                value={selectedPersona}
+                onChange={(e: any) => setSelectedPersona(e.target.value)}
+                className="bg-black/90 text-[#d4af37] border border-[#d4af37]/40 text-[10px] px-2 py-1 focus:outline-none cursor-pointer uppercase font-mono font-bold"
+              >
+                <option value="guide">📍 Rihla DZ Guide (Tourisme Général)</option>
+                <option value="sahara">🐪 Hakim Sahraui (Spécialiste Sahara)</option>
+                <option value="chef">🍲 Chef Lalla (Gastronomie & Recettes)</option>
+                <option value="mourchid">🏛️ El-Mourchid (Histoire & Monuments)</option>
+              </select>
+            </div>
+          </div>
 
           {/* Status alarm if error message is present */}
           {errorMessage && (
