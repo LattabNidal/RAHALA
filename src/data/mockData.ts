@@ -6,6 +6,7 @@ const casbahWebpImages = Object.values(casbahFolderModules) as string[];
 const primaryCasbahImage = casbahWebpImages.find(img => img.includes('site_0565_0017')) || casbahWebpImages[0] || '/src/assets/images/casbah_d_alger/site_0565_0017-1000-1481-20140721144417.webp';
 
 const casbahFolderImages = Array.from(new Set([
+  '/panorama/casabah Street View 360.jpg',
   primaryCasbahImage,
   ...casbahWebpImages,
   '/src/assets/images/casbah_d_alger/casbah_vaulted_alley.jpg'

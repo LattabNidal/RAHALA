@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { FileText, Download, X, Eye, CheckCircle2, ShieldAlert, Award, Search, ZoomIn, ZoomOut, Printer, Bookmark, MapPin, Building, ChevronLeft, ChevronRight } from 'lucide-react';
 import { TimgadDocumentModal } from './TimgadDocumentModal';
+import { PanoramaViewer } from './PanoramaViewer';
 import { useLanguage } from '../context/LanguageContext';
 import { LazyImage } from './rahala/LazyImage';
 
@@ -482,6 +483,16 @@ export const UnescoDocumentModal: React.FC<UnescoDocumentModalProps> = ({
                 <p className="text-black text-xs">
                   Collection complète des clichés authentiques certifiés : panorama des terrasses, ruelles en escalier, patios ottomans, fontaines zellige et passages sous voûte (sabat).
                 </p>
+              </div>
+
+              {/* INTERACTIVE 360 PANORAMA VIEWER */}
+              <div className="h-[480px] w-full rounded-2xl overflow-hidden border border-green-500/30 bg-black relative shadow-2xl">
+                <PanoramaViewer
+                  imagePath="/panorama/casabah Street View 360.jpg"
+                  title="La Casbah d'Alger — Photographie Originale 360°"
+                  subtitle="Alger, Médina Historique • Cliché d'Origine Non Modifié (casabah Street View 360.jpg)"
+                  className="w-full h-full"
+                />
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
