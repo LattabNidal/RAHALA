@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { FileText, Download, X, Eye, Award, ZoomIn, ZoomOut, ChevronLeft, ChevronRight, BookOpen, ShieldCheck } from 'lucide-react';
+import { FileText, Download, X, Eye, Award, ZoomIn, ZoomOut, ChevronLeft, ChevronRight, BookOpen, ShieldCheck, Compass } from 'lucide-react';
 import { LazyImage } from './rahala/LazyImage';
+import { PanoramaViewer } from './PanoramaViewer';
 
 const santaCruzFolderModules = import.meta.glob('/src/assets/images/Santa Cruz Fort & Chapelle Notre-Dame du Salut/*.{webp,jpg,JPG,jpeg,png}', { eager: true, import: 'default' });
 const santaCruzImagesList = Object.values(santaCruzFolderModules) as string[];
@@ -10,6 +11,7 @@ const primarySantaCruzPhoto = santaCruzImagesList.find(img => img.includes('Fort
   || '/src/assets/images/santa_cruz_oran_chapel_1784672157047.jpg';
 
 const santaCruzGalleryItems = [
+  { src: "/panorama/santa cruz Street View 360.jpg", label: "Vue 360° Immersive - Cour Intérieure & Clocher Chapelle Santa Cruz" },
   { src: primarySantaCruzPhoto, label: "Vue Panoramique & Fort de Santa Cruz" },
   ...santaCruzImagesList.map((src, idx) => ({
     src,
@@ -31,7 +33,7 @@ export const SantaCruzDocumentModal: React.FC<SantaCruzDocumentModalProps> = ({
 }) => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [zoomLevel, setZoomLevel] = useState<number>(100);
-  const [activeTab, setActiveTab] = useState<'document' | 'photos' | 'plans'>('document');
+  const [activeTab, setActiveTab] = useState<'document' | 'photos' | '360'>('document');
 
   if (!isOpen) return null;
 
@@ -163,6 +165,16 @@ export const SantaCruzDocumentModal: React.FC<SantaCruzDocumentModalProps> = ({
           >
             <Eye size={13} />
             <span>Galerie Photographique du Site</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab('360')}
+            className={`px-3 py-1 rounded-md transition cursor-pointer flex items-center space-x-1.5 ${
+              activeTab === '360' ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40 font-bold' : 'text-slate-400 hover:text-white'
+            }`}
+          >
+            <Compass size={13} className="text-amber-400" />
+            <span>Visite Virtuelle 360° Immersive</span>
           </button>
         </div>
 
@@ -383,6 +395,60 @@ export const SantaCruzDocumentModal: React.FC<SantaCruzDocumentModalProps> = ({
                     <p className="text-[11px] text-slate-300 font-mono text-center">{item.label}</p>
                   </div>
                 ))}
+              </div>
+            </div>
+          )}
+
+          {/* 360 VIRTUAL TOUR TAB VIEW */}
+          {activeTab === '360' && (
+            <div className="w-full max-w-4xl space-y-4">
+              <div className="bg-[#1e1e1e] p-4 rounded-xl border border-white/10 flex items-center justify-between">
+                <div>
+                  <h3 className="text-amber-400 font-bold font-serif text-sm mb-1 flex items-center gap-2">
+                    <Compass size={16} className="text-amber-400" />
+                    <span>Projection 360° Immersive — Clichés d'Origine de la Chapelle Santa-Cruz</span>
+                  </h3>
+                  <p className="text-slate-400 text-xs">
+                    Explorez en immersion 360° interactive les clichés authentiques du sommet du Mont Murdjadjo à Oran, la cour à dallage traditionnels, les arcades et le clocher historique.
+                  </p>
+                </div>
+                <div className="bg-amber-500/10 border border-amber-500/30 px-3 py-1.5 rounded-lg text-amber-300 text-[10px] font-mono shrink-0 ml-4">
+                  ✓ Photo Authentique Non-IA
+                </div>
+              </div>
+
+              <div className="h-[480px] w-full rounded-2xl overflow-hidden border border-amber-500/30 bg-black relative shadow-2xl">
+                <PanoramaViewer
+                  imagePath="/panorama/santa cruz Street View 360.jpg"
+                  title="Chapelle Notre-Dame de Santa-Cruz (Oran) — Photographie Originale 360°"
+                  subtitle="Oran, Mont Murdjadjo • Cliché d'Origine Non Modifié (santa cruz Street View 360.jpg)"
+                  className="w-full h-full"
+                />
+              </div>
+
+              {/* Photo selector bar */}
+              <div className="bg-[#181818] p-3 rounded-xl border border-white/10">
+                <p className="text-xs text-amber-300 font-serif font-bold mb-2">
+                  Sélection de la vue d'origine pour projection 360° :
+                </p>
+                <div className="flex items-center space-x-2 overflow-x-auto pb-1">
+                  {santaCruzGalleryItems.map((item, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => setCurrentPage(idx)}
+                      className={`shrink-0 relative w-24 h-16 rounded-lg overflow-hidden border-2 transition cursor-pointer ${
+                        (currentPage % santaCruzGalleryItems.length) === idx
+                          ? 'border-amber-400 ring-2 ring-amber-400/40 scale-105'
+                          : 'border-white/10 hover:border-white/40 opacity-70'
+                      }`}
+                    >
+                      <img src={item.src} alt={item.label} className="w-full h-full object-cover" />
+                      <div className="absolute bottom-0 inset-x-0 bg-black/80 text-[8px] text-center font-mono py-0.5 text-white truncate px-1">
+                        Vue {idx + 1}
+                      </div>
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
           )}

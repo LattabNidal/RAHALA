@@ -19,9 +19,9 @@ const primarySantaCruzImage = santaCruzImagesList.find(img => img.includes('Fort
   || '/src/assets/images/santa_cruz_oran_chapel_1784672157047.jpg';
 
 const santaCruzFolderImages = Array.from(new Set([
+  '/panorama/santa_cruz_360.jpg',
   primarySantaCruzImage,
-  ...santaCruzImagesList,
-  '/src/assets/images/santa_cruz_oran_chapel_1784672157047.jpg'
+  ...santaCruzImagesList
 ]));
 
 const constantineFolderModules = import.meta.glob('/src/assets/images/Suspension Bridges of Constantine/*.{webp,jpg,JPG,jpeg,png}', { eager: true, import: 'default' });

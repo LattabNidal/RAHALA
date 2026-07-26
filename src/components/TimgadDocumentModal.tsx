@@ -331,14 +331,14 @@ interface TimgadDocumentModalProps {
   isOpen: boolean;
   onClose: () => void;
   siteName?: string;
-  mapsApiKey: string;
+  mapsApiKey?: string;
 }
 
 export const TimgadDocumentModal: React.FC<TimgadDocumentModalProps> = ({
   isOpen,
   onClose,
   siteName = "Timgad (Colonia Marciana Traiana Thamugadi)",
-  mapsApiKey
+  mapsApiKey = ""
 }) => {
   const { language, setLanguage, isRtl } = useLanguage();
   const [currentPage, setCurrentPage] = useState<number>(1);

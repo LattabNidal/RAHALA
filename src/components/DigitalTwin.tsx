@@ -5,7 +5,7 @@ import { useApp } from '../context/AppContext';
 import { 
   Compass, RotateCw, Eye, Sparkles, BookOpen, Volume2, Info, 
   Bookmark, Sun, Moon, Database, HelpCircle, RefreshCw, 
-  Layers, MapPin, Maximize2, Star, MessageSquare, Image as ImageIcon
+  Layers, MapPin, Maximize2, Star, MessageSquare, Image as ImageIcon, Camera
 } from 'lucide-react';
 import { mockLandmarks } from '../data/mockData';
 import { Landmark } from '../types';
@@ -1112,16 +1112,75 @@ export const DigitalTwin: React.FC = () => {
                 showWireframe={showWireframe}
               />
             ) : (
-              /* INTERACTIVE REACT THREE FIBER 360 PANORAMA VIEWER */
+              /* INTERACTIVE REACT THREE FIBER 360 PANORAMA VIEWER - ORIGINAL UNEDITED PHOTO */
               <PanoramaViewer 
-                imagePath="/panorama/Street View 360.jpg" 
-                title="Ancient Theater - Street View 360"
-                subtitle={`${activeSpot.name} • Visite Virtuelle Immersive 360°`}
+                imagePath={
+                  activeSpot.id === 'santa-cruz' || activeSpot.name.toLowerCase().includes('santa')
+                    ? '/panorama/santa cruz Street View 360.jpg'
+                    : (activeSpot.id === 'timgad' || activeSpot.name.toLowerCase().includes('timgad')
+                        ? '/panorama/timgad View 360.jpg'
+                        : (activeSpot.panoramas && activeSpot.panoramas[activeStep] && !activeSpot.panoramas[activeStep].includes(' ')
+                            ? activeSpot.panoramas[activeStep]
+                            : '/panorama/Street View 360.jpg'))
+                } 
+                title={
+                  activeSpot.id === 'santa-cruz' || activeSpot.name.toLowerCase().includes('santa')
+                    ? 'Chapelle Notre-Dame de Santa Cruz (Oran) — Photographie Originale 360°'
+                    : (activeSpot.id === 'timgad' || activeSpot.name.toLowerCase().includes('timgad')
+                        ? 'Ruines Romaines de Timgad (Batna) — Photographie Originale 360°'
+                        : `${activeSpot.name} — Panorama Authentique 360°`)
+                }
+                subtitle={
+                  activeSpot.id === 'santa-cruz' || activeSpot.name.toLowerCase().includes('santa')
+                    ? `${activeSpot.name} • Cliché d'Origine Non Modifié (santa cruz Street View 360.jpg)`
+                    : (activeSpot.id === 'timgad' || activeSpot.name.toLowerCase().includes('timgad')
+                        ? `${activeSpot.name} • Cliché d'Origine Non Modifié (timgad View 360.jpg)`
+                        : `${activeSpot.name} • Cliché d'Origine Non Modifié`)
+                }
                 className="w-full h-full"
               />
             )}
 
           </div>
+
+          {/* Render Authentic Photo Selector Strip when in 360 Panorama mode */}
+          {viewMode === 'panorama' && activeSpot.panoramas && activeSpot.panoramas.length > 0 && (
+            <div className="bg-[#121824] border border-gold/30 p-3 rounded-xl mt-4 text-white">
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center space-x-2">
+                  <Camera size={14} className="text-gold" />
+                  <span className="text-xs font-serif font-bold text-amber-300">
+                    Clichés Authentiques d'Origine — {activeSpot.name} ({activeSpot.panoramas.length} vues)
+                  </span>
+                </div>
+                <span className="text-[10px] text-slate-400 font-mono">
+                  Sélectionnez un cliché d'origine pour projection 360°
+                </span>
+              </div>
+              <div className="flex items-center space-x-2 overflow-x-auto pb-1 scrollbar-thin scrollbar-thumb-gold/30">
+                {activeSpot.panoramas.map((imgUrl, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => setActiveStep(idx)}
+                    className={`shrink-0 relative w-20 h-14 rounded-lg overflow-hidden border-2 transition cursor-pointer ${
+                      activeStep === idx 
+                        ? 'border-amber-400 ring-2 ring-amber-400/50 scale-105' 
+                        : 'border-white/10 hover:border-white/40 opacity-70 hover:opacity-100'
+                    }`}
+                  >
+                    <img 
+                      src={imgUrl} 
+                      alt={`Cliché ${idx + 1}`} 
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute bottom-0 inset-x-0 bg-black/70 text-[9px] text-center font-mono py-0.5 text-white">
+                      Vue {idx + 1}
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* Render real-time exact 3D controls bar if 3D mode is active */}
           {viewMode === 'exact3d' && (
