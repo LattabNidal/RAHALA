@@ -1,6 +1,102 @@
 import React, { useState } from 'react';
 import { FileText, Download, X, Eye, Award, ZoomIn, ZoomOut, ChevronLeft, ChevronRight, MapPin, Building2, ShieldCheck, Compass, Image as ImageIcon } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 import { LazyImage } from './rahala/LazyImage';
+
+const translations = {
+  fr: {
+    title: "Amphithéâtre & Arc de Djemila (Cuicul)",
+    fileName: "UNESCO_Rapport_Officiel_Djemila_Cuicul_N191.pdf",
+    downloadBtn: "Télécharger Rapport",
+    tabDoc: "Document Certifié UNESCO N° 191",
+    tabPhotos: "Galerie Photographique d'Époque (6 Clichés)",
+    tabTech: "Fiche Technique & Cartographique",
+    headerP1: "LISTE DU PATRIMOINE MONDIAL",
+    headerP2: "ORGANISATION DES NATIONS UNIES POUR L'ÉDUCATION, LA SCIENCE ET LA CULTURE",
+    idTitle: "IDENTIFICATION OFFICIELLE DU BIEN",
+    idVal1: "Bien désigné : Djémila (Cuicul)",
+    idVal2: "Localisation : Djemila, Wilaya de Sétif",
+    idVal3: "État Partie : Algérie 🇩🇿",
+    idVal4: "Date d'inscription : Décembre 1982",
+    photoDesc: "Document Officiel UNESCO N° 191 : Vue d'ensemble du site de Cuicul et de son théâtre antique.",
+    synTitle: "SYNTHÈSE HISTORIQUE & VALEUR UNIVERSELLE EXCEPTIONNELLE",
+    synBody: "« Situé à 900 m d'altitude sur un éperon rocheux entre deux oueds au cœur des montagnes de Kabylie, Djémila (Cuicul) est une colonie militaire romaine créée à la fin du Ier siècle (96 apr. J.-C.) sous le règne de Nerva. Elle offre l'un des exemples les plus achevés d'adaptation de l'urbanisme romain classique à un relief montagneux complexe. »",
+    histBody1: "Fondée vers 96 apr. J.-C. sous le règne de l'empereur Nerva comme poste militaire défensif, Cuicul s'est développée au fil des siècles jusqu'à devenir une florissante cité commerçante d'Afrique du Nord.",
+    histBody2: "Sous les dynasties des Antonins puis des Sévères, la ville franchit ses limites originelles pour créer le Forum Nouveau (Place Sévérienne) au IIIe siècle, dominé par le monumental Arc de Caracalla et le Temple de la famille des Sévères.",
+    histBody3: "Au IVe siècle, la cité adopte le christianisme et se dote d'un quartier paléochrétien comprenant deux basiliques et un baptistère circulaire conservé avec sa coupole d'origine.",
+    footer: "UNESCO • Patrimoine Mondial N° 191",
+    page: "Page"
+  },
+  en: {
+    title: "Amphitheatre & Arch of Djemila (Cuicul)",
+    fileName: "UNESCO_Official_Report_Djemila_Cuicul_N191.pdf",
+    downloadBtn: "Download Report",
+    tabDoc: "Certified Document UNESCO N° 191",
+    tabPhotos: "Historical Photo Gallery (6 Photos)",
+    tabTech: "Technical Sheet & Cartographic",
+    headerP1: "WORLD HERITAGE LIST",
+    headerP2: "UNITED NATIONS EDUCATIONAL, SCIENTIFIC AND CULTURAL ORGANIZATION",
+    idTitle: "OFFICIAL PROPERTY IDENTIFICATION",
+    idVal1: "Designated Property: Djemila (Cuicul)",
+    idVal2: "Location: Djemila, Setif Province",
+    idVal3: "State Party: Algeria 🇩🇿",
+    idVal4: "Inscription Date: December 1982",
+    photoDesc: "Official UNESCO Document N° 191: Overview of the Cuicul site and its ancient theater.",
+    synTitle: "HISTORICAL SYNTHESIS & OUTSTANDING UNIVERSAL VALUE",
+    synBody: "“Located at 900m altitude on a rocky spur between two wadis in the heart of the Kabylia mountains, Djemila (Cuicul) is a Roman military colony created at the end of the 1st century (96 AD) under the reign of Nerva. It offers one of the most complete examples of adaptation of classical Roman urbanism to a complex mountainous relief.”",
+    histBody1: "Founded around 96 AD under the reign of Emperor Nerva as a defensive military post, Cuicul developed over the centuries to become a flourishing commercial city in North Africa.",
+    histBody2: "Under the Antonine and then Severan dynasties, the city went beyond its original limits to create the New Forum (Severan Square) in the 3rd century, dominated by the monumental Arch of Caracalla and the Temple of the Severan family.",
+    histBody3: "In the 4th century, the city adopted Christianity and acquired a Paleochristian quarter including two basilicas and a circular baptistery preserved with its original dome.",
+    footer: "UNESCO • World Heritage N° 191",
+    page: "Page"
+  },
+  ar: {
+    title: "مدرج وقوس جميلة (كويكول)",
+    fileName: "تقرير_اليونسكو_الرسمي_جميلة_كويكول_رقم_191.pdf",
+    downloadBtn: "تحميل التقرير",
+    tabDoc: "وثيقة معتمدة من اليونسكو رقم 191",
+    tabPhotos: "معرض الصور التاريخية (6 صور)",
+    tabTech: "البطاقة التقنية والخرائط",
+    headerP1: "قائمة التراث العالمي",
+    headerP2: "منظمة الأمم المتحدة للتربية والعلم والثقافة (اليونسكو)",
+    idTitle: "التعريف الرسمي للممتلك",
+    idVal1: "الموقع المسمى: جميلة (كويكول)",
+    idVal2: "الموقع: جميلة، ولاية سطيف",
+    idVal3: "الدولة الطرف: الجزائر 🇩🇿",
+    idVal4: "تاريخ التسجيل: ديسمبر 1982",
+    photoDesc: "وثيقة اليونسكو الرسمية رقم 191: نظرة عامة على موقع كويكول ومسرحها القديم.",
+    synTitle: "ملخص تاريخي والقيمة العالمية الاستثنائية",
+    synBody: "«تقع جميلة (كويكول القديمة) على ارتفاع 900 متر فوق نتوء صخري بين واديين في قلب جبال القبائل، وهي مستعمرة عسكرية رومانية أُنشئت في نهاية القرن الأول (96 م) في عهد نيرفا. تقدم واحدة من أكمل الأمثلة على تكييف التخطيط العمراني الروماني الكلاسيكي مع التضاريس الجبلية المعقدة.»",
+    histBody1: "تأسست كويكول حوالي عام 96 م في عهد الإمبراطور نيرفا كمركز عسكري دفاعي، وتطورت على مر القرون لتصبح مدينة تجارية مزدهرة في شمال إفريقيا.",
+    histBody2: "في عهد الأنتونين ثم السيفيريين، تجاوزت المدينة حدودها الأصلية لإنشاء المنتدى الجديد (الساحة السيفيرية) في القرن الثالث، والتي يهيمن عليها قوس كاراكلا الضخم ومعبد عائلة السيفيريين.",
+    histBody3: "في القرن الرابع، اعتنقت المدينة المسيحية وأنشأت حياً مسيحياً قديماً يضم كنيستين ومعمودية دائرية محفوظة بقبتها الأصلية.",
+    footer: "اليونسكو • التراث العالمي رقم 191",
+    page: "صفحة"
+  },
+  es: {
+    title: "Anfiteatro y Arco de Djemila (Cuicul)",
+    fileName: "UNESCO_Informe_Oficial_Djemila_Cuicul_N191.pdf",
+    downloadBtn: "Descargar Informe",
+    tabDoc: "Documento Certificado UNESCO N° 191",
+    tabPhotos: "Galería Fotográfica Histórica (6 Fotos)",
+    tabTech: "Ficha Técnica y Cartográfica",
+    headerP1: "LISTA DEL PATRIMONIO MUNDIAL",
+    headerP2: "ORGANIZACIÓN DE LAS NACIONES UNIDAS PARA LA EDUCACIÓN, LA CIENCIA Y LA CULTURA",
+    idTitle: "IDENTIFICACIÓN OFICIAL DEL BIEN",
+    idVal1: "Bien designado: Djemila (Cuicul)",
+    idVal2: "Ubicación: Djemila, Provincia de Sétif",
+    idVal3: "Estado Parte: Argelia 🇩🇿",
+    idVal4: "Fecha de inscripción: Diciembre 1982",
+    photoDesc: "Documento Oficial UNESCO N° 191: Vista general del sitio de Cuicul y su teatro antiguo.",
+    synTitle: "SÍNTESIS HISTÓRICA Y VALOR UNIVERSAL EXCEPCIONAL",
+    synBody: "«Ubicada a 900 m de altitud sobre un espolón rocoso entre dos uadis en el corazón de las montañas de Cabilia, Djemila (Cuicul) es una colonia militar romana creada a finales del siglo I (96 d.C.) bajo el reinado de Nerva. Ofrece uno de los ejemplos más acabados de adaptación del urbanismo romano clásico a un relieve montañoso complejo.»",
+    histBody1: "Fundada alrededor del año 96 d.C. bajo el reinado del emperador Nerva como puesto militar defensivo, Cuicul se desarrolló a lo largo de los siglos hasta convertirse en una floreciente ciudad comercial en el norte de África.",
+    histBody2: "Bajo las dinastías Antonina y luego Severa, la ciudad superó sus límites originales para crear el Foro Nuevo (Plaza Severiana) en el siglo III, dominado por el monumental Arco de Caracalla y el Templo de la familia Severa.",
+    histBody3: "En el siglo IV, la ciudad adoptó el cristianismo y se dotó de un barrio paleocristiano que incluye dos basílicas y un baptisterio circular conservado con su cúpula original.",
+    footer: "UNESCO • Patrimonio Mundial N° 191",
+    page: "Página"
+  }
+};
 
 const djemilaFolderModules = import.meta.glob('/src/assets/images/Amphithéâtre  Arc de Djemila (Cuicul)/*.{webp,jpg,JPG,jpeg,png}', { eager: true, import: 'default' });
 const djemilaImagesList = Object.values(djemilaFolderModules) as string[];
@@ -65,12 +161,15 @@ export const DjemilaDocumentModal: React.FC<DjemilaDocumentModalProps> = ({
   onClose,
   siteName = "Amphithéâtre & Arc de Djemila (Cuicul)"
 }) => {
+  const { language, setLanguage, isRtl } = useLanguage();
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [zoomLevel, setZoomLevel] = useState<number>(100);
   const [activeTab, setActiveTab] = useState<'document' | 'photos' | 'technical'>('document');
   const [activeLightbox, setActiveLightbox] = useState<typeof djemilaGalleryPhotos[0] | null>(null);
 
   if (!isOpen) return null;
+
+  const t = translations[language as keyof typeof translations] || translations.fr;
 
   const handleDownload = () => {
     const element = document.createElement("a");
@@ -91,21 +190,21 @@ export const DjemilaDocumentModal: React.FC<DjemilaDocumentModalProps> = ({
       `• THÉÂTRE ROMAIN (IIe siècle) : Édifice adossé à la colline pouvant accueillir 3 000 spectateurs.\n` +
       `• FORUM SÉVÉRIEN & TEMPLE DES SEPTIMES : Place monumentale et temple dynastique.\n` +
       `• COMPLEXE PALÉOCHRÉTIEN : Deux basiliques et un baptistère à coupole conservé en parfait état.\n` +
-      `• MUSÉE DES MOSAÏQUES : Collection exceptionnelle (Mosaïque de l'Âne sauvage, Bacchus, Asclépios).\n\n` +
+      `• MUSÉE DES MOSAÏQUES : Collection exceptionnelle.\n\n` +
       `--- 3. CRITÈRES D'INSCRIPTION UNESCO ---\n\n` +
       `• Critère (iii) : Témoignage exceptionnel sur la civilisation romaine en Afrique du Nord.\n` +
       `• Critère (iv) : Exemple remarquable d'ensemble architectural combinant l'art romain et chrétien.\n\n` +
       `DOCUMENT CERTIFIÉ ET ARCHIVÉ PAR L'OGEBC & L'UNESCO • RÉPUBLIQUE ALGÉRIENNE`
     ], { type: 'text/plain;charset=utf-8' });
     element.href = URL.createObjectURL(file);
-    element.download = "UNESCO_Rapport_Officiel_Djemila_Cuicul_191.txt";
+    element.download = t.fileName.replace('.pdf', '.txt');
     document.body.appendChild(element);
     element.click();
     document.body.removeChild(element);
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/85 backdrop-blur-md animate-fade-in">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/85 backdrop-blur-md animate-fade-in" dir={isRtl ? 'rtl' : 'ltr'}>
       <div className="bg-[#1e1e1e] text-slate-100 border border-amber-500/40 rounded-2xl w-full max-w-5xl h-[92vh] flex flex-col shadow-2xl overflow-hidden">
         
         {/* Document Header Toolbar */}
@@ -116,7 +215,7 @@ export const DjemilaDocumentModal: React.FC<DjemilaDocumentModalProps> = ({
             </div>
             <div className="min-w-0">
               <h2 className="font-mono font-bold text-amber-400 text-xs sm:text-sm truncate">
-                UNESCO_Rapport_Officiel_Djemila_Cuicul_N191.pdf
+                {t.fileName}
               </h2>
               <p className="text-[10px] text-slate-400 font-mono">
                 Patrimoine Mondial UNESCO • République Algérienne Démocratique et Populaire
@@ -126,6 +225,24 @@ export const DjemilaDocumentModal: React.FC<DjemilaDocumentModalProps> = ({
 
           {/* Navigation & Controls */}
           <div className="flex items-center space-x-1 sm:space-x-2 space-x-reverse">
+             {/* Language Switcher Pills */}
+            <div className="flex items-center bg-black/50 rounded-lg p-1 border border-amber-500/30 font-mono text-[10px] space-x-1 space-x-reverse">
+              {(['fr', 'ar', 'en', 'es'] as const).map(lang => (
+                <button
+                  key={lang}
+                  onClick={() => setLanguage(lang)}
+                  className={`px-2 py-0.5 rounded font-bold uppercase transition cursor-pointer ${
+                    language === lang 
+                      ? 'bg-amber-500 text-black shadow-xs' 
+                      : 'text-slate-300 hover:text-white hover:bg-white/10'
+                  }`}
+                  title={`Language: ${lang.toUpperCase()}`}
+                >
+                  {lang}
+                </button>
+              ))}
+            </div>
+
             <div className="flex items-center bg-black/40 rounded-lg p-1 border border-white/10 font-mono text-[11px]">
               <button 
                 onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
@@ -133,7 +250,7 @@ export const DjemilaDocumentModal: React.FC<DjemilaDocumentModalProps> = ({
                 className="p-1 hover:bg-white/10 rounded disabled:opacity-30 cursor-pointer"
                 title="Page précédente"
               >
-                <ChevronLeft size={14} />
+                <ChevronLeft size={14} className={isRtl ? 'rotate-180' : ''} />
               </button>
               <span className="px-2 text-amber-300 font-bold">
                 {currentPage} / 3
@@ -144,9 +261,10 @@ export const DjemilaDocumentModal: React.FC<DjemilaDocumentModalProps> = ({
                 className="p-1 hover:bg-white/10 rounded disabled:opacity-30 cursor-pointer"
                 title="Page suivante"
               >
-                <ChevronRight size={14} />
+                <ChevronRight size={14} className={isRtl ? 'rotate-180' : ''} />
               </button>
             </div>
+
 
             <div className="hidden md:flex items-center bg-black/40 rounded-lg p-1 border border-white/10 font-mono text-[11px]">
               <button 

@@ -1119,29 +1119,35 @@ export const DigitalTwin: React.FC = () => {
                     ? '/panorama/santa cruz Street View 360.jpg'
                     : (activeSpot.id === 'timgad' || activeSpot.name.toLowerCase().includes('timgad')
                         ? '/panorama/timgad View 360.jpg'
-                        : (activeSpot.id === 'casbah' || activeSpot.name.toLowerCase().includes('casbah') || activeSpot.name.toLowerCase().includes('casabah')
-                            ? '/panorama/casabah Street View 360.jpg'
-                            : (activeSpot.panoramas && activeSpot.panoramas[activeStep] && !activeSpot.panoramas[activeStep].includes(' ')
-                                ? activeSpot.panoramas[activeStep]
-                                : '/panorama/Street View 360.jpg')))
+                        : (activeSpot.id === 'tassili' || activeSpot.name.toLowerCase().includes('tassili')
+                            ? '/panorama/Tassili n’azjjer View 360.jpg'
+                            : (activeSpot.id === 'casbah' || activeSpot.name.toLowerCase().includes('casbah') || activeSpot.name.toLowerCase().includes('casabah')
+                                ? '/panorama/casabah Street View 360.jpg'
+                                : (activeSpot.panoramas && activeSpot.panoramas[activeStep] && !activeSpot.panoramas[activeStep].includes(' ')
+                                    ? activeSpot.panoramas[activeStep]
+                                    : '/panorama/Street View 360.jpg'))))
                 } 
                 title={
                   activeSpot.id === 'santa-cruz' || activeSpot.name.toLowerCase().includes('santa')
                     ? 'Chapelle Notre-Dame de Santa Cruz (Oran) — Photographie Originale 360°'
                     : (activeSpot.id === 'timgad' || activeSpot.name.toLowerCase().includes('timgad')
                         ? 'Ruines Romaines de Timgad (Batna) — Photographie Originale 360°'
-                        : (activeSpot.id === 'casbah' || activeSpot.name.toLowerCase().includes('casbah') || activeSpot.name.toLowerCase().includes('casabah')
-                            ? "La Casbah d'Alger — Photographie Originale 360°"
-                            : `${activeSpot.name} — Panorama Authentique 360°`))
+                        : (activeSpot.id === 'tassili' || activeSpot.name.toLowerCase().includes('tassili')
+                            ? 'Tassili n’Ajjer — Photographie Originale 360°'
+                            : (activeSpot.id === 'casbah' || activeSpot.name.toLowerCase().includes('casbah') || activeSpot.name.toLowerCase().includes('casabah')
+                                ? "La Casbah d'Alger — Photographie Originale 360°"
+                                : `${activeSpot.name} — Panorama Authentique 360°`)))
                 }
                 subtitle={
                   activeSpot.id === 'santa-cruz' || activeSpot.name.toLowerCase().includes('santa')
                     ? `${activeSpot.name} • Cliché d'Origine Non Modifié (santa cruz Street View 360.jpg)`
                     : (activeSpot.id === 'timgad' || activeSpot.name.toLowerCase().includes('timgad')
                         ? `${activeSpot.name} • Cliché d'Origine Non Modifié (timgad View 360.jpg)`
-                        : (activeSpot.id === 'casbah' || activeSpot.name.toLowerCase().includes('casbah') || activeSpot.name.toLowerCase().includes('casabah')
-                            ? `${activeSpot.name} • Cliché d'Origine Non Modifié (casabah Street View 360.jpg)`
-                            : `${activeSpot.name} • Cliché d'Origine Non Modifié`))
+                        : (activeSpot.id === 'tassili' || activeSpot.name.toLowerCase().includes('tassili')
+                            ? `${activeSpot.name} • Cliché d'Origine Non Modifié (Tassili n’azjjer View 360.jpg)`
+                            : (activeSpot.id === 'casbah' || activeSpot.name.toLowerCase().includes('casbah') || activeSpot.name.toLowerCase().includes('casabah')
+                                ? `${activeSpot.name} • Cliché d'Origine Non Modifié (casabah Street View 360.jpg)`
+                                : `${activeSpot.name} • Cliché d'Origine Non Modifié`)))
                 }
                 className="w-full h-full"
               />

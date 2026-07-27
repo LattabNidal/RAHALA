@@ -146,6 +146,7 @@ export const mockLandmarks: Landmark[] = [
     rating: 5.0,
     image: '/src/assets/images/tassili_erg_dunes_1784674389237.jpg',
     panoramas: [
+      '/panorama/Tassili n’azjjer View 360.jpg',
       '/src/assets/images/tassili_djanet_desert_1784672763415.jpg',
       '/src/assets/images/tassili_erg_dunes_1784674389237.jpg',
       '/src/assets/images/tassili_stone_forest_1784674536111.jpg',

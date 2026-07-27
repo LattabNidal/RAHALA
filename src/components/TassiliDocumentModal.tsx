@@ -1,6 +1,54 @@
 import React, { useState } from 'react';
 import { FileText, Download, X, Eye, Award, ZoomIn, ZoomOut, ChevronLeft, ChevronRight, Compass, ShieldCheck, Trees, Layers, MapPin } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 import { LazyImage } from './rahala/LazyImage';
+
+const translations = {
+  fr: {
+    title: "Parc National du Tassili n'Ajjer (Djanet, Sahara)",
+    fileName: "Rapport_Scientifique_Tassili_nAjjer_UNESCO_N450.pdf",
+    tabDoc: "Rapport Scientifique & Synthèse",
+    tabTech: "Fiche Technique & Géologique",
+    tabArt: "Musée d'Art Rupestre",
+    tabBio: "Biodiversité & Oasis",
+    tabPhotos: "Galerie Photographique Saharienne",
+    footer: "Parc National du Tassili n'Ajjer • Patrimoine Mondial UNESCO",
+    page: "Page"
+  },
+  en: {
+    title: "Tassili n'Ajjer National Park (Djanet, Sahara)",
+    fileName: "Scientific_Report_Tassili_nAjjer_UNESCO_N450.pdf",
+    tabDoc: "Scientific Report & Synthesis",
+    tabTech: "Technical & Geological Sheet",
+    tabArt: "Rock Art Museum",
+    tabBio: "Biodiversity & Oasis",
+    tabPhotos: "Saharian Photo Gallery",
+    footer: "Tassili n'Ajjer National Park • UNESCO World Heritage",
+    page: "Page"
+  },
+  ar: {
+    title: "الحديقة الوطنية طاسيلي ناجر (جانت، الصحراء)",
+    fileName: "تقرير_علمي_طاسيلي_ناجر_اليونسكو_رقم_450.pdf",
+    tabDoc: "تقرير علمي وملخص",
+    tabTech: "البطاقة التقنية والجيولوجية",
+    tabArt: "متحف الفن الصخري",
+    tabBio: "التنوع البيولوجي والواحات",
+    tabPhotos: "معرض الصور الصحراوية",
+    footer: "الحديقة الوطنية طاسيلي ناجر • تراث عالمي لليونسكو",
+    page: "صفحة"
+  },
+  es: {
+    title: "Parque Nacional del Tassili n'Ajjer (Djanet, Sahara)",
+    fileName: "Informe_Cientifico_Tassili_nAjjer_UNESCO_N450.pdf",
+    tabDoc: "Informe Científico y Síntesis",
+    tabTech: "Ficha Técnica y Geológica",
+    tabArt: "Museo de Arte Rupestre",
+    tabBio: "Biodiversidad y Oasis",
+    tabPhotos: "Galería Fotográfica Sahariana",
+    footer: "Parque Nacional del Tassili n'Ajjer • Patrimonio Mundial UNESCO",
+    page: "Página"
+  }
+};
 
 interface TassiliDocumentModalProps {
   isOpen: boolean;
@@ -13,6 +61,7 @@ export const TassiliDocumentModal: React.FC<TassiliDocumentModalProps> = ({
   onClose,
   siteName = "Parc National du Tassili n'Ajjer (Djanet, Sahara)"
 }) => {
+  const { language, setLanguage, isRtl } = useLanguage();
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [zoomLevel, setZoomLevel] = useState<number>(100);
   const [activeTab, setActiveTab] = useState<'document' | 'technical' | 'rockart' | 'biodiversity' | 'photos'>('document');
@@ -20,6 +69,8 @@ export const TassiliDocumentModal: React.FC<TassiliDocumentModalProps> = ({
   const [activeLightbox, setActiveLightbox] = useState<typeof tassiliGalleryPhotos[0] | null>(null);
 
   if (!isOpen) return null;
+
+  const t = translations[language as keyof typeof translations] || translations.fr;
 
   const tassiliGalleryPhotos = [
     {
@@ -180,6 +231,24 @@ export const TassiliDocumentModal: React.FC<TassiliDocumentModalProps> = ({
 
           {/* Navigation & Controls */}
           <div className="flex items-center space-x-1 sm:space-x-2 space-x-reverse">
+             {/* Language Switcher Pills */}
+            <div className="flex items-center bg-black/50 rounded-lg p-1 border border-amber-500/30 font-mono text-[10px] space-x-1 space-x-reverse">
+              {(['fr', 'ar', 'en', 'es'] as const).map(lang => (
+                <button
+                  key={lang}
+                  onClick={() => setLanguage(lang)}
+                  className={`px-2 py-0.5 rounded font-bold uppercase transition cursor-pointer ${
+                    language === lang 
+                      ? 'bg-amber-500 text-black shadow-xs' 
+                      : 'text-slate-300 hover:text-white hover:bg-white/10'
+                  }`}
+                  title={`Language: ${lang.toUpperCase()}`}
+                >
+                  {lang}
+                </button>
+              ))}
+            </div>
+
             {activeTab === 'document' && (
               <div className="flex items-center bg-black/40 rounded-lg p-1 border border-white/10 font-mono text-[11px]">
                 <button 
@@ -188,7 +257,7 @@ export const TassiliDocumentModal: React.FC<TassiliDocumentModalProps> = ({
                   className="p-1 hover:bg-white/10 rounded disabled:opacity-30 cursor-pointer text-slate-300"
                   title="Page précédente"
                 >
-                  <ChevronLeft size={14} />
+                  <ChevronLeft size={14} className={isRtl ? 'rotate-180' : ''} />
                 </button>
                 <span className="px-2 text-amber-300 font-bold">
                   {currentPage} / 4
@@ -199,7 +268,7 @@ export const TassiliDocumentModal: React.FC<TassiliDocumentModalProps> = ({
                   className="p-1 hover:bg-white/10 rounded disabled:opacity-30 cursor-pointer text-slate-300"
                   title="Page suivante"
                 >
-                  <ChevronRight size={14} />
+                  <ChevronRight size={14} className={isRtl ? 'rotate-180' : ''} />
                 </button>
               </div>
             )}
