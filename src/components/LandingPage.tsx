@@ -9,6 +9,8 @@ import casbahAlgiersImage from '../assets/images/casbah_d_alger/site_0565_0017-1
 import constantineImage from '../assets/images/Suspension Bridges of Constantine/shutterstock_596063633-1200x628-converti-depuis-jpg.webp';
 import santaCruzImage from '../assets/images/santa_cruz_oran_chapel_1784672157047.jpg';
 import tassiliImage from '../assets/images/tassili_djanet_desert_1784672763415.jpg';
+import tassiliCanyonImage from '../assets/images/tassili_canyon_gorge_1784674464805.jpg';
+import timgadImage from '../assets/images/Timgad Roman Ruins/timgad-un-site-archeologique.jpg';
 import rahalaHeroBanner from '../assets/images/rahala_hero_banner_1784119916854.jpg';
 import rahalaLogo from '../assets/images/android-chrome-512x512.png';
 
@@ -134,9 +136,9 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterAuth }) => {
 
   const popularDestinations = [
     { name: 'Oran', desc: 'La Radieuse - Fort Santa Cruz & Front de mer', image: santaCruzImage, rating: '4.9' },
-    { name: 'Alger', desc: 'La Blanche - Casbah historique & Jardin d\'Essai', image: casbahAlgiersImage, rating: '4.8' },
-    { name: 'Constantine', desc: 'La ville des ponts suspendus millénaires', image: constantineImage, rating: '4.9' },
-    { name: 'Ghardaïa', desc: 'La vallée mystique du Mzab & architecture unique', image: tassiliImage, rating: '4.7' }
+    { name: 'Alger', desc: 'La Casbah historique d\'Alger & la baie', image: casbahAlgiersImage, rating: '4.8' },
+    { name: 'Timgad', desc: 'Les ruines romaines de Thamugadi & l\'Arc de Trajan', image: timgadImage, rating: '4.9' },
+    { name: 'Djanet (Tassili)', desc: 'Le canyon du Tassili n\'Ajjer & art rupestre', image: tassiliCanyonImage, rating: '5.0' }
   ];
 
   const whyChooseUs = [
@@ -551,56 +553,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterAuth }) => {
           </div>
         </div>
 
-        {/* 4. POPULAR DESTINATIONS GRID */}
-        <div className="space-y-5">
-          <div className="flex items-center justify-between">
-            <div>
-              <h2 className="text-2xl font-black text-gray-900">
-                {language === 'ar' ? 'الوجهات الأكثر شعبية' : 'Destinations populaires en Algérie'}
-              </h2>
-              <p className="text-xs text-gray-500 mt-0.5">
-                {language === 'ar' ? 'الوجهات المفضلة التي يوصي بها خبراؤنا هذا الموسم' : 'Les joyaux incontournables recommandés pour votre prochain voyage.'}
-              </p>
-            </div>
-            <button 
-              onClick={() => onEnterAuth('login')}
-              className="text-xs font-bold text-emerald-600 hover:text-emerald-700 flex items-center gap-1 cursor-pointer"
-            >
-              <span>{language === 'ar' ? 'عرض الكل' : 'Tout voir'}</span>
-              <ArrowRight size={14} />
-            </button>
-          </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5">
-            {popularDestinations.map((dest) => (
-              <div 
-                key={dest.name} 
-                onClick={() => onEnterAuth('login')}
-                className="bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-xs hover:shadow-md hover:border-emerald-300 transition-all duration-350 cursor-pointer group flex flex-col justify-between"
-              >
-                <div>
-                  <div className="h-44 overflow-hidden relative bg-gray-100 flex items-center justify-center">
-                    <span className="text-gray-400 text-xs">Image non disponible</span>
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-                    <span className="absolute bottom-3 left-3 text-white font-extrabold text-lg tracking-wide">{dest.name}</span>
-                    <span className="absolute top-3 right-3 bg-white/95 text-gray-950 font-bold text-[10px] px-2 py-0.5 rounded-lg border border-gray-100 flex items-center gap-0.5 shadow-sm">
-                      ★ {dest.rating}
-                    </span>
-                  </div>
-                  <div className="p-4">
-                    <p className="text-xs text-gray-500 font-medium leading-relaxed font-sans">{dest.desc}</p>
-                  </div>
-                </div>
-                <div className="px-4 pb-4 pt-1 flex items-center justify-between border-t border-gray-50 mt-1">
-                  <span className="text-[10px] font-bold text-emerald-700 uppercase tracking-wider">{language === 'ar' ? 'استكشف الآن' : 'Explorer'}</span>
-                  <div className="p-1 rounded-full bg-emerald-50 text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white transition duration-200">
-                    <ArrowRight size={12} />
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
 
         {/* 5. DYNAMIC INFO CARD */}
         <div className="bg-gradient-to-br from-emerald-950 to-slate-900 text-white rounded-3xl p-6 sm:p-8 relative overflow-hidden shadow-xl">

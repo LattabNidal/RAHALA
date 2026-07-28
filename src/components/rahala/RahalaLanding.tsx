@@ -21,6 +21,11 @@ import {
 import { useLanguage } from '../../context/LanguageContext';
 import { Language } from '../../types';
 
+import casbahImage from '../../assets/images/casbah_algiers_authentic_1784670322523.jpg';
+import tassiliCanyonImage from '../../assets/images/tassili_canyon_gorge_1784674464805.jpg';
+import timgadImage from '../../assets/images/Timgad Roman Ruins/timgad-un-site-archeologique.jpg';
+import constantineImage from '../../assets/images/Suspension Bridges of Constantine/shutterstock_596063633-1200x628-converti-depuis-jpg.webp';
+
 interface RahalaLandingProps {
   onEnterAuth: (phase: 'login' | 'register') => void;
 }
@@ -59,7 +64,7 @@ const RahalaLanding: React.FC<RahalaLandingProps> = ({ onEnterAuth }) => {
         ar: ['غابة حجرية ساحرة', 'نقوش ورسومات ما قبل التاريخ'],
         es: ['Místico bosque de piedra', 'Arte rupestre milenario']
       },
-      image: 'https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=1000&q=80',
+      image: tassiliCanyonImage,
       badge: 'UNESCO Heritage'
     },
     {
@@ -71,7 +76,7 @@ const RahalaLanding: React.FC<RahalaLandingProps> = ({ onEnterAuth }) => {
         ar: ['قصور عثمانية عتيقة', 'إطلالة ساحرة على البحر الأزرق'],
         es: ['Patios otomanos secretos', 'Vista espectacular al mar azul']
       },
-      image: 'https://images.unsplash.com/photo-1543872084-c7bd3822856f?auto=format&fit=crop&w=1000&q=80',
+      image: casbahImage,
       badge: 'Ancient Citadel'
     },
     {
@@ -83,20 +88,20 @@ const RahalaLanding: React.FC<RahalaLandingProps> = ({ onEnterAuth }) => {
         ar: ['ممرات صخرية مهيبة', 'جسور معلقة معانقة للسحاب'],
         es: ['Desfiladeros majestuosos', 'Puentes colgantes del milenio']
       },
-      image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1000&q=80',
+      image: constantineImage,
       badge: 'Millennium Wonder'
     },
     {
-      name: 'Vallée du M\'zab',
-      region: 'Ghardaïa',
+      name: 'Timgad (Thamugadi)',
+      region: 'Batna • Aurès',
       bullets: {
-        en: ['Fortified cubic harmony', 'Inspirational master architecture'],
-        fr: ['Villes fortifiées uniques', 'Inspiration architecturale pure'],
-        ar: ['قصور متناغمة ومحصنة', 'إلهام هندسي مستمر عبر القرون'],
-        es: ['Armonía cúbica fortificada', 'Inspiración arquitectónica pura']
+        en: ['Ancient Roman colony', 'Trajan Arc & Great Amphitheater'],
+        fr: ['Ruines romaines exceptionnelles', 'Arc de Trajan & Grand Théâtre'],
+        ar: ['آثار رومانية عتيقة', 'قوس تراجان والمسرح الكبير'],
+        es: ['Ruinas romanas milenarias', 'Arco de Trajano y Anfiteatro']
       },
-      image: 'https://images.unsplash.com/photo-1539650116574-8efeb43e2750?auto=format&fit=crop&w=1000&q=80',
-      badge: 'Architectural Gem'
+      image: timgadImage,
+      badge: 'Roman Heritage'
     }
   ];
 
