@@ -5,6 +5,10 @@ import { LazyImage } from './rahala/LazyImage';
 import { Language } from '../types';
 import { SEOHead } from '../SEOHead';
 import androidChrome from '../assets/images/android-chrome-512x512.png';
+import casbahAlgiersImage from '../assets/images/casbah_d_alger/site_0565_0017-1000-1481-20140721144417.jpg';
+import constantineImage from '../assets/images/Suspension Bridges of Constantine/shutterstock_596063633-1200x628-converti-depuis-jpg.webp';
+import santaCruzImage from '../assets/images/santa_cruz_oran_chapel_1784672157047.jpg';
+import tassiliImage from '../assets/images/tassili_djanet_desert_1784672763415.jpg';
 import rahalaHeroBanner from '../assets/images/rahala_hero_banner_1784119916854.jpg';
 import rahalaLogo from '../assets/images/android-chrome-512x512.png';
 
@@ -87,7 +91,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterAuth }) => {
         ar: 'جرب التوأم الرقمي 🏛️',
         es: 'Probar Gemelo 3D 🏛️'
       },
-      image: 'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?auto=format&fit=crop&w=1200&q=80'
+      image: casbahAlgiersImage
     },
     {
       id: 4,
@@ -110,7 +114,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterAuth }) => {
         ar: 'توليد الخطة الذكية 📝',
         es: 'Crear Itinerario 📝'
       },
-      image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80'
+      image: tassiliImage
     }
   ];
 
@@ -129,10 +133,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterAuth }) => {
   ];
 
   const popularDestinations = [
-    { name: 'Oran', desc: 'La Radieuse - Fort Santa Cruz & Front de mer', image: 'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?auto=format&fit=crop&w=600&q=80', rating: '4.9' },
-    { name: 'Alger', desc: 'La Blanche - Casbah historique & Jardin d\'Essai', image: 'https://images.unsplash.com/photo-1543872084-c7bd3822856f?auto=format&fit=crop&w=600&q=80', rating: '4.8' },
-    { name: 'Constantine', desc: 'La ville des ponts suspendus millénaires', image: 'https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=600&q=80', rating: '4.9' },
-    { name: 'Ghardaïa', desc: 'La vallée mystique du Mzab & architecture unique', image: 'https://images.unsplash.com/photo-1539650116574-8efeb43e2750?auto=format&fit=crop&w=600&q=80', rating: '4.7' }
+    { name: 'Oran', desc: 'La Radieuse - Fort Santa Cruz & Front de mer', image: santaCruzImage, rating: '4.9' },
+    { name: 'Alger', desc: 'La Blanche - Casbah historique & Jardin d\'Essai', image: casbahAlgiersImage, rating: '4.8' },
+    { name: 'Constantine', desc: 'La ville des ponts suspendus millénaires', image: constantineImage, rating: '4.9' },
+    { name: 'Ghardaïa', desc: 'La vallée mystique du Mzab & architecture unique', image: tassiliImage, rating: '4.7' }
   ];
 
   const whyChooseUs = [
@@ -575,12 +579,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterAuth }) => {
                 className="bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-xs hover:shadow-md hover:border-emerald-300 transition-all duration-350 cursor-pointer group flex flex-col justify-between"
               >
                 <div>
-                  <div className="h-44 overflow-hidden relative">
-                    <LazyImage 
-                      src={dest.image} 
-                      alt={dest.name} 
-                      className="w-full h-full group-hover:scale-[1.03] transition-transform duration-500"
-                    />
+                  <div className="h-44 overflow-hidden relative bg-gray-100 flex items-center justify-center">
+                    <span className="text-gray-400 text-xs">Image non disponible</span>
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
                     <span className="absolute bottom-3 left-3 text-white font-extrabold text-lg tracking-wide">{dest.name}</span>
                     <span className="absolute top-3 right-3 bg-white/95 text-gray-950 font-bold text-[10px] px-2 py-0.5 rounded-lg border border-gray-100 flex items-center gap-0.5 shadow-sm">

@@ -28,7 +28,17 @@ const translations = {
     certifie: "✓ DOCUMENT OFFICIEL CERTIFIÉ",
     orgDate: "ORGANISATION UNESCO • 1990/1992",
     tabDoc: "Document Certifié ICOMOS (Textes)",
-    tabPhotos: "Galerie Photographique d'Époque"
+    tabPhotos: "Galerie Photographique d'Époque",
+    synBody: "« Dans l’un des plus beaux sites maritimes de la Méditerranée, surplombant les îlots où un comptoir carthaginois fut installé dès le IVe siècle av. J.-C., la Casbah constitue un type unique de médina, ou ville islamique. Lieu de mémoire autant que d’histoire, elle comprend des vestiges de la citadelle, des mosquées anciennes, des palais ottomans, ainsi qu’une structure urbaine traditionnelle associée à un grand sens de la communauté. »",
+    description: "La Casbah d'Alger apparaît comme un exemple significatif de ville historique maghrébine qui eut une grande influence sur l'urbanisme dans la partie occidentale de la Méditerranée et en Afrique sub-saharienne. Situé sur la côte méditerranéenne, le site fut habité au moins dès le VIe siècle avant notre ère quand un comptoir phénicien y fut installé. Le terme Casbah, qui désignait à l'origine le point culminant de la médina de l'époque ziride, s'applique aujourd'hui à l'ensemble de la vieille ville d'El Djazair, dans les limites marquées par les remparts d'époque ottomane édifiés dès la fin du XVIe siècle. Dans cet ensemble vivant où résident près de 50.000 personnes, se conservent encore de très intéressantes habitations traditionnelles, palais, hammams, mosquées et divers souks, dont la forme urbaine représente le témoignage d'une stratification de plusieurs tendances.",
+    critereIIBody: "La Casbah d'Alger a exercé une influence considérable sur l'architecture et la planification urbaine en Afrique du Nord, en Andalousie et en Afrique sub-saharienne durant les XVIe et XVIIe siècles. Ces échanges se manifestent par le caractère spécifique de son habitat et par la densité de sa stratification urbaine.",
+    critereVBody: "La Casbah d'Alger est un exemple éminent d'un habitat humain traditionnel représentatif de la culture musulmane profondément méditerranéenne, synthèse de nombreuses traditions. Les vestiges de la citadelle, des mosquées anciennes, des palais ottomans, ainsi qu'une structure urbaine traditionnelle associée à un grand sens de la communauté sont les témoins de cette culture.",
+    integBody: "Malgré les mutations et les aléas sismiques qu'elle a subis, la Casbah d'Alger conserve toujours son intégrité. Dans leur ensemble, les caractères esthétiques, les matériaux utilisés et les éléments architecturaux gardent leurs aspects originaux qui expriment les valeurs ayant prévalu au classement du site en 1992.",
+    authenBody: "Les attributs de la Valeur universelle exceptionnelle sont maintenus. La Casbah témoigne d'une authenticité remarquable, aussi bien au niveau de la forme et de la conception (trame urbaine très dense), des matériaux de construction (briques en terre crue, enduits de terre et à la chaux, pierre et bois) que de l'utilisation.",
+    protBody: "La Casbah d'Alger fut classée site historique national en novembre 1991 et secteur sauvegardé en 2003. Le cadre juridique comprend les lois 98.04 (protection du patrimoine culturel) et le Plan de sauvegarde et de mise en valeur (PPSMVSS, décret n° 324-2003) géré par la Direction de la Culture de la Wilaya d'Alger et l'OGEBC.",
+    rapportBody: "Que l'inscription de ce bien culturel sur la Liste du Patrimoine mondial soit confirmée avec l'engagement des autorités algériennes à l'égard de la conservation de la Casbah.",
+    obsHist: "Accueilli à bras ouverts par la population locale, un corsaire turc — Khaïr al-Din — installe sa capitale à Alger (1516) et soumet une grande partie du littoral algérien au sultan ottoman. Dans la ville se conjugue la science de l'architecture militaire turque avec les traditions architecturales arabe-méditerranéennes (habitations ordonnées autour d'un patio central et surmontées de terrasses).",
+    justif: "Un très intelligent plan de réaménagement de la Casbah est en cours pour réinstaller le confort moderne sans bouleverser l'urbanisme traditionnel, et conserver ce précieux témoin d'événements historiques parmi les plus marquants de l'histoire du peuple algérien."
   },
   en: {
     title: "WORLD HERITAGE LIST",
@@ -52,8 +62,19 @@ const translations = {
     certifie: "✓ OFFICIAL CERTIFIED DOCUMENT",
     orgDate: "UNESCO ORGANIZATION • 1990/1992",
     tabDoc: "ICOMOS Certified Document (Texts)",
-    tabPhotos: "Historical Photo Gallery"
+    tabPhotos: "Historical Photo Gallery",
+    synBody: "“In one of the most beautiful maritime sites of the Mediterranean, overlooking the islets where a Carthaginian trading post was installed as early as the 4th century BC, the Casbah constitutes a unique type of medina, or Islamic city. A place of memory as much as of history, it includes vestiges of the citadel, ancient mosques, Ottoman palaces, as well as a traditional urban structure associated with a great sense of community.”",
+    description: "The Casbah of Algiers appears as a significant example of a historic Maghreb city that had a great influence on urban planning in the western part of the Mediterranean and in sub-Saharan Africa. Located on the Mediterranean coast, the site was inhabited at least from the 6th century BC when a Phoenician trading post was installed there. The term Casbah, which originally designated the highest point of the medina of the Zirid era, today applies to the entire old city of El Djazair, within the limits marked by the Ottoman-era ramparts built from the end of the 16th century. In this living ensemble where nearly 50,000 people reside, very interesting traditional dwellings, palaces, hammams, mosques and various souks are still preserved, the urban form of which represents the testimony of a stratification of several tendencies.",
+    critereIIBody: "The Casbah of Algiers has exerted considerable influence on architecture and urban planning in North Africa, Andalusia and sub-Saharan Africa during the 16th and 17th centuries. These exchanges are manifested by the specific character of its habitat and by the density of its urban stratification.",
+    critereVBody: "The Casbah of Algiers is an eminent example of traditional human habitat representative of deeply Mediterranean Muslim culture, a synthesis of numerous traditions. The vestiges of the citadel, ancient mosques, Ottoman palaces, as well as a traditional urban structure associated with a great sense of community are witnesses to this culture.",
+    integBody: "Despite the mutations and seismic hazards it has undergone, the Casbah of Algiers still retains its integrity. As a whole, the aesthetic characteristics, the materials used and the architectural elements keep their original aspects which express the values that prevailed at the time of the site's classification in 1992.",
+    authenBody: "The attributes of Outstanding Universal Value are maintained. The Casbah bears witness to remarkable authenticity, both in terms of form and design (very dense urban fabric), construction materials (mud bricks, earth and lime plaster, stone and wood) and use.",
+    protBody: "The Casbah of Algiers was classified as a national historic site in November 1991 and a protected sector in 2003. The legal framework includes laws 98.04 (protection of cultural heritage) and the Safeguarding and Enhancement Plan (PPSMVSS, decree no. 324-2003) managed by the Directorate of Culture of the Wilaya of Algiers and the OGEBC.",
+    rapportBody: "That the inscription of this cultural property on the World Heritage List be confirmed with the commitment of the Algerian authorities regarding the conservation of the Casbah.",
+    obsHist: "Welcomed with open arms by the local population, a Turkish corsair — Khaïr al-Din — installed his capital in Algiers (1516) and subjected a large part of the Algerian coastline to the Ottoman sultan. In the city, the science of Turkish military architecture is combined with Arab-Mediterranean architectural traditions (dwellings arranged around a central patio and topped with terraces).",
+    justif: "A very intelligent redevelopment plan for the Casbah is underway to reinstall modern comfort without disrupting traditional urban planning, and to preserve this precious witness to historical events among the most significant in the history of the Algerian people."
   },
+
   ar: {
     title: "قائمة التراث العالمي",
     org: "منظمة الأمم المتحدة للتربية والعلم والثقافة",
@@ -131,20 +152,20 @@ export const UnescoDocumentModal: React.FC<UnescoDocumentModalProps> = ({
     // Generate text download or simulate file download
     const element = document.createElement("a");
     const file = new Blob([
-      `UNESCO - LISTE DU PATRIMOINE MONDIAL N° 555\n\n` +
-      `BIEN PROPOSÉ: Casbah d'Alger\n` +
-      `LIEU: Ville d'Alger, Algérie\n` +
-      `DATE: 6 mars 1990 (Classification UNESCO 1992)\n\n` +
-      `BRÈVE SYNTHÈSE:\n` +
-      `Dans l’un des plus beaux sites maritimes de la Méditerranée, surplombant les îlots où un comptoir carthaginois fut installé dès le IVe siècle av. J.-C., la Casbah constitue un type unique de médina, ou ville islamique. Lieu de mémoire autant que d’histoire, elle comprend des vestiges de la citadelle, des mosquées anciennes, des palais ottomans, ainsi qu’une structure urbaine traditionnelle associée à un grand sens de la communauté.\n\n` +
-      `CRITÈRES D'INSCRIPTION:\n` +
-      `- Critère (ii) : Influence considérable sur l'architecture et la planification urbaine en Afrique du Nord, Andalousie et Afrique sub-saharienne durant les XVIe et XVIIe siècles.\n` +
-      `- Critère (v) : Exemple éminent d'un habitat humain traditionnel représentatif de la culture musulmane méditerranéenne.\n\n` +
-      `INTÉGRITÉ ET AUTHENTICITÉ:\n` +
-      `Forme et conception (trame urbaine très dense), matériaux traditionnels (briques de terre crue, chaux, pierre et bois).`
+      `UNESCO - ${t.title} N° 555\n\n` +
+      `${t.bienPropose} Casbah d'Alger\n` +
+      `${t.lieu} Ville d'Alger, Algérie\n` +
+      `${t.dateInscription} 6 mars 1990 (UNESCO 1992)\n\n` +
+      `${t.valeurTitre}:\n` +
+      `${t.synBody}\n\n` +
+      `${t.criteresTitle}:\n` +
+      `- ${t.criteresII}.\n` +
+      `- ${t.criteresV}.\n\n` +
+      `${t.integriteAuthenticiteTitle}:\n` +
+      `${t.authenBody}`
     ], { type: 'text/plain;charset=utf-8' });
     element.href = URL.createObjectURL(file);
-    element.download = "UNESCO_Dossier_Officiel_Casbah_Alger_555.txt";
+    element.download = t.fileName.replace('.pdf', '.txt');
     document.body.appendChild(element);
     element.click();
     document.body.removeChild(element);
@@ -332,20 +353,14 @@ export const UnescoDocumentModal: React.FC<UnescoDocumentModalProps> = ({
                       {t.valeurTitre}
                     </h2>
                     <p className="text-justify italic text-black leading-relaxed bg-red-50/30 p-3 border-l-4 border-red-600">
-                      « Dans l’un des plus beaux sites maritimes de la Méditerranée, surplombant les îlots où un comptoir carthaginois fut installé dès le IVe siècle av. J.-C., la Casbah constitue un type unique de médina , ou ville islamique. Lieu de mémoire autant que d’histoire, elle comprend des vestiges de la citadelle, des mosquées anciennes, des palais ottomans, ainsi qu’une structure urbaine traditionnelle associée à un grand sens de la communauté. »
+                      {t.synBody}
                     </p>
                   </div>
 
                   {/* Description Détallée */}
                   <div className="space-y-3 text-black font-sans text-xs">
                     <p className="text-justify">
-                      La Casbah d'Alger apparaît comme un exemple significatif de ville historique maghrébine qui eut une grande influence sur l'urbanisme dans la partie occidentale de la Méditerranée et en Afrique sub-saharienne.
-                    </p>
-                    <p className="text-justify">
-                      Situé sur la côte méditerranéenne, le site fut habité au moins dès le VIe siècle avant notre ère quand un comptoir phénicien y fut installé. Le terme Casbah, qui désignait à l'origine le point culminant de la médina de l'époque ziride, s'applique aujourd'hui à l'ensemble de la vieille ville d'El Djazair, dans les limites marquées par les remparts d'époque ottomane édifiés dès la fin du XVIe siècle.
-                    </p>
-                    <p className="text-justify">
-                      Dans cet ensemble vivant où résident près de 50.000 personnes, se conservent encore de très intéressantes habitations traditionnelles, palais, hammams, mosquées et divers souks, dont la forme urbaine représente le témoignage d'une stratification de plusieurs tendances.
+                      {t.description}
                     </p>
                   </div>
 
@@ -373,7 +388,7 @@ export const UnescoDocumentModal: React.FC<UnescoDocumentModalProps> = ({
                         {t.criteresII}
                       </h3>
                       <p className="text-black text-justify">
-                        La Casbah d'Alger a exercé une influence considérable sur l'architecture et la planification urbaine en Afrique du Nord, en Andalousie et en Afrique sub-saharienne durant les XVIe et XVIIe siècles. Ces échanges se manifestent par le caractère spécifique de son habitat et par la densité de sa stratification urbaine.
+                        {t.critereIIBody}
                       </p>
                     </div>
 
@@ -382,7 +397,7 @@ export const UnescoDocumentModal: React.FC<UnescoDocumentModalProps> = ({
                         {t.criteresV}
                       </h3>
                       <p className="text-black text-justify">
-                        La Casbah d'Alger est un exemple éminent d'un habitat humain traditionnel représentatif de la culture musulmane profondément méditerranéenne, synthèse de nombreuses traditions. Les vestiges de la citadelle, des mosquées anciennes, des palais ottomans, ainsi qu'une structure urbaine traditionnelle associée à un grand sens de la communauté sont les témoins de cette culture.
+                        {t.critereVBody}
                       </p>
                     </div>
                   </div>
@@ -395,10 +410,10 @@ export const UnescoDocumentModal: React.FC<UnescoDocumentModalProps> = ({
                     
                     <div className="text-black space-y-2">
                       <p>
-                        <strong>Intégrité :</strong> Malgré les mutations et les aléas sismiques qu'elle a subis, la Casbah d'Alger conserve toujours son intégrité. Dans leur ensemble, les caractères esthétiques, les matériaux utilisés et les éléments architecturaux gardent leurs aspects originaux qui expriment les valeurs ayant prévalu au classement du site en 1992.
+                        <strong>Intégrité :</strong> {t.integBody}
                       </p>
                       <p>
-                        <strong>Authenticité :</strong> Les attributs de la Valeur universelle exceptionnelle sont maintenus. La Casbah témoigne d'une authenticité remarquable, aussi bien au niveau de la forme et de la conception (trame urbaine très dense), des matériaux de construction (briques en terre crue, enduits de terre et à la chaux, pierre et bois) que de l'utilisation.
+                        <strong>Authenticité :</strong> {t.authenBody}
                       </p>
                     </div>
                   </div>
@@ -409,7 +424,7 @@ export const UnescoDocumentModal: React.FC<UnescoDocumentModalProps> = ({
                       {t.protectionTitle}
                     </h3>
                     <p className="text-black text-justify">
-                      La Casbah d'Alger fut classée site historique national en novembre 1991 et secteur sauvegardé en 2003. Le cadre juridique comprend les lois 98.04 (protection du patrimoine culturel) et le Plan de sauvegarde et de mise en valeur (PPSMVSS, décret n° 324-2003) géré par la Direction de la Culture de la Wilaya d'Alger et l'OGEBC.
+                      {t.protBody}
                     </p>
                   </div>
 
@@ -434,23 +449,20 @@ export const UnescoDocumentModal: React.FC<UnescoDocumentModalProps> = ({
                   <div className="space-y-4 font-sans text-xs text-black">
                     <div className="p-3 bg-green-50 border border-green-200 font-mono text-[11px] leading-relaxed">
                       <p><strong>B) RECOMMANDATION DE L'ICOMOS :</strong></p>
-                      <p>Que l'inscription de ce bien culturel sur la Liste du Patrimoine mondial soit confirmée avec l'engagement des autorités algériennes à l'égard de la conservation de la Casbah.</p>
+                      <p>{t.rapportBody}</p>
                     </div>
 
                     <div>
                       <h3 className="font-bold text-black mb-1">C) OBSERVATIONS HISTORIQUES ET ARCHITECTURALES :</h3>
                       <p className="text-justify mb-2">
-                        Accueilli à bras ouverts par la population locale, un corsaire turc — Khaïr al-Din — installe sa capitale à Alger (1516) et soumet une grande partie du littoral algérien au sultan ottoman.
-                      </p>
-                      <p className="text-justify">
-                        Dans la ville se conjugue la science de l'architecture militaire turque avec les traditions architecturales arabe-méditerranéennes (habitations ordonnées autour d'un patio central et surmontées de terrasses).
+                        {t.obsHist}
                       </p>
                     </div>
 
                     <div className="border-t border-green-200 pt-3">
                       <h3 className="font-bold text-black mb-1">D) JUSTIFICATION DU CLASSEMENT :</h3>
                       <p className="text-justify">
-                        Un très intelligent plan de réaménagement de la Casbah est en cours pour réinstaller le confort moderne sans bouleverser l'urbanisme traditionnel, et conserver ce précieux témoin d'événements historiques parmi les plus marquants de l'histoire du peuple algérien.
+                        {t.justif}
                       </p>
                     </div>
                   </div>

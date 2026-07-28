@@ -25,7 +25,18 @@ const translations = {
     histBody2: "Sous les dynasties des Antonins puis des Sévères, la ville franchit ses limites originelles pour créer le Forum Nouveau (Place Sévérienne) au IIIe siècle, dominé par le monumental Arc de Caracalla et le Temple de la famille des Sévères.",
     histBody3: "Au IVe siècle, la cité adopte le christianisme et se dote d'un quartier paléochrétien comprenant deux basiliques et un baptistère circulaire conservé avec sa coupole d'origine.",
     footer: "UNESCO • Patrimoine Mondial N° 191",
-    page: "Page"
+    page: "Page",
+    critTitle: "CRITÈRES D'INSCRIPTION UNESCO",
+    critIII: "Critère (iii) : Témoignage exceptionnel sur la civilisation romaine en Afrique du Nord.",
+    critIV: "Critère (iv) : Exemple remarquable d'ensemble architectural combinant l'art romain et chrétien.",
+    protTitle: "PROTECTION ET CADRE LÉGAL",
+    protBody: "Le site est classé monument historique national par l'État algérien (Arrêté du 30 décembre 2009 / Loi 98-04 relative à la protection du patrimoine culturel) et géré par l'Office National de Gestion et d'Exploitation des Biens Culturels Protégés (OGEBC).",
+    archTitle: "MONUMENTS MAJEURS",
+    mon1: "Arc de Caracalla (216 apr. J.-C.) : Porte monumentale ouvrant la voie vers Sitifis (Sétif).",
+    mon2: "Théâtre Romain (IIe siècle) : Édifice adossé à la colline pouvant accueillir 3 000 spectateurs.",
+    mon3: "Forum Sévérien & Temple des Septimes : Place monumentale et temple dynastique.",
+    mon4: "Complexe Paléochrétien : Deux basiliques et un baptistère à coupole conservé en parfait état.",
+    mon5: "Musée des Mosaïques : Collection exceptionnelle."
   },
   en: {
     title: "Amphitheatre & Arch of Djemila (Cuicul)",
@@ -48,7 +59,18 @@ const translations = {
     histBody2: "Under the Antonine and then Severan dynasties, the city went beyond its original limits to create the New Forum (Severan Square) in the 3rd century, dominated by the monumental Arch of Caracalla and the Temple of the Severan family.",
     histBody3: "In the 4th century, the city adopted Christianity and acquired a Paleochristian quarter including two basilicas and a circular baptistery preserved with its original dome.",
     footer: "UNESCO • World Heritage N° 191",
-    page: "Page"
+    page: "Page",
+    critTitle: "UNESCO INSCRIPTION CRITERIA",
+    critIII: "Criterion (iii): Exceptional testimony to Roman civilization in North Africa.",
+    critIV: "Criterion (iv): Remarkable example of an architectural ensemble combining Roman and Christian art.",
+    protTitle: "PROTECTION AND LEGAL FRAMEWORK",
+    protBody: "The site is classified as a national historic monument by the Algerian State (Decree of December 30, 2009 / Law 98-04 on the protection of cultural heritage) and managed by the National Office for the Management and Exploitation of Protected Cultural Property (OGEBC).",
+    archTitle: "MAJOR MONUMENTS",
+    mon1: "Arch of Caracalla (216 AD): Monumental gate opening the way to Sitifis (Setif).",
+    mon2: "Roman Theater (2nd century): Building leaning against the hill that can accommodate 3,000 spectators.",
+    mon3: "Severan Forum & Temple of the Septimii: Monumental square and dynastic temple.",
+    mon4: "Paleochristian Complex: Two basilicas and a domed baptistery preserved in perfect condition.",
+    mon5: "Museum of Mosaics: Exceptional collection."
   },
   ar: {
     title: "مدرج وقوس جميلة (كويكول)",
@@ -71,7 +93,18 @@ const translations = {
     histBody2: "في عهد الأنتونين ثم السيفيريين، تجاوزت المدينة حدودها الأصلية لإنشاء المنتدى الجديد (الساحة السيفيرية) في القرن الثالث، والتي يهيمن عليها قوس كاراكلا الضخم ومعبد عائلة السيفيريين.",
     histBody3: "في القرن الرابع، اعتنقت المدينة المسيحية وأنشأت حياً مسيحياً قديماً يضم كنيستين ومعمودية دائرية محفوظة بقبتها الأصلية.",
     footer: "اليونسكو • التراث العالمي رقم 191",
-    page: "صفحة"
+    page: "صفحة",
+    critTitle: "معايير التسجيل في اليونسكو",
+    critIII: "المعيار (ثالثاً): شهادة استثنائية على الحضارة الرومانية في شمال إفريقيا.",
+    critIV: "المعيار (رابعاً): مثال رائع لمجموعة معمارية تجمع بين الفن الروماني والمسيحي.",
+    protTitle: "الحماية والإطار القانوني",
+    protBody: "تم تصنيف الموقع كمعلم تاريخي وطني من قبل الدولة الجزائرية (مرسوم 30 ديسمبر 2009 / القانون 98-04 المتعلق بحماية التراث الثقافي) ويديره الديوان الوطني لتسيير واستغلال الممتلكات الثقافية المحمية (OGEBC).",
+    archTitle: "المعالم الرئيسية",
+    mon1: "قوس كاراكلا (216 م): بوابة ضخمة تفتح الطريق نحو سطيف.",
+    mon2: "المسرح الروماني (القرن الثاني): مبنى مستند إلى التل يمكنه استيعاب 3000 متفرج.",
+    mon3: "المنتدى السيفيري ومعبد السيفيريين: ساحة ضخمة ومعبد سلالي.",
+    mon4: "المجمع المسيحي القديم: كنيستان ومعمودية مقببة محفوظة في حالة ممتازة.",
+    mon5: "متحف الفسيفساء: مجموعة استثنائية."
   },
   es: {
     title: "Anfiteatro y Arco de Djemila (Cuicul)",
@@ -94,7 +127,18 @@ const translations = {
     histBody2: "Bajo las dinastías Antonina y luego Severa, la ciudad superó sus límites originales para crear el Foro Nuevo (Plaza Severiana) en el siglo III, dominado por el monumental Arco de Caracalla y el Templo de la familia Severa.",
     histBody3: "En el siglo IV, la ciudad adoptó el cristianismo y se dotó de un barrio paleocristiano que incluye dos basílicas y un baptisterio circular conservado con su cúpula original.",
     footer: "UNESCO • Patrimonio Mundial N° 191",
-    page: "Página"
+    page: "Página",
+    critTitle: "CRITERIOS DE INSCRIPCIÓN UNESCO",
+    critIII: "Criterio (iii): Testimonio excepcional de la civilización romana en el norte de África.",
+    critIV: "Criterio (iv): Ejemplo notable de un conjunto arquitectónico que combina el arte romano y cristiano.",
+    protTitle: "PROTECCIÓN Y MARCO JURÍDICO",
+    protBody: "El sitio está clasificado como monumento histórico nacional por el Estado argelino (Decreto del 30 de diciembre de 2009 / Ley 98-04 sobre la protección del patrimonio cultural) y gestionado por la Oficina Nacional de Gestión y Explotación de Bienes Culturales Protegidos (OGEBC).",
+    archTitle: "MONUMENTOS MAYORES",
+    mon1: "Arco de Caracalla (216 d.C.): Puerta monumental que abre el camino hacia Sitifis (Sétif).",
+    mon2: "Teatro Romano (Siglo II): Edificio adosado a la colina con capacidad para 3.000 espectadores.",
+    mon3: "Foro Severiano y Templo de los Septimios: Plaza monumental y templo dinástico.",
+    mon4: "Complejo Paleocristiano: Dos basílicas y un baptisterio con cúpula conservado en perfectas condiciones.",
+    mon5: "Museo de Mosaicos: Colección excepcional."
   }
 };
 
@@ -354,10 +398,10 @@ export const DjemilaDocumentModal: React.FC<DjemilaDocumentModalProps> = ({
                   <div className="border-b-2 border-gray-900 pb-4 flex justify-between items-start">
                     <div>
                       <h1 className="text-base sm:text-xl font-bold uppercase tracking-widest text-gray-900">
-                        LISTE DU PATRIMOINE MONDIAL
+                        {t.headerP1}
                       </h1>
                       <p className="text-xs font-sans font-bold text-amber-800 uppercase tracking-wider mt-0.5">
-                        ORGANISATION DES NATIONS UNIES POUR L'ÉDUCATION, LA SCIENCE ET LA CULTURE
+                        {t.headerP2}
                       </p>
                     </div>
                     <div className="text-right font-mono text-xs border-2 border-gray-900 p-2 font-bold bg-amber-50/50">
@@ -368,13 +412,13 @@ export const DjemilaDocumentModal: React.FC<DjemilaDocumentModalProps> = ({
                   {/* Identification Box */}
                   <div className="bg-amber-50/40 border border-amber-200 p-4 font-sans text-xs space-y-2">
                     <h2 className="font-bold font-serif text-sm border-b border-amber-200 pb-1 text-amber-900">
-                      IDENTIFICATION OFFICIELLE DU BIEN
+                      {t.idTitle}
                     </h2>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-gray-800">
-                      <div><strong className="text-gray-900">Bien désigné :</strong> Djémila (Cuicul)</div>
-                      <div><strong className="text-gray-900">Localisation :</strong> Djemila, Wilaya de Sétif</div>
-                      <div><strong className="text-gray-900">État Partie :</strong> Algérie 🇩🇿</div>
-                      <div><strong className="text-gray-900">Date d'inscription :</strong> Décembre 1982</div>
+                      <div><strong className="text-gray-900">{t.idVal1.split(':')[0]}:</strong> {t.idVal1.split(':')[1]}</div>
+                      <div><strong className="text-gray-900">{t.idVal2.split(':')[0]}:</strong> {t.idVal2.split(':')[1]}</div>
+                      <div><strong className="text-gray-900">{t.idVal3.split(':')[0]}:</strong> {t.idVal3.split(':')[1]}</div>
+                      <div><strong className="text-gray-900">{t.idVal4.split(':')[0]}:</strong> {t.idVal4.split(':')[1]}</div>
                     </div>
                   </div>
 
@@ -386,36 +430,36 @@ export const DjemilaDocumentModal: React.FC<DjemilaDocumentModalProps> = ({
                       className="w-full h-64 rounded"
                     />
                     <p className="text-[10px] font-sans text-gray-500 italic mt-1.5 text-center">
-                      Document Officiel UNESCO N° 191 : Vue d'ensemble du site de Cuicul et de son théâtre antique.
+                      {t.photoDesc}
                     </p>
                   </div>
 
                   {/* Brève Synthèse */}
                   <div>
                     <h2 className="font-bold font-sans text-sm text-gray-900 uppercase border-b border-gray-300 pb-1 mb-2">
-                      SYNTHÈSE HISTORIQUE & VALEUR UNIVERSELLE EXCEPTIONNELLE
+                      {t.synTitle}
                     </h2>
                     <p className="text-justify italic text-gray-800 leading-relaxed bg-amber-50/30 p-3 border-l-4 border-amber-600">
-                      « Situé à 900 m d'altitude dans les montagnes de la petite Kabylie, le site de Djémila (l'antique Cuicul) comporte un ensemble remarquable de ruines romaines, avec son forum, ses temples, ses basiliques, ses arcs de triomphe et ses maisons. C'est un exemple marquant d'adaptation de l'architecture romaine à un environnement montagneux. »
+                      {t.synBody}
                     </p>
                   </div>
 
                   {/* Description Détallée */}
                   <div className="space-y-3 text-gray-800 font-sans text-xs">
                     <p className="text-justify">
-                      Fondée vers 96 apr. J.-C. sous le règne de l'empereur Nerva comme poste militaire défensif, Cuicul s'est développée au fil des siècles jusqu'à devenir une florissante cité commerçante d'Afrique du Nord.
+                      {t.histBody1}
                     </p>
                     <p className="text-justify">
-                      Sous les dynasties des Antonins puis des Sévères, la ville franchit ses limites originelles pour créer le Forum Nouveau (Place Sévérienne) au IIIe siècle, dominé par le monumental Arc de Caracalla et le Temple de la famille des Sévères.
+                      {t.histBody2}
                     </p>
                     <p className="text-justify">
-                      Au IVe siècle, la cité adopte le christianisme et se dote d'un quartier paléochrétien comprenant deux basiliques et un baptistère circulaire conservé avec sa coupole d'origine.
+                      {t.histBody3}
                     </p>
                   </div>
 
                   <div className="pt-4 border-t border-gray-300 flex justify-between text-[10px] font-mono text-gray-500">
-                    <span>UNESCO • Patrimoine Mondial N° 191</span>
-                    <span>Page 1 de 3</span>
+                    <span>{t.footer}</span>
+                    <span>{t.page} {currentPage} / 3</span>
                   </div>
                 </div>
               )}

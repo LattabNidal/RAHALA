@@ -222,25 +222,25 @@ export const AdminDashboard: React.FC = () => {
       
       {/* Upper Title block */}
       <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-10">
-        <span className="inline-block px-3 py-1 bg-emerald-600/10 text-emerald-600 dark:text-emerald-450 border border-emerald-500/10 rounded-full font-mono font-bold text-[9px] uppercase tracking-widest mb-3">
+        <span className="inline-block px-3 py-1 bg-emerald-100 text-emerald-700 border border-emerald-200 rounded-full font-sans font-bold text-[9px] uppercase tracking-widest mb-3">
           Console Administrative Sécurisée
         </span>
-        <h1 className="text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white flex items-center justify-center gap-2">
+        <h1 className="text-3xl font-extrabold tracking-tight text-slate-800 flex items-center justify-center gap-2">
           <span>Gestion RAHLA AI 🇩🇿</span>
         </h1>
-        <p className="mt-2.5 text-xs text-gray-500 dark:text-slate-400 max-w-lg mx-auto">
+        <p className="mt-2.5 text-xs text-slate-500 max-w-lg mx-auto font-sans">
           Prenez le contrôle de l’application de voyage en pilotant les comptes utilisateurs, le catalogue interactif et la télémétrie en temps réel.
         </p>
       </div>
 
       {/* THREE-WAY CENTRAL TAB CONTROL PANEL */}
-      <div className="flex border-b border-gray-150 dark:border-zinc-805 mb-8 justify-center gap-2 font-mono" id="admin-panel-tabs">
+      <div className="flex border-b border-slate-200 mb-8 justify-center gap-2 font-sans" id="admin-panel-tabs">
         <button
           onClick={() => { setActiveTab('stats'); setSearchQuery(''); }}
           className={`px-5 py-3 text-xs uppercase tracking-wider font-extrabold border-b-2 transition-all cursor-pointer flex items-center gap-2 ${
             activeTab === 'stats'
-              ? 'text-emerald-600 border-emerald-500 bg-emerald-500/5'
-              : 'text-gray-500 hover:text-emerald-500 border-transparent hover:border-gray-300'
+              ? 'text-emerald-700 border-emerald-500 bg-emerald-50'
+              : 'text-slate-500 hover:text-emerald-600 border-transparent hover:border-slate-300'
           }`}
         >
           <BarChart3 size={15} />
@@ -251,8 +251,8 @@ export const AdminDashboard: React.FC = () => {
           onClick={() => { setActiveTab('users'); setSearchQuery(''); }}
           className={`px-5 py-3 text-xs uppercase tracking-wider font-extrabold border-b-2 transition-all cursor-pointer flex items-center gap-2 ${
             activeTab === 'users'
-              ? 'text-emerald-600 border-emerald-500 bg-emerald-500/5'
-              : 'text-gray-500 hover:text-emerald-500 border-transparent hover:border-gray-300'
+              ? 'text-emerald-700 border-emerald-500 bg-emerald-50'
+              : 'text-slate-500 hover:text-emerald-600 border-transparent hover:border-slate-300'
           }`}
         >
           <Users size={15} />
@@ -263,8 +263,8 @@ export const AdminDashboard: React.FC = () => {
           onClick={() => { setActiveTab('content'); setSearchQuery(''); }}
           className={`px-5 py-3 text-xs uppercase tracking-wider font-extrabold border-b-2 transition-all cursor-pointer flex items-center gap-2 ${
             activeTab === 'content'
-              ? 'text-emerald-600 border-emerald-500 bg-emerald-500/5'
-              : 'text-gray-500 hover:text-emerald-500 border-transparent hover:border-gray-300'
+              ? 'text-emerald-700 border-emerald-500 bg-emerald-50'
+              : 'text-slate-500 hover:text-emerald-600 border-transparent hover:border-slate-300'
           }`}
         >
           <Settings size={15} />
@@ -293,59 +293,59 @@ export const AdminDashboard: React.FC = () => {
         <div className="space-y-8 animate-fade-in" id="admin-sec-stats">
           {/* Numerical Figures Grid cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="bg-white dark:bg-zinc-900 border border-emerald-50 dark:border-zinc-800 rounded-3xl p-6 shadow-xl relative overflow-hidden flex flex-col justify-between">
+            <div className="bg-stone-50 border border-slate-200 rounded-3xl p-6 shadow-sm relative overflow-hidden flex flex-col justify-between">
               <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-500/5 rounded-full blur-xl pointer-events-none"></div>
               <div className="flex justify-between items-center mb-4">
-                <span className="text-[10px] font-mono text-gray-400 uppercase tracking-widest">Trafic Global</span>
-                <div className="p-2 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 rounded-xl">
+                <span className="text-[10px] font-sans text-slate-400 uppercase tracking-widest">Trafic Global</span>
+                <div className="p-2 bg-emerald-100 text-emerald-700 rounded-xl">
                   <Users size={16} />
                 </div>
               </div>
               <div>
-                <h3 className="text-3xl font-black text-gray-800 dark:text-white font-mono leading-none mb-1">
+                <h3 className="text-3xl font-black text-slate-800 font-sans leading-none mb-1">
                   {totalVisitsCount.toLocaleString()}
                 </h3>
-                <p className="text-[10px] text-gray-400 font-serif font-semibold mt-1">Touristes algériens et étrangers enregistrés</p>
+                <p className="text-[10px] text-slate-400 font-sans font-semibold mt-1">Touristes algériens et étrangers enregistrés</p>
               </div>
-              <span className="text-[10px] text-emerald-600 font-extrabold mt-4 self-start bg-emerald-500/10 px-2 py-0.5 rounded-lg font-mono">
+              <span className="text-[10px] text-emerald-700 font-extrabold mt-4 self-start bg-emerald-100 px-2 py-0.5 rounded-lg font-sans">
                 +14.2% ce mois-ci
               </span>
             </div>
 
-            <div className="bg-white dark:bg-zinc-900 border border-emerald-50 dark:border-zinc-800 rounded-3xl p-6 shadow-xl relative overflow-hidden flex flex-col justify-between">
+            <div className="bg-stone-50 border border-slate-200 rounded-3xl p-6 shadow-sm relative overflow-hidden flex flex-col justify-between">
               <div className="absolute top-0 right-0 w-24 h-24 bg-amber-500/5 rounded-full blur-xl pointer-events-none"></div>
               <div className="flex justify-between items-center mb-4">
-                <span className="text-[10px] font-mono text-gray-400 uppercase tracking-widest">RAHALA Gold VIP</span>
-                <div className="p-2 bg-[#d4af37]/10 text-[#d4af37] rounded-xl">
+                <span className="text-[10px] font-sans text-slate-400 uppercase tracking-widest">RAHALA Gold VIP</span>
+                <div className="p-2 bg-amber-100 text-amber-700 rounded-xl">
                   <ShieldAlert size={16} />
                 </div>
               </div>
               <div>
-                <h3 className="text-3xl font-black text-gray-800 dark:text-white font-mono leading-none mb-1">
+                <h3 className="text-3xl font-black text-slate-800 font-sans leading-none mb-1">
                   {totalSubscribers.toLocaleString()}
                 </h3>
-                <p className="text-[10px] text-gray-400 font-serif font-semibold mt-1">Membres VIP de la formule Premium</p>
+                <p className="text-[10px] text-slate-400 font-sans font-semibold mt-1">Membres VIP de la formule Premium</p>
               </div>
-              <span className="text-[10px] text-amber-600 dark:text-[#d4af37] font-extrabold mt-4 self-start bg-[#d4af37]/10 px-2 py-0.5 rounded-lg font-mono">
+              <span className="text-[10px] text-amber-700 font-extrabold mt-4 self-start bg-amber-100 px-2 py-0.5 rounded-lg font-sans">
                 18.5% de taux de conversion
               </span>
             </div>
 
-            <div className="bg-white dark:bg-zinc-900 border border-emerald-50 dark:border-zinc-800 rounded-3xl p-6 shadow-xl relative overflow-hidden flex flex-col justify-between">
+            <div className="bg-stone-50 border border-slate-200 rounded-3xl p-6 shadow-sm relative overflow-hidden flex flex-col justify-between">
               <div className="absolute top-0 right-0 w-24 h-24 bg-rose-500/5 rounded-full blur-xl pointer-events-none"></div>
               <div className="flex justify-between items-center mb-4">
-                <span className="text-[10px] font-mono text-gray-400 uppercase tracking-widest">Revenus Cumulés</span>
-                <div className="p-2 bg-rose-500/10 text-rose-500 rounded-xl">
+                <span className="text-[10px] font-sans text-slate-400 uppercase tracking-widest">Revenus Cumulés</span>
+                <div className="p-2 bg-rose-100 text-rose-600 rounded-xl">
                   <DollarSign size={16} />
                 </div>
               </div>
               <div>
-                <h3 className="text-3xl font-black font-mono leading-none mb-1 tabular-nums">
-                  <PriceTag amount={estimatedRevenueDZD} className="text-emerald-600 dark:text-emerald-400 text-3xl!" />
+                <h3 className="text-3xl font-black font-sans leading-none mb-1 tabular-nums">
+                  <PriceTag amount={estimatedRevenueDZD} className="text-emerald-700 text-3xl!" />
                 </h3>
-                <p className="text-[10px] text-gray-400 font-serif font-semibold mt-1">Transactions et réservations hôtelières directes</p>
+                <p className="text-[10px] text-slate-400 font-sans font-semibold mt-1">Transactions et réservations hôtelières directes</p>
               </div>
-              <span className="text-[10px] text-rose-600 font-extrabold mt-4 self-start bg-rose-500/10 px-2 py-0.5 rounded-lg font-mono">
+              <span className="text-[10px] text-rose-600 font-extrabold mt-4 self-start bg-rose-100 px-2 py-0.5 rounded-lg font-sans">
                 Géré via Stripe DZD
               </span>
             </div>
@@ -353,61 +353,61 @@ export const AdminDashboard: React.FC = () => {
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
             {/* Dynamic Interactive Revenue graph - 8 Columns */}
-            <div className="lg:col-span-8 bg-white dark:bg-zinc-900 border border-emerald-50 dark:border-zinc-800 rounded-3xl p-6 shadow-xl flex flex-col justify-between">
+            <div className="lg:col-span-8 bg-stone-50 border border-slate-200 rounded-3xl p-6 shadow-sm flex flex-col justify-between">
               <div>
-                <div className="flex justify-between items-center border-b border-gray-100 dark:border-zinc-800 pb-4 mb-4">
-                  <h4 className="text-xs sm:text-sm font-bold text-gray-950 dark:text-white flex items-center gap-2">
-                    <BarChart3 className="text-emerald-600" size={16} />
+                <div className="flex justify-between items-center border-b border-slate-200 pb-4 mb-4">
+                  <h4 className="text-xs sm:text-sm font-bold text-slate-800 flex items-center gap-2 font-sans">
+                    <BarChart3 className="text-emerald-700" size={16} />
                     <span>Fluctuations Mensuelles du Tourisme Algérien (Indice RAHLA 2026)</span>
                   </h4>
-                  <span className="text-[9px] font-mono text-gray-400 hidden sm:inline">Statut de connexion en temps réel</span>
+                  <span className="text-[9px] font-sans text-slate-400 hidden sm:inline">Statut de connexion en temps réel</span>
                 </div>
 
                 {/* Premium custom SVG analytics matrix */}
                 <div className="h-[210px] relative w-full flex items-end justify-between px-2 pt-6">
                   
                   <svg viewBox="0 0 500 150" className="absolute inset-0 w-full h-full pointer-events-none">
-                    <line x1="0" y1="35" x2="500" y2="35" className="stroke-gray-100 dark:stroke-zinc-850 stroke-1" strokeDasharray="5,5" />
-                    <line x1="0" y1="75" x2="500" y2="75" className="stroke-gray-100 dark:stroke-zinc-850 stroke-1" strokeDasharray="5,5" />
-                    <line x1="0" y1="115" x2="500" y2="115" className="stroke-gray-100 dark:stroke-zinc-850 stroke-1" strokeDasharray="5,5" />
+                    <line x1="0" y1="35" x2="500" y2="35" className="stroke-slate-200 stroke-1" strokeDasharray="5,5" />
+                    <line x1="0" y1="75" x2="500" y2="75" className="stroke-slate-200 stroke-1" strokeDasharray="5,5" />
+                    <line x1="0" y1="115" x2="500" y2="115" className="stroke-slate-200 stroke-1" strokeDasharray="5,5" />
 
-                    <path d="M 30 130 Q 110 95, 200 100 T 360 45 T 480 25" fill="none" className="stroke-emerald-600 dark:stroke-emerald-400 stroke-[3.5]" />
-                    <circle cx="480" cy="25" r="5" className="fill-emerald-600" />
+                    <path d="M 30 130 Q 110 95, 200 100 T 360 45 T 480 25" fill="none" className="stroke-emerald-700 stroke-[3.5]" />
+                    <circle cx="480" cy="25" r="5" className="fill-emerald-700" />
                   </svg>
 
-                  <div className="text-[9px] font-mono font-bold text-gray-400 flex flex-col items-center justify-end h-full"><span>Jan</span></div>
-                  <div className="text-[9px] font-mono font-bold text-gray-400 flex flex-col items-center justify-end h-full"><span>Fév</span></div>
-                  <div className="text-[9px] font-mono font-bold text-gray-400 flex flex-col items-center justify-end h-full"><span>Mar</span></div>
-                  <div className="text-[9px] font-mono font-bold text-gray-400 flex flex-col items-center justify-end h-full"><span>Avr</span></div>
-                  <div className="text-[9px] font-mono font-bold text-gray-400 flex flex-col items-center justify-end h-full"><span>Mai</span></div>
-                  <div className="text-[9px] font-mono font-black text-white flex flex-col items-center justify-end h-full bg-emerald-600 px-2 py-0.5 rounded-lg"><span>Juin (Courant)</span></div>
+                  <div className="text-[9px] font-sans font-bold text-slate-400 flex flex-col items-center justify-end h-full"><span>Jan</span></div>
+                  <div className="text-[9px] font-sans font-bold text-slate-400 flex flex-col items-center justify-end h-full"><span>Fév</span></div>
+                  <div className="text-[9px] font-sans font-bold text-slate-400 flex flex-col items-center justify-end h-full"><span>Mar</span></div>
+                  <div className="text-[9px] font-sans font-bold text-slate-400 flex flex-col items-center justify-end h-full"><span>Avr</span></div>
+                  <div className="text-[9px] font-sans font-bold text-slate-400 flex flex-col items-center justify-end h-full"><span>Mai</span></div>
+                  <div className="text-[9px] font-sans font-black text-white flex flex-col items-center justify-end h-full bg-emerald-700 px-2 py-0.5 rounded-lg"><span>Juin (Courant)</span></div>
                 </div>
               </div>
 
-              <div className="p-4 bg-emerald-500/5 border border-emerald-500/10 text-[11px] text-emerald-800 dark:text-emerald-300 rounded-2xl mt-4 flex justify-between items-center font-serif leading-relaxed">
+              <div className="p-4 bg-emerald-50 border border-emerald-100 text-[11px] text-emerald-800 rounded-2xl mt-4 flex justify-between items-center font-sans leading-relaxed">
                 <span>Le tourisme réceptif en Algérie est sur une trajectoire ascendante de 28% comparé à l'historique 2025.</span>
-                <span className="font-mono text-[9px] text-[#d4af37] font-bold">Mis à jour le: 2026-06-19</span>
+                <span className="font-sans text-[9px] text-amber-700 font-bold">Mis à jour le: 2026-06-19</span>
               </div>
             </div>
 
             {/* Most Visited places checklist - 4 Columns */}
-            <div className="lg:col-span-4 bg-white dark:bg-zinc-900 border border-emerald-50 dark:border-zinc-800 rounded-3xl p-6 shadow-xl">
-              <h4 className="text-xs sm:text-sm font-bold text-gray-950 dark:text-white mb-6 border-b border-gray-100 dark:border-zinc-800 pb-4 flex items-center gap-2">
+            <div className="lg:col-span-4 bg-stone-50 border border-slate-200 rounded-3xl p-6 shadow-sm">
+              <h4 className="text-xs sm:text-sm font-bold text-slate-800 mb-6 border-b border-slate-200 pb-4 flex items-center gap-2 font-sans">
                 <Star className="text-amber-500 fill-amber-500" size={15} />
                 <span>Hotspots les plus visités</span>
               </h4>
 
               <div className="space-y-4">
                 {popularSpotsRatings.map((spot, id) => (
-                  <div key={id} className="p-3 bg-slate-50 dark:bg-zinc-950 rounded-2xl border border-slate-100 dark:border-zinc-805">
+                  <div key={id} className="p-3 bg-white rounded-2xl border border-slate-200">
                     <div className="flex justify-between items-center mb-1">
-                      <h5 className="text-[11px] font-bold text-gray-800 dark:text-slate-100 truncate max-w-[150px]">{spot.name}</h5>
-                      <span className="text-[9px] font-mono font-extrabold text-emerald-600">{spot.load}</span>
+                      <h5 className="text-[11px] font-bold text-slate-700 truncate max-w-[150px] font-sans">{spot.name}</h5>
+                      <span className="text-[9px] font-sans font-extrabold text-emerald-700">{spot.load}</span>
                     </div>
-                    <div className="w-full bg-gray-200 dark:bg-zinc-800 h-1.5 rounded-full overflow-hidden">
-                      <div className="bg-emerald-600 h-full rounded-full" style={{ width: spot.load }} />
+                    <div className="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden">
+                      <div className="bg-emerald-700 h-full rounded-full" style={{ width: spot.load }} />
                     </div>
-                    <span className="text-[8px] font-mono text-gray-400 mt-1 block">{spot.capacity} enregistrements</span>
+                    <span className="text-[8px] font-sans text-slate-400 mt-1 block">{spot.capacity} enregistrements</span>
                   </div>
                 ))}
               </div>
@@ -434,9 +434,9 @@ export const AdminDashboard: React.FC = () => {
               </div>
             ) : (
               <div className="overflow-x-auto">
-                <table className="w-full text-left text-xs text-gray-500 dark:text-slate-450 border-collapse font-sans">
+                <table className="w-full text-left text-xs text-slate-600 border-collapse font-sans">
                   <thead>
-                    <tr className="border-b border-gray-100 dark:border-zinc-805 text-[8px] font-mono uppercase tracking-widest text-slate-400">
+                    <tr className="border-b border-slate-200 text-[8px] font-sans uppercase tracking-widest text-slate-400">
                       <th className="py-3 px-3">Nº FACTURE</th>
                       <th className="py-3 px-3">REFUGE / SERVICE</th>
                       <th className="py-3 px-3">DATE DU VOYAGE</th>
@@ -444,19 +444,19 @@ export const AdminDashboard: React.FC = () => {
                       <th className="py-3 px-3">STATUT</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-50 dark:divide-zinc-805">
+                  <tbody className="divide-y divide-slate-100">
                     {filteredLogs.map((log) => (
-                      <tr key={log.id} className="hover:bg-slate-500/5 transition">
-                        <td className="py-3 px-3 font-mono font-bold text-[#d4af37]">{log.invoiceNo}</td>
+                      <tr key={log.id} className="hover:bg-slate-50 transition">
+                        <td className="py-3 px-3 font-sans font-bold text-amber-700">{log.invoiceNo}</td>
                         <td className="py-3 px-3">
                           <div className="flex items-center gap-2">
-                            <span className="font-extrabold text-slate-800 dark:text-slate-200">{log.targetName}</span>
-                            <span className="px-1.5 py-0.2 uppercase font-mono text-[7px] bg-emerald-500/10 text-emerald-600 rounded font-bold">{log.type}</span>
+                            <span className="font-extrabold text-slate-800">{log.targetName}</span>
+                            <span className="px-1.5 py-0.2 uppercase font-sans text-[7px] bg-emerald-100 text-emerald-700 rounded font-bold">{log.type}</span>
                           </div>
                         </td>
-                        <td className="py-3 px-3 font-mono">{log.date}</td>
-                        <td className="py-3 px-3 font-mono font-extrabold"><PriceTag amount={log.totalPriceDZD || 0} className="text-emerald-600!" /></td>
-                        <td className="py-3 px-3"><span className="px-2 py-0.5 bg-emerald-500/15 text-emerald-600 rounded-full text-[8px] font-bold uppercase tracking-wider">Réussi</span></td>
+                        <td className="py-3 px-3 font-sans">{log.date}</td>
+                        <td className="py-3 px-3 font-sans font-extrabold"><PriceTag amount={log.totalPriceDZD || 0} className="text-emerald-700!" /></td>
+                        <td className="py-3 px-3"><span className="px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded-full text-[8px] font-bold uppercase tracking-wider">Réussi</span></td>
                       </tr>
                     ))}
                   </tbody>
@@ -494,38 +494,38 @@ export const AdminDashboard: React.FC = () => {
                 </div>
               ) : (
                 <div className="overflow-x-auto">
-                  <table className="w-full text-left text-xs text-gray-500 dark:text-slate-400 border-collapse">
+                <table className="w-full text-left text-xs text-slate-600 border-collapse">
                     <thead>
-                      <tr className="border-b border-gray-100 dark:border-zinc-805 text-[8px] font-mono uppercase tracking-widest text-[#93a0b0]">
+                      <tr className="border-b border-slate-200 text-[8px] font-sans uppercase tracking-widest text-slate-400">
                         <th className="py-3 px-2">Surnom & Email</th>
                         <th className="py-3 px-2">Privilèges Rôle</th>
                         <th className="py-3 px-2">Abonnement</th>
                         <th className="py-3 px-2 text-right">Actions</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-slate-100 dark:divide-zinc-805">
+                    <tbody className="divide-y divide-slate-100">
                       {searchedUsers.map((userObj) => (
-                        <tr key={userObj.email} className="hover:bg-slate-500/5 transition">
+                        <tr key={userObj.email} className="hover:bg-slate-50 transition">
                           <td className="py-3 px-2">
                             <div className="flex items-center gap-3">
                               <img
                                 src={userObj.avatar || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80'}
                                 alt="avatar"
-                                className="w-8 h-8 rounded-full border border-slate-205 object-cover"
+                                className="w-8 h-8 rounded-full border border-slate-200 object-cover"
                                 loading="eager"
                                 decoding="async"
                               />
                               <div>
-                                <p className="font-extrabold text-slate-800 dark:text-slate-100 leading-snug">{userObj.name}</p>
-                                <p className="font-mono text-[9px] text-gray-400 truncate max-w-[150px]">{userObj.email}</p>
+                                <p className="font-extrabold text-slate-800 leading-snug font-sans">{userObj.name}</p>
+                                <p className="font-sans text-[9px] text-slate-400 truncate max-w-[150px]">{userObj.email}</p>
                               </div>
                             </div>
                           </td>
                           <td className="py-3 px-2">
-                            <span className={`inline-block px-2.5 py-0.5 font-mono text-[8px] font-black rounded uppercase tracking-wider ${
+                            <span className={`inline-block px-2.5 py-0.5 font-sans text-[8px] font-black rounded uppercase tracking-wider ${
                               userObj.role === 'admin' 
-                                ? 'bg-amber-500/10 text-[#d4af37] border border-[#d4af37]/20SB' 
-                                : 'bg-emerald-500/10 text-emerald-600'
+                                ? 'bg-amber-100 text-amber-700 border border-amber-200' 
+                                : 'bg-emerald-100 text-emerald-700'
                             }`}>
                               {userObj.role}
                             </span>
@@ -533,10 +533,10 @@ export const AdminDashboard: React.FC = () => {
                           <td className="py-3 px-2">
                             <button
                               onClick={() => toggleUserPremium(userObj.email)}
-                              className={`px-2 py-0.5 rounded text-[8px] font-mono font-black uppercase transition-all tracking-wide ${
+                              className={`px-2 py-0.5 rounded text-[8px] font-sans font-black uppercase transition-all tracking-wide ${
                                 userObj.isPremium 
-                                  ? 'bg-[#d4af37] text-slate-950 font-bold' 
-                                  : 'bg-slate-100 dark:bg-zinc-800 text-slate-400'
+                                  ? 'bg-amber-500 text-white font-bold' 
+                                  : 'bg-slate-100 text-slate-400'
                               }`}
                               title="Taper pour intervertir l'abonnement VIP de l'utilisateur"
                             >
@@ -546,7 +546,7 @@ export const AdminDashboard: React.FC = () => {
                           <td className="py-3 px-2 text-right">
                             <button
                               onClick={() => handleDeleteUser(userObj.email)}
-                              className="p-1.5 text-rose-650 hover:bg-rose-50 rounded-lg max-w-[30px] font-mono transition inline-block text-center"
+                              className="p-1.5 text-rose-600 hover:bg-rose-50 rounded-lg max-w-[30px] font-sans transition inline-block text-center"
                               title="Révoquer l'utilisateur de la base"
                             >
                               <Trash2 size={13} />
@@ -569,46 +569,46 @@ export const AdminDashboard: React.FC = () => {
 
               <form onSubmit={handleCreateUser} className="space-y-4">
                 <div>
-                  <label className="block text-[8px] font-mono uppercase tracking-widest text-[#1a1a1a]/60 dark:text-white/60 mb-1">Nom Complet 👤</label>
+                  <label className="block text-[8px] font-sans uppercase tracking-widest text-slate-500 mb-1">Nom Complet 👤</label>
                   <input
                     type="text"
                     required
                     value={newUserName}
                     onChange={(e) => setNewUserName(e.target.value)}
                     placeholder="Surnom ou Nom"
-                    className="w-full text-xs font-semibold px-3 py-2 bg-slate-50 dark:bg-zinc-950 border border-slate-205 dark:border-zinc-800 rounded-xl text-gray-800 dark:text-slate-100 focus:outline-[#d4af37]}"
+                    className="w-full text-xs font-semibold px-3 py-2 bg-white border border-slate-200 rounded-xl text-slate-800 focus:outline-emerald-500"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-[8px] font-mono uppercase tracking-widest text-[#1a1a1a]/60 dark:text-white/60 mb-1">Adresse Email 📧</label>
+                  <label className="block text-[8px] font-sans uppercase tracking-widest text-slate-500 mb-1">Adresse Email 📧</label>
                   <input
                     type="email"
                     required
                     value={newUserEmail}
                     onChange={(e) => setNewUserEmail(e.target.value)}
                     placeholder="utilisateur@rahla.dz"
-                    className="w-full text-xs font-semibold px-3 py-2 bg-slate-50 dark:bg-zinc-950 border border-slate-205 dark:border-zinc-800 rounded-xl text-gray-800 dark:text-slate-100 focus:outline-[#d4af37]}"
+                    className="w-full text-xs font-semibold px-3 py-2 bg-white border border-slate-200 rounded-xl text-slate-800 focus:outline-emerald-500"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-[8px] font-mono uppercase tracking-widest text-[#1a1a1a]/60 dark:text-white/60 mb-1">Mot De Passe 🔓</label>
+                  <label className="block text-[8px] font-sans uppercase tracking-widest text-slate-500 mb-1">Mot De Passe 🔓</label>
                   <input
                     type="password"
                     required
                     value={newUserPass}
                     onChange={(e) => setNewUserPass(e.target.value)}
-                    className="w-full text-xs font-mono px-3 py-2 bg-slate-50 dark:bg-zinc-950 border border-slate-205 dark:border-zinc-800 rounded-xl text-gray-800 dark:text-slate-100 focus:outline-[#d4af37]}"
+                    className="w-full text-xs font-sans px-3 py-2 bg-white border border-slate-200 rounded-xl text-slate-800 focus:outline-emerald-500"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-[8px] font-mono uppercase tracking-widest text-[#1a1a1a]/60 dark:text-white/60 mb-1">Attribuer les Privilèges</label>
+                  <label className="block text-[8px] font-sans uppercase tracking-widest text-slate-500 mb-1">Attribuer les Privilèges</label>
                   <select
                     value={newUserRole}
                     onChange={(e) => setNewUserRole(e.target.value as 'user' | 'admin')}
-                    className="w-full text-xs font-semibold px-2 py-2 bg-slate-50 dark:bg-zinc-950 border border-slate-205 dark:border-zinc-800 rounded-xl text-gray-800 dark:text-slate-100 focus:outline-[#d4af37]}"
+                    className="w-full text-xs font-semibold px-2 py-2 bg-white border border-slate-200 rounded-xl text-slate-800 focus:outline-emerald-500"
                   >
                     <option value="user">Utilisateur Standard</option>
                     <option value="admin">Administrateur Platform</option>
@@ -617,7 +617,7 @@ export const AdminDashboard: React.FC = () => {
 
                 <button
                   type="submit"
-                  className="w-full py-2.5 bg-gradient-to-r from-emerald-650 to-emerald-750 text-white font-mono font-bold text-xs uppercase tracking-widest rounded-xl hover:shadow hover:shadow-emerald-500/10 cursor-pointer"
+                  className="w-full py-2.5 bg-emerald-700 text-white font-sans font-bold text-xs uppercase tracking-widest rounded-xl hover:shadow hover:bg-emerald-800 cursor-pointer"
                 >
                   Ajouter à la base 👤
                 </button>

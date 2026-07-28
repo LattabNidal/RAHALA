@@ -568,11 +568,9 @@ function RihlaApp() {
                     >
                       {/* Background photo */}
                       <div className="absolute inset-0 z-0">
-                        <LazyImage 
-                          src={city.image} 
-                          alt={city.name}
-                          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                        />
+                        <div className="absolute inset-0 z-0 bg-stone-50 flex items-center justify-center font-sans">
+                          <span className="text-stone-400 text-xs uppercase tracking-widest">Image indisponible</span>
+                        </div>
                         {/* Soft bright gradient overlay */}
                         <div className="absolute inset-0 bg-gradient-to-t from-white via-white/20 to-transparent"></div>
                       </div>
