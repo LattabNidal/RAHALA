@@ -25,6 +25,7 @@ import casbahImage from '../../assets/images/casbah_algiers_authentic_1784670322
 import tassiliCanyonImage from '../../assets/images/tassili_canyon_gorge_1784674464805.jpg';
 import timgadImage from '../../assets/images/Timgad Roman Ruins/timgad-un-site-archeologique.jpg';
 import constantineImage from '../../assets/images/Suspension Bridges of Constantine/shutterstock_596063633-1200x628-converti-depuis-jpg.webp';
+import touaregSaharaBg from '../../assets/images/touareg_sahara_bg_1785246745314.jpg';
 
 interface RahalaLandingProps {
   onEnterAuth: (phase: 'login' | 'register') => void;
@@ -205,8 +206,8 @@ const RahalaLanding: React.FC<RahalaLandingProps> = ({ onEnterAuth }) => {
         
         <div className="absolute inset-0 z-0">
           <img 
-            src="https://images.unsplash.com/photo-1539650116574-8efeb43e2750?auto=format&fit=crop&w=2000&q=90" 
-            alt="Dunes du désert du Sahara algérien" 
+            src={touaregSaharaBg} 
+            alt="Dunes du désert du Sahara algérien et voyageurs Touaregs" 
             className="w-full h-full object-cover object-center transform scale-102 animate-zoom-slow"
             loading="eager"
             decoding="async"

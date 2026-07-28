@@ -12,6 +12,7 @@ import tassiliImage from '../assets/images/tassili_djanet_desert_1784672763415.j
 import tassiliCanyonImage from '../assets/images/tassili_canyon_gorge_1784674464805.jpg';
 import timgadImage from '../assets/images/Timgad Roman Ruins/timgad-un-site-archeologique.jpg';
 import rahalaHeroBanner from '../assets/images/rahala_hero_banner_1784119916854.jpg';
+import touaregSaharaBg from '../assets/images/touareg_sahara_bg_1785246745314.jpg';
 import rahalaLogo from '../assets/images/android-chrome-512x512.png';
 
 interface LandingPageProps {
@@ -47,7 +48,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterAuth }) => {
         ar: 'اكتشف الآن ➔',
         es: 'EXPLORAR AHORA ➔'
       },
-      image: rahalaHeroBanner
+      image: touaregSaharaBg
     },
     {
       id: 2,
