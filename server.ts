@@ -30,6 +30,35 @@ function getAiClient(customKey?: string): GoogleGenAI {
   });
 }
 
+// Resilient helper to handle temporary 503 high-demand or rate limits by retrying and falling back to alternative models
+async function generateGeminiWithFallback(aiInstance: GoogleGenAI, params: any) {
+  const modelsToTry = ['gemini-3.6-flash', 'gemini-flash-latest', 'gemini-3.1-pro-preview'];
+  let lastError: any = null;
+
+  for (const modelName of modelsToTry) {
+    for (let attempt = 0; attempt < 2; attempt++) {
+      try {
+        const response = await aiInstance.models.generateContent({
+          ...params,
+          model: modelName
+        });
+        return response;
+      } catch (err: any) {
+        lastError = err;
+        const is503 = err?.status === 503 || err?.code === 503 || err?.message?.includes('503') || err?.message?.includes('UNAVAILABLE') || err?.message?.includes('high demand');
+        const is429 = err?.status === 429 || err?.code === 429 || err?.message?.includes('429');
+        
+        if ((is503 || is429) && attempt === 0) {
+          await new Promise((resolve) => setTimeout(resolve, 800));
+          continue;
+        }
+        break;
+      }
+    }
+  }
+  throw lastError;
+}
+
 // Fullstack API: Server side proxy endpoint for Multi-Chatbot Tourism Companion
 app.post('/api/chat', async (req, res) => {
   try {
@@ -64,8 +93,7 @@ app.post('/api/chat', async (req, res) => {
     if (provider === 'gemini') {
       try {
         const aiInstance = getAiClient(customKey);
-        const response = await aiInstance.models.generateContent({
-          model: 'gemini-3.5-flash',
+        const response = await generateGeminiWithFallback(aiInstance, {
           contents: prompt,
           config: {
             systemInstruction: systemIns,
@@ -262,8 +290,7 @@ RÈGLES GÉNÉRALES :
 
 Réponds en suivant strictement la structure définie dans tes instructions système (Plan A / B / C, programme jour par jour, budget estimé, conseils pratiques, bonus).`;
 
-    const response = await aiInstance.models.generateContent({
-      model: 'gemini-3.5-flash',
+    const response = await generateGeminiWithFallback(aiInstance, {
       contents: prompt,
       config: {
         systemInstruction: systemIns,
@@ -505,8 +532,7 @@ app.post('/api/smart-places-guide', async (req, res) => {
       Their primary interest is: ${interest} (desert, history, culinary, coastal, or culture).
       Language of output must be: ${languageLabel}.`;
 
-    const response = await aiInstance.models.generateContent({
-      model: 'gemini-3.5-flash',
+    const response = await generateGeminiWithFallback(aiInstance, {
       contents: prompt,
       config: {
         systemInstruction: systemIns,
