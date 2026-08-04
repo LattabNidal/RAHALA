@@ -5,6 +5,13 @@ import { AppProvider, useApp } from './context/AppContext';
 import androidChrome from './assets/images/android-chrome-512x512.png';
 import rahalaHeroBanner from './assets/images/rahala_hero_banner_1784119916854.jpg';
 import rahalaLogo from './assets/images/android-chrome-512x512.png';
+import casbahImage from './assets/images/casbah_algiers_authentic_1784670322523.jpg';
+import santaCruzImage from './assets/images/santa_cruz_oran_chapel_1784672157047.jpg';
+import constantineImage from './assets/images/Suspension Bridges of Constantine/shutterstock_596063633-1200x628-converti-depuis-jpg.webp';
+import touaregSaharaBg from './assets/images/touareg_sahara_bg_1785246745314.jpg';
+import djanetImage from './assets/images/tassili_djanet_desert_1784672763415.jpg';
+import tassiliCanyonImage from './assets/images/tassili_canyon_gorge_1784674464805.jpg';
+import casbahVaultedAlley from './assets/images/casbah_vaulted_alley_1784680265468.jpg';
 import { Navigation } from './components/Navigation';
 import { DigitalTwin } from './components/DigitalTwin';
 import { InteractiveMap } from './components/InteractiveMap';
@@ -492,7 +499,7 @@ function RihlaApp() {
                     {
                       name: "Algiers",
                       subtitle: "Capital of Algeria & Ottoman Casbah",
-                      image: "https://images.unsplash.com/photo-1543872084-c7bd3822856f?auto=format&fit=crop&w=800&q=80",
+                      image: casbahImage,
                       badge: "★ Capital & UNESCO",
                       badgeBg: "bg-gold text-ink",
                       match: "98.7%",
@@ -501,7 +508,7 @@ function RihlaApp() {
                     {
                       name: "Oran",
                       subtitle: "Coastal Energy & Santa Cruz Fort",
-                      image: "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?auto=format&fit=crop&w=800&q=80",
+                      image: santaCruzImage,
                       badge: "🔥 Coastal Energy",
                       badgeBg: "bg-gold text-ink",
                       match: "99.4%",
@@ -510,7 +517,7 @@ function RihlaApp() {
                     {
                       name: "Constantine",
                       subtitle: "City of Suspended Bridges & Rhumel Canyon",
-                      image: "https://images.unsplash.com/photo-1578898835028-267b093df022?auto=format&fit=crop&w=800&q=80",
+                      image: constantineImage,
                       badge: "🌉 Bridges & Heritage",
                       badgeBg: "bg-gold text-ink",
                       match: "97.8%",
@@ -519,7 +526,7 @@ function RihlaApp() {
                     {
                       name: "Taghit & Ghardaïa",
                       subtitle: "Oasis Golden Dunes & M'zab Valley",
-                      image: "https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=800&q=80",
+                      image: touaregSaharaBg,
                       badge: "🏜️ Sahara Magic",
                       badgeBg: "bg-gold text-ink",
                       match: "96.5%",
@@ -528,7 +535,7 @@ function RihlaApp() {
                     {
                       name: "Tlemcen",
                       subtitle: "Pearl of Maghreb & El Mechouar Palace",
-                      image: "https://images.unsplash.com/photo-1518684079-3c830dcef090?auto=format&fit=crop&w=800&q=80",
+                      image: casbahVaultedAlley,
                       badge: "🏛️ Royal Heritage",
                       badgeBg: "bg-or-sahara text-encre",
                       match: "95.9%",
@@ -537,7 +544,7 @@ function RihlaApp() {
                     {
                       name: "Annaba",
                       subtitle: "Saint Augustine Basilica & Turquoise Coast",
-                      image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80",
+                      image: santaCruzImage,
                       badge: "🌊 Turquoise Coast",
                       badgeBg: "bg-gold text-ink",
                       match: "96.2%",
@@ -546,7 +553,7 @@ function RihlaApp() {
                     {
                       name: "Djanet",
                       subtitle: "Tassili n'Ajjer Rock Art & Starry Desert",
-                      image: "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=800&q=80",
+                      image: tassiliCanyonImage,
                       badge: "🌌 UNESCO Plateau",
                       badgeBg: "bg-gold text-ink",
                       match: "98.1%",
@@ -555,7 +562,7 @@ function RihlaApp() {
                     {
                       name: "Bejaia",
                       subtitle: "Cap Carbon & Gouraya National Park",
-                      image: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=800&q=80",
+                      image: djanetImage,
                       badge: "⛰️ Gouraya & Gulf",
                       badgeBg: "bg-gold text-ink",
                       match: "97.3%",
@@ -649,7 +656,7 @@ function RihlaApp() {
                     {/* Background photo */}
                     <div className="absolute inset-0 z-0">
                       <LazyImage 
-                        src="https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=800&q=80" 
+                        src={touaregSaharaBg} 
                         alt="Sahara desert experience"
                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                       />
@@ -702,7 +709,7 @@ function RihlaApp() {
                     {/* Background photo */}
                     <div className="absolute inset-0 z-0">
                       <LazyImage 
-                        src="https://images.unsplash.com/photo-1534080564583-6be75777b70a?auto=format&fit=crop&w=800&q=80" 
+                        src={santaCruzImage} 
                         alt="Oran beach escape"
                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                       />

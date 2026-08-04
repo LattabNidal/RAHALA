@@ -15,22 +15,19 @@ app.use(express.json());
 // Lazy-initialization helper for Gemini SDK client
 let aiClient: GoogleGenAI | null = null;
 
-function getAiClient(): GoogleGenAI {
-  if (!aiClient) {
-    const key = process.env.GEMINI_API_KEY;
-    if (!key) {
-      throw new Error('GEMINI_API_KEY environment variable is required for live chat.');
-    }
-    aiClient = new GoogleGenAI({
-      apiKey: key,
-      httpOptions: {
-        headers: {
-          'User-Agent': 'aistudio-build'
-        }
-      }
-    });
+function getAiClient(customKey?: string): GoogleGenAI {
+  const key = customKey || process.env.GEMINI_API_KEY || process.env.GEMINI_API;
+  if (!key) {
+    throw new Error('GEMINI_API_KEY environment variable is required for live chat.');
   }
-  return aiClient;
+  return new GoogleGenAI({
+    apiKey: key,
+    httpOptions: {
+      headers: {
+        'User-Agent': 'aistudio-build'
+      }
+    }
+  });
 }
 
 // Fullstack API: Server side proxy endpoint for Multi-Chatbot Tourism Companion
@@ -66,7 +63,7 @@ app.post('/api/chat', async (req, res) => {
     // Provider 1: Gemini (Default / Free via Google AI Studio)
     if (provider === 'gemini') {
       try {
-        const aiInstance = getAiClient();
+        const aiInstance = getAiClient(customKey);
         const response = await aiInstance.models.generateContent({
           model: 'gemini-3.5-flash',
           contents: prompt,
