@@ -32,7 +32,7 @@ function getAiClient(customKey?: string): GoogleGenAI {
 
 // Resilient helper to handle temporary 503 high-demand or rate limits by retrying and falling back to alternative models
 async function generateGeminiWithFallback(aiInstance: GoogleGenAI, params: any) {
-  const modelsToTry = ['gemini-3.6-flash', 'gemini-flash-latest', 'gemini-3.1-pro-preview'];
+  const modelsToTry = ['gemini-2.5-flash', 'gemini-1.5-flash', 'gemini-2.0-flash'];
   let lastError: any = null;
 
   for (const modelName of modelsToTry) {
@@ -105,8 +105,27 @@ app.post('/api/chat', async (req, res) => {
         res.json({ reply: replyText, provider: 'gemini', persona: personaName });
         return;
       } catch (geminiError: any) {
-        console.warn('Gemini chat failed, falling back to local persona engine:', geminiError?.message);
-        // Fallthrough to local responder
+        console.warn('Gemini chat failed, trying backup AI engine:', geminiError?.message);
+        try {
+          const pollRes = await fetch('https://text.pollinations.ai/', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              messages: [
+                { role: 'system', content: systemIns },
+                { role: 'user', content: prompt }
+              ],
+              model: 'openai'
+            })
+          });
+          const pollText = await pollRes.text();
+          if (pollText && pollText.trim()) {
+            res.json({ reply: pollText.trim(), provider: 'gemini-backup', persona: personaName });
+            return;
+          }
+        } catch (backupError) {
+          console.warn('Backup AI engine error:', backupError);
+        }
       }
     }
 
