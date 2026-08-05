@@ -4,7 +4,8 @@ import { useApp } from '../context/AppContext';
 import { 
   Menu, X, Bell, Globe, Sparkles, User as UserIcon, 
   ShieldAlert, LogOut, Sun, Moon, CreditCard, Shield,
-  Compass, Box, Map, Hotel, Car, Camera, ChevronRight, Coins
+  Compass, Box, Map, Hotel, Car, Camera, ChevronRight, Coins,
+  ShoppingBag
 } from 'lucide-react';
 import { Language } from '../types';
 import { motion, AnimatePresence } from 'motion/react';
@@ -67,6 +68,7 @@ export const Navigation: React.FC<NavigationProps> = ({ activeView, setActiveVie
     { id: 'taxis', label: t('navTaxis'), icon: Car },
     { id: 'ai-guide', label: t('navAIGuide'), icon: Sparkles },
     { id: 'real-photos', label: t('navRealPhotos'), icon: Camera },
+    { id: 'market', label: 'RAHALA MARKET', icon: ShoppingBag },
     { id: 'safe-travel', label: t('navSafeTravel'), icon: Shield },
     { id: 'social', label: t('navSocial'), icon: Camera },
     { id: 'billing', label: t('navBilling'), icon: CreditCard },
@@ -87,6 +89,7 @@ export const Navigation: React.FC<NavigationProps> = ({ activeView, setActiveVie
         case 'taxis': return 'اطلب سائقك المعتمد بكل سهولة';
         case 'ai-guide': return 'مساعد السفر الذكي المدعوم بـ Gemini';
         case 'real-photos': return 'التحقق البصري المباشر من صور غوغل';
+        case 'market': return 'سوق الرحالة المحلي للمنتجات والصناعات التقليدية';
         case 'safe-travel': return 'تأمين وضمانات سلامة رحلتك';
         case 'social': return 'نادي المسافرين لمشاركة اللحظات';
         case 'billing': return 'بوابة الدفع وباقات المسافر كارد';
@@ -102,6 +105,7 @@ export const Navigation: React.FC<NavigationProps> = ({ activeView, setActiveVie
         case 'taxis': return 'Chauffeurs privés sécurisés et à la demande';
         case 'ai-guide': return 'Intelligence compagnon certifiée Gemini';
         case 'real-photos': return 'Photos réelles certifiées de Google Maps';
+        case 'market': return 'Achetez et vendez des produits touristiques et artisanaux';
         case 'safe-travel': return 'Garanties d’assurance voyage de RAHLA';
         case 'social': return 'Galerie partagée des routards algériens';
         case 'billing': return 'Abonnements Premium & Factures DZD';
@@ -117,6 +121,7 @@ export const Navigation: React.FC<NavigationProps> = ({ activeView, setActiveVie
         case 'taxis': return 'Fast dispatch certified private drivers';
         case 'ai-guide': return 'Gemini local wisdom guide companion';
         case 'real-photos': return 'Real verified photos from Google Places';
+        case 'market': return 'Buy and sell local tourist items and artisanal crafts';
         case 'safe-travel': return 'Secure coverage and safety policies';
         case 'social': return 'Algeria travelers community hub';
         case 'billing': return 'Abonnements, checkouts & billing';
@@ -134,6 +139,7 @@ export const Navigation: React.FC<NavigationProps> = ({ activeView, setActiveVie
     'taxis': Car,
     'ai-guide': Sparkles,
     'real-photos': Camera,
+    'market': ShoppingBag,
     'safe-travel': Shield,
     'social': Camera,
     'billing': CreditCard,

@@ -28,6 +28,7 @@ import RahalaLanding from './components/rahala/RahalaLanding';
 import { DirectionController } from './components/DirectionController';
 import { SafeTravel } from './components/SafeTravel';
 import { RealPhotoExplorer } from './components/RealPhotoExplorer';
+import { RahalaMarket } from './components/RahalaMarket';
 import { SEOHead } from './SEOHead';
 import { WeatherWidget } from './components/WeatherWidget';
 import { SmartTravelGuide } from './components/SmartTravelGuide';
@@ -97,6 +98,8 @@ function RihlaApp() {
             'taxis': 'taxis',
             'ai-guide': 'ai-guide',
             'real-photos': 'real-photos',
+            'market': 'market',
+            'rahala-market': 'market',
             'safe-travel': 'safe-travel',
             'social': 'social'
           };
@@ -127,7 +130,7 @@ function RihlaApp() {
           setActiveView('admin');
         } else {
           // Permit accessing regular tabs with normal hash
-          const matchedTab = ['explore', 'digital-twin', 'map', 'hotels', 'taxis', 'ai-guide', 'real-photos', 'safe-travel', 'social', 'billing', 'dashboard', 'admin'].find(tab => hash === `#/${tab}`);
+          const matchedTab = ['explore', 'digital-twin', 'map', 'hotels', 'taxis', 'ai-guide', 'real-photos', 'market', 'safe-travel', 'social', 'billing', 'dashboard', 'admin'].find(tab => hash === `#/${tab}`);
           if (matchedTab) {
             setActiveView(matchedTab);
           }
@@ -149,7 +152,7 @@ function RihlaApp() {
           setActiveView('explore');
         } else {
           // Permit standard tab switches
-          const matchedTab = ['explore', 'digital-twin', 'map', 'hotels', 'taxis', 'ai-guide', 'real-photos', 'safe-travel', 'social', 'billing', 'dashboard'].find(tab => hash === `#/${tab}`);
+          const matchedTab = ['explore', 'digital-twin', 'map', 'hotels', 'taxis', 'ai-guide', 'real-photos', 'market', 'safe-travel', 'social', 'billing', 'dashboard'].find(tab => hash === `#/${tab}`);
           if (matchedTab) {
             setActiveView(matchedTab);
           }
@@ -823,6 +826,9 @@ function RihlaApp() {
 
         {/* VIEW 6A: REAL PHOTO EXPLORER */}
         {activeView === 'real-photos' && <RealPhotoExplorer />}
+
+        {/* VIEW 6A2: RAHALA MARKETPLACE */}
+        {activeView === 'market' && <RahalaMarket />}
 
         {/* VIEW 6B: RAHALA SAFE TRAVEL INSURANCE */}
         {activeView === 'safe-travel' && <SafeTravel />}
