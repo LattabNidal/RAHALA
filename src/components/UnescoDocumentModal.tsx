@@ -140,7 +140,7 @@ export const UnescoDocumentModal: React.FC<UnescoDocumentModalProps> = ({
   const [zoomLevel, setZoomLevel] = useState<number>(100);
   const [activeTab, setActiveTab] = useState<'document' | 'photos' | 'criteria'>('document');
   const { language, setLanguage, isRtl } = useLanguage();
-  const t = translations[language];
+  const t: any = translations[language] || translations.fr;
 
   if (!isOpen) return null;
 

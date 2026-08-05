@@ -89,6 +89,12 @@ export const translations: Translations = {
     ar: 'الصور الحقيقية 📸',
     es: 'Fotos Reales 📸'
   },
+  navMarket: {
+    en: 'RAHALA MARKET 🛍️',
+    fr: 'RAHALA MARKET 🛍️',
+    ar: 'سوق الرحالة 🛍️',
+    es: 'MERCADO RAHALA 🛍️'
+  },
   navAdmin: {
     en: 'Admin Control',
     fr: 'Gestion Admin',
@@ -1368,25 +1374,61 @@ const LanguageContext = createContext<LanguageContextType | undefined>(undefined
 
 export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [language, setLanguageState] = useState<Language>(() => {
-    const params = new URLSearchParams(window.location.search);
-    const urlLang = params.get('lang');
-    if (urlLang && ['en', 'fr', 'ar', 'es'].includes(urlLang)) {
-      return urlLang as Language;
+    // 1. Check URL param 'lang'
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const urlLang = params.get('lang');
+      if (urlLang && ['en', 'fr', 'ar', 'es'].includes(urlLang)) {
+        localStorage.setItem('rahala_lang', urlLang);
+        localStorage.setItem('rihla_lang', urlLang);
+        return urlLang as Language;
+      }
+    } catch (e) {
+      console.warn('URL search params read error:', e);
     }
-    const saved = localStorage.getItem('rihla_lang');
-    return (saved as Language) || 'en';
+
+    // 2. Check localStorage
+    try {
+      const saved = localStorage.getItem('rahala_lang') || localStorage.getItem('rihla_lang');
+      if (saved && ['en', 'fr', 'ar', 'es'].includes(saved)) {
+        return saved as Language;
+      }
+    } catch (e) {
+      console.warn('LocalStorage read error:', e);
+    }
+
+    // Default fallback
+    return 'fr';
   });
 
   const setLanguage = (lang: Language) => {
     setLanguageState(lang);
-    localStorage.setItem('rihla_lang', lang);
-    const params = new URLSearchParams(window.location.search);
-    params.set('lang', lang);
-    const newUrl = `${window.location.pathname}?${params.toString()}${window.location.hash}`;
-    window.history.replaceState({}, '', newUrl);
+    try {
+      localStorage.setItem('rahala_lang', lang);
+      localStorage.setItem('rihla_lang', lang);
+    } catch (e) {
+      console.warn('LocalStorage write error:', e);
+    }
+    try {
+      const params = new URLSearchParams(window.location.search);
+      params.set('lang', lang);
+      const newUrl = `${window.location.pathname}?${params.toString()}${window.location.hash}`;
+      window.history.replaceState({}, '', newUrl);
+    } catch (e) {
+      console.warn('History replaceState error:', e);
+    }
   };
 
   const isRtl = language === 'ar';
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('rahala_lang', language);
+      localStorage.setItem('rihla_lang', language);
+    } catch (e) {
+      console.warn('LocalStorage effect error:', e);
+    }
+  }, [language]);
 
   useEffect(() => {
     const handlePopState = () => {

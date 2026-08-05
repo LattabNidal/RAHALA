@@ -68,7 +68,7 @@ export const Navigation: React.FC<NavigationProps> = ({ activeView, setActiveVie
     { id: 'taxis', label: t('navTaxis'), icon: Car },
     { id: 'ai-guide', label: t('navAIGuide'), icon: Sparkles },
     { id: 'real-photos', label: t('navRealPhotos'), icon: Camera },
-    { id: 'market', label: 'RAHALA MARKET', icon: ShoppingBag },
+    { id: 'market', label: t('navMarket'), icon: ShoppingBag },
     { id: 'safe-travel', label: t('navSafeTravel'), icon: Shield },
     { id: 'social', label: t('navSocial'), icon: Camera },
     { id: 'billing', label: t('navBilling'), icon: CreditCard },
